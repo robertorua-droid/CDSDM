@@ -52,7 +52,7 @@ Pattern tipico dopo una modifica dati:
 - Il “ripristino totale” esegue prima reset completo (incl. `settings/*`) e poi importa.
 
 ## 8.7 Firebase corrente e modifica progetto
-La versione **CDSDM 0.0.1** punta al progetto Firebase `cdsdm-b6e8b`.
+La versione **CDSDM 0.0.2** punta al progetto Firebase `cdsdm-b6e8b` e usa Firebase Authentication anche per il reset password via email.
 
 La configurazione si trova in `js/services/firebase-cloud.js`, dentro `firebaseConfig`. Il progetto usa gli SDK Firebase **compat** già caricati da `index.html`, quindi non va incollato il blocco modulare con `import { initializeApp } from "firebase/app"`.
 

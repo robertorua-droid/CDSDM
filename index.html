@@ -38,10 +38,14 @@
                 <div class="form-text">Usa l'icona a destra per visualizzare o nascondere la password digitata.</div>
               </div>
               <div class="text-danger mb-3 d-none" id="login-error">Credenziali errate.</div>
+              <div class="alert d-none py-2 small mb-3" id="login-reset-message" role="status"></div>
               <button class="btn btn-primary w-100" id="btn-login-submit" type="submit">
                 <span aria-hidden="true" class="spinner-border spinner-border-sm d-none" id="login-spinner"
                   role="status"></span>
                 Accedi
+              </button>
+              <button class="btn btn-link btn-sm w-100 mt-2" id="btn-password-reset" type="button">
+                Password dimenticata? Invia link di reset
               </button>
             </form>
           </div>
@@ -248,8 +252,8 @@
                 <i class="fas fa-rocket fa-4x"></i>
               </div>
               <div class="col-md-10">
-                <h3 class="mb-1">CDSDM Versione 0.0.1</h3>
-                <p class="text-muted">Versione iniziale CDSDM collegata al nuovo progetto Firebase.</p>
+                <h3 class="mb-1">CDSDM Versione 0.0.2</h3>
+                <p class="text-muted">Recupero password da login tramite link di reset Firebase.</p>
                 <p class="small text-muted mb-0"><i class="fas fa-check-circle text-success"></i> Sincronizzazione Cloud
                   Attiva</p>
                 <p class="small text-muted"><i class="fas fa-shield-halved text-info"></i> Protezione Dati Crittografata
@@ -1182,8 +1186,8 @@
                         <i class="fas fa-rocket fa-4x text-primary"></i>
                       </div>
                       <div class="col-md-10">
-                        <h3 class="mb-1">CDSDM Versione 0.0.1</h3>
-                        <p class="text-muted">Versione iniziale CDSDM collegata al nuovo progetto Firebase.</p>
+                        <h3 class="mb-1">CDSDM Versione 0.0.2</h3>
+                        <p class="text-muted">Recupero password da login tramite link di reset Firebase.</p>
                         <div class="mt-4">
                           <button class="btn btn-primary" id="btn-view-changelog">
                             <i class="fas fa-history me-1"></i> Visualizza Changelog

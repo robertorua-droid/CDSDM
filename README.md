@@ -1,30 +1,12 @@
 ## Versione corrente
 
-CDSDM Versione 0.0.1
+CDSDM Versione 0.0.2
 
-- **Migrazione Firebase – CDSDM Versione 0.0.1**: aggiornata la configurazione Firebase dell'app per puntare al nuovo progetto `cdsdm-b6e8b`, mantenendo invariati SDK compat, struttura Firestore per utente e flussi applicativi esistenti.
+- **Recupero password da login – CDSDM Versione 0.0.2**: aggiunto nella schermata iniziale il comando per richiedere via Firebase Authentication il link di reset password all'indirizzo email inserito.
 
-- **Google Calendar in Home – V.13.10_step 12**: la Home può sostituire il calendario locale con un Google Calendar incorporato in vista 7 giorni, configurabile da Dati Azienda tramite URL embed o ID calendario. Se non configurato, resta il calendario locale precedente.
+- **Baseline nuovo repository/Firebase – CDSDM Versione 0.0.1**: configurazione Firebase aggiornata per il progetto `cdsdm-b6e8b`, mantenendo SDK compat, struttura Firestore per utente e flussi applicativi esistenti.
 
-- **Dark Mode Allegato Timesheet XML – V.13.10_step 11**: migliorata la leggibilità del blocco “Allegato XML da Timesheet” nel form fattura in modalità scura, con sfondo, bordo, testi e stato disabilitato coerenti con il tema.
-
-- **Allegato Timesheet XML – V.13.10_step 10**: aggiunta in fattura l'opzione per allegare all'XML un PDF con il dettaglio non aggregato dei worklog importati dal Timesheet, con note operative opzionali. L'allegato è descrittivo e non modifica i totali fiscali del documento.
-
-- **Stati documento + audit store/read – V.13.10_step 04**: aggiunto `normalizeInvoiceStatusInfo()` per riallineare bozza/emessa/inviata/pagata tra lista fatture e scadenziario, ridotti altri fallback a `renderAll()` nei CRUD semplici e rimossa una lettura legacy diretta di `globalData` nell'import XML acquisti.
-
-- **Versione ridisegnata – V.13.10_step 01**: completato il controllo checklist punto 6 sul flusso **Timesheet → Fattura**, con `normalizeTimesheetImportInfo()` che riallinea stato import, worklog IDs, gruppi importati e persistenza del collegamento worklog/fattura.
-- **Acquisti/scadenziario hardening – V.13.10_step 04**: introdotto `normalizePurchaseInfo()` per riallineare alias legacy di acquisto (fornitore, numero, date, stato, righe, totali) e collegato ai punti più sensibili: salvataggio manuale acquisti, import XML acquisti, tabelle elenco, scadenziario e analisi.
-- **Test simulatori fiscali – V.13.10_step 04**: aggiunte le suite browser-based `tests/forfettario-calc.spec.js` e `tests/ordinario-calc.spec.js`, con pagine dedicate e indice aggiornato per verificare aggregazioni annuali, contributi, imposta sostitutiva, IRPEF e acconti dei due motori fiscali.
-- **Refactoring Fase 5 – Step 4 test unitari `InvoiceXMLMapper` (v12.51)**: aggiunta una suite browser-based per il mapper XML FatturaPA, con copertura dei frammenti più delicati: ordinario, forfettario, nota di credito, anagrafiche, pagamento, bollo, rivalsa e scorporo.
-- **Refactoring Fase 5 – Step 3 test unitari `InvoiceXMLValidator` (v12.50)**: aggiunta una suite browser-based per i controlli di esportabilità XML, con copertura di dati obbligatori, identità fiscali, indirizzi, IBAN e casi delicati di nota di credito.
-- **Refactoring Fase 5 – Step 2 test unitari `InvoiceCalculator` (v12.49)**: aggiunta una suite browser-based per il calcolo documento, con copertura di casi ordinario/forfettario, rivalsa INPS, ritenuta, scorporo e bollo.
-- **Refactoring Fase 5 – Step 1 test unitari `TaxRegimePolicy` (v12.48)**: introdotta una prima suite di test browser-based per il layer `TaxRegimePolicy`, con harness leggero e copertura dei casi base di risoluzione regime, capability, visibilità UI e default fattura.
-- **Refactoring Fase 4 – Step 4 store adoption controllata (v12.47)**: primi moduli semplici (Azienda, Clienti, Servizi, Fornitori) leggono ora in modo esplicito da `AppStore`, con renderer anagrafiche più allineati allo store e minore dipendenza diretta da `globalData`.
-- **Refactoring Fase 4 – Step 3 riduzione `renderAll()` nei CRUD più usati (v12.46)**: `UiRefresh` copre ora anche combinazioni vendite/acquisti + scadenziario/analisi; azioni frequenti su fatture e acquisti evitano più spesso il refresh globale completo.
-- **Refactoring Fatture – Fase 3 rifinitura prudente (v12.41)**: aggiunto `InvoiceFormUiService` per togliere altra logica di righe documento da `invoices-form-module.js`; il mapper/validator XML usano ora normalizzazione più robusta di anagrafica e indirizzi, con precheck più stretti su identificativi fiscali e dati sede.
-- **Refactoring Fatture – Fase 3 hardening XML e submit (v12.40)**: aggiunti `InvoiceFormStateService` e `InvoiceSubmitService` per togliere altro peso a `invoices-form-module.js`, mentre `InvoiceXMLValidator` e `InvoiceXMLMapper` vengono irrigiditi sui casi delicati (nota di credito, anagrafica cliente PF/azienda, causale XML).
-- **Refactoring Fatture – Fase 3 continuazione cauta (v12.38)**: aggiunti `InvoiceValidationService`, `InvoiceLineService` e `InvoiceXMLValidator`. Il form fattura delega validazione, controllo duplicati, costruzione righe e payload di salvataggio, mentre l’export XML guadagna una pre-validazione dedicata senza cambiare il mapper del tracciato.
-- **UI Render Split – Fase 2A Rifinitura (v12.34)**: aggiunto `js/ui/ui-regime-helpers.js` per centralizzare helper UI del regime fiscale e del `companyInfo` corrente. `ui-render.js` usa ora step di orchestrazione più leggibili (`renderMasterDataArea`, `renderPurchasesArea`, `renderSalesArea`, `renderAnalysisArea`), mentre i moduli estratti della Fase 2A dipendono da helper condivisi invece di duplicare fallback e accessi diretti allo stato.
+---
 # Gestionale Cloud – Professionisti (didattico)
 
 Questo progetto simula la gestione di un professionista e supporta due modalità **gestionali**:

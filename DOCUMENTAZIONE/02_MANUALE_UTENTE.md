@@ -10,7 +10,7 @@ Questo manuale descrive l’uso quotidiano del gestionale, con particolare atten
 
 ## 2.1 Accesso e primo avvio
 1) Apri l’app da hosting statico o da server locale.
-2) Effettua il login.
+2) Effettua il login. Se hai dimenticato la password, inserisci la tua email e usa **Password dimenticata? Invia link di reset**: Firebase invierà un link di reimpostazione se l’indirizzo è associato a un account.
 3) Al primo accesso entra in **Impostazioni → Azienda**.
 4) Compila l’anagrafica in modo completo.
 5) Imposta il **Regime fiscale (gestionale)**.

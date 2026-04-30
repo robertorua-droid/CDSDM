@@ -6,6 +6,26 @@
 
   let _bound = false;
 
+  function showPasswordResetMessage(message, type) {
+    const safeType = type || 'info';
+    $('#login-reset-message')
+      .removeClass('d-none alert-info alert-success alert-warning alert-danger')
+      .addClass('alert-' + safeType)
+      .text(message);
+  }
+
+  function clearPasswordResetMessage() {
+    $('#login-reset-message')
+      .addClass('d-none')
+      .removeClass('alert-info alert-success alert-warning alert-danger')
+      .text('');
+  }
+
+  function setPasswordResetBusy(isBusy) {
+    $('#btn-password-reset').prop('disabled', !!isBusy);
+    $('#btn-login-submit').prop('disabled', !!isBusy);
+  }
+
   function bind() {
     if (_bound) return;
     _bound = true;
@@ -56,8 +76,10 @@
     $('#login-form').on('submit', function (e) {
       e.preventDefault();
       $('#login-error').addClass('d-none');
+      clearPasswordResetMessage();
       $('#login-spinner').removeClass('d-none');
       $('#btn-login-submit').prop('disabled', true);
+      $('#btn-password-reset').prop('disabled', true);
 
       const email = $('#email').val();
       const password = $('#password').val();
@@ -67,12 +89,44 @@
         .then(() => {
           $('#login-spinner').addClass('d-none');
           $('#btn-login-submit').prop('disabled', false);
+          $('#btn-password-reset').prop('disabled', false);
         })
         .catch((err) => {
           console.error('Login Error:', err);
           $('#login-error').removeClass('d-none');
           $('#login-spinner').addClass('d-none');
           $('#btn-login-submit').prop('disabled', false);
+          $('#btn-password-reset').prop('disabled', false);
+        });
+    });
+
+    $('#btn-password-reset').on('click', function () {
+      $('#login-error').addClass('d-none');
+      clearPasswordResetMessage();
+
+      const email = String($('#email').val() || '').trim();
+      if (!email) {
+        showPasswordResetMessage('Inserisci prima il tuo indirizzo email, poi richiedi il link di reset.', 'warning');
+        $('#email').trigger('focus');
+        return;
+      }
+
+      setPasswordResetBusy(true);
+      try {
+        auth.languageCode = 'it';
+      } catch (e) {}
+
+      auth
+        .sendPasswordResetEmail(email)
+        .then(() => {
+          showPasswordResetMessage('Se l’indirizzo è associato a un account, riceverai un’email per reimpostare la password.', 'success');
+        })
+        .catch((err) => {
+          console.error('Password Reset Error:', err);
+          showPasswordResetMessage('Non è stato possibile inviare il link di reset. Controlla l’indirizzo email e riprova.', 'danger');
+        })
+        .finally(() => {
+          setPasswordResetBusy(false);
         });
     });
 
