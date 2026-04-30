@@ -1,418 +1,228 @@
-// analysis-render.js
+# Mappa selector/eventi → modulo/file (v12.25)
 
-function refreshStatsYearFilter() {
-    const $select = $('#stats-year-filter');
-    if (!$select.length) return;
+Questa mappa elenca **dove** vengono gestiti i principali eventi UI.
 
-    const previous = $select.val() || '';
+> Nota: molti handler sono *delegati* su `<tbody>` per gestire righe dinamiche.
 
-    const invoices = getData('invoices');
-    const yearsSet = new Set();
+---
 
-    invoices.forEach(inv => {
-        if (inv.date && typeof inv.date === 'string' && inv.date.length >= 4) {
-            const y = inv.date.substring(0, 4);
-            if (/^\d{4}$/.test(y)) yearsSet.add(y);
-        }
-    });
+## Auth (`js/features/auth/auth-module.js`)
 
-    const currentYear = String(new Date().getFullYear());
-    yearsSet.add(currentYear);
+| Selector | Evento | Azione |
+|---|---|---|
+| `#login-form` | `submit` | Login Firebase + UI feedback |
+| `#logout-btn` | `click` | Logout + reset UI |
 
-    const years = Array.from(yearsSet).sort().reverse();
+---
 
-    $select.empty();
-    $select.append('<option value="all">Tutti</option>');
-    years.forEach(y => $select.append(`<option value="${y}">${y}</option>`));
+## Navigazione (`js/features/navigation/navigation-module.js`)
 
-    // Default: anno corrente (se presente), altrimenti primo anno disponibile, altrimenti "Tutti"
-    if (years.includes(previous) && previous !== '') {
-        $select.val(previous);
-    } else if (years.includes(currentYear)) {
-        $select.val(currentYear);
-    } else if (years.length > 0) {
-        $select.val(years[0]);
-    } else {
-        $select.val('all');
-    }
-}
+| Selector | Evento | Azione |
+|---|---|---|
+| `.sidebar .nav-link` | `click` | Switch pagina via `data-target` + guard regime |
+| `#sidebar-toggle-btn` | `click` | Toggle sidebar (collapsed/expanded) |
+| `.nav-section-header` | `click` | Toggle espansione singola sezione + persistenza |
+| `#btn-expand-all` | `click` | Espande tutte le sezioni del menu |
+| `#btn-collapse-all` | `click` | Comprime tutte le sezioni del menu |
+| `#invoice-year-filter` | `change` | `renderInvoicesTable()` |
+| `#stats-year-filter` | `change` | `renderStatisticsPage()` |
+| `#lm-year-select, #lm-only-paid, #lm-include-bollo` | `change` | `renderLMPage()` (solo forfettario) |
+| `#lm-refresh-btn` | `click` | `renderLMPage()` |
 
-// =====================
-// Registri IVA
-// =====================
+---
 
-function refreshIvaRegistersYearFilter() {
-    const $select = $('#iva-year-filter');
-    if (!$select.length) return;
+## Azienda (`js/features/company/company-module.js`)
 
-    const previous = $select.val() || '';
+| Selector | Evento | Azione |
+|---|---|---|
+| `#company-taxRegime` | `change` | show/hide `.forfettario-only` / `.ordinario-only` |
+| `#company-name` | `input` | aggiorna `#company-name-sidebar` |
+| `#company-info-form` | `submit` | salva `companyInfo` → `renderAll()` |
 
-    const yearsSet = new Set();
-    const invoices = getData('invoices') || [];
-    const purchases = (window.DomainNormalizers && typeof window.DomainNormalizers.normalizePurchaseInfo === 'function') ? (getData('purchases') || []).map(function (p) { return window.DomainNormalizers.normalizePurchaseInfo(p); }) : (getData('purchases') || []);
+---
 
-    for (const inv of invoices) {
-        if (inv && inv.date && typeof inv.date === 'string' && inv.date.length >= 4) {
-            const y = inv.date.substring(0, 4);
-            if (/^\d{4}$/.test(y)) yearsSet.add(y);
-        }
-    }
-    for (const p of purchases) {
-        if (p && p.date && typeof p.date === 'string' && p.date.length >= 4) {
-            const y = p.date.substring(0, 4);
-            if (/^\d{4}$/.test(y)) yearsSet.add(y);
-        }
-    }
+## Clienti (`js/features/masterdata/customers-module.js`)
 
-    const currentYear = String(new Date().getFullYear());
-    yearsSet.add(currentYear);
+| Selector | Evento | Azione |
+|---|---|---|
+| `#newCustomerBtn` | `click` | reset form + apre modal |
+| `#saveCustomerBtn` | `click` | salva cliente → `renderAll()` |
+| `#customer-bolloAcaricoEmittente` | `change` | (opzionale) flag "Bollo a carico studio" usato in fatture/XML |
+| `#customer-timesheetPrefix` | `input` | (solo forfettario) prefisso descrizione import ore timesheet in fattura |
+| `#customers-table-body` | `click` su `.btn-edit-customer` | modifica |
+| `#customers-table-body` | `click` su `.btn-delete-customer` | elimina |
 
-    const years = Array.from(yearsSet).sort().reverse();
+---
 
-    $select.empty();
-    $select.append('<option value="all">Tutti</option>');
-    years.forEach(y => $select.append(`<option value="${y}">${y}</option>`));
+## Servizi (`js/features/masterdata/products-module.js`)
 
-    if (years.includes(previous) && previous !== '') {
-        $select.val(previous);
-    } else if (years.includes(currentYear)) {
-        $select.val(currentYear);
-    } else if (years.length > 0) {
-        $select.val(years[0]);
-    } else {
-        $select.val('all');
-    }
-}
+| Selector | Evento | Azione |
+|---|---|---|
+| `#newProductBtn` | `click` | reset form + default IVA (forfettario=0) |
+| `#saveProductBtn` | `click` | salva servizio → `renderAll()` |
+| `#product-iva` | `change` | toggle campo esenzione/natura |
+| `#products-table-body` | `click` su `.btn-edit-product` | modifica |
+| `#products-table-body` | `click` su `.btn-delete-product` | elimina |
 
-function renderRegistriIVAPage() {
-    const container = $('#iva-registers-container');
-    if (!container.length) return;
+---
 
-    const comp = getData('companyInfo') || {};
-    let defPeriod = String(comp.ivaPeriodicita || 'mensile').toLowerCase();
-    defPeriod = defPeriod.includes('tri') ? 'trimestrale' : 'mensile';
+## Fornitori (`js/features/masterdata/suppliers-module.js`) *(solo ordinario)*
 
-    const $periodSel = $('#iva-period-filter');
-    if ($periodSel.length) {
-        const cur = ($periodSel.val() || '').toLowerCase();
-        if (cur !== 'mensile' && cur !== 'trimestrale') {
-            $periodSel.val(defPeriod);
-        }
-    }
+| Selector | Evento | Azione |
+|---|---|---|
+| `#newSupplierBtn` | `click` | reset form + apre modal |
+| `#saveSupplierBtn` | `click` | salva fornitore → `renderAll()` |
+| `#suppliers-table-body` | `click` su `.btn-edit-supplier` | modifica |
+| `#suppliers-table-body` | `click` su `.btn-delete-supplier` | elimina |
 
-    const selectedYear = ($('#iva-year-filter').length ? ($('#iva-year-filter').val() || 'all') : 'all');
-    const periodMode = ($('#iva-period-filter').length ? ($('#iva-period-filter').val() || defPeriod) : defPeriod);
+---
 
-    const invoices = getData('invoices') || [];
-    const purchases = (window.DomainNormalizers && typeof window.DomainNormalizers.normalizePurchaseInfo === 'function') ? (getData('purchases') || []).map(function (p) { return window.DomainNormalizers.normalizePurchaseInfo(p); }) : (getData('purchases') || []);
-    const customers = getData('customers') || [];
-    const suppliers = getData('suppliers') || [];
+## Fatture – form (`js/features/invoices/invoices-form-module.js`)
 
+| Selector | Evento | Azione |
+|---|---|---|
+| `#newInvoiceChoiceModal` | `show.bs.modal` | popola select copia fattura |
+| `#btn-create-new-blank-invoice` | `click` | apre form vuoto |
+| `#btn-copy-from-invoice` | `click` | carica dati da fattura scelta |
+| `#add-product-to-invoice-btn` | `click` | aggiunge riga a `tempInvoiceLines` |
+| `#invoice-lines-tbody` | `change` su `.line-qty,.line-price,.line-iva,.line-natura` | ricalcolo totali |
+| `#invoice-lines-tbody` | `click` su `.del-line` | elimina riga |
 
+### Fatture — editing inline descrizione riga
+- `#invoice-lines-tbody .line-desc-cell` → attiva edit descrizione (textarea) — `js/features/invoices/invoices-form-module.js`
+- `#invoice-lines-tbody textarea.line-desc-edit` → salva/annulla descrizione (blur / Ctrl+Invio / Esc) — `js/features/invoices/invoices-form-module.js`
+| `#invoice-product-select` | `change` | compila descrizione/prezzo/IVA da servizio |
+| `#invoice-modalitaPagamento` | `change` | show/hide banca + termini (solo bonifico) |
+| `#invoice-bank-select` | `change` | salva `bankChoice` |
+| `#invoice-date` | `change` | allinea `#invoice-dataRiferimento` + ricalcolo scadenza |
+| `#invoice-dataRiferimento,#invoice-giorniTermini,#invoice-fineMese,#invoice-giornoFissoEnabled,#invoice-giornoFissoValue` | `change/keyup` | ricalcolo `#invoice-dataScadenza` |
+| `#new-invoice-form` | `submit` | salva documento (TD01/TD04) → elenco |
 
-    function inSelectedYear(dateStr) {
-        if (selectedYear === 'all') return true;
-        if (!dateStr || typeof dateStr !== 'string') return false;
-        return dateStr.substring(0, 4) === String(selectedYear);
-    }
+---
 
-    function periodKey(dateStr) {
-        if (!dateStr || typeof dateStr !== 'string' || dateStr.length < 7) return null;
-        const y = dateStr.substring(0, 4);
-        const m = parseInt(dateStr.substring(5, 7), 10);
-        if (!m || m < 1 || m > 12) return null;
-        if (periodMode === 'trimestrale') {
-            const q = Math.floor((m - 1) / 3) + 1;
-            return `${y}-T${q}`;
-        }
-        const mm = String(m).padStart(2, '0');
-        return `${y}-${mm}`;
-    }
+## Fatture – elenco/view (`js/features/invoices/invoices-list-module.js`)
 
-    function periodLabel(key) {
-        if (!key) return '';
-        if (periodMode === 'trimestrale') {
-            const m = key.match(/^(\d{4})-T([1-4])$/);
-            if (!m) return key;
-            return `T${m[2]}/${m[1]}`;
-        }
-        const m = key.match(/^(\d{4})-(\d{2})$/);
-        if (!m) return key;
-        return `${m[2]}/${m[1]}`;
-    }
+| Selector | Evento | Azione |
+|---|---|---|
+| `#invoices-table-body` | `click` su `.btn-edit-invoice` | modifica documento |
+| `#invoices-table-body` | `click` su `.btn-delete-invoice` | elimina |
+| `#invoices-table-body` | `click` su `.btn-mark-paid` | marca pagata |
+| `#invoices-table-body` | `click` su `.btn-mark-sent` | marca inviata |
+| `#invoices-table-body` | `click` su `.btn-view-invoice` | apre modale dettaglio |
+| `#print-invoice-btn` | `click` | stampa |
 
-    function money(n) {
-        return safeFloat(n).toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
+## Export XML (`js/features/invoices/invoices-xml-module.js`)
 
-    const buckets = {}; // { key: { ivaVendite, ivaAcquisti } }
-    const movementsByPeriod = {}; // { key: { vendite: [], acquisti: [] } }
-    const periodLabelsMap = {}; // { key: label }
+| Selector | Evento | Azione |
+|---|---|---|
+| `#export-xml-btn` / `.btn-export-xml-row` | `click` | `generateInvoiceXML(invoiceId)` |
 
-    for (const inv of invoices) {
-        if (!inv || !inSelectedYear(inv.date)) continue;
-        // Vendite: Fattura positiva, Nota di Credito negativa
-        const isNota = (String(inv.type || '').toLowerCase().includes('nota'));
-        const sign = isNota ? -1 : 1;
-        const k = periodKey(inv.date);
-        if (!k) continue;
-        buckets[k] = buckets[k] || { ivaVendite: 0, ivaAcquisti: 0 };
-        buckets[k].ivaVendite += sign * safeFloat(inv.ivaTotale);
+---
 
-        // Movimenti (per dettaglio)
-        movementsByPeriod[k] = movementsByPeriod[k] || { vendite: [], acquisti: [] };
-        const cust = customers.find(c => String(c.id) === String(inv.customerId)) || {};
-        const impon = sign * safeFloat(inv.totaleImponibile ?? inv.totImp ?? inv.imponibile ?? 0);
-        const iva = sign * safeFloat(inv.ivaTotale ?? 0);
-        const tot = sign * safeFloat(inv.total ?? inv.totDoc ?? inv.totaleDocumento ?? 0);
-        movementsByPeriod[k].vendite.push({
-            id: String(inv.id || ''),
-            date: String(inv.date || ''),
-            number: String(inv.number || ''),
-            counterparty: String(cust.name || cust.ragioneSociale || ''),
-            docType: String(inv.type || 'Fattura'),
-            status: String(inv.status || ''),
-            imponibile: impon,
-            iva: iva,
-            totale: tot
-        });
-    }
+## Acquisti (`js/features/purchases/purchases-module.js`) *(solo ordinario)*
 
-    for (const p of purchases) {
-        if (!p || !inSelectedYear(p.date)) continue;
-        const k = periodKey(p.date);
-        if (!k) continue;
-        buckets[k] = buckets[k] || { ivaVendite: 0, ivaAcquisti: 0 };
-        buckets[k].ivaAcquisti += safeFloat(p.ivaTotale);
+| Selector | Evento | Azione |
+|---|---|---|
+| `#purchase-year-filter` | `change` | render elenco acquisti |
+| `#purchases-table-body` | `click` su `.btn-edit-purchase` | modifica |
+| `#purchases-table-body` | `click` su `.btn-delete-purchase` | elimina |
+| `#purchases-table-body` | `click` su `.btn-toggle-paid` | pagata/da pagare |
 
-        // Movimenti (per dettaglio)
-        movementsByPeriod[k] = movementsByPeriod[k] || { vendite: [], acquisti: [] };
-        const sup = suppliers.find(s => String(s.id) === String(p.supplierId)) || {};
-        const impon = safeFloat(p.imponibile ?? 0);
-        const iva = safeFloat(p.ivaTotale ?? p.ivaTot ?? 0);
-        const tot = safeFloat(p.totaleDocumento ?? p.total ?? 0);
-        movementsByPeriod[k].acquisti.push({
-            id: String(p.id || ''),
-            date: String(p.date || ''),
-            number: String(p.number || ''),
-            counterparty: String(sup.name || sup.ragioneSociale || ''),
-            docType: 'Acquisto',
-            status: String(p.status || ''),
-            imponibile: impon,
-            iva: iva,
-            totale: tot,
-            dataScadenza: String(p.dataScadenza || '')
-        });
-    }
+---
 
-    const keys = Object.keys(buckets);
-    if (keys.length === 0) {
-        container.html('<div class="alert alert-info">Nessun dato per i filtri selezionati.</div>');
-        return;
-    }
+## Scadenziario (`js/features/scadenziario/scadenziario-module.js`)
 
-    function sortKey(a, b) {
-        // a,b like YYYY-MM or YYYY-Tn
-        const ay = parseInt(a.substring(0, 4), 10);
-        const by = parseInt(b.substring(0, 4), 10);
-        if (ay != by) return ay - by;
-        if (periodMode === 'trimestrale') {
-            const aq = parseInt(a.split('-T')[1] || '0', 10);
-            const bq = parseInt(b.split('-T')[1] || '0', 10);
-            return aq - bq;
-        }
-        const am = parseInt(a.substring(5, 7), 10);
-        const bm = parseInt(b.substring(5, 7), 10);
-        return am - bm;
-    }
+| Selector | Evento | Azione |
+|---|---|---|
+| `#scad-from,#scad-to,#scad-show-incassi,#scad-show-pagamenti,#scad-show-iva,#scad-show-iva-crediti,#scad-show-chiuse` | `change` | refresh lista scadenze |
+| `.btn-toggle-done` (in tabella) | `click` | spunta/riapre (tooltip azione) |
 
-    keys.sort(sortKey);
+---
 
-    let totVend = 0;
-    let totAcq = 0;
+## Registri IVA (`js/features/registri-iva/registri-iva-module.js`) *(solo ordinario)*
 
-    let html = `<table class="table table-striped table-sm">
-<thead>
-<tr>
-  <th>Periodo</th>
-  <th class="text-end">IVA Vendite</th>
-  <th class="text-end">IVA Acquisti</th>
-  <th class="text-end">IVA da versare</th>
-  <th class="text-end">Movimenti</th>
-</tr>
-</thead>
-<tbody>`;
+| Selector | Evento | Azione |
+|---|---|---|
+| `#iva-year-select` | `change` | render totali IVA |
+| `#iva-group-select` | `change` | mensile/trimestrale |
 
-    for (const k of keys) {
-        const row = buckets[k];
-        const vend = safeFloat(row.ivaVendite);
-        const acq = safeFloat(row.ivaAcquisti);
-        const diff = vend - acq;
-        totVend += vend;
-        totAcq += acq;
-        periodLabelsMap[k] = periodLabel(k);
+---
 
-        html += `<tr>
-  <td>${periodLabel(k)}</td>
-  <td class="text-end">€ ${money(vend)}</td>
-  <td class="text-end">€ ${money(acq)}</td>
-  <td class="text-end fw-bold">€ ${money(diff)}</td>
-  <td class="text-end"><button class="btn btn-sm btn-outline-primary iva-show-movements" data-period="${k}" type="button" title="Vedi movimenti"><i class="fas fa-list"></i></button></td>
-</tr>`;
-    }
+## Simulazione Redditi Ordinario (`js/features/tax/ordinario-sim-module.js`) *(solo ordinario)*
 
-    const totDiff = totVend - totAcq;
+| Selector | Evento | Azione |
+|---|---|---|
+| `#ord-year-select,#ord-only-paid,#ord-include-bollo,#ord-inps-aliquota` | `change` | ricalcolo simulazione |
+| `#ord-refresh-btn` | `click` | ricalcolo simulazione |
 
-    html += `</tbody>
-<tfoot>
-<tr class="table-primary fw-bold">
-  <td>TOTALE</td>
-  <td class="text-end">€ ${money(totVend)}</td>
-  <td class="text-end">€ ${money(totAcq)}</td>
-  <td class="text-end">€ ${money(totDiff)}</td>
-  <td class="text-end"><button class="btn btn-sm btn-outline-dark iva-show-movements" data-period="__ALL__" type="button" title="Vedi tutti i movimenti"><i class="fas fa-list"></i></button></td>
-</tr>
-</tfoot>
-</table>`;
-    // Cache per export CSV (totali e registri)
-    try {
-        window._lastIvaTotals = {
-            selectedYear: String(selectedYear || 'all'),
-            periodMode: String(periodMode || defPeriod),
-            keys: (keys || []).slice(),
-            buckets: buckets || {},
-            totVend: totVend,
-            totAcq: totAcq,
-            movementsByPeriod: movementsByPeriod || {},
-            periodLabelsMap: periodLabelsMap || {}
-        };
-    } catch (e) { }
+---
 
-    container.html(html);
-}
+## Dashboard (`js/features/dashboard/dashboard-module.js`)
 
-function renderHomePage() {
-    if (currentUser) $('#welcome-message').text(`Benvenuto, ${currentUser.email}`);
-    const note = getData('notes').find(n => n.userId === currentUser.uid);
-    if (note) $('#notes-textarea').val(note.text);
-    renderCalendar();
-    if (dateTimeInterval) clearInterval(dateTimeInterval);
-    const updateDateTime = () => $('#current-datetime').text(new Date().toLocaleDateString('it-IT', {
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
-        hour: '2-digit', minute: '2-digit', second: '2-digit'
-    }));
-    updateDateTime();
-    dateTimeInterval = setInterval(updateDateTime, 1000);
-}
+| Selector | Evento | Azione |
+|---|---|---|
+| `#dash-mode` | `change` | Toggle visibilità mese + rinfresco dashboard |
+| `#dash-year, #dash-month` | `change` | Rinfresco dashboard |
+| `#dash-refresh-btn` | `click` | Rinfresco dashboard manuale |
 
-function getConfiguredGoogleCalendarEmbedUrl() {
-    const companyInfo = window.AppStore && typeof window.AppStore.get === 'function'
-        ? (window.AppStore.get('companyInfo') || {})
-        : ((typeof getData === 'function') ? (getData('companyInfo') || {}) : {});
-    const raw = String(companyInfo.googleCalendarEmbedUrl || companyInfo.googleCalendarId || '').trim();
-    if (!raw) return '';
+---
 
-    // Accetta anche il codice iframe copiato da Google Calendar, estraendo solo src="...".
-    const iframeMatch = raw.match(/src=["']([^"']+)["']/i);
-    const value = iframeMatch ? iframeMatch[1] : raw;
+## Commesse (`js/features/commesse/commesse-module.js`)
 
-    try {
-        let url;
-        if (/^https?:\/\//i.test(value)) {
-            url = new URL(value);
-        } else {
-            // Se viene incollato solo l'ID calendario, costruisce l'URL embed standard.
-            url = new URL('https://calendar.google.com/calendar/embed');
-            url.searchParams.set('src', value);
-        }
+| Selector | Evento | Azione |
+|---|---|---|
+| `#btn-new-commessa` | `click` | Reset form + apre modal |
+| `#commessa-save-btn` | `click` | Salva commessa (Firestore) → render |
+| `#commessa-table-body` | `click` su `.btn-edit-commessa` | Carica dati in modal |
+| `#commessa-table-body` | `click` su `.btn-delete-commessa` | Elimina commessa (se non ha legami) |
 
-        const isGoogleCalendarEmbed = /(^|\.)calendar\.google\.com$/i.test(url.hostname) && url.pathname.indexOf('/calendar/embed') === 0;
-        if (!isGoogleCalendarEmbed) return '';
+---
 
-        url.searchParams.set('mode', 'WEEK');
-        url.searchParams.set('showTitle', '0');
-        url.searchParams.set('showPrint', '0');
-        url.searchParams.set('showTabs', '0');
-        url.searchParams.set('showCalendars', '0');
-        url.searchParams.set('showTz', '1');
-        url.searchParams.set('ctz', 'Europe/Rome');
-        return url.toString();
-    } catch (e) {
-        console.warn('URL Google Calendar non valido:', e);
-        return '';
-    }
-}
+## Progetti (`js/features/commesse/projects-module.js`)
 
-function renderGoogleCalendarEmbed(embedUrl) {
-    const safeUrl = String(embedUrl || '').replace(/"/g, '&quot;');
-    return `<div class="card shadow-sm border-0 google-calendar-card">
-<div class="card-header bg-primary text-white text-center fw-bold">
-<i class="fab fa-google me-2"></i>GOOGLE CALENDAR · 7 GIORNI
-</div>
-<div class="card-body p-0">
-<iframe id="google-calendar-frame" title="Google Calendar - vista 7 giorni" src="${safeUrl}" frameborder="0" scrolling="no"></iframe>
-</div>
-<div class="card-footer small text-muted">
-Calendario incorporato da Google Calendar. Gli eventi sono visibili solo se il calendario è pubblico o condiviso con l'utente.
-</div>
-</div>`;
-}
+| Selector | Evento | Azione |
+|---|---|---|
+| `#btn-new-project` | `click` | Reset form + eredita filtro commessa |
+| `#project-save-btn` | `click` | Salva progetto (code, endCustomer, etc.) |
+| `#project-default-product` | `change` | Eredita tariffa e tipo (Lavoro/Costo) dal servizio |
+| `#project-isLavoro, #project-isCosto` | `change` | Gestione flag mutuamente esclusivi |
+| `#projects-commessa-filter` | `change` | Filtra elenco progetti |
+| `#projects-table-body` | `click` su `.btn-edit-project` | Carica dati in modal |
+| `#projects-table-body` | `click` su `.btn-delete-project` | Elimina progetto (se non ha worklog) |
 
-function renderCalendar() {
-    const c = $('#calendar-widget');
-    const googleCalendarEmbedUrl = getConfiguredGoogleCalendarEmbedUrl();
-    if (googleCalendarEmbedUrl) {
-        c.html(renderGoogleCalendarEmbed(googleCalendarEmbedUrl));
-        return;
-    }
+---
 
-    const now = new Date();
-    const currentMonth = now.getMonth();
-    const currentYear = now.getFullYear();
-    const todayDate = now.getDate();
-    const firstDay = new Date(currentYear, currentMonth, 1);
-    const lastDay = new Date(currentYear, currentMonth + 1, 0);
-    const totalDays = lastDay.getDate();
-    let startingDay = firstDay.getDay();
+## Timesheet (`js/features/commesse/timesheet-module.js`)
 
-    let html = `<div class="card shadow-sm border-0">
-<div class="card-header bg-primary text-white text-center fw-bold">
-${firstDay.toLocaleDateString('it-IT', { month: 'long', year: 'numeric' }).toUpperCase()}
-</div>
-<div class="card-body p-0">
-<table class="table table-bordered text-center mb-0" style="table-layout: fixed;">
-<thead class="table-light">
-<tr>
-<th class="text-danger">Dom</th><th>Lun</th><th>Mar</th><th>Mer</th>
-<th>Gio</th><th>Ven</th><th>Sab</th>
-</tr>
-</thead>
-<tbody><tr>`;
+| Selector | Evento | Azione |
+|---|---|---|
+| `#ts-save-btn` | `click` | Salva worklog (Minutes e FinalMinutes) |
+| `#ts-commessa` | `change` | Popola select progetti collegati |
+| `#ts-project` | `change` | Aggiorna label Cliente Finale |
+| `#ts-hours, #ts-minutes` | `input` | Sync automatico ore Cliente Finale |
+| `#ts-hours-final, #ts-minutes-final` | `input` | Interrompe sync automatico ore CF |
+| `#ts-filter-from, #ts-filter-to, etc.` | `change` | Filtra elenco worklog |
+| `#ts-select-all-invoiced` | `change` | Selezione massiva worklog fatturati |
+| `#ts-unlock-selected-btn` | `click` | Sblocca worklog (reset `invoiceId`) |
+| `#timesheet-table-body` | `click` su `.btn-edit-worklog` | Carica nel form e scrolla in alto |
+| `#timesheet-table-body` | `click` su `.btn-delete-worklog` | Elimina worklog (con warning se fatturato) |
 
-    for (let i = 0; i < startingDay; i++) {
-        html += '<td class="bg-light"></td>';
-    }
+---
 
-    for (let day = 1; day <= totalDays; day++) {
-        if (startingDay > 6) {
-            startingDay = 0;
-            html += '</tr><tr>';
-        }
-        const isToday = (day === todayDate) ? 'bg-primary text-white fw-bold rounded-circle' : '';
-        html += `<td class="align-middle p-2"><div class="${isToday}" style="width:32px; height:32px; line-height:32px; margin:0 auto;">${day}</div></td>`;
-        startingDay++;
-    }
-    while (startingDay <= 6) {
-        html += '<td class="bg-light"></td>';
-        startingDay++;
-    }
-    html += '</tr></tbody></table></div></div>';
-    c.html(html);
-}
+## Export Timesheet (`js/features/commesse/timesheet-export.js`)
 
-window.refreshStatsYearFilter = refreshStatsYearFilter;
-window.refreshIvaRegistersYearFilter = refreshIvaRegistersYearFilter;
-window.renderRegistriIVAPage = renderRegistriIVAPage;
-window.renderHomePage = renderHomePage;
-window.renderCalendar = renderCalendar;
-window.getConfiguredGoogleCalendarEmbedUrl = getConfiguredGoogleCalendarEmbedUrl;
+| Selector | Evento | Azione |
+|---|---|---|
+| `#ts-export-csv-btn` | `click` | Genera CSV (Dettaglio / Gruppi / Pivot) |
+| `#ts-export-group-select` | `change` | Cambia modalità raggruppamento (Dettaglio, Giorno, etc.) |
+
+---
+
+## Migrazione/backup (`js/features/migration/migration-module.js`)
+
+| Selector | Evento | Azione |
+|---|---|---|
+| `#backup-btn` | `click` | export JSON |
+| `#restore-btn` | `click` | import JSON |
+| `#delete-documents-form` | `submit` | elimina documenti per anno |
+| `#delete-purchases-form` | `submit` | elimina acquisti per anno (se presente) |
