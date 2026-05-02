@@ -1,0 +1,375 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function signedUid() {
+      return signedIn() ? request.auth.uid : '';
+    }
+
+    function signedEmail() {
+      return signedIn() && request.auth.token.email != null
+        ? request.auth.token.email.lower()
+        : '';
+    }
+
+    function systemSettingsPath() {
+      return /databases/$(database)/documents/appSettings/system;
+    }
+
+    function systemConfigured() {
+      return exists(systemSettingsPath());
+    }
+
+    function isGlobalSuperadmin() {
+      return signedIn()
+        && systemConfigured()
+        && (
+          get(systemSettingsPath()).data.superadminUid == signedUid()
+          || signedEmail() in get(systemSettingsPath()).data.superadminEmails
+        );
+    }
+
+    function validSystemBootstrap() {
+      return signedIn()
+        && !systemConfigured()
+        && request.resource.data.superadminUid == signedUid()
+        && request.resource.data.superadminEmail == signedEmail()
+        && signedEmail() in request.resource.data.superadminEmails
+        && request.resource.data.status == 'active';
+    }
+
+    function memberDoc(groupId) {
+      return /databases/$(database)/documents/businessGroups/$(groupId)/members/$(signedUid());
+    }
+
+    function isActiveMember(groupId) {
+      return isGlobalSuperadmin()
+        || (signedIn()
+          && exists(memberDoc(groupId))
+          && get(memberDoc(groupId)).data.status == 'active');
+    }
+
+    function memberRole(groupId) {
+      return exists(memberDoc(groupId)) ? get(memberDoc(groupId)).data.role : (isGlobalSuperadmin() ? 'superadmin' : 'none');
+    }
+
+    function isGroupAdmin(groupId) {
+      return isGlobalSuperadmin() || memberRole(groupId) in ['admin', 'teacher'];
+    }
+
+    function isReadonly(groupId) {
+      return memberRole(groupId) == 'readonly';
+    }
+
+    function isAccountingCollection(collectionId) {
+      return collectionId in [
+        'invoices', 'notes', 'purchases', 'paymentEvents', 'cashbookMovements',
+        'reminderEvents', 'bankReconciliationEvents', 'businessBudgets',
+        'workflowEvents', 'auditEvents', 'vatRates', 'paymentMethods', 'companyBanks'
+      ];
+    }
+
+    function isSalesCollection(collectionId) {
+      return collectionId in [
+        'customers', 'quotes', 'customerOrders', 'customerDDTs', 'invoices',
+        'notes', 'commesse', 'projects', 'worklogs', 'workflowEvents', 'auditEvents'
+      ];
+    }
+
+    function isPurchasesCollection(collectionId) {
+      return collectionId in [
+        'suppliers', 'supplierOrders', 'supplierDDTs', 'purchases',
+        'products', 'warehouseMovements', 'warehouseLots', 'workflowEvents', 'auditEvents'
+      ];
+    }
+
+    function isWarehouseCollection(collectionId) {
+      return collectionId in [
+        'products', 'warehouseMovements', 'warehousePhysicalCounts', 'warehouseLots',
+        'supplierDDTs', 'customerDDTs', 'supplierOrders', 'customerOrders',
+        'workflowEvents', 'auditEvents'
+      ];
+    }
+
+    function canWriteCollection(groupId, collectionId) {
+      return isGroupAdmin(groupId)
+        || (memberRole(groupId) == 'accounting' && isAccountingCollection(collectionId))
+        || (memberRole(groupId) == 'sales' && isSalesCollection(collectionId))
+        || (memberRole(groupId) == 'purchases' && isPurchasesCollection(collectionId))
+        || (memberRole(groupId) == 'warehouse' && isWarehouseCollection(collectionId));
+    }
+
+
+    // 0.6.5: mappatura collection -> scope applicativo. Le rules leggono
+    // businessGroups/{groupId}/members/{uid}.effectiveProfilePermissions quando presente.
+    function collectionScope(collectionId) {
+      return collectionId in ['customers'] ? 'customers'
+        : collectionId in ['suppliers'] ? 'suppliers'
+        : collectionId in ['products'] ? 'products'
+        : collectionId in ['quotes', 'customerOrders', 'customerDDTs'] ? 'sales'
+        : collectionId in ['invoices', 'notes'] ? 'invoices'
+        : collectionId in ['supplierOrders', 'supplierDDTs', 'purchases'] ? 'purchases'
+        : collectionId in ['warehouseMovements', 'warehousePhysicalCounts', 'warehouseLots'] ? 'warehouse'
+        : collectionId in ['paymentEvents', 'cashbookMovements', 'reminderEvents', 'bankReconciliationEvents', 'businessBudgets', 'companyBanks', 'vatRates', 'paymentMethods'] ? 'accounting'
+        : collectionId in ['commesse', 'projects', 'worklogs'] ? 'projects'
+        : collectionId in ['workflowEvents'] ? 'workflow'
+        : collectionId in ['auditEvents'] ? 'audit'
+        : collectionId in ['settings'] ? 'settings'
+        : collectionId in ['teachingScenarios', 'simulationEvents'] ? 'teacherConsole'
+        : collectionId in ['migrationReports'] ? 'migrationQa'
+        : collectionId in ['securityAccessReports'] ? 'securityAudit'
+        : collectionId in ['permissionProfiles', 'permissionMatrices'] ? 'permissions'
+        : 'unknown';
+    }
+
+    function permissionRank(level) {
+      return level == 'admin' ? 3
+        : level == 'write' ? 2
+        : level == 'read' ? 1
+        : 0;
+    }
+
+    function hasEffectivePermissionMap(groupId) {
+      return isActiveMember(groupId)
+        && get(memberDoc(groupId)).data.effectiveProfilePermissions is map;
+    }
+
+    function hasEffectiveScope(groupId, scope) {
+      return hasEffectivePermissionMap(groupId)
+        && scope in get(memberDoc(groupId)).data.effectiveProfilePermissions;
+    }
+
+    function effectivePermissionLevel(groupId, scope) {
+      return hasEffectiveScope(groupId, scope)
+        ? get(memberDoc(groupId)).data.effectiveProfilePermissions[scope]
+        : '';
+    }
+
+    function canReadDataCollection(groupId, collectionId) {
+      let scope = collectionScope(collectionId);
+      return isGroupAdmin(groupId)
+        || (isActiveMember(groupId)
+          && (scope == 'unknown'
+            || !hasEffectiveScope(groupId, scope)
+            || permissionRank(effectivePermissionLevel(groupId, scope)) >= 1));
+    }
+
+    function canCreateOrUpdateDataCollection(groupId, collectionId) {
+      let scope = collectionScope(collectionId);
+      return isGroupAdmin(groupId)
+        || (isActiveMember(groupId)
+          && !isReadonly(groupId)
+          && (hasEffectiveScope(groupId, scope)
+            ? permissionRank(effectivePermissionLevel(groupId, scope)) >= 2
+            : canWriteCollection(groupId, collectionId)));
+    }
+
+    function canDeleteDataCollection(groupId, collectionId) {
+      let scope = collectionScope(collectionId);
+      return isGroupAdmin(groupId)
+        || (isActiveMember(groupId)
+          && hasEffectiveScope(groupId, scope)
+          && permissionRank(effectivePermissionLevel(groupId, scope)) >= 3);
+    }
+
+
+    function isProtectedSubcollection(collectionId) {
+      return collectionId in [
+        'members', 'invites', 'settings', 'permissionProfiles', 'permissionMatrices',
+        'documentLocks', 'teachingScenarios', 'simulationEvents', 'migrationReports', 'securityAccessReports'
+      ];
+    }
+
+    function validGroupCreate() {
+      return signedIn()
+        && request.resource.data.ownerUid == signedUid()
+        && request.resource.data.createdBy == signedUid()
+        && request.resource.data.status == 'active';
+    }
+
+    function invitePath(groupId, inviteCode) {
+      return /databases/$(database)/documents/businessGroups/$(groupId)/invites/$(inviteCode);
+    }
+
+    function inviteNotExpired(groupId, inviteCode) {
+      return !('expiresAt' in get(invitePath(groupId, inviteCode)).data)
+        || !(get(invitePath(groupId, inviteCode)).data.expiresAt is timestamp)
+        || get(invitePath(groupId, inviteCode)).data.expiresAt > request.time;
+    }
+
+    function inviteMatchesUser(groupId, inviteCode) {
+      return signedIn()
+        && inviteCode is string
+        && exists(invitePath(groupId, inviteCode))
+        && get(invitePath(groupId, inviteCode)).data.status == 'pending'
+        && inviteNotExpired(groupId, inviteCode)
+        && get(invitePath(groupId, inviteCode)).data.email.lower() == signedEmail();
+    }
+
+    function validInviteMemberCreate(groupId, memberUid) {
+      return signedIn()
+        && memberUid == signedUid()
+        && request.resource.data.status == 'active'
+        && request.resource.data.inviteCode is string
+        && inviteMatchesUser(groupId, request.resource.data.inviteCode)
+        && request.resource.data.role == get(invitePath(groupId, request.resource.data.inviteCode)).data.role
+        && request.resource.data.email.lower() == signedEmail();
+    }
+
+    function validInviteMembershipCreate(groupId, userId) {
+      return signedIn()
+        && userId == signedUid()
+        && request.resource.data.groupId == groupId
+        && request.resource.data.status == 'active'
+        && request.resource.data.inviteCode is string
+        && inviteMatchesUser(groupId, request.resource.data.inviteCode)
+        && request.resource.data.role == get(invitePath(groupId, request.resource.data.inviteCode)).data.role;
+    }
+
+    function validInviteAcceptUpdate(groupId, inviteCode) {
+      return inviteMatchesUser(groupId, inviteCode)
+        && request.resource.data.status == 'accepted'
+        && request.resource.data.acceptedBy == signedUid();
+    }
+
+    function lockExpired() {
+      return !('expiresAt' in resource.data)
+        || resource.data.expiresAt < request.time;
+    }
+
+    function ownsLock() {
+      return signedIn()
+        && resource != null
+        && resource.data.ownerUid == signedUid();
+    }
+
+    function validLockWrite(groupId) {
+      return isActiveMember(groupId)
+        && request.resource.data.ownerUid == signedUid()
+        && request.resource.data.expiresAt is timestamp;
+    }
+
+    // Configurazione applicativa 0.6.6: bootstrap superadmin senza backend custom.
+    match /appSettings/system {
+      allow get: if signedIn();
+      allow list: if false;
+      allow create: if validSystemBootstrap();
+      allow update, delete: if isGlobalSuperadmin();
+    }
+
+    match /userProfiles/{userId} {
+      allow read: if signedIn() && (userId == signedUid() || isGlobalSuperadmin());
+      allow create, update: if signedIn() && (userId == signedUid() || isGlobalSuperadmin());
+      allow delete: if isGlobalSuperadmin();
+    }
+
+    // Spazio legacy personale: resta accessibile solo al proprietario autenticato.
+    match /users/{userId} {
+      allow read, create, update, delete: if signedIn() && userId == signedUid();
+
+      match /memberships/{groupId} {
+        allow read: if signedIn() && userId == signedUid();
+        allow create, update: if (signedIn() && userId == signedUid())
+          || isGroupAdmin(groupId)
+          || validInviteMembershipCreate(groupId, userId);
+        allow delete: if (signedIn() && userId == signedUid()) || isGroupAdmin(groupId);
+      }
+
+      match /{document=**} {
+        allow read, create, update, delete: if signedIn() && userId == signedUid();
+      }
+    }
+
+    // Gruppi aziendali condivisi 0.6.x. La 0.6.6 usa effectiveProfilePermissions per rafforzare lettura/scrittura dei dati di gruppo.
+    match /businessGroups/{groupId} {
+      allow create: if validGroupCreate();
+      allow read: if isActiveMember(groupId);
+      allow update, delete: if isGroupAdmin(groupId);
+
+      match /members/{memberUid} {
+        allow read: if isActiveMember(groupId);
+        allow create: if isGroupAdmin(groupId) || validInviteMemberCreate(groupId, memberUid);
+        allow update: if isGroupAdmin(groupId);
+        allow delete: if isGroupAdmin(groupId);
+      }
+
+      match /invites/{inviteCode} {
+        allow get: if isActiveMember(groupId) || inviteMatchesUser(groupId, inviteCode);
+        allow list: if isActiveMember(groupId);
+        allow create: if isGroupAdmin(groupId);
+        allow update: if isGroupAdmin(groupId) || validInviteAcceptUpdate(groupId, inviteCode);
+        allow delete: if isGroupAdmin(groupId);
+      }
+
+      match /settings/{settingId} {
+        allow read: if canReadDataCollection(groupId, 'settings');
+        allow create, update: if canCreateOrUpdateDataCollection(groupId, 'settings');
+        allow delete: if canDeleteDataCollection(groupId, 'settings');
+      }
+
+      // Profili permesso 0.6.5: gestione riservata ad admin/teacher; lettura ai membri attivi.
+      match /permissionProfiles/{profileId} {
+        allow read: if isActiveMember(groupId);
+        allow create, update, delete: if isGroupAdmin(groupId);
+      }
+
+      match /permissionMatrices/{matrixId} {
+        allow read: if isActiveMember(groupId);
+        allow create, update, delete: if isGroupAdmin(groupId);
+      }
+
+      // Lock leggeri 0.5.4 per coordinare modifiche concorrenti lato SPA.
+      // Un membro attivo può creare/aggiornare un lock proprio o scaduto; solo il proprietario lo rilascia.
+      match /documentLocks/{lockId} {
+        allow read: if isActiveMember(groupId);
+        allow create: if validLockWrite(groupId);
+        allow update: if validLockWrite(groupId) && (ownsLock() || lockExpired());
+        allow delete: if isActiveMember(groupId) && ownsLock();
+      }
+
+      // Console docente 0.5.6: scenari e timeline simulazioni.
+      match /teachingScenarios/{scenarioId} {
+        allow read: if canReadDataCollection(groupId, 'teachingScenarios');
+        allow create, update, delete: if isGroupAdmin(groupId);
+      }
+
+      match /simulationEvents/{eventId} {
+        allow read: if canReadDataCollection(groupId, 'simulationEvents');
+        allow create: if isGroupAdmin(groupId)
+          && request.resource.data.actorUid == signedUid();
+        allow update, delete: if isGroupAdmin(groupId);
+      }
+
+
+      // Migrazione guidata e QA 0.5.6: report diagnostici salvati nel gruppo.
+      match /migrationReports/{reportId} {
+        allow read: if canReadDataCollection(groupId, 'migrationReports');
+        allow create, update, delete: if isGroupAdmin(groupId);
+      }
+
+      // Audit sicurezza 0.6.6: report utenti, permessi effettivi e QA accessi.
+      match /securityAccessReports/{reportId} {
+        allow read: if canReadDataCollection(groupId, 'securityAccessReports');
+        allow create, update, delete: if isGroupAdmin(groupId) || isGlobalSuperadmin();
+      }
+
+      match /{collectionId}/{docId} {
+        allow read: if !isProtectedSubcollection(collectionId)
+          && canReadDataCollection(groupId, collectionId);
+        allow create, update: if !isProtectedSubcollection(collectionId)
+          && canCreateOrUpdateDataCollection(groupId, collectionId);
+        allow delete: if !isProtectedSubcollection(collectionId)
+          && canDeleteDataCollection(groupId, collectionId);
+      }
+    }
+
+    // Blocco predefinito: nessun accesso fuori dagli spazi documentati.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,3 +1,16 @@
+# Aggiornamento 0.6.5 — Regole Firestore rafforzate
+
+La 0.6.5 collega le collection dati ai relativi scope permesso nelle regole Firestore. Le sezioni UI restano governate da `PermissionsPolicy`, mentre Firestore usa `effectiveProfilePermissions` per bloccare lettura/scrittura/eliminazione quando disponibili.
+
+# Aggiornamento 0.6.4 — Override permessi
+
+- Nuovi script: `permission-overrides-service.js`, `permission-overrides-module.js`.
+- Nuova sezione: `#override-permessi`.
+- Nuovo target menu: `data-target="override-permessi"`.
+- Nuovi controlli: `#permission-override-member-select`, `.permission-override-level`, `#permission-overrides-save-btn`, `#permission-overrides-clear-btn`.
+
+---
+
 # Mappa selector/eventi → modulo/file (v12.25)
 
 Questa mappa elenca **dove** vengono gestiti i principali eventi UI.

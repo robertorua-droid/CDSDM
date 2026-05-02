@@ -48,6 +48,37 @@
                 Password dimenticata? Invia link di reset
               </button>
             </form>
+            <hr class="my-4">
+            <div class="small text-muted mb-2">Hai ricevuto un invito a un Gruppo aziendale?</div>
+            <button class="btn btn-outline-primary w-100" id="btn-show-invite-register" type="button" data-bs-toggle="collapse" data-bs-target="#invite-register-panel" aria-expanded="false" aria-controls="invite-register-panel">
+              Registrati con invito
+            </button>
+            <div class="collapse mt-3" id="invite-register-panel">
+              <form id="invite-register-form">
+                <div class="mb-2">
+                  <label class="form-label" for="register-email">Email invitata</label>
+                  <input class="form-control" id="register-email" required type="email" />
+                </div>
+                <div class="mb-2">
+                  <label class="form-label" for="register-password">Password</label>
+                  <input class="form-control" id="register-password" required type="password" minlength="6" autocomplete="new-password" />
+                </div>
+                <div class="mb-2">
+                  <label class="form-label" for="register-group-id">ID gruppo</label>
+                  <input class="form-control" id="register-group-id" required placeholder="ID Gruppo aziendale" />
+                </div>
+                <div class="mb-2">
+                  <label class="form-label" for="register-invite-code">Codice invito</label>
+                  <input class="form-control" id="register-invite-code" required placeholder="BG-XXXX-YYYY" />
+                </div>
+                <div class="alert d-none py-2 small mb-2" id="invite-register-message" role="status"></div>
+                <button class="btn btn-success w-100" id="btn-register-invite-submit" type="submit">
+                  <span aria-hidden="true" class="spinner-border spinner-border-sm d-none" id="register-invite-spinner" role="status"></span>
+                  Crea account e accetta invito
+                </button>
+                <div class="form-text mt-2">L’account viene creato in Firebase Auth solo se l’email coincide con l’invito applicativo.</div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -67,6 +98,12 @@
       <div class="sidebar-header text-center">
         <h4 id="company-name-sidebar">MIO STUDIO</h4>
         <p class="text-white-50 small mb-0" id="user-name-sidebar"></p>
+        <div class="sidebar-business-group small mt-2 p-2 rounded" id="business-group-sidebar">
+          <i class="fas fa-user-lock me-1"></i>Dati personali legacy
+        </div>
+        <select class="form-select form-select-sm mt-2" id="business-group-selector" aria-label="Seleziona Gruppo aziendale">
+          <option value="">Dati personali legacy</option>
+        </select>
       </div>
 
       <ul class="nav flex-column mt-2">
@@ -288,6 +325,22 @@
                   class="fas fa-file-csv"></i> Import massivi CSV</a></li>
             <li class="nav-item"><a class="nav-link" data-target="ruoli-permessi" href="#"><i
                   class="fas fa-user-shield"></i> Ruoli e permessi</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="superadmin" href="#"><i
+                  class="fas fa-user-tie"></i> Superadmin</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="profili-permesso" href="#"><i
+                  class="fas fa-layer-group"></i> Profili permesso</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="matrice-permessi" href="#"><i
+                  class="fas fa-table-cells"></i> Matrice permessi</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="override-permessi" href="#"><i
+                  class="fas fa-user-gear"></i> Override permessi</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="audit-sicurezza" href="#"><i
+                  class="fas fa-shield-check"></i> Audit sicurezza</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="gruppi-aziendali" href="#"><i
+                  class="fas fa-building-user"></i> Gruppi aziendali</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="console-docente" href="#"><i
+                  class="fas fa-chalkboard-user"></i> Console docente</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="migrazione-qa" href="#"><i
+                  class="fas fa-people-arrows"></i> Migrazione e QA 0.5.6</a></li>
             <li class="nav-item"><a class="nav-link" data-target="avanzate" href="#"><i
                   class="fas fa-cloud-upload-alt"></i> Gestione Dati</a></li>
           </div>
@@ -341,8 +394,8 @@
                 <i class="fas fa-rocket fa-4x"></i>
               </div>
               <div class="col-md-10">
-                <h3 class="mb-1">CDSDM Versione 0.4.8</h3>
-                <p class="text-muted">Release tecnica di accessibilità: correzione runtime delle label/aria dei campi form e dei nomi accessibili dei pulsanti, con controlli UX aggiornati.</p>
+                <h3 class="mb-1">CDSDM Versione 0.7.8</h3>
+                <p class="text-muted">Guida completa alle voci di menu e aiuto contestuale.</p>
                 <p class="small text-muted mb-0"><i class="fas fa-check-circle text-success"></i> Sincronizzazione Cloud
                   Attiva</p>
                 <p class="small text-muted"><i class="fas fa-shield-halved text-info"></i> Protezione Dati Crittografata
@@ -371,6 +424,104 @@
             </div>
           </div>
         </div>
+
+        <div class="content-section d-none" id="audit-sicurezza">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h2><i class="fas fa-shield-halved me-2"></i>Audit sicurezza e QA accessi</h2>
+              <p class="text-muted mb-0">Report utenti, permessi effettivi, inviti e checklist di sicurezza per il Gruppo aziendale attivo.</p>
+            </div>
+          </div>
+          <div id="security-audit-root"></div>
+        </div>
+
+        <div class="content-section d-none" id="superadmin">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h2><i class="fas fa-user-tie me-2"></i>Superadmin</h2>
+              <p class="text-muted mb-0">Bootstrap primo amministratore applicativo e riepilogo accessi utente per la gestione didattica dei Gruppi aziendali.</p>
+            </div>
+          </div>
+          <div id="superadmin-root">
+            <div class="text-center text-muted py-5">Seleziona la voce di menu per caricare il pannello Superadmin.</div>
+          </div>
+        </div>
+
+
+        <div class="content-section d-none" id="profili-permesso">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h2><i class="fas fa-layer-group me-2"></i>Profili permesso</h2>
+              <p class="text-muted mb-0">Profili configurabili per Gruppo aziendale: matrice moduli con nessuno, lettura, scrittura o admin.</p>
+            </div>
+          </div>
+          <div id="permission-profiles-root">
+            <div class="text-center text-muted py-5">Seleziona la voce di menu per caricare i profili permesso.</div>
+          </div>
+        </div>
+
+
+        <div class="content-section d-none" id="matrice-permessi">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h2><i class="fas fa-table-cells me-2"></i>Matrice permessi</h2>
+              <p class="text-muted mb-0">Matrice moduli: definisce cosa significano nessuno, lettura, scrittura e admin per menu e azioni operative.</p>
+            </div>
+          </div>
+          <div id="permission-matrix-root">
+            <div class="text-center text-muted py-5">Seleziona la voce di menu per caricare la matrice permessi.</div>
+          </div>
+        </div>
+
+        <div class="content-section d-none" id="override-permessi">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h2><i class="fas fa-user-gear me-2"></i>Override permessi</h2>
+              <p class="text-muted mb-0">Eccezioni individuali: personalizza i permessi di un membro senza cambiare il profilo di gruppo.</p>
+            </div>
+          </div>
+          <div id="permission-overrides-root">
+            <div class="text-center text-muted py-5">Seleziona la voce di menu per caricare gli override permessi.</div>
+          </div>
+        </div>
+
+        <div class="content-section d-none" id="gruppi-aziendali">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h2><i class="fas fa-building-user me-2"></i>Gruppi aziendali</h2>
+              <p class="text-muted mb-0">Dataset aziendali condivisi tra account Firebase per simulazioni didattiche multiutente.</p>
+            </div>
+          </div>
+          <div id="business-groups-root">
+            <div class="text-center text-muted py-5">Seleziona la voce di menu per caricare i Gruppi aziendali.</div>
+          </div>
+        </div>
+
+
+        <div class="content-section d-none" id="console-docente">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h2><i class="fas fa-chalkboard-user me-2"></i>Console docente</h2>
+              <p class="text-muted mb-0">Scenari didattici, simulazioni di gruppo e indicatori di avanzamento per il Gruppo aziendale attivo.</p>
+            </div>
+          </div>
+          <div id="teacher-console-root">
+            <div class="text-center text-muted py-5">Seleziona la voce di menu per caricare la Console docente.</div>
+          </div>
+        </div>
+
+        <div class="content-section d-none" id="migrazione-qa">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h2><i class="fas fa-people-arrows me-2"></i>Migrazione guidata e QA multiutente</h2>
+              <p class="text-muted mb-0">Consolidamento 0.5.x: confronto legacy/gruppo, copia prudente e piano di verifica classe.</p>
+            </div>
+          </div>
+          <div id="migration-qa-root">
+            <div class="text-center text-muted py-5">Seleziona la voce di menu per caricare la Migrazione guidata.</div>
+          </div>
+        </div>
+
 
         <div class="content-section d-none" id="ruoli-permessi">
           <div class="d-flex justify-content-between align-items-start mb-3">
@@ -3385,6 +3536,15 @@
     <script src="js/core/company-bank-catalog.js"></script>
     <script src="js/core/utils.js"></script>
     <script src="js/core/form-helpers.js"></script>
+    <script src="js/features/business-groups/business-groups-service.js"></script>
+    <script src="js/features/business-groups/permission-matrix-service.js"></script>
+    <script src="js/features/business-groups/permission-profiles-service.js"></script>
+    <script src="js/features/business-groups/permission-overrides-service.js"></script>
+    <script src="js/features/business-groups/security-audit-service.js"></script>
+    <script src="js/features/business-groups/superadmin-service.js"></script>
+    <script src="js/features/business-groups/teacher-console-service.js"></script>
+    <script src="js/features/business-groups/migration-qa-service.js"></script>
+    <script src="js/core/concurrency-service.js"></script>
     <script src="js/services/firebase-cloud.js"></script>
     <script src="js/ui/ui-regime-helpers.js"></script>
 <script src="js/ui/navigation-visibility.js"></script>
@@ -3428,6 +3588,14 @@
 
     <script src="js/features/masterdata/masterdata-helpers.js"></script>
     <script src="js/features/auth/auth-module.js"></script>
+    <script src="js/features/business-groups/business-groups-module.js"></script>
+    <script src="js/features/business-groups/permission-profiles-module.js"></script>
+    <script src="js/features/business-groups/permission-matrix-module.js"></script>
+    <script src="js/features/business-groups/permission-overrides-module.js"></script>
+    <script src="js/features/business-groups/security-audit-module.js"></script>
+    <script src="js/features/business-groups/superadmin-module.js"></script>
+    <script src="js/features/business-groups/teacher-console-module.js"></script>
+    <script src="js/features/business-groups/migration-qa-module.js"></script>
     <script src="js/features/navigation/docs-content.js"></script>
     <script src="js/features/navigation/navigation-module.js"></script>
     <script src="js/features/theme/theme-module.js"></script>
@@ -3494,6 +3662,9 @@
     <script src="js/features/warehouse/warehouse-reports-module.js"></script>
 
     <script src="js/app/invoice-xml-migration.js"></script>
+    <script src="js/features/qa/e2e-qa-service.js"></script>
+    <script src="js/ui/onboarding-help-service.js"></script>
+    <script src="js/features/demo/demo-dataset-service.js"></script>
     <script src="js/app/app-bootstrap.js"></script>
 </body>
 
