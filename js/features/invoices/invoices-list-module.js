@@ -39,20 +39,30 @@
       const inv = (window.DomainNormalizers && typeof window.DomainNormalizers.normalizeInvoiceStatusInfo === 'function') ? window.DomainNormalizers.normalizeInvoiceStatusInfo(invRaw) : invRaw;
       if (!inv) return;
 
-      if (inv.isPaid === true || inv.status === 'Pagata') {
-        alert('Non e possibile cancellare una fattura pagata.');
-        return;
+      if (window.DocumentLifecycleService && typeof window.DocumentLifecycleService.canDeleteInvoice === 'function') {
+        const guard = window.DocumentLifecycleService.canDeleteInvoice(inv);
+        if (!guard.ok) { alert(guard.reason); return; }
+      } else {
+        if (inv.isPaid === true || inv.status === 'Pagata') {
+          alert('Non e possibile cancellare una fattura pagata.');
+          return;
+        }
+        if (inv.sentToAgenzia === true) {
+          alert("Non e possibile cancellare una fattura marcata come inviata all'Agenzia delle Entrate.");
+          return;
+        }
       }
-      if (inv.sentToAgenzia === true) {
-        alert("Non e possibile cancellare una fattura marcata come inviata all'Agenzia delle Entrate.");
-        return;
-      }
+
+      const lifecycleWarning = window.DocumentLifecycleService && typeof window.DocumentLifecycleService.buildInvoiceDeleteWarning === 'function'
+        ? window.DocumentLifecycleService.buildInvoiceDeleteWarning(inv)
+        : '';
+      if (lifecycleWarning && !confirm(lifecycleWarning)) return;
 
       // Step 2: avviso se ci sono worklog collegati e sblocco automatico
       if (inv.timesheetImport && Array.isArray(inv.timesheetImport.worklogIds) && inv.timesheetImport.worklogIds.length) {
         const n = inv.timesheetImport.worklogIds.length;
         const msg = `Attenzione: questa fattura risulta collegata a ${n} record del Timesheet.\n\nEliminandola, i record verranno sbloccati per essere fatturati nuovamente.\nVuoi continuare?`;
-        if (!confirm(msg)) return;
+        if (!lifecycleWarning && !confirm(msg)) return;
 
         try {
           if (window.InvoicePersistenceService && typeof window.InvoicePersistenceService.unmarkWorklogsFromInvoice === 'function') {
@@ -60,6 +70,19 @@
           }
         } catch (e) {
           console.error('Errore sblocco worklog durante eliminazione:', e);
+        }
+      }
+
+      const sourceDdtIds = Array.isArray(inv.sourceCustomerDDTIds) ? inv.sourceCustomerDDTIds : (inv.sourceCustomerDDT && Array.isArray(inv.sourceCustomerDDT.ids) ? inv.sourceCustomerDDT.ids : []);
+      if (sourceDdtIds.length) {
+        const msgDdt = 'Attenzione: questa fattura risulta collegata a ' + sourceDdtIds.length + ' DDT cliente.\n\nEliminandola, i DDT verranno sbloccati per poter essere fatturati nuovamente.\nVuoi continuare?';
+        if (!lifecycleWarning && !confirm(msgDdt)) return;
+        try {
+          if (window.InvoicePersistenceService && typeof window.InvoicePersistenceService.unmarkCustomerDDTsFromInvoice === 'function') {
+            await window.InvoicePersistenceService.unmarkCustomerDDTsFromInvoice(id);
+          }
+        } catch (e) {
+          console.error('Errore sblocco DDT cliente durante eliminazione:', e);
         }
       }
 
@@ -398,6 +421,10 @@ if (window.deleteDataFromCloud) {
             `Ritenuta d'acconto applicata (${aliqRitenuta.toFixed(2)}%) perche il cliente e sostituto d'imposta.`
           );
         const fiscalText = fiscalBits.join(' ');
+
+        if (window.DocumentLinksService) {
+          h += window.DocumentLinksService.renderFor('invoice', inv);
+        }
 
         // Aggiunta: mostra note se presenti
         if (inv.notes) {

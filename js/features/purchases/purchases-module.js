@@ -40,6 +40,22 @@
             .replace(/'/g, '&#39;');
     }
 
+    // Helper locale del modulo: restituisce sempre gli acquisti normalizzati.
+    // In 0.0.27 alcune viste lo usano direttamente; tenerlo qui evita errori
+    // se il normalizzatore globale non espone un helper aggregato.
+    function getNormalizedPurchases() {
+        const rawPurchases = (typeof getData === 'function') ? (getData('purchases') || []) : [];
+        if (!Array.isArray(rawPurchases)) return [];
+        if (window.DomainNormalizers && typeof window.DomainNormalizers.normalizePurchaseInfo === 'function') {
+            return rawPurchases.map(function (purchase) {
+                return window.DomainNormalizers.normalizePurchaseInfo(purchase);
+            });
+        }
+        return rawPurchases;
+    }
+
+    window.getNormalizedPurchases = window.getNormalizedPurchases || getNormalizedPurchases;
+
     function ensurePurchaseDetailModal() {
         if (document.getElementById('purchaseDetailModal')) return;
         var html = ''

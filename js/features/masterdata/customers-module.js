@@ -193,6 +193,7 @@ function validateCustomerBeforeSave() {
       CURRENT_EDITING_ID = null;
       $('#customerForm')[0].reset();
       $('#customer-id').val('Nuovo');
+      if (typeof populateDropdowns === "function") populateDropdowns();
 
       // Default Nazione: Italia
       $('#customer-nazione').val('Italia');
@@ -218,6 +219,7 @@ function validateCustomerBeforeSave() {
       if ($('#customer-giornoFissoEnabled').length) $('#customer-giornoFissoEnabled').prop('checked', false);
       if ($('#customer-giornoFissoValue').length) {
         $('#customer-giornoFissoValue').val('');
+      if ($("#customer-defaultPaymentMethodId").length) $("#customer-defaultPaymentMethodId").val("");
         $('#customer-giornoFissoValue').prop('disabled', true);
       }
 
@@ -306,6 +308,7 @@ function validateCustomerBeforeSave() {
         // Prefisso descrizione import Timesheet (solo Forfettario)
         // Nota: il campo può essere stringa vuota per indicare "nessun prefisso".
         timesheetPrefix: $('#customer-timesheetPrefix').length ? String($('#customer-timesheetPrefix').val() || '').trim() : '',
+        defaultPaymentMethodId: $("#customer-defaultPaymentMethodId").length ? String($("#customer-defaultPaymentMethodId").val() || "") : "",
         pec: $('#customer-pec').val() || '',
 
         // Termini pagamento default (opzionali)

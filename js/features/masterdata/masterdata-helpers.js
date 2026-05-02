@@ -24,6 +24,7 @@
     }
 
     let item = getStoreCollection(`${type}s`).find(i => String(i.id) === String(id));
+    if (type === "customer" && typeof populateDropdowns === "function") populateDropdowns();
     if (!item) return;
     if (type === 'customer' && window.DomainNormalizers && typeof window.DomainNormalizers.normalizeCustomerInfo === 'function') item = window.DomainNormalizers.normalizeCustomerInfo(item);
 
@@ -40,24 +41,33 @@
     }
 
     if (type === 'product') {
-      const ci = getStoreCompanyInfo();
-      const isForf = window.TaxRegimePolicy ? window.TaxRegimePolicy.isForfettario(ci) : false;
-
-      // Default classificazione servizi: se isCosto non è impostato, considero Lavoro
-      if ($('#product-isCosto').length && $('#product-isLavoro').length) {
-        const isCosto = (item.isCosto === true || item.isCosto === 'true');
-        $('#product-isCosto').prop('checked', isCosto);
-        $('#product-isLavoro').prop('checked', !isCosto);
-      }
-
-      if (isForf) {
-        $('#product-iva').val('0').prop('disabled', true);
+      const normalizedProduct = (window.DomainNormalizers && typeof window.DomainNormalizers.normalizeProductInfo === 'function')
+        ? window.DomainNormalizers.normalizeProductInfo(item)
+        : item;
+      const itemType = normalizedProduct.itemType || ((normalizedProduct.isCosto === true || normalizedProduct.isCosto === 'true') ? 'cost' : 'service');
+      if (window.AppModules && window.AppModules.products && typeof window.AppModules.products.setItemType === 'function') {
+        window.AppModules.products.setItemType(itemType);
       } else {
-        $('#product-iva').prop('disabled', false);
+        $('#product-itemType').val(itemType);
       }
-
-      $('#product-iva').trigger('change');
-      if (item.iva == '0') $('#product-esenzioneIva').val(item.esenzioneIva);
+      if (window.AppModules && window.AppModules.products && typeof window.AppModules.products.refreshVatSelect === 'function') {
+        window.AppModules.products.refreshVatSelect(normalizedProduct);
+      }
+      $('#product-purchasePrice').val(normalizedProduct.purchasePrice === '' || normalizedProduct.purchasePrice == null ? '' : normalizedProduct.purchasePrice);
+      $('#product-salePrice').val(normalizedProduct.salePrice === '' || normalizedProduct.salePrice == null ? '' : normalizedProduct.salePrice);
+      $('#product-unitOfMeasure').val(normalizedProduct.unitOfMeasure || '');
+      $('#product-stockQty').val(normalizedProduct.stockQty || '');
+      $('#product-reservedQty').val(normalizedProduct.reservedQty || '');
+      $('#product-quarantineQty').val(normalizedProduct.quarantineQty || '');
+      $('#product-warehouseLocation').val(normalizedProduct.warehouseLocation || '');
+      $('#product-minStockQty').val(normalizedProduct.minStockQty || '');
+      $('#product-trackingMode').val(normalizedProduct.trackingMode || 'none');
+      $('#product-requiresExpiry').val(normalizedProduct.requiresExpiry ? 'true' : 'false');
+      $('#product-shelfLifeDays').val(normalizedProduct.shelfLifeDays === '' || normalizedProduct.shelfLifeDays == null ? '' : normalizedProduct.shelfLifeDays);
+      if (window.AppModules && window.AppModules.products && typeof window.AppModules.products.updateProductWarehouseUi === 'function') {
+        window.AppModules.products.updateProductWarehouseUi();
+      }
+      if (normalizedProduct.iva == '0') $('#product-esenzioneIva').val(normalizedProduct.esenzioneIva || normalizedProduct.natureCode || '');
     }
 
     $(`#${type}Modal`).modal('show');

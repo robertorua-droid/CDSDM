@@ -48,6 +48,14 @@
       e.preventDefault();
 
       const target = $(this).data('target');
+      // Le voci operative "Nuovo..." senza data-target sono azioni dirette
+      // gestite dai rispettivi moduli e non devono cambiare content-section.
+      if (!target) return;
+
+      if (window.PermissionsPolicy && !window.PermissionsPolicy.canAccessTarget(target)) {
+        alert(window.PermissionsPolicy.getDeniedMessage(target));
+        return;
+      }
 
       // Regime fiscale (gestionale) obbligatorio: finché non è selezionato,
       // consenti solo Home / Azienda / Migrazione.
@@ -91,6 +99,8 @@
       }
 
       if (target === 'avanzate' && typeof window.refreshDeleteDocumentsYearSelect === 'function') window.refreshDeleteDocumentsYearSelect();
+      if (target === 'import-massivi' && window.AppModules && window.AppModules.importCsv && typeof window.AppModules.importCsv.render === 'function') window.AppModules.importCsv.render();
+      if (target === 'ruoli-permessi' && window.AppModules && window.AppModules.rolesPermissions && typeof window.AppModules.rolesPermissions.render === 'function') window.AppModules.rolesPermissions.render();
       if (target === 'elenco-fatture' && typeof renderInvoicesTable === 'function') renderInvoicesTable();
 
       if (target === 'anagrafica-fornitori') {
@@ -113,6 +123,19 @@
       if (target === 'progetti' && typeof renderProjectsPage === 'function') renderProjectsPage();
       if (target === 'timesheet' && typeof renderTimesheetPage === 'function') renderTimesheetPage();
       if ((target === 'export-timesheet' || target === 'timesheet-export') && typeof renderTimesheetExportPage === 'function') renderTimesheetExportPage();
+      if (target === 'partitario' && window.AppModules && window.AppModules.ledger && typeof window.AppModules.ledger.render === 'function') window.AppModules.ledger.render();
+      if (target === 'incassi-pagamenti' && window.AppModules && window.AppModules.paymentEvents && typeof window.AppModules.paymentEvents.render === 'function') window.AppModules.paymentEvents.render();
+      if (target === 'prima-nota' && window.AppModules && window.AppModules.cashbook && typeof window.AppModules.cashbook.render === 'function') window.AppModules.cashbook.render();
+      if (target === 'estratto-conto' && window.AppModules && window.AppModules.accountStatement && typeof window.AppModules.accountStatement.render === 'function') window.AppModules.accountStatement.render();
+      if (target === 'solleciti' && window.AppModules && window.AppModules.reminders && typeof window.AppModules.reminders.render === 'function') window.AppModules.reminders.render();
+      if (target === 'riconciliazione-banca' && window.AppModules && window.AppModules.bankReconciliation && typeof window.AppModules.bankReconciliation.render === 'function') window.AppModules.bankReconciliation.render();
+      if (target === 'budget-marginalita' && window.AppModules && window.AppModules.businessBudget && typeof window.AppModules.businessBudget.render === 'function') window.AppModules.businessBudget.render();
+      if (target === 'bilancino' && window.AppModules && window.AppModules.miniBalance && typeof window.AppModules.miniBalance.render === 'function') window.AppModules.miniBalance.render();
+      if (target === 'centro-stampe' && window.AppModules && window.AppModules.printCenter && typeof window.AppModules.printCenter.render === 'function') window.AppModules.printCenter.render();
+      if (target === 'centro-notifiche' && window.AppModules && window.AppModules.notificationCenter && typeof window.AppModules.notificationCenter.render === 'function') window.AppModules.notificationCenter.render();
+      if (target === 'workflow-approvativi' && window.AppModules && window.AppModules.workflow && typeof window.AppModules.workflow.render === 'function') window.AppModules.workflow.render();
+      if (target === 'audit-trail' && window.AppModules && window.AppModules.auditTrail && typeof window.AppModules.auditTrail.render === 'function') window.AppModules.auditTrail.render();
+      if (target === 'ux-accessibilita' && window.AppModules && window.AppModules.accessibilityUx && typeof window.AppModules.accessibilityUx.render === 'function') window.AppModules.accessibilityUx.render();
       if (target === 'scadenziario' && typeof renderScadenziarioPage === 'function') renderScadenziarioPage();
 
       // DOCUMENTAZIONE IN-APP
@@ -128,6 +151,10 @@
 
       // Update Breadcrumb & Header
       updateBreadcrumb($(this).text().trim());
+
+      if (window.PermissionsPolicy && typeof window.PermissionsPolicy.applyUiRestrictions === 'function') {
+        setTimeout(window.PermissionsPolicy.applyUiRestrictions, 0);
+      }
 
       // Auto-collapse sidebar on mobile
       if (window.innerWidth < 992) {

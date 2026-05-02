@@ -38,11 +38,41 @@ function bindEventListeners() {
     if (window.AppModules && window.AppModules.customers && typeof window.AppModules.customers.bind === 'function') {
       window.AppModules.customers.bind();
     }
+    if (window.AppModules && window.AppModules.vatRates && typeof window.AppModules.vatRates.bind === 'function') {
+      window.AppModules.vatRates.bind();
+    }
+    if (window.AppModules && window.AppModules.paymentMethods && typeof window.AppModules.paymentMethods.bind === 'function') {
+      window.AppModules.paymentMethods.bind();
+    }
+    if (window.AppModules && window.AppModules.companyBanks && typeof window.AppModules.companyBanks.bind === 'function') {
+      window.AppModules.companyBanks.bind();
+    }
     if (window.AppModules && window.AppModules.products && typeof window.AppModules.products.bind === 'function') {
       window.AppModules.products.bind();
     }
     if (window.AppModules && window.AppModules.suppliers && typeof window.AppModules.suppliers.bind === 'function') {
       window.AppModules.suppliers.bind();
+    }
+    if (window.AppModules && window.AppModules.warehouse && typeof window.AppModules.warehouse.bind === 'function') {
+      window.AppModules.warehouse.bind();
+    }
+    if (window.AppModules && window.AppModules.quotes && typeof window.AppModules.quotes.bind === 'function') {
+      window.AppModules.quotes.bind();
+    }
+    if (window.AppModules && window.AppModules.customerOrders && typeof window.AppModules.customerOrders.bind === 'function') {
+      window.AppModules.customerOrders.bind();
+    }
+    if (window.AppModules && window.AppModules.supplierOrders && typeof window.AppModules.supplierOrders.bind === 'function') {
+      window.AppModules.supplierOrders.bind();
+    }
+    if (window.AppModules && window.AppModules.supplierDDTs && typeof window.AppModules.supplierDDTs.bind === 'function') {
+      window.AppModules.supplierDDTs.bind();
+    }
+    if (window.AppModules && window.AppModules.customerDDTs && typeof window.AppModules.customerDDTs.bind === 'function') {
+      window.AppModules.customerDDTs.bind();
+    }
+    if (window.AppModules && window.AppModules.customerDDTInvoicing && typeof window.AppModules.customerDDTInvoicing.bind === 'function') {
+      window.AppModules.customerDDTInvoicing.bind();
     }
 
     if (window.AppModules && window.AppModules.invoicesForm && typeof window.AppModules.invoicesForm.bind === 'function') {
@@ -75,6 +105,55 @@ function bindEventListeners() {
     }
     if (window.AppModules && window.AppModules.migration && typeof window.AppModules.migration.bind === 'function') {
       window.AppModules.migration.bind();
+    }
+    if (window.AppModules && window.AppModules.importCsv && typeof window.AppModules.importCsv.bind === 'function') {
+      window.AppModules.importCsv.bind();
+    }
+    if (window.AppModules && window.AppModules.rolesPermissions && typeof window.AppModules.rolesPermissions.bind === 'function') {
+      window.AppModules.rolesPermissions.bind();
+    }
+    if (window.AppModules && window.AppModules.ledger && typeof window.AppModules.ledger.bind === 'function') {
+      window.AppModules.ledger.bind();
+    }
+    if (window.AppModules && window.AppModules.paymentEvents && typeof window.AppModules.paymentEvents.bind === 'function') {
+      window.AppModules.paymentEvents.bind();
+    }
+    if (window.AppModules && window.AppModules.cashbook && typeof window.AppModules.cashbook.bind === 'function') {
+      window.AppModules.cashbook.bind();
+    }
+    if (window.AppModules && window.AppModules.accountStatement && typeof window.AppModules.accountStatement.bind === 'function') {
+      window.AppModules.accountStatement.bind();
+    }
+    if (window.AppModules && window.AppModules.reminders && typeof window.AppModules.reminders.bind === 'function') {
+      window.AppModules.reminders.bind();
+    }
+    if (window.AppModules && window.AppModules.bankReconciliation && typeof window.AppModules.bankReconciliation.bind === 'function') {
+      window.AppModules.bankReconciliation.bind();
+    }
+    if (window.AppModules && window.AppModules.businessBudget && typeof window.AppModules.businessBudget.bind === 'function') {
+      window.AppModules.businessBudget.bind();
+    }
+    if (window.AppModules && window.AppModules.miniBalance && typeof window.AppModules.miniBalance.bind === 'function') {
+      window.AppModules.miniBalance.bind();
+    }
+    if (window.AppModules && window.AppModules.printCenter && typeof window.AppModules.printCenter.bind === 'function') {
+      window.AppModules.printCenter.bind();
+    }
+    if (window.AppModules && window.AppModules.workflow && typeof window.AppModules.workflow.bind === 'function') {
+      window.AppModules.workflow.bind();
+    }
+    if (window.AppModules && window.AppModules.notificationCenter && typeof window.AppModules.notificationCenter.bind === 'function') {
+      window.AppModules.notificationCenter.bind();
+    }
+    if (window.AppModules && window.AppModules.auditTrail && typeof window.AppModules.auditTrail.bind === 'function') {
+      window.AppModules.auditTrail.bind();
+    }
+    if (window.AppModules && window.AppModules.accessibilityUx && typeof window.AppModules.accessibilityUx.bind === 'function') {
+      window.AppModules.accessibilityUx.bind();
+    }
+
+    if (window.AppModules && window.AppModules.warehouseReports && typeof window.AppModules.warehouseReports.bind === 'function') {
+      window.AppModules.warehouseReports.bind();
     }
 
     // ACQUISTI (modulo separato)

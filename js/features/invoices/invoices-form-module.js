@@ -161,9 +161,21 @@
     return cand;
   }
 
+  function getSelectedPaymentMethod() {
+    const raw = $('#invoice-modalitaPagamento').val() || 'mp05_bonifico';
+    if (window.PaymentMethodCatalog && typeof window.PaymentMethodCatalog.resolve === 'function') {
+      return window.PaymentMethodCatalog.resolve({ paymentMethodId: raw, modalitaPagamento: raw }, 'mp05_bonifico');
+    }
+    return { id: raw, label: raw, code: raw === 'Contanti' ? 'MP01' : (raw === 'Assegno' ? 'MP02' : 'MP05'), macroArea: String(raw).toLowerCase().includes('bonifico') ? 'bonifico' : 'altro', requiresBank: String(raw).toLowerCase().includes('bonifico') };
+  }
+
+  function selectedPaymentRequiresBank() {
+    const method = getSelectedPaymentMethod();
+    return !!(method && (method.requiresBank === true || method.macroArea === 'bonifico'));
+  }
+
   function recalcInvoiceDueDate() {
-    const method = $('#invoice-modalitaPagamento').val();
-    if (method && method !== 'Bonifico Bancario') return;
+    if (!selectedPaymentRequiresBank()) return;
 
     // se i campi sono disabilitati (non bonifico), non ricalcolo
     if ($('#invoice-giorniTermini').prop('disabled')) return;
@@ -180,14 +192,10 @@
     const fixedValRaw = $('#invoice-giornoFissoValue').length ? parseInt($('#invoice-giornoFissoValue').val(), 10) : NaN;
     const fixedVal = (!isNaN(fixedValRaw) && fixedValRaw >= 1 && fixedValRaw <= 31) ? fixedValRaw : null;
 
-    // Base: data riferimento, oppure fine mese della data riferimento
     let base = refDate;
     if (fineMese) base = endOfMonthUTC(refDate);
 
-    // Maturazione = base + giorni
     let maturity = addDaysUTC(base, giorni);
-
-    // Giorno fisso: prima data con giorno = N (>= maturity)
     let due = maturity;
     if (fixedEnabled && fixedVal != null) {
       due = firstFixedDayOnOrAfterUTC(maturity, fixedVal);
@@ -196,20 +204,8 @@
     $('#invoice-dataScadenza').val(fmtDateUTC(due));
   }
 
-  // Opzioni banca (Banca 1 / Banca 2) in base ai dati azienda
+  // Opzioni banca aziendale in base alla nuova tabella companyBanks, con fallback legacy Banca 1/2
   function populateInvoiceBankSelect(selectedVal) {
-    const rawCompany = getData('companyInfo') || {};
-    const company = (window.DomainNormalizers && typeof window.DomainNormalizers.normalizeCompanyInfo === 'function')
-      ? window.DomainNormalizers.normalizeCompanyInfo(rawCompany)
-      : rawCompany;
-    const paymentInfo = (window.DomainNormalizers && typeof window.DomainNormalizers.normalizeInvoicePaymentInfo === 'function')
-      ? window.DomainNormalizers.normalizeInvoicePaymentInfo({ bankChoice: selectedVal, modalitaPagamento: 'Bonifico Bancario' }, company)
-      : null;
-    const bank1Name = (company.banca1 || company.banca || '').trim();
-    const bank2Name = (company.banca2 || '').trim();
-
-    const needBank2 = Boolean(bank2Name) || String((paymentInfo && paymentInfo.bankChoice) || selectedVal) === '2';
-
     const esc = (s) => String(s || '')
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
@@ -217,19 +213,27 @@
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;');
 
-    let html = `<option value="1">Banca 1${bank1Name ? ' - ' + esc(bank1Name) : ''}</option>`;
-    if (needBank2) {
-      html += `<option value="2">Banca 2${bank2Name ? ' - ' + esc(bank2Name) : ' (non configurata)'}</option>`;
-    }
+    const banks = (window.CompanyBankCatalog && typeof window.CompanyBankCatalog.getActive === 'function')
+      ? window.CompanyBankCatalog.getActive()
+      : [];
+    let html = '';
+    banks.forEach(function (b) {
+      html += `<option value="${esc(b.id)}">${esc(b.accountLabel || b.label || b.bankName || b.id)}${b.iban ? ' - ' + esc(b.iban) : ''}</option>`;
+    });
+    if (!html) html = '<option value="">Nessuna banca configurata</option>';
 
     $('#invoice-bank-select').html(html);
     if (selectedVal) $('#invoice-bank-select').val(String(selectedVal));
+    if (!$('#invoice-bank-select').val() && window.CompanyBankCatalog && typeof window.CompanyBankCatalog.getDefault === 'function') {
+      const def = window.CompanyBankCatalog.getDefault();
+      if (def) $('#invoice-bank-select').val(String(def.id));
+    }
   }
 
   // Show/hide campi pagamento avanzati
   function updatePaymentUI() {
-    const method = $('#invoice-modalitaPagamento').val() || 'Bonifico Bancario';
-    const isBonifico = method === 'Bonifico Bancario';
+    const method = getSelectedPaymentMethod();
+    const isBonifico = selectedPaymentRequiresBank();
 
     if ($('#invoice-bank-container').length) {
       $('#invoice-bank-container').toggleClass('d-none', !isBonifico);
@@ -254,15 +258,8 @@
     }
 
     if (isBonifico) {
-      const cur = $('#invoice-bank-select').val() || '1';
+      const cur = $('#invoice-bank-select').val() || '';
       populateInvoiceBankSelect(cur);
-      const rawCompany = getData('companyInfo') || {};
-      const normalizedPayment = (window.DomainNormalizers && typeof window.DomainNormalizers.normalizeInvoicePaymentInfo === 'function')
-        ? window.DomainNormalizers.normalizeInvoicePaymentInfo({ bankChoice: cur, modalitaPagamento: method }, rawCompany)
-        : { bankChoice: cur };
-      $('#invoice-bank-select').val(String(normalizedPayment.bankChoice || '1'));
-      if (!$('#invoice-bank-select').val()) $('#invoice-bank-select').val('1');
-
       if (!$('#invoice-giorniTermini').val()) $('#invoice-giorniTermini').val(30);
       recalcInvoiceDueDate();
     }
@@ -273,6 +270,10 @@
   function applyCustomerPaymentDefaults(cust) {
     if (!cust) return;
 
+    // Modalità pagamento predefinita cliente
+    if (cust.defaultPaymentMethodId && $("#invoice-modalitaPagamento").length) {
+      $("#invoice-modalitaPagamento").val(String(cust.defaultPaymentMethodId));
+    }
     // Giorni termine
     if ($('#invoice-giorniTermini').length) {
       const raw = (cust.giorniTermini != null) ? String(cust.giorniTermini).trim() : '';
@@ -620,6 +621,7 @@
     setCurrentInvoiceIdSafe(null);
 
     // reset form e stato
+    if (window.App && window.App.invoices) window.App.invoices.sourceCustomerDDT = null;
     const _f = $('#new-invoice-form')[0];
     if (_f && typeof _f.reset === 'function') _f.reset();
 
@@ -657,7 +659,7 @@
     const today = state ? state.today : new Date().toISOString().slice(0, 10);
     $('#invoice-date').val(state ? state.date : today);
     $('#invoice-condizioniPagamento').val(state ? state.condizioniPagamento : 'Pagamento Completo');
-    $('#invoice-modalitaPagamento').val(state ? state.modalitaPagamento : 'Bonifico Bancario');
+    $("#invoice-modalitaPagamento").val(state ? (state.paymentMethodId || state.modalitaPagamento || "mp05_bonifico") : "mp05_bonifico");
     if ($('#invoice-attach-timesheet-pdf').length) $('#invoice-attach-timesheet-pdf').prop('checked', !!(state && state.attachTimesheetPdf));
     if ($('#invoice-attach-timesheet-notes').length) {
       $('#invoice-attach-timesheet-notes').prop('checked', state ? (state.attachTimesheetNotes !== false) : true);
@@ -672,7 +674,7 @@
     }
 
     if ($('#invoice-bank-select').length) {
-      const bankChoice = state ? state.bankChoice : '1';
+      const bankChoice = state ? (state.companyBankId || state.bankChoice || "") : "";
       populateInvoiceBankSelect(bankChoice);
       $('#invoice-bank-select').val(bankChoice);
     }
@@ -712,6 +714,8 @@
       $('#document-title').text(state.title);
     }
 
+    if (window.App && window.App.invoices) window.App.invoices.sourceCustomerDDT = state ? (state.sourceCustomerDDT || null) : (inv.sourceCustomerDDT || null);
+
     $('#invoice-customer-select').val(state ? state.customerId : inv.customerId);
     $('#invoice-date').val(state ? state.date : (isCopy ? new Date().toISOString().slice(0, 10) : inv.date));
     if (state && state.number) $('#invoice-number').val(state.number);
@@ -725,7 +729,7 @@
     } catch (e) { }
 
     $('#invoice-condizioniPagamento').val(state ? state.condizioniPagamento : inv.condizioniPagamento);
-    $('#invoice-modalitaPagamento').val(state ? state.modalitaPagamento : (inv.modalitaPagamento || 'Bonifico Bancario'));
+    $("#invoice-modalitaPagamento").val(state ? (state.paymentMethodId || state.modalitaPagamento || "mp05_bonifico") : (inv.paymentMethodId || inv.modalitaPagamento || "mp05_bonifico"));
     $('#invoice-dataRiferimento').val(state ? state.dataRiferimento : (inv.dataRiferimento || inv.date || new Date().toISOString().slice(0, 10)));
     if (state && state.giorniTermini != null && String(state.giorniTermini) !== '') {
       $('#invoice-giorniTermini').val(state.giorniTermini);
@@ -738,7 +742,7 @@
     }
 
     if ($('#invoice-bank-select').length) {
-      const bankChoice = state ? state.bankChoice : String(inv.bankChoice || '1');
+      const bankChoice = state ? (state.companyBankId || state.bankChoice || "") : String(inv.companyBankId || inv.bankChoice || "");
       populateInvoiceBankSelect(bankChoice);
       $('#invoice-bank-select').val(bankChoice);
     }
@@ -977,7 +981,7 @@
     });
 
     $('#invoice-giornoFissoEnabled').on('change', function () {
-      const isBonifico = ($('#invoice-modalitaPagamento').val() === 'Bonifico Bancario');
+      const isBonifico = selectedPaymentRequiresBank();
       $('#invoice-giornoFissoValue').prop('disabled', !isBonifico || !$(this).is(':checked'));
       recalcInvoiceDueDate();
     });
@@ -1023,15 +1027,28 @@
       }
 
       // Altrimenti e un prodotto standard
-      const product = getData('products').find((p) => String(p.id) === String(selectedId));
-      if (!product) return;
+      const productRaw = getData('products').find((p) => String(p.id) === String(selectedId));
+      if (!productRaw) return;
+      const product = (window.DomainNormalizers && typeof window.DomainNormalizers.normalizeProductInfo === 'function')
+        ? window.DomainNormalizers.normalizeProductInfo(productRaw)
+        : productRaw;
+      const vatLegacy = window.VatRateCatalog && typeof window.VatRateCatalog.getLegacyFields === 'function'
+        ? window.VatRateCatalog.getLegacyFields(isForf ? { vatRateId: 'n2_2_forfettario' } : product, isForf ? 'n2_2_forfettario' : 'iva_22')
+        : { iva: isForf ? '0' : (product.iva || '0'), esenzioneIva: product.esenzioneIva || 'N2.1' };
 
       descInput.val(product.description || '');
       priceInput.val(product.salePrice || 0);
       qtyInput.val(1);
 
-      ivaSelect.val(isForf ? '0' : (product.iva || '0'));
-      esenzioneSelect.val(product.esenzioneIva || 'N2.1');
+      const invoiceIvaValue = isForf ? '0' : String(vatLegacy.iva || '0');
+      if (invoiceIvaValue && !ivaSelect.find('option[value="' + invoiceIvaValue + '"]').length) {
+        ivaSelect.append('<option value="' + invoiceIvaValue + '">' + invoiceIvaValue + '%</option>');
+      }
+      if (vatLegacy.esenzioneIva && !esenzioneSelect.find('option[value="' + vatLegacy.esenzioneIva + '"]').length) {
+        esenzioneSelect.append('<option value="' + vatLegacy.esenzioneIva + '">' + vatLegacy.esenzioneIva + '</option>');
+      }
+      ivaSelect.val(invoiceIvaValue);
+      esenzioneSelect.val(vatLegacy.esenzioneIva || (isForf ? 'N2.2' : ''));
 
       ivaSelect.prop('disabled', isForf);
       esenzioneSelect.prop('disabled', false);

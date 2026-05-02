@@ -22,7 +22,24 @@
         notes: [],
         commesse: [],
         projects: [],
-        worklogs: []
+        worklogs: [],
+        vatRates: [],
+        paymentMethods: [],
+        companyBanks: [],
+        warehouseMovements: [],
+        quotes: [],
+        customerOrders: [],
+        supplierOrders: [],
+        supplierDDTs: [],
+        warehousePhysicalCounts: [],
+        warehouseLots: [],
+        paymentEvents: [],
+        cashbookMovements: [],
+        reminderEvents: [],
+        bankReconciliationEvents: [],
+        businessBudgets: [],
+        workflowEvents: [],
+    customerDDTs: []
       };
     }
     return window.globalData;

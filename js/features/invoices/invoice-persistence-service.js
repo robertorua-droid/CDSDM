@@ -116,6 +116,53 @@
     });
   }
 
+  function markCustomerDDTsAsInvoiced(sourceCustomerDDT, invoiceId, invoiceNumber, isDraft) {
+    if (isDraft) return Promise.resolve();
+    const src = sourceCustomerDDT && typeof sourceCustomerDDT === 'object' ? sourceCustomerDDT : null;
+    if (!src) return Promise.resolve();
+    const ids = Array.isArray(src.ids) ? src.ids.map(String).filter(Boolean) : [];
+    if (!ids.length) return Promise.resolve();
+    const nowIso = new Date().toISOString();
+    const ddts = getCollection('customerDDTs');
+    const updates = [];
+    ids.forEach(function (id) {
+      const ddt = ddts.find(function (d) { return String(d.id) === String(id); }) || {};
+      updates.push({
+        id: id,
+        data: {
+          invoiceId: String(invoiceId || ''),
+          invoiceNumber: String(invoiceNumber || ''),
+          invoicedAt: nowIso,
+          invoiceStatus: 'invoiced',
+          updatedAt: nowIso,
+          sourceInvoiceLink: { invoiceId: String(invoiceId || ''), invoiceNumber: String(invoiceNumber || ''), linkedAt: nowIso },
+          status: ddt.status || 'delivered'
+        }
+      });
+    });
+    return batchSave('customerDDTs', updates);
+  }
+
+  function unmarkCustomerDDTsFromInvoice(invoiceId) {
+    const id = String(invoiceId || '');
+    if (!id) return Promise.resolve();
+    const ddts = getCollection('customerDDTs');
+    const updates = ddts.filter(function (d) { return String(d.invoiceId || '') === id || (d.sourceInvoiceLink && String(d.sourceInvoiceLink.invoiceId || '') === id); }).map(function (d) {
+      return {
+        id: String(d.id || ''),
+        data: {
+          invoiceId: '',
+          invoiceNumber: '',
+          invoicedAt: '',
+          invoiceStatus: '',
+          sourceInvoiceLink: null,
+          updatedAt: new Date().toISOString()
+        }
+      };
+    }).filter(function (u) { return !!u.id; });
+    return batchSave('customerDDTs', updates);
+  }
+
   function saveInvoiceDocument(params) {
     const data = params || {};
     const invoicePayload = data.invoicePayload;
@@ -130,6 +177,8 @@
         isDraft: !!invoicePayload.isDraft,
         timesheetImport: invoicePayload.timesheetImport || null
       }).then(function () {
+        return markCustomerDDTsAsInvoiced(invoicePayload.sourceCustomerDDT, invoiceId, invoicePayload.number, !!invoicePayload.isDraft);
+      }).then(function () {
         return { invoiceId: invoiceId, invoicePayload: invoicePayload };
       });
     });
@@ -142,5 +191,7 @@
   window.InvoicePersistenceService.markWorklogsAsInvoiced = markWorklogsAsInvoiced;
   window.InvoicePersistenceService.unmarkWorklogsFromInvoice = unmarkWorklogsFromInvoice;
   window.InvoicePersistenceService.syncWorklogsForInvoice = syncWorklogsForInvoice;
+  window.InvoicePersistenceService.markCustomerDDTsAsInvoiced = markCustomerDDTsAsInvoiced;
+  window.InvoicePersistenceService.unmarkCustomerDDTsFromInvoice = unmarkCustomerDDTsFromInvoice;
   window.InvoicePersistenceService.saveInvoiceDocument = saveInvoiceDocument;
 })();

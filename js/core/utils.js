@@ -11,7 +11,24 @@ let globalData = window.globalData || {
     notes: [],
     commesse: [],
     projects: [],
-    worklogs: []
+    worklogs: [],
+    vatRates: [],
+    paymentMethods: [],
+    companyBanks: [],
+    warehouseMovements: [],
+    quotes: [],
+    customerOrders: [],
+    supplierOrders: [],
+    supplierDDTs: [],
+    customerDDTs: [],
+    warehousePhysicalCounts: [],
+    warehouseLots: [],
+    paymentEvents: [],
+        cashbookMovements: [],
+    reminderEvents: [],
+    bankReconciliationEvents: [],
+    businessBudgets: [],
+    workflowEvents: []
 };
 window.globalData = globalData;
 let currentUser = null;

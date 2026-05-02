@@ -7,6 +7,18 @@
     return '';
   }
 
+
+
+  function numField() {
+    for (let i = 0; i < arguments.length; i++) {
+      const v = arguments[i];
+      if (v === '' || v === null || v === undefined) continue;
+      const n = parseFloat(String(v).replace(',', '.'));
+      if (!isNaN(n)) return n;
+    }
+    return 0;
+  }
+
   function normalizeCompanyInfo(raw) {
     const src = raw && typeof raw === 'object' ? raw : {};
     const normalized = Object.assign({}, src);
@@ -161,13 +173,21 @@
     const company = normalizeCompanyInfo(rawCompany && typeof rawCompany === 'object' ? rawCompany : {});
     const normalized = Object.assign({}, invoice);
 
-    const methodRaw = pickFirst(invoice.modalitaPagamento, invoice.paymentMethod, 'Bonifico Bancario');
-    const methodKey = String(methodRaw).trim().toLowerCase();
-    const modalitaPagamento = methodKey === 'rimessa diretta' ? 'Bonifico Bancario' : methodRaw;
-    const isBonifico = methodKey.includes('bonifico') || methodKey === 'rimessa diretta';
+    const method = (window.PaymentMethodCatalog && typeof window.PaymentMethodCatalog.resolve === 'function')
+      ? window.PaymentMethodCatalog.resolve(invoice, 'mp05_bonifico')
+      : null;
+    const modalitaPagamento = method ? method.label : pickFirst(invoice.modalitaPagamento, invoice.paymentMethod, 'Bonifico Bancario');
+    const paymentMethodId = method ? method.id : pickFirst(invoice.paymentMethodId, 'mp05_bonifico');
+    const paymentMethodCode = method ? method.code : pickFirst(invoice.paymentMethodCode, invoice.modalitaPagamentoFE, 'MP05');
+    const isBonifico = method ? method.macroArea === 'bonifico' || method.requiresBank === true : String(modalitaPagamento).toLowerCase().includes('bonifico');
 
     let bankChoice = String(pickFirst(invoice.bankChoice, invoice.bank, '1')).trim();
     bankChoice = bankChoice === '2' ? '2' : '1';
+
+    let companyBank = null;
+    if (window.CompanyBankCatalog && typeof window.CompanyBankCatalog.resolve === 'function') {
+      companyBank = window.CompanyBankCatalog.resolve(invoice.companyBankId || invoice.companyBank || '');
+    }
 
     const banca1 = pickFirst(company.banca1, company.banca);
     const iban1 = pickFirst(company.iban1, company.iban);
@@ -177,15 +197,23 @@
 
     const bankChoiceRequested = isBonifico ? bankChoice : '1';
     const bankChoiceEffective = bankChoiceRequested === '2' && hasBank2 ? '2' : '1';
-    const bancaSelezionata = bankChoiceEffective === '2' ? banca2 : banca1;
-    const ibanSelezionato = bankChoiceEffective === '2' ? iban2 : iban1;
+    const legacyBanca = bankChoiceEffective === '2' ? banca2 : banca1;
+    const legacyIban = bankChoiceEffective === '2' ? iban2 : iban1;
 
+    const bancaSelezionata = companyBank ? (companyBank.bankName || companyBank.accountLabel || '') : legacyBanca;
+    const ibanSelezionato = companyBank ? (companyBank.iban || '') : legacyIban;
+
+    normalized.paymentMethodId = paymentMethodId;
+    normalized.paymentMethodCode = paymentMethodCode;
+    normalized.modalitaPagamentoFE = paymentMethodCode;
     normalized.modalitaPagamento = modalitaPagamento;
     normalized.paymentMethod = pickFirst(invoice.paymentMethod, modalitaPagamento);
     normalized.isBonifico = isBonifico;
     normalized.bankChoice = bankChoiceRequested;
     normalized.bankChoiceRequested = bankChoiceRequested;
     normalized.bankChoiceEffective = bankChoiceEffective;
+    normalized.companyBankId = companyBank ? companyBank.id : pickFirst(invoice.companyBankId, '');
+    normalized.companyBankLabel = companyBank ? (companyBank.accountLabel || companyBank.label || '') : '';
     normalized.hasBank2 = hasBank2;
     normalized.bancaSelezionata = bancaSelezionata;
     normalized.ibanSelezionato = ibanSelezionato;
@@ -435,9 +463,469 @@
   }
 
 
+  function normalizeProductInfo(rawProduct) {
+    const src = rawProduct && typeof rawProduct === 'object' ? rawProduct : {};
+    const normalized = Object.assign({}, src);
+    const legacyIsCosto = (src.isCosto === true || src.isCosto === 'true');
+    const rawType = String(pickFirst(src.itemType, src.tipoVoce, src.type, legacyIsCosto ? 'cost' : 'service')).trim().toLowerCase();
+    let itemType = rawType;
+    if (['lavoro', 'servizio', 'service'].includes(rawType)) itemType = 'service';
+    else if (['costo', 'cost'].includes(rawType)) itemType = 'cost';
+    else if (['prodotto', 'product', 'magazzino'].includes(rawType)) itemType = 'product';
+    else itemType = legacyIsCosto ? 'cost' : 'service';
+
+    const vatDefaults = (window.VatRateCatalog && typeof window.VatRateCatalog.getLegacyFields === 'function')
+      ? window.VatRateCatalog.getLegacyFields(src, itemType === 'cost' ? 'iva_22' : 'iva_22')
+      : { vatRateId: pickFirst(src.vatRateId), iva: String(pickFirst(src.iva, '22')), esenzioneIva: pickFirst(src.esenzioneIva), natureCode: pickFirst(src.natureCode, src.esenzioneIva), vatLabel: '' };
+
+    normalized.description = pickFirst(src.description, src.descrizione, src.name);
+    normalized.descrizione = pickFirst(src.descrizione, normalized.description);
+    normalized.name = pickFirst(src.name, normalized.description);
+    normalized.code = pickFirst(src.code, src.codice, src.sku);
+    normalized.codice = pickFirst(src.codice, normalized.code);
+    normalized.itemType = itemType;
+    normalized.tipoVoce = itemType === 'product' ? 'Prodotto' : (itemType === 'cost' ? 'Costo' : 'Servizio');
+    normalized.isCosto = itemType === 'cost';
+    normalized.isLavoro = itemType !== 'cost';
+    normalized.isInventoryItem = itemType === 'product';
+    normalized.vatRateId = vatDefaults.vatRateId || pickFirst(src.vatRateId);
+    normalized.iva = vatDefaults.iva;
+    normalized.esenzioneIva = vatDefaults.esenzioneIva || '';
+    normalized.natureCode = vatDefaults.natureCode || '';
+    normalized.vatLabel = vatDefaults.vatLabel || '';
+
+    const rawPurchasePrice = pickFirst(src.purchasePrice, src.prezzoAcquisto, src.costoUnitario, src.unitCost, '');
+    const rawSalePrice = pickFirst(src.salePrice, src.prezzoVendita, src.prezzoUnitario, src.unitPrice, '');
+    const purchaseNum = parseFloat(String(rawPurchasePrice).replace(',', '.'));
+    const saleNum = parseFloat(String(rawSalePrice).replace(',', '.'));
+    normalized.purchasePrice = isNaN(purchaseNum) ? '' : purchaseNum;
+    normalized.prezzoAcquisto = normalized.purchasePrice;
+    normalized.salePrice = isNaN(saleNum) ? '' : saleNum;
+    normalized.prezzoVendita = normalized.salePrice;
+    normalized.lastPurchasePrice = numField(src.lastPurchasePrice, src.ultimoPrezzoAcquisto, '');
+    normalized.lastPurchasePriceSource = pickFirst(src.lastPurchasePriceSource, src.ultimoPrezzoAcquistoFonte, '');
+    normalized.lastPurchasePriceSourceLabel = pickFirst(src.lastPurchasePriceSourceLabel, src.ultimoPrezzoAcquistoDocumento, '');
+    normalized.lastPurchasePriceDate = pickFirst(src.lastPurchasePriceDate, src.ultimoPrezzoAcquistoData, '');
+    normalized.lastSalePrice = numField(src.lastSalePrice, src.ultimoPrezzoVendita, '');
+    normalized.lastSalePriceSource = pickFirst(src.lastSalePriceSource, src.ultimoPrezzoVenditaFonte, '');
+    normalized.lastSalePriceSourceLabel = pickFirst(src.lastSalePriceSourceLabel, src.ultimoPrezzoVenditaDocumento, '');
+    normalized.lastSalePriceDate = pickFirst(src.lastSalePriceDate, src.ultimoPrezzoVenditaData, '');
+    normalized.lastPriceUpdateDocumentId = pickFirst(src.lastPriceUpdateDocumentId, src.ultimoAggiornamentoPrezzoDocumentoId, '');
+    normalized.lastPriceUpdateDocumentNumber = pickFirst(src.lastPriceUpdateDocumentNumber, src.ultimoAggiornamentoPrezzoDocumento, '');
+    normalized.lastPriceUpdateAt = pickFirst(src.lastPriceUpdateAt, src.ultimoAggiornamentoPrezzoData, '');
+
+    normalized.unitOfMeasure = pickFirst(src.unitOfMeasure, src.um, src.unitaMisura, src.uom, itemType === 'product' ? 'pz' : '');
+    normalized.um = normalized.unitOfMeasure;
+    normalized.stockQty = itemType === 'product' ? numField(src.stockQty, src.giacenzaDisponibile, src.giacenza, src.quantityOnHand, 0) : 0;
+    normalized.quarantineQty = itemType === 'product' ? numField(src.quarantineQty, src.giacenzaQuarantena, src.qtyQuarantena, src.quarantine, 0) : 0;
+    normalized.reservedQty = itemType === 'product' ? numField(src.reservedQty, src.giacenzaRiservata, src.qtyRiservata, src.reserved, 0) : 0;
+    normalized.minStockQty = itemType === 'product' ? numField(src.minStockQty, src.scortaMinima, src.minimumStock, 0) : 0;
+    normalized.warehouseLocation = pickFirst(src.warehouseLocation, src.ubicazioneMagazzino, src.location, src.locazione, [src.locCorsia, src.locScaffale, src.locPiano].filter(Boolean).join(' / '));
+    normalized.ubicazioneMagazzino = normalized.warehouseLocation;
+    const rawTrackingMode = String(pickFirst(src.trackingMode, src.tracciabilita, src.trackingType, 'none')).trim().toLowerCase();
+    normalized.trackingMode = ['none', 'lot', 'serial', 'expiry'].includes(rawTrackingMode) ? rawTrackingMode : 'none';
+    normalized.tracciabilita = normalized.trackingMode;
+    normalized.requiresExpiry = src.requiresExpiry === true || src.requiresExpiry === 'true' || normalized.trackingMode === 'expiry';
+    normalized.shelfLifeDays = itemType === 'product' ? numField(src.shelfLifeDays, src.durataGiorni, '') : '';
+    normalized.isTracked = itemType === 'product' && normalized.trackingMode !== 'none';
+    normalized.availableNetQty = itemType === 'product' ? Math.max(0, normalized.stockQty - normalized.reservedQty) : 0;
+    normalized.inventoryValue = itemType === 'product' ? normalized.stockQty * (normalized.purchasePrice || 0) : 0;
+    normalized.quarantineValue = itemType === 'product' ? normalized.quarantineQty * (normalized.purchasePrice || 0) : 0;
+    normalized.totalInventoryValue = normalized.inventoryValue + normalized.quarantineValue;
+    return normalized;
+  }
+
+
+  function normalizeWarehouseLot(rawLot) {
+    const src = rawLot && typeof rawLot === 'object' ? rawLot : {};
+    const normalized = Object.assign({}, src);
+    const rawStatus = String(pickFirst(src.status, src.stato, 'active')).trim().toLowerCase();
+    normalized.id = pickFirst(src.id, src.lotId, src.uid);
+    normalized.productId = String(pickFirst(src.productId, src.prodottoId, src.itemId, ''));
+    normalized.lotCode = pickFirst(src.lotCode, src.lotto, src.batchCode, src.batch, '');
+    normalized.serialNumber = pickFirst(src.serialNumber, src.matricola, src.seriale, '');
+    normalized.expiryDate = pickFirst(src.expiryDate, src.scadenza, src.dataScadenza, '');
+    normalized.qtyAvailable = numField(src.qtyAvailable, src.quantityAvailable, src.disponibile, src.qty, 0);
+    normalized.qtyQuarantine = numField(src.qtyQuarantine, src.quarantineQty, src.quarantena, 0);
+    normalized.supplierId = String(pickFirst(src.supplierId, src.fornitoreId, ''));
+    normalized.sourceDocumentId = pickFirst(src.sourceDocumentId, src.sourceSupplierDDTId, src.documentId, '');
+    normalized.sourceDocumentNumber = pickFirst(src.sourceDocumentNumber, src.sourceRef, src.documentNumber, '');
+    normalized.status = ['active', 'blocked', 'closed', 'expired'].includes(rawStatus) ? rawStatus : 'active';
+    normalized.notes = pickFirst(src.notes, src.note, '');
+    normalized.createdAt = pickFirst(src.createdAt, '');
+    normalized.updatedAt = pickFirst(src.updatedAt, '');
+    return normalized;
+  }
+
+
+  function normalizeQuote(rawQuote) {
+    const src = rawQuote && typeof rawQuote === 'object' ? rawQuote : {};
+    const normalized = Object.assign({}, src);
+    const rawStatus = String(pickFirst(src.status, src.stato, 'draft')).trim().toLowerCase();
+    const statusMap = {
+      bozza: 'draft', draft: 'draft',
+      inviato: 'sent', sent: 'sent',
+      accettato: 'accepted', accepted: 'accepted',
+      rifiutato: 'rejected', rejected: 'rejected',
+      convertito: 'converted', converted: 'converted',
+      annullato: 'cancelled', cancelled: 'cancelled'
+    };
+    normalized.status = statusMap[rawStatus] || 'draft';
+    normalized.stato = normalized.status;
+    normalized.number = pickFirst(src.number, src.numero, src.quoteNumber, src.numeroPreventivo, '');
+    normalized.numero = normalized.number;
+    normalized.date = pickFirst(src.date, src.data, new Date().toISOString().slice(0, 10));
+    normalized.validUntil = pickFirst(src.validUntil, src.validoFinoAl, src.expiryDate, '');
+    normalized.customerId = String(pickFirst(src.customerId, src.clienteId, src.customer && src.customer.id, ''));
+    normalized.customerName = pickFirst(src.customerName, src.clienteNome, src.customer && (src.customer.name || src.customer.nome || src.customer.ragioneSociale), '');
+    normalized.notes = pickFirst(src.notes, src.note, '');
+    normalized.orderId = String(pickFirst(src.orderId, src.ordineId, ''));
+    normalized.orderNumber = pickFirst(src.orderNumber, src.numeroOrdine, '');
+    normalized.convertedAt = pickFirst(src.convertedAt, src.convertitoIl, '');
+    const lines = Array.isArray(src.lines) ? src.lines : (Array.isArray(src.righe) ? src.righe : []);
+    normalized.lines = lines.map(function (line) {
+      const l = line && typeof line === 'object' ? line : {};
+      const qty = numField(l.qty, l.quantity, l.quantita, 0);
+      const price = numField(l.price, l.unitPrice, l.salePrice, l.prezzo, 0);
+      const productDescription = pickFirst(l.productDescription, l.description, l.descrizione, l.productName, '');
+      return Object.assign({}, l, {
+        productId: String(pickFirst(l.productId, l.prodottoId, l.itemId, '')),
+        productCode: pickFirst(l.productCode, l.code, l.codice, ''),
+        productDescription: productDescription,
+        description: productDescription,
+        unitOfMeasure: pickFirst(l.unitOfMeasure, l.um, 'pz'),
+        qty: qty,
+        quotedQty: qty,
+        price: price,
+        salePrice: price,
+        lineTotal: qty * price
+      });
+    });
+    normalized.total = normalized.lines.reduce(function (sum, line) { return sum + numField(line.lineTotal, 0); }, 0);
+    normalized.createdAt = pickFirst(src.createdAt, src.created_at, '');
+    normalized.updatedAt = pickFirst(src.updatedAt, src.updated_at, '');
+    return normalized;
+  }
+
+
+  function normalizeCustomerOrder(rawOrder) {
+    const src = rawOrder && typeof rawOrder === 'object' ? rawOrder : {};
+    const normalized = Object.assign({}, src);
+    const rawStatus = String(pickFirst(src.status, src.stato, 'draft')).trim().toLowerCase();
+    const statusMap = {
+      bozza: 'draft', draft: 'draft',
+      confermato: 'confirmed', confirmed: 'confirmed',
+      parziale: 'partially_fulfilled', parzialmente_evaso: 'partially_fulfilled', partially_fulfilled: 'partially_fulfilled',
+      evaso: 'fulfilled', fulfilled: 'fulfilled',
+      annullato: 'cancelled', cancelled: 'cancelled'
+    };
+    normalized.status = statusMap[rawStatus] || 'draft';
+    normalized.stato = normalized.status;
+    normalized.number = pickFirst(src.number, src.numero, src.orderNumber, src.numeroOrdine, '');
+    normalized.numero = normalized.number;
+    normalized.date = pickFirst(src.date, src.data, new Date().toISOString().slice(0, 10));
+    normalized.expectedDeliveryDate = pickFirst(src.expectedDeliveryDate, src.dataConsegnaPrevista, src.deliveryDate, '');
+    normalized.customerId = String(pickFirst(src.customerId, src.clienteId, src.customer && src.customer.id, ''));
+    normalized.customerName = pickFirst(src.customerName, src.clienteNome, src.customer && (src.customer.name || src.customer.nome || src.customer.ragioneSociale), '');
+    normalized.notes = pickFirst(src.notes, src.note, '');
+    normalized.invoiceId = String(pickFirst(src.invoiceId, src.fatturaId, src.sourceInvoiceLink && src.sourceInvoiceLink.invoiceId, ''));
+    normalized.invoiceNumber = pickFirst(src.invoiceNumber, src.numeroFattura, src.sourceInvoiceLink && src.sourceInvoiceLink.invoiceNumber, '');
+    normalized.invoicedAt = pickFirst(src.invoicedAt, src.fatturatoIl, src.sourceInvoiceLink && src.sourceInvoiceLink.linkedAt, '');
+    normalized.invoiceStatus = pickFirst(src.invoiceStatus, src.statoFatturazione, normalized.invoiceId ? 'invoiced' : '');
+    const lines = Array.isArray(src.lines) ? src.lines : (Array.isArray(src.righe) ? src.righe : []);
+    normalized.lines = lines.map(function (line) {
+      const l = line && typeof line === 'object' ? line : {};
+      const qty = numField(l.qty, l.quantity, l.quantita, l.orderedQty, 0);
+      const fulfilled = numField(l.fulfilledQty, l.shippedQty, l.evaso, l.quantitaEvasa, 0);
+      const price = numField(l.price, l.unitPrice, l.salePrice, l.prezzo, 0);
+      const productDescription = pickFirst(l.productDescription, l.description, l.descrizione, l.productName, '');
+      return Object.assign({}, l, {
+        productId: String(pickFirst(l.productId, l.prodottoId, l.itemId, '')),
+        productCode: pickFirst(l.productCode, l.code, l.codice, ''),
+        productDescription: productDescription,
+        description: productDescription,
+        unitOfMeasure: pickFirst(l.unitOfMeasure, l.um, 'pz'),
+        qty: qty,
+        orderedQty: qty,
+        fulfilledQty: fulfilled,
+        shippedQty: fulfilled,
+        remainingQty: Math.max(0, qty - fulfilled),
+        price: price,
+        salePrice: price,
+        lineTotal: qty * price
+      });
+    });
+    normalized.total = normalized.lines.reduce(function (sum, line) { return sum + numField(line.lineTotal, 0); }, 0);
+    normalized.createdAt = pickFirst(src.createdAt, src.created_at, '');
+    normalized.updatedAt = pickFirst(src.updatedAt, src.updated_at, '');
+    return normalized;
+  }
+
+
+  function normalizeSupplierOrder(rawOrder) {
+    const src = rawOrder && typeof rawOrder === 'object' ? rawOrder : {};
+    const normalized = Object.assign({}, src);
+    const rawStatus = String(pickFirst(src.status, src.stato, 'draft')).trim().toLowerCase();
+    const statusMap = {
+      bozza: 'draft', draft: 'draft',
+      confermato: 'confirmed', confirmed: 'confirmed',
+      parziale: 'partially_received', parzialmente_ricevuto: 'partially_received', partially_received: 'partially_received',
+      ricevuto: 'received', received: 'received',
+      annullato: 'cancelled', cancelled: 'cancelled'
+    };
+    normalized.status = statusMap[rawStatus] || 'draft';
+    normalized.stato = normalized.status;
+    normalized.number = pickFirst(src.number, src.numero, src.orderNumber, src.numeroOrdine, '');
+    normalized.numero = normalized.number;
+    normalized.date = pickFirst(src.date, src.data, new Date().toISOString().slice(0, 10));
+    normalized.expectedDeliveryDate = pickFirst(src.expectedDeliveryDate, src.dataConsegnaPrevista, src.deliveryDate, '');
+    normalized.supplierId = String(pickFirst(src.supplierId, src.fornitoreId, src.supplier && src.supplier.id, ''));
+    normalized.supplierName = pickFirst(src.supplierName, src.fornitoreNome, src.supplier && (src.supplier.name || src.supplier.nome || src.supplier.ragioneSociale), '');
+    normalized.notes = pickFirst(src.notes, src.note, '');
+    const lines = Array.isArray(src.lines) ? src.lines : (Array.isArray(src.righe) ? src.righe : []);
+    normalized.lines = lines.map(function (line) {
+      const l = line && typeof line === 'object' ? line : {};
+      const qty = numField(l.qty, l.quantity, l.quantita, l.orderedQty, 0);
+      const received = numField(l.receivedQty, l.ricevuto, l.quantitaRicevuta, 0);
+      const accepted = numField(l.acceptedQty, l.accettato, l.quantitaAccettata, 0);
+      const quarantine = numField(l.quarantineQty, l.riservaQty, l.quantitaQuarantena, l.quantitaRiserva, 0);
+      const rejected = numField(l.rejectedQty, l.respinto, l.quantitaRespinta, 0);
+      const price = numField(l.price, l.unitPrice, l.purchasePrice, l.unitCost, l.prezzo, 0);
+      const productDescription = pickFirst(l.productDescription, l.description, l.descrizione, l.productName, '');
+      return Object.assign({}, l, {
+        productId: String(pickFirst(l.productId, l.prodottoId, l.itemId, '')),
+        productCode: pickFirst(l.productCode, l.code, l.codice, ''),
+        productDescription: productDescription,
+        description: productDescription,
+        unitOfMeasure: pickFirst(l.unitOfMeasure, l.um, 'pz'),
+        qty: qty,
+        orderedQty: qty,
+        receivedQty: received,
+        acceptedQty: accepted,
+        quarantineQty: quarantine,
+        rejectedQty: rejected,
+        remainingQty: Math.max(0, qty - received),
+        price: price,
+        purchasePrice: price,
+        unitCost: price,
+        lineTotal: qty * price
+      });
+    });
+    normalized.total = normalized.lines.reduce(function (sum, line) { return sum + numField(line.lineTotal, 0); }, 0);
+    normalized.createdAt = pickFirst(src.createdAt, src.created_at, '');
+    normalized.updatedAt = pickFirst(src.updatedAt, src.updated_at, '');
+    return normalized;
+  }
+
+
+  function normalizeSupplierDDT(rawDDT) {
+    const src = rawDDT && typeof rawDDT === 'object' ? rawDDT : {};
+    const normalized = Object.assign({}, src);
+    const rawStatus = String(pickFirst(src.status, src.stato, 'draft')).trim().toLowerCase();
+    const statusMap = {
+      bozza: 'draft', draft: 'draft',
+      ricevuto: 'received', received: 'received',
+      ricevuto_con_riserva: 'received_with_reserve', riserva: 'received_with_reserve', received_with_reserve: 'received_with_reserve',
+      parzialmente_respinto: 'partially_rejected', partially_rejected: 'partially_rejected',
+      respinto: 'rejected', rejected: 'rejected',
+      reso_fornitore: 'return_supplier', return_supplier: 'return_supplier',
+      annullato: 'cancelled', cancelled: 'cancelled'
+    };
+    normalized.status = statusMap[rawStatus] || 'draft';
+    normalized.stato = normalized.status;
+    normalized.number = pickFirst(src.number, src.numero, src.ddtNumber, src.numeroDDT, '');
+    normalized.numero = normalized.number;
+    normalized.ddtDirection = pickFirst(src.ddtDirection, src.direction, src.tipoDDT, 'received_supplier');
+    normalized.direction = normalized.ddtDirection;
+    normalized.supplierDocumentNumber = pickFirst(src.supplierDocumentNumber, src.numeroDocumentoFornitore, src.numeroDocumento, '');
+    normalized.date = pickFirst(src.date, src.data, new Date().toISOString().slice(0, 10));
+    normalized.supplierId = String(pickFirst(src.supplierId, src.fornitoreId, src.supplier && src.supplier.id, ''));
+    normalized.supplierName = pickFirst(src.supplierName, src.fornitoreNome, src.supplier && (src.supplier.name || src.supplier.nome || src.supplier.ragioneSociale), '');
+    const supplierSourceType = pickFirst(src.sourceType, src.tipoOrigine, src.originType, 'direct');
+    normalized.sourceType = supplierSourceType === 'supplier_orders' ? 'supplier_orders' : (supplierSourceType === 'supplier_order' || supplierSourceType === 'quarantine_return' ? supplierSourceType : 'direct');
+    normalized.sourceOrderId = String(pickFirst(src.sourceOrderId, src.ordineFornitoreId, src.orderId, ''));
+    normalized.sourceOrderIds = Array.isArray(src.sourceOrderIds) ? src.sourceOrderIds.map(String) : (normalized.sourceOrderId ? [normalized.sourceOrderId] : []);
+    normalized.sourceOrderNumbers = Array.isArray(src.sourceOrderNumbers) ? src.sourceOrderNumbers : [];
+    normalized.sourceDocuments = Array.isArray(src.sourceDocuments) ? src.sourceDocuments : normalized.sourceOrderIds.map(function (id, index) { return { type: 'supplier_order', id: id, number: normalized.sourceOrderNumbers[index] || '' }; });
+    normalized.notes = pickFirst(src.notes, src.note, '');
+    const lines = Array.isArray(src.lines) ? src.lines : (Array.isArray(src.righe) ? src.righe : []);
+    normalized.lines = lines.map(function (line) {
+      const l = line && typeof line === 'object' ? line : {};
+      const returnQty = numField(l.returnQty, l.quantitaResa, 0);
+      const received = normalized.ddtDirection === 'return_supplier' ? 0 : numField(l.receivedQty, l.documentQty, l.qty, l.quantity, l.quantitaRicevuta, l.quantitaDocumento, l.quantita, 0);
+      const accepted = numField(l.acceptedQty, l.accettato, l.quantitaAccettata, 0);
+      const quarantine = numField(l.quarantineQty, l.riservaQty, l.quantitaQuarantena, l.quantitaRiserva, 0);
+      const rejected = numField(l.rejectedQty, l.respinto, l.quantitaRespinta, 0);
+      const price = numField(l.price, l.unitPrice, l.purchasePrice, l.unitCost, l.prezzo, 0);
+      const productDescription = pickFirst(l.productDescription, l.description, l.descrizione, l.productName, '');
+      return Object.assign({}, l, {
+        productId: String(pickFirst(l.productId, l.prodottoId, l.itemId, '')),
+        productCode: pickFirst(l.productCode, l.code, l.codice, ''),
+        productDescription: productDescription,
+        description: productDescription,
+        unitOfMeasure: pickFirst(l.unitOfMeasure, l.um, 'pz'),
+        orderedQty: numField(l.orderedQty, l.quantitaOrdinata, 0),
+        receivedQty: received,
+        acceptedQty: accepted,
+        quarantineQty: quarantine,
+        rejectedQty: rejected,
+        returnQty: returnQty,
+        price: price,
+        purchasePrice: price,
+        unitCost: price,
+        lineTotal: (normalized.ddtDirection === 'return_supplier' ? returnQty : received) * price,
+        notes: pickFirst(l.notes, l.note, ''),
+        sourceOrderId: String(pickFirst(l.sourceOrderId, l.ordineFornitoreId, '')),
+        sourceOrderNumber: pickFirst(l.sourceOrderNumber, l.numeroOrdineFornitore, ''),
+        sourceOrderLineIndex: pickFirst(l.sourceOrderLineIndex, l.indiceRigaOrdine, ''),
+        remainingSourceQty: numField(l.remainingSourceQty, l.residuoOrigine, 0)
+      });
+    });
+    normalized.total = normalized.lines.reduce(function (sum, line) { return sum + numField(line.lineTotal, 0); }, 0);
+    normalized.createdAt = pickFirst(src.createdAt, src.created_at, '');
+    normalized.updatedAt = pickFirst(src.updatedAt, src.updated_at, '');
+    return normalized;
+  }
+
+
+  function normalizeCustomerDDT(rawDDT) {
+    const src = rawDDT && typeof rawDDT === 'object' ? rawDDT : {};
+    const normalized = Object.assign({}, src);
+    const rawStatus = String(pickFirst(src.status, src.stato, 'draft')).trim().toLowerCase();
+    const statusMap = { bozza: 'draft', draft: 'draft', consegnato: 'delivered', delivered: 'delivered', parzialmente_consegnato: 'partially_delivered', partially_delivered: 'partially_delivered', annullato: 'cancelled', cancelled: 'cancelled' };
+    normalized.status = statusMap[rawStatus] || 'draft';
+    normalized.stato = normalized.status;
+    normalized.number = pickFirst(src.number, src.numero, src.ddtNumber, src.numeroDDT, '');
+    normalized.numero = normalized.number;
+    normalized.date = pickFirst(src.date, src.data, new Date().toISOString().slice(0, 10));
+    normalized.customerId = String(pickFirst(src.customerId, src.clienteId, src.customer && src.customer.id, ''));
+    normalized.customerName = pickFirst(src.customerName, src.clienteNome, src.customer && (src.customer.name || src.customer.nome || src.customer.ragioneSociale), '');
+    const customerSourceTypeRaw = pickFirst(src.sourceType, src.tipoOrigine, src.originType, 'direct');
+    normalized.sourceType = customerSourceTypeRaw === 'customer_orders' ? 'customer_orders' : (customerSourceTypeRaw === 'customer_order' ? 'customer_order' : 'direct');
+    normalized.sourceOrderId = String(pickFirst(src.sourceOrderId, src.ordineClienteId, src.orderId, ''));
+    normalized.sourceOrderIds = Array.isArray(src.sourceOrderIds) ? src.sourceOrderIds.map(String) : (normalized.sourceOrderId ? [normalized.sourceOrderId] : []);
+    normalized.sourceOrderNumbers = Array.isArray(src.sourceOrderNumbers) ? src.sourceOrderNumbers : [];
+    normalized.sourceDocuments = Array.isArray(src.sourceDocuments) ? src.sourceDocuments : normalized.sourceOrderIds.map(function (id, index) { return { type: 'customer_order', id: id, number: normalized.sourceOrderNumbers[index] || '' }; });
+    normalized.transportReason = pickFirst(src.transportReason, src.causaleTrasporto, src.reason, 'Vendita');
+    normalized.carrier = pickFirst(src.carrier, src.vettore, '');
+    normalized.packages = pickFirst(src.packages, src.colli, '');
+    normalized.weight = pickFirst(src.weight, src.peso, '');
+    normalized.goodsAppearance = pickFirst(src.goodsAppearance, src.aspettoBeni, src.aspettoEsteriore, '');
+    normalized.notes = pickFirst(src.notes, src.note, '');
+    normalized.invoiceId = String(pickFirst(src.invoiceId, src.fatturaId, src.sourceInvoiceLink && src.sourceInvoiceLink.invoiceId, ''));
+    normalized.invoiceNumber = pickFirst(src.invoiceNumber, src.numeroFattura, src.sourceInvoiceLink && src.sourceInvoiceLink.invoiceNumber, '');
+    normalized.invoicedAt = pickFirst(src.invoicedAt, src.fatturatoIl, src.sourceInvoiceLink && src.sourceInvoiceLink.linkedAt, '');
+    normalized.invoiceStatus = pickFirst(src.invoiceStatus, src.statoFatturazione, normalized.invoiceId ? 'invoiced' : '');
+    const lines = Array.isArray(src.lines) ? src.lines : (Array.isArray(src.righe) ? src.righe : []);
+    normalized.lines = lines.map(function (line) {
+      const l = line && typeof line === 'object' ? line : {};
+      const shipped = numField(l.shippedQty, l.deliveredQty, l.documentQty, l.qty, l.quantity, l.quantitaConsegnata, l.quantitaDocumento, l.quantita, 0);
+      const price = numField(l.price, l.unitPrice, l.salePrice, l.prezzo, 0);
+      const productDescription = pickFirst(l.productDescription, l.description, l.descrizione, l.productName, '');
+      return Object.assign({}, l, {
+        productId: String(pickFirst(l.productId, l.prodottoId, l.itemId, '')),
+        productCode: pickFirst(l.productCode, l.code, l.codice, ''),
+        productDescription: productDescription,
+        description: productDescription,
+        unitOfMeasure: pickFirst(l.unitOfMeasure, l.um, 'pz'),
+        orderedQty: numField(l.orderedQty, l.quantitaOrdinata, 0),
+        shippedQty: shipped,
+        deliveredQty: shipped,
+        qty: shipped,
+        price: price,
+        salePrice: price,
+        lineTotal: shipped * price,
+        notes: pickFirst(l.notes, l.note, ''),
+        sourceOrderId: String(pickFirst(l.sourceOrderId, l.ordineClienteId, '')),
+        sourceOrderNumber: pickFirst(l.sourceOrderNumber, l.numeroOrdineCliente, ''),
+        sourceOrderLineIndex: pickFirst(l.sourceOrderLineIndex, l.indiceRigaOrdine, '')
+      });
+    });
+    normalized.total = normalized.lines.reduce(function (sum, line) { return sum + numField(line.lineTotal, 0); }, 0);
+    normalized.createdAt = pickFirst(src.createdAt, src.created_at, '');
+    normalized.updatedAt = pickFirst(src.updatedAt, src.updated_at, '');
+    return normalized;
+  }
+
+
+  function normalizeWorkflowEvent(rawEvent) {
+    const src = rawEvent && typeof rawEvent === 'object' ? rawEvent : {};
+    const normalized = Object.assign({}, src);
+    normalized.id = String(pickFirst(src.id, src.uid, 'wf_' + Date.now()));
+    normalized.sourceType = String(pickFirst(src.sourceType, src.tipoOrigine, '')).trim();
+    normalized.sourceCollection = String(pickFirst(src.sourceCollection, src.collezioneOrigine, '')).trim();
+    normalized.sourceId = String(pickFirst(src.sourceId, src.documentId, src.documentoId, '')).trim();
+    normalized.action = String(pickFirst(src.action, src.azione, 'review')).trim();
+    normalized.statusFrom = String(pickFirst(src.statusFrom, src.statoDa, '')).trim();
+    normalized.statusTo = String(pickFirst(src.statusTo, src.statoA, 'pending_review')).trim();
+    normalized.note = pickFirst(src.note, src.notes, src.nota, '');
+    normalized.createdAt = pickFirst(src.createdAt, src.created_at, new Date().toISOString());
+    normalized.createdBy = pickFirst(src.createdBy, src.user, src.utente, 'utente');
+    normalized.version = pickFirst(src.version, '0.4.2');
+    return normalized;
+  }
+
+
+  function normalizeAuditEvent(rawEvent) {
+    const src = rawEvent && typeof rawEvent === 'object' ? rawEvent : {};
+    const normalized = Object.assign({}, src);
+    normalized.id = String(pickFirst(src.id, src.uid, 'aud_' + Date.now()));
+    normalized.timestamp = pickFirst(src.timestamp, src.createdAt, src.date, new Date().toISOString());
+    normalized.category = String(pickFirst(src.category, src.categoria, 'manuale')).trim();
+    normalized.action = String(pickFirst(src.action, src.azione, 'note')).trim();
+    normalized.entityType = String(pickFirst(src.entityType, src.sourceType, src.tipoEntita, 'generic')).trim();
+    normalized.entityId = String(pickFirst(src.entityId, src.sourceId, src.documentId, '')).trim();
+    normalized.entityLabel = String(pickFirst(src.entityLabel, src.sourceNumber, src.label, '')).trim();
+    normalized.subjectName = String(pickFirst(src.subjectName, src.soggetto, src.subject, '')).trim();
+    normalized.amount = numField(src.amount, src.importo, 0);
+    normalized.actor = String(pickFirst(src.actor, src.createdBy, src.user, 'utente')).trim();
+    normalized.source = String(pickFirst(src.source, 'auditEvents')).trim();
+    normalized.severity = String(pickFirst(src.severity, src.priority, 'info')).trim();
+    normalized.note = pickFirst(src.note, src.notes, src.description, '');
+    normalized.version = pickFirst(src.version, '0.4.3');
+    return normalized;
+  }
+
   window.DomainNormalizers = window.DomainNormalizers || {};
   window.DomainNormalizers.pickFirst = pickFirst;
   window.DomainNormalizers.normalizeCompanyInfo = normalizeCompanyInfo;
+
+  function normalizeWarehouseMovement(rawMovement) {
+    const src = rawMovement && typeof rawMovement === 'object' ? rawMovement : {};
+    const normalized = Object.assign({}, src);
+    const typeRaw = String(pickFirst(src.movementType, src.type, src.tipoMovimento, 'CARICO')).trim().toUpperCase();
+    const allowed = ['CARICO', 'SCARICO', 'RETTIFICA', 'QUARANTENA_IN', 'QUARANTENA_OUT', 'SCARTO', 'RESO_FORNITORE'];
+    normalized.movementType = allowed.includes(typeRaw) ? typeRaw : 'CARICO';
+    normalized.tipoMovimento = normalized.movementType;
+    normalized.productId = String(pickFirst(src.productId, src.prodottoId, src.itemId, ''));
+    normalized.productCode = pickFirst(src.productCode, src.codiceProdotto, src.code, '');
+    normalized.productDescription = pickFirst(src.productDescription, src.descrizioneProdotto, src.description, '');
+    normalized.unitOfMeasure = pickFirst(src.unitOfMeasure, src.um, 'pz');
+    normalized.quantity = numField(src.quantity, src.qty, src.quantita, 0);
+    normalized.qty = normalized.quantity;
+    normalized.date = pickFirst(src.date, src.data, new Date().toISOString().slice(0, 10));
+    normalized.causale = pickFirst(src.causale, src.reason, '');
+    normalized.notes = pickFirst(src.notes, src.note, '');
+    normalized.documentType = pickFirst(src.documentType, src.tipoDocumento, 'manuale');
+    normalized.documentId = pickFirst(src.documentId, src.documentoId, '');
+    normalized.stockBefore = numField(src.stockBefore, src.giacenzaPrima, 0);
+    normalized.stockAfter = numField(src.stockAfter, src.giacenzaDopo, 0);
+    normalized.quarantineBefore = numField(src.quarantineBefore, src.quarantenaPrima, 0);
+    normalized.quarantineAfter = numField(src.quarantineAfter, src.quarantenaDopo, 0);
+    normalized.createdAt = pickFirst(src.createdAt, src.created_at, '');
+    return normalized;
+  }
+
+  window.DomainNormalizers.normalizeProductInfo = normalizeProductInfo;
+  window.DomainNormalizers.normalizeWarehouseMovement = normalizeWarehouseMovement;
+  window.DomainNormalizers.normalizeWarehouseLot = normalizeWarehouseLot;
+  window.DomainNormalizers.normalizeWorkflowEvent = normalizeWorkflowEvent;
+  window.DomainNormalizers.normalizeAuditEvent = normalizeAuditEvent;
+  window.DomainNormalizers.normalizeQuote = normalizeQuote;
+  window.DomainNormalizers.normalizeCustomerOrder = normalizeCustomerOrder;
+  window.DomainNormalizers.normalizeSupplierOrder = normalizeSupplierOrder;
+  window.DomainNormalizers.normalizeSupplierDDT = normalizeSupplierDDT;
+  window.DomainNormalizers.normalizeCustomerDDT = normalizeCustomerDDT;
   window.DomainNormalizers.normalizeCustomerInfo = normalizeCustomerInfo;
   window.DomainNormalizers.normalizeCreditNoteInfo = normalizeCreditNoteInfo;
   window.DomainNormalizers.normalizeInvoicePaymentInfo = normalizeInvoicePaymentInfo;
@@ -446,6 +934,16 @@
   window.DomainNormalizers.normalizeInvoiceStatusInfo = normalizeInvoiceStatusInfo;
   window.DomainNormalizers.normalizeInvoiceTotalsInfo = normalizeInvoiceTotalsInfo;
   window.normalizeCompanyInfo = normalizeCompanyInfo;
+  window.normalizeProductInfo = normalizeProductInfo;
+  window.normalizeWarehouseMovement = normalizeWarehouseMovement;
+  window.normalizeWarehouseLot = normalizeWarehouseLot;
+  window.normalizeWorkflowEvent = normalizeWorkflowEvent;
+  window.normalizeAuditEvent = normalizeAuditEvent;
+  window.normalizeQuote = normalizeQuote;
+  window.normalizeCustomerOrder = normalizeCustomerOrder;
+  window.normalizeSupplierOrder = normalizeSupplierOrder;
+  window.normalizeSupplierDDT = normalizeSupplierDDT;
+  window.normalizeCustomerDDT = normalizeCustomerDDT;
   window.normalizeCustomerInfo = normalizeCustomerInfo;
   window.normalizeCreditNoteInfo = normalizeCreditNoteInfo;
   window.normalizeInvoicePaymentInfo = normalizeInvoicePaymentInfo;

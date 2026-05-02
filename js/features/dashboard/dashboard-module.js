@@ -1,5 +1,5 @@
 // js/features/dashboard/dashboard-module.js
-// Dashboard KPI (Annuale/Mensile) - modulo separato
+// Dashboard Direzionale 0.2.1 (Annuale/Mensile) - modulo separato
 
 (function () {
   window.AppModules = window.AppModules || {};
@@ -34,6 +34,14 @@
     $('#dash-refresh-btn').on('click', function () {
       if (typeof renderDashboardPage === 'function') renderDashboardPage();
     });
+
+    if (window.AppStore && typeof window.AppStore.subscribe === 'function') {
+      ['invoices','purchases','products','worklogs','customerDDTs','customerOrders','supplierOrders','customers'].forEach(function (key) {
+        window.AppStore.subscribe(key, function () {
+          if (!$('#dashboard').hasClass('d-none') && typeof renderDashboardPage === 'function') renderDashboardPage();
+        });
+      });
+    }
 
     // Stato iniziale
     syncMonthVisibility();

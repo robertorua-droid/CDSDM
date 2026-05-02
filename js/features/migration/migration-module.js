@@ -49,7 +49,25 @@
     const items = [
       { label: 'Azienda (companyInfo)', value: (globalData && globalData.companyInfo) ? globalData.companyInfo : {}, count: 1 },
       { label: 'Clienti', value: (getData('customers') || []) },
-      { label: 'Servizi', value: (getData('products') || []) },
+      { label: 'Voci', value: (getData('products') || []) },
+      { label: 'Codici IVA', value: (getData('vatRates') || []) },
+      { label: 'Codici pagamento', value: (getData('paymentMethods') || []) },
+      { label: 'Banche aziendali', value: (getData('companyBanks') || []) },
+      { label: 'Movimenti magazzino', value: (getData('warehouseMovements') || []) },
+      { label: 'Preventivi', value: (getData('quotes') || []) },
+      { label: 'Ordini cliente', value: (getData('customerOrders') || []) },
+      { label: 'Ordini fornitore', value: (getData('supplierOrders') || []) },
+      { label: 'DDT fornitore', value: (getData('supplierDDTs') || []) },
+      { label: 'DDT cliente', value: (getData('customerDDTs') || []) },
+      { label: 'Conteggi inventario fisico', value: (getData('warehousePhysicalCounts') || []) },
+      { label: 'Lotti/matricole/scadenze', value: (getData('warehouseLots') || []) },
+      { label: 'Incassi e pagamenti', value: (getData('paymentEvents') || []) },
+      { label: 'Prima nota', value: (getData('cashbookMovements') || []) },
+      { label: 'Solleciti', value: (getData('reminderEvents') || []) },
+      { label: 'Riconciliazioni banca', value: (getData('bankReconciliationEvents') || []) },
+      { label: 'Budget e marginalità', value: (getData('businessBudgets') || []) },
+      { label: 'Workflow approvativi', value: (getData('workflowEvents') || []) },
+      { label: 'Registro attività', value: (getData('auditEvents') || []) },
       { label: 'Documenti (fatture/NC)', value: (getData('invoices') || []) },
       { label: 'Acquisti', value: (getData('purchases') || []) },
       { label: 'Fornitori', value: (getData('suppliers') || []) },
@@ -230,7 +248,7 @@
     }
 
     // 2) Collezioni principali
-    const collections = ['products', 'customers', 'suppliers', 'purchases', 'invoices', 'notes', 'commesse', 'projects', 'worklogs'];
+    const collections = ['products', 'customers', 'suppliers', 'purchases', 'invoices', 'notes', 'commesse', 'projects', 'worklogs', 'vatRates', 'paymentMethods', 'companyBanks', 'warehouseMovements', 'quotes', 'customerOrders', 'supplierOrders', 'supplierDDTs', 'customerDDTs', 'warehousePhysicalCounts', 'warehouseLots', 'paymentEvents', 'cashbookMovements', 'reminderEvents', 'bankReconciliationEvents', 'businessBudgets', 'workflowEvents', 'auditEvents'];
     const perCol = {};
     for (const col of collections) {
       try {
@@ -261,7 +279,25 @@
       purchases: Array.isArray(r.purchases) ? r.purchases : [],
       commesse: Array.isArray(r.commesse) ? r.commesse : [],
       projects: Array.isArray(r.projects) ? r.projects : [],
-      worklogs: Array.isArray(r.worklogs) ? r.worklogs : []
+      worklogs: Array.isArray(r.worklogs) ? r.worklogs : [],
+      vatRates: Array.isArray(r.vatRates) ? r.vatRates : [],
+      paymentMethods: Array.isArray(r.paymentMethods) ? r.paymentMethods : [],
+      companyBanks: Array.isArray(r.companyBanks) ? r.companyBanks : [],
+      warehouseMovements: Array.isArray(r.warehouseMovements) ? r.warehouseMovements : [],
+      quotes: Array.isArray(r.quotes) ? r.quotes : [],
+      customerOrders: Array.isArray(r.customerOrders) ? r.customerOrders : [],
+      supplierOrders: Array.isArray(r.supplierOrders) ? r.supplierOrders : [],
+      supplierDDTs: Array.isArray(r.supplierDDTs) ? r.supplierDDTs : [],
+      customerDDTs: Array.isArray(r.customerDDTs) ? r.customerDDTs : [],
+      warehousePhysicalCounts: Array.isArray(r.warehousePhysicalCounts) ? r.warehousePhysicalCounts : [],
+      warehouseLots: Array.isArray(r.warehouseLots) ? r.warehouseLots : [],
+      paymentEvents: Array.isArray(r.paymentEvents) ? r.paymentEvents : [],
+      cashbookMovements: Array.isArray(r.cashbookMovements) ? r.cashbookMovements : [],
+      reminderEvents: Array.isArray(r.reminderEvents) ? r.reminderEvents : [],
+      bankReconciliationEvents: Array.isArray(r.bankReconciliationEvents) ? r.bankReconciliationEvents : [],
+      businessBudgets: Array.isArray(r.businessBudgets) ? r.businessBudgets : [],
+      workflowEvents: Array.isArray(r.workflowEvents) ? r.workflowEvents : [],
+      auditEvents: Array.isArray(r.auditEvents) ? r.auditEvents : []
     };
   }
 
@@ -300,6 +336,24 @@
       ['commesse', backup.commesse],
       ['projects', backup.projects],
       ['worklogs', backup.worklogs],
+      ['vatRates', backup.vatRates],
+      ['paymentMethods', backup.paymentMethods],
+      ['companyBanks', backup.companyBanks],
+      ['warehouseMovements', backup.warehouseMovements],
+      ['quotes', backup.quotes],
+      ['customerOrders', backup.customerOrders],
+      ['supplierOrders', backup.supplierOrders],
+      ['supplierDDTs', backup.supplierDDTs],
+      ['customerDDTs', backup.customerDDTs],
+      ['warehousePhysicalCounts', backup.warehousePhysicalCounts],
+      ['warehouseLots', backup.warehouseLots],
+      ['paymentEvents', backup.paymentEvents],
+      ['cashbookMovements', backup.cashbookMovements],
+      ['reminderEvents', backup.reminderEvents],
+      ['bankReconciliationEvents', backup.bankReconciliationEvents],
+      ['businessBudgets', backup.businessBudgets],
+      ['workflowEvents', backup.workflowEvents],
+      ['auditEvents', backup.auditEvents],
       ['invoices', backup.invoices],
       ['notes', backup.notes]
     ];
@@ -354,7 +408,25 @@
           purchases: globalData.purchases || [],
           commesse: globalData.commesse || [],
           projects: globalData.projects || [],
-          worklogs: globalData.worklogs || []
+          worklogs: globalData.worklogs || [],
+          vatRates: globalData.vatRates || [],
+          paymentMethods: globalData.paymentMethods || [],
+          companyBanks: globalData.companyBanks || [],
+          warehouseMovements: globalData.warehouseMovements || [],
+          quotes: globalData.quotes || [],
+          customerOrders: globalData.customerOrders || [],
+          supplierOrders: globalData.supplierOrders || [],
+          supplierDDTs: globalData.supplierDDTs || [],
+          customerDDTs: globalData.customerDDTs || [],
+          warehousePhysicalCounts: globalData.warehousePhysicalCounts || [],
+          warehouseLots: globalData.warehouseLots || [],
+          paymentEvents: globalData.paymentEvents || [],
+          cashbookMovements: globalData.cashbookMovements || [],
+          reminderEvents: globalData.reminderEvents || [],
+          bankReconciliationEvents: globalData.bankReconciliationEvents || [],
+          businessBudgets: globalData.businessBudgets || [],
+          workflowEvents: globalData.workflowEvents || [],
+          auditEvents: globalData.auditEvents || []
         };
 
         const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });

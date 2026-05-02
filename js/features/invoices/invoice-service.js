@@ -61,18 +61,21 @@
       date: today,
       numberYear: today.substring(0, 4),
       condizioniPagamento: 'Pagamento Completo',
-      modalitaPagamento: 'Bonifico Bancario',
+      paymentMethodId: 'mp05_bonifico',
+      modalitaPagamento: 'Bonifico bancario',
       dataRiferimento: today,
       giorniTermini: 30,
       fineMese: false,
       giornoFissoEnabled: false,
       giornoFissoValue: '',
       bankChoice: '1',
+      companyBankId: (window.CompanyBankCatalog && window.CompanyBankCatalog.getDefault && window.CompanyBankCatalog.getDefault() ? window.CompanyBankCatalog.getDefault().id : ''),
       lines: [],
       linkedInvoice: '',
       reason: '',
       attachTimesheetPdf: false,
-      attachTimesheetNotes: true
+      attachTimesheetNotes: true,
+      sourceCustomerDDT: null
     };
   }
 
@@ -98,6 +101,8 @@
       number: isCopy ? '' : (invoice.number || ''),
       isDraft: (!isCopy) && (invoice.isDraft === true || String(invoice.status || '') === 'Bozza'),
       condizioniPagamento: invoice.condizioniPagamento || base.condizioniPagamento,
+      paymentMethodId: paymentInfo.paymentMethodId || invoice.paymentMethodId || "mp05_bonifico",
+      paymentMethodCode: paymentInfo.paymentMethodCode || invoice.paymentMethodCode || "MP05",
       modalitaPagamento: metodoNorm,
       dataRiferimento: invoice.dataRiferimento || invoice.date || today,
       giorniTermini: (invoice.giorniTermini != null && String(invoice.giorniTermini) !== '') ? invoice.giorniTermini : base.giorniTermini,
@@ -105,6 +110,7 @@
       giornoFissoEnabled: !!invoice.giornoFissoEnabled,
       giornoFissoValue: (invoice.giornoFissoValue != null && String(invoice.giornoFissoValue) !== '') ? invoice.giornoFissoValue : '',
       bankChoice: String(paymentInfo.bankChoice || '1'),
+      companyBankId: paymentInfo.companyBankId || invoice.companyBankId || "",
       dataScadenza: invoice.dataScadenza || '',
       linkedInvoice: creditInfo.linkedInvoice || '',
       linkedInvoiceDate: creditInfo.linkedInvoiceDate || '',
@@ -112,12 +118,33 @@
       attachTimesheetPdf: isCopy ? false : !!invoice.attachTimesheetPdf,
       attachTimesheetNotes: isCopy ? true : (invoice.attachTimesheetNotes !== false),
       lines: cloneDeep(invoice.lines || []),
+      sourceCustomerDDT: isCopy ? null : normalizeSourceCustomerDDT(invoice.sourceCustomerDDT || null),
       timesheetImportState: isCopy ? null : ((window.DomainNormalizers && typeof window.DomainNormalizers.normalizeTimesheetImportInfo === 'function')
         ? window.DomainNormalizers.normalizeTimesheetImportInfo(invoice.timesheetImport || null, invoice.lines || [])
         : (invoice.timesheetImport || null))
     });
   }
 
+
+  function normalizeSourceCustomerDDT(source) {
+    const src = source && typeof source === 'object' ? source : null;
+    if (!src) return null;
+    const docs = Array.isArray(src.documents) ? src.documents : [];
+    const ids = Array.isArray(src.ids) ? src.ids.map(String).filter(Boolean) : docs.map(function (d) { return String(d && d.id || ''); }).filter(Boolean);
+    const numbers = Array.isArray(src.numbers) ? src.numbers.map(String).filter(Boolean) : docs.map(function (d) { return String(d && d.number || ''); }).filter(Boolean);
+    if (!ids.length && !docs.length) return null;
+    return {
+      type: String(src.type || '').trim() || (ids.length > 1 ? 'customer_ddt_summary' : 'customer_ddt'),
+      ids: ids,
+      numbers: numbers,
+      dates: Array.isArray(src.dates) ? src.dates.map(String).filter(Boolean) : docs.map(function (d) { return String(d && d.date || ''); }).filter(Boolean),
+      documents: docs.length ? docs.map(function (d) {
+        return { type: 'customer_ddt', id: String(d && d.id || ''), number: String(d && d.number || ''), date: String(d && d.date || ''), customerId: String(d && d.customerId || '') };
+      }) : ids.map(function (id, idx) { return { type: 'customer_ddt', id: id, number: numbers[idx] || '', date: '', customerId: '' }; }),
+      summaryOptions: src.summaryOptions || null,
+      summaryNote: String(src.summaryNote || '')
+    };
+  }
 
   function buildInvoicePayload(formState) {
     const state = formState || {};
@@ -131,10 +158,11 @@
     const timesheetImport = (window.DomainNormalizers && typeof window.DomainNormalizers.normalizeTimesheetImportInfo === 'function')
       ? window.DomainNormalizers.normalizeTimesheetImportInfo(state.timesheetImport || null, state.lines || [])
       : (state.timesheetImport || null);
+    const previousInvoice = state.previousInvoice || null;
+    const sourceCustomerDDT = normalizeSourceCustomerDDT(state.sourceCustomerDDT || (previousInvoice && previousInvoice.sourceCustomerDDT) || null);
     const paymentMethod = paymentInfo.modalitaPagamento || 'Bonifico Bancario';
     const isBonifico = !!paymentInfo.isBonifico;
     const customer = state.customer || {};
-    const previousInvoice = state.previousInvoice || null;
     const calcs = state.calcs || {};
     const bolloAcaricoEmittente = (typeof window.resolveBolloAcaricoEmittente === 'function')
       ? window.resolveBolloAcaricoEmittente(previousInvoice, customer)
@@ -174,10 +202,16 @@
       dataRiferimento: state.dataRiferimento,
       giorniTermini: isBonifico ? (parseInt(state.giorniTermini, 10) || 0) : null,
       bankChoice: isBonifico ? (paymentInfo.bankChoice || '1') : null,
+      companyBankId: isBonifico ? (paymentInfo.companyBankId || state.companyBankId || null) : null,
+      bancaSelezionata: isBonifico ? (paymentInfo.bancaSelezionata || null) : null,
+      ibanSelezionato: isBonifico ? (paymentInfo.ibanSelezionato || null) : null,
       fineMese: isBonifico ? !!state.fineMese : null,
       giornoFissoEnabled: isBonifico ? !!state.giornoFissoEnabled : null,
       giornoFissoValue: (isBonifico && state.giornoFissoEnabled) ? (parseInt(state.giornoFissoValue, 10) || null) : null,
       condizioniPagamento: state.condizioniPagamento,
+      paymentMethodId: paymentInfo.paymentMethodId || state.paymentMethodId || null,
+      paymentMethodCode: paymentInfo.paymentMethodCode || state.paymentMethodCode || null,
+      modalitaPagamentoFE: paymentInfo.modalitaPagamentoFE || paymentInfo.paymentMethodCode || null,
       modalitaPagamento: paymentMethod,
       linkedInvoice: creditInfo.linkedInvoice,
       linkedInvoiceDate: creditInfo.linkedInvoiceDate || null,
@@ -185,6 +219,10 @@
       timesheetImport: timesheetImport,
       attachTimesheetPdf: !!state.attachTimesheetPdf,
       attachTimesheetNotes: !!state.attachTimesheetNotes,
+      sourceCustomerDDT: sourceCustomerDDT,
+      sourceDocuments: sourceCustomerDDT ? sourceCustomerDDT.documents : [],
+      sourceCustomerDDTIds: sourceCustomerDDT ? sourceCustomerDDT.ids : [],
+      sourceCustomerDDTNumbers: sourceCustomerDDT ? sourceCustomerDDT.numbers : [],
       isDraft: !!state.isDraft
     };
 

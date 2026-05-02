@@ -38,18 +38,21 @@
       dataScadenza: $('#invoice-dataScadenza').val(),
       dataRiferimento: $('#invoice-dataRiferimento').val(),
       giorniTermini: $('#invoice-giorniTermini').val(),
-      bankChoice: $('#invoice-bank-select').val() || '1',
+      bankChoice: $("#invoice-bank-select").val() || "1",
+      companyBankId: $("#invoice-bank-select").val() || "",
       fineMese: $('#invoice-fineMese').length ? $('#invoice-fineMese').is(':checked') : false,
       giornoFissoEnabled: $('#invoice-giornoFissoEnabled').length ? $('#invoice-giornoFissoEnabled').is(':checked') : false,
       giornoFissoValue: $('#invoice-giornoFissoValue').val(),
       condizioniPagamento: $('#invoice-condizioniPagamento').val(),
-      modalitaPagamento: $('#invoice-modalitaPagamento').val(),
+      paymentMethodId: $("#invoice-modalitaPagamento").val(),
+      modalitaPagamento: $("#invoice-modalitaPagamento option:selected").text().replace(/^MP\d{2}\s*-\s*/, "") || $("#invoice-modalitaPagamento").val(),
       linkedInvoice: $('#linked-invoice').val(),
       reason: $('#reason').val(),
       timesheetImport: (window.InvoiceFormSessionService && typeof window.InvoiceFormSessionService.getTimesheetImportState === 'function') ? window.InvoiceFormSessionService.getTimesheetImportState() : ((window.App && window.App.invoices) ? (window.App.invoices.timesheetImportState || null) : null),
       attachTimesheetPdf: $('#invoice-attach-timesheet-pdf').length ? $('#invoice-attach-timesheet-pdf').is(':checked') : false,
       attachTimesheetNotes: $('#invoice-attach-timesheet-notes').length ? $('#invoice-attach-timesheet-notes').is(':checked') : true,
-      isDraft: $('#invoice-isDraft').length ? $('#invoice-isDraft').is(':checked') : false
+      isDraft: $('#invoice-isDraft').length ? $('#invoice-isDraft').is(':checked') : false,
+      sourceCustomerDDT: (window.App && window.App.invoices) ? (window.App.invoices.sourceCustomerDDT || null) : null
     };
     const company = (window.InvoiceService && typeof window.InvoiceService.getCompanyInfo === 'function')
       ? window.InvoiceService.getCompanyInfo()

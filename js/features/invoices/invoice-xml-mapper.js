@@ -122,11 +122,31 @@
         out.push(String(invoice.reason).trim());
       }
     }
+    if (invoice.sourceCustomerDDT && invoice.sourceCustomerDDT.summaryNote) {
+      out.push(String(invoice.sourceCustomerDDT.summaryNote));
+    }
     if (isForfettario) out.push(rifNormForfettario);
     return out.reduce(function (acc, item) {
       return acc.concat(splitCausali(item));
     }, []).map(function (line) {
       return '\t\t\t\t<Causale>' + esc(line) + '</Causale>\n';
+    }).join('');
+  }
+
+  function buildDatiDDTXml(invoice) {
+    const src = invoice && invoice.sourceCustomerDDT ? invoice.sourceCustomerDDT : null;
+    const opts = src && src.summaryOptions ? src.summaryOptions : {};
+    if (!src || opts.includeXmlDatiDDT === false) return '';
+    const docs = Array.isArray(src.documents) ? src.documents : [];
+    const fallbackIds = Array.isArray(src.ids) ? src.ids : [];
+    const rows = docs.length ? docs : fallbackIds.map(function (id, idx) {
+      return { id: id, number: (src.numbers || [])[idx] || id, date: (src.dates || [])[idx] || '' };
+    });
+    return rows.filter(function (d) { return d && (d.number || d.id) && d.date; }).map(function (d) {
+      return '\t\t\t<DatiDDT>\n' +
+        '\t\t\t\t<NumeroDDT>' + esc(d.number || d.id || '') + '</NumeroDDT>\n' +
+        '\t\t\t\t<DataDDT>' + esc(String(d.date || '').slice(0, 10)) + '</DataDDT>\n' +
+        '\t\t\t</DatiDDT>\n';
     }).join('');
   }
 
@@ -175,6 +195,8 @@
     const aliqRitenuta = sf(company.aliquotaRitenuta || 20);
     const naturaForfettario = INVOICE_NATURE_FORFETTARIO;
     const rifNormForfettario = "Operazione in franchigia da IVA ai sensi dell'art. 1, commi 54-89, L. 190/2014";
+    const causaliDocumentoXml = buildGeneralCausaliXml(invoice, isForfettario, rifNormForfettario);
+    const datiDDTXml = buildDatiDDTXml(invoice);
 
     let datiRitenutaXml = '';
     if (ritenutaAcconto > 0) {
@@ -255,10 +277,10 @@
     };
 
     const condizioniPagamentoTP = normalizeTP(invoice.condizioniPagamento);
-    const metodoPagamentoUI = invoice.modalitaPagamento || 'Bonifico Bancario';
-    const modalitaPagamentoMP = mapMetodoToMP(metodoPagamentoUI);
-    const isBonifico = String(metodoPagamentoUI).trim().toLowerCase().includes('bonifico') ||
-      String(metodoPagamentoUI).trim().toLowerCase() === 'rimessa diretta';
+    const metodoPagamentoUI = invoice.modalitaPagamento || "Bonifico bancario";
+    const modalitaPagamentoMP = invoice.paymentMethodCode || invoice.modalitaPagamentoFE || mapMetodoToMP(metodoPagamentoUI);
+    const isBonifico = invoice.isBonifico === true || String(modalitaPagamentoMP).toUpperCase() === "MP05" || String(metodoPagamentoUI).trim().toLowerCase().includes("bonifico") ||
+      String(metodoPagamentoUI).trim().toLowerCase() === "rimessa diretta";
 
     let dataScadenza = invoice.dataScadenza || '';
     if (!dataScadenza && isBonifico && invoice.dataRiferimento) {
@@ -344,7 +366,9 @@
       (datiRitenutaXml ? `\t\t\t\t${datiRitenutaXml.split('\n').map(function (line, idx) { return idx === 0 ? line : '\t\t\t\t' + line; }).join('\n')}\n` : '') +
       (datiCassaXml ? `\t\t\t\t${datiCassaXml.split('\n').map(function (line, idx) { return idx === 0 ? line : '\t\t\t\t' + line; }).join('\n')}\n` : '') +
       `\t\t\t\t<ImportoTotaleDocumento>${signed(totaleDocumento).toFixed(2)}</ImportoTotaleDocumento>\n` +
+      (causaliDocumentoXml ? causaliDocumentoXml : '') +
       `\t\t\t</DatiGeneraliDocumento>\n` +
+      (datiDDTXml ? datiDDTXml : '') +
       `\t\t</DatiGenerali>\n` +
       `\t\t<DatiBeniServizi>\n`;
 
