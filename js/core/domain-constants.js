@@ -19,8 +19,18 @@
     COMPANY_DEFAULTS: {
       IVA_ORDINARIO: 22,
       GESTIONE_SEPARATA_ORDINARIO: '26.07'
-    }
+    },
+    DATA_COLLECTIONS: [
+      'products', 'customers', 'suppliers', 'purchases', 'invoices', 'notes',
+      'commesse', 'projects', 'worklogs', 'vatRates', 'paymentMethods',
+      'companyBanks', 'warehouseMovements', 'quotes', 'customerOrders',
+      'supplierOrders', 'supplierDDTs', 'customerDDTs', 'warehousePhysicalCounts',
+      'warehouseLots', 'paymentEvents', 'cashbookMovements', 'reminderEvents',
+      'bankReconciliationEvents', 'businessBudgets', 'workflowEvents', 'auditEvents',
+      'teachingScenarios', 'simulationEvents', 'migrationReports', 'permissionProfiles', 'permissionMatrices', 'securityAccessReports'
+    ]
   };
 
   window.DomainConstants = DomainConstants;
+  window.CDSDM_DATA_COLLECTIONS = DomainConstants.DATA_COLLECTIONS.slice();
 })();

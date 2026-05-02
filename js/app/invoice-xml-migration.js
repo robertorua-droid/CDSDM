@@ -10,6 +10,30 @@ function bindEventListeners() {
     if (window.AppModules && window.AppModules.navigation && typeof window.AppModules.navigation.bind === 'function') {
       window.AppModules.navigation.bind();
     }
+    if (window.AppModules && window.AppModules.businessGroups && typeof window.AppModules.businessGroups.bind === 'function') {
+      window.AppModules.businessGroups.bind();
+    }
+    if (window.AppModules && window.AppModules.superadmin && typeof window.AppModules.superadmin.bind === 'function') {
+      window.AppModules.superadmin.bind();
+    }
+    if (window.AppModules && window.AppModules.permissionProfiles && typeof window.AppModules.permissionProfiles.bind === 'function') {
+      window.AppModules.permissionProfiles.bind();
+    }
+    if (window.AppModules && window.AppModules.permissionMatrix && typeof window.AppModules.permissionMatrix.bind === 'function') {
+      window.AppModules.permissionMatrix.bind();
+    }
+    if (window.AppModules && window.AppModules.permissionOverrides && typeof window.AppModules.permissionOverrides.bind === 'function') {
+      window.AppModules.permissionOverrides.bind();
+    }
+    if (window.AppModules && window.AppModules.securityAudit && typeof window.AppModules.securityAudit.bind === 'function') {
+      window.AppModules.securityAudit.bind();
+    }
+    if (window.AppModules && window.AppModules.teacherConsole && typeof window.AppModules.teacherConsole.bind === 'function') {
+      window.AppModules.teacherConsole.bind();
+    }
+    if (window.AppModules && window.AppModules.migrationQa && typeof window.AppModules.migrationQa.bind === 'function') {
+      window.AppModules.migrationQa.bind();
+    }
     if (window.AppModules && window.AppModules.dashboard && typeof window.AppModules.dashboard.bind === 'function') {
       window.AppModules.dashboard.bind();
     }

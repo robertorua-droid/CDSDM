@@ -39,7 +39,14 @@
         bankReconciliationEvents: [],
         businessBudgets: [],
         workflowEvents: [],
-    customerDDTs: []
+        auditEvents: [],
+        teachingScenarios: [],
+        simulationEvents: [],
+        migrationReports: [],
+        permissionProfiles: [],
+        permissionMatrices: [],
+        securityAccessReports: [],
+        customerDDTs: []
       };
     }
     return window.globalData;

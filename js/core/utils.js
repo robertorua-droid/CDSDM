@@ -24,14 +24,25 @@ let globalData = window.globalData || {
     warehousePhysicalCounts: [],
     warehouseLots: [],
     paymentEvents: [],
-        cashbookMovements: [],
+    cashbookMovements: [],
     reminderEvents: [],
     bankReconciliationEvents: [],
     businessBudgets: [],
-    workflowEvents: []
+    workflowEvents: [],
+    auditEvents: [],
+    teachingScenarios: [],
+    simulationEvents: [],
+    migrationReports: [],
+    permissionProfiles: [],
+    permissionMatrices: [],
+    securityAccessReports: []
 };
 window.globalData = globalData;
 let currentUser = null;
+let currentBusinessGroup = null;
+let businessGroupMemberships = [];
+const DATA_COLLECTIONS = ['products', 'customers', 'suppliers', 'purchases', 'invoices', 'notes', 'commesse', 'projects', 'worklogs', 'vatRates', 'paymentMethods', 'companyBanks', 'warehouseMovements', 'quotes', 'customerOrders', 'supplierOrders', 'supplierDDTs', 'customerDDTs', 'warehousePhysicalCounts', 'warehouseLots', 'paymentEvents', 'cashbookMovements', 'reminderEvents', 'bankReconciliationEvents', 'businessBudgets', 'workflowEvents', 'auditEvents', 'teachingScenarios', 'simulationEvents', 'migrationReports', 'permissionProfiles', 'permissionMatrices', 'securityAccessReports'];
+window.CDSDM_DATA_COLLECTIONS = DATA_COLLECTIONS;
 let dateTimeInterval = null;
 let CURRENT_EDITING_ID = null;         
 let CURRENT_EDITING_INVOICE_ID = null; 
@@ -203,4 +214,25 @@ window.stopInactivityWatch = stopInactivityWatch;
         return db.collection('users').doc(currentUser.uid);
     }
 
+    // Restituisce il riferimento al gruppo aziendale attivo: /businessGroups/{groupId}
+    function getBusinessGroupDocRef(groupId) {
+        const id = groupId || (window.currentBusinessGroup && window.currentBusinessGroup.id);
+        if (!id) throw new Error('Nessun Gruppo aziendale attivo.');
+        return db.collection('businessGroups').doc(String(id));
+    }
+
+    // Root dati corrente: legacy utente oppure Gruppo aziendale attivo.
+    function getDataRootRef() {
+        if (window.currentBusinessGroup && window.currentBusinessGroup.id) {
+            return getBusinessGroupDocRef(window.currentBusinessGroup.id);
+        }
+        return getUserDocRef();
+    }
+
+    window.getBusinessGroupDocRef = getBusinessGroupDocRef;
+    window.getDataRootRef = getDataRootRef;
+
     // =========================================================
+
+window.currentBusinessGroup = currentBusinessGroup;
+window.businessGroupMemberships = businessGroupMemberships;
