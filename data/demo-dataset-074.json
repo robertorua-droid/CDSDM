@@ -1,0 +1,100 @@
+{
+  "version": "0.7.4",
+  "name": "Dataset demo didattico",
+  "data": {
+    "companyInfo": {
+      "name": "Studio Demo Professionisti"
+    },
+    "customers": [
+      {
+        "id": "cli-demo-001",
+        "name": "Alfa Formazione Srl"
+      }
+    ],
+    "suppliers": [
+      {
+        "id": "for-demo-001",
+        "name": "Beta Forniture Srl"
+      }
+    ],
+    "products": [
+      {
+        "id": "prod-demo-001",
+        "type": "product",
+        "name": "Kit didattico cloud"
+      }
+    ],
+    "quotes": [
+      {
+        "id": "prev-demo-001",
+        "customerId": "cli-demo-001"
+      }
+    ],
+    "customerOrders": [
+      {
+        "id": "ordc-demo-001",
+        "customerId": "cli-demo-001"
+      }
+    ],
+    "supplierOrders": [
+      {
+        "id": "ordf-demo-001",
+        "supplierId": "for-demo-001"
+      }
+    ],
+    "supplierDDTs": [
+      {
+        "id": "ddtf-demo-001",
+        "supplierId": "for-demo-001"
+      }
+    ],
+    "customerDDTs": [
+      {
+        "id": "ddtc-demo-001",
+        "customerId": "cli-demo-001"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "fat-demo-001",
+        "customerId": "cli-demo-001"
+      }
+    ],
+    "paymentEvents": [
+      {
+        "id": "pay-demo-001"
+      }
+    ],
+    "worklogs": [
+      {
+        "id": "wl-demo-001"
+      }
+    ],
+    "warehouseMovements": [
+      {
+        "id": "mov-demo-001"
+      }
+    ],
+    "warehouseLots": [
+      {
+        "id": "lot-demo-001"
+      }
+    ],
+    "warehousePhysicalCounts": [
+      {
+        "id": "inv-demo-001"
+      }
+    ],
+    "teachingScenarios": [
+      {
+        "id": "scenario-demo-001",
+        "title": "Dal preventivo alla fattura"
+      }
+    ],
+    "simulationEvents": [
+      {
+        "id": "sim-demo-001"
+      }
+    ]
+  }
+}

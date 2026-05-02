@@ -1227,3 +1227,47 @@ html[data-theme="dark"] input[type="datetime-local"]::-webkit-calendar-picker-in
   filter: invert(1) brightness(1.4);
   opacity: .9;
 }
+
+/* 0.5.0 — Gruppi aziendali condivisi */
+.sidebar-business-group {
+  background: rgba(255, 255, 255, 0.10);
+  color: rgba(255, 255, 255, 0.92);
+  line-height: 1.25;
+}
+#business-group-selector {
+  font-size: 0.78rem;
+}
+body.dark-mode .sidebar-business-group {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* CDSDM 0.7.3 */
+.cdsdm-help-callout{border-left:4px solid currentColor;margin-top:.75rem;margin-bottom:1rem}.dark-mode .cdsdm-help-callout{background-color:rgba(13,110,253,.12);color:var(--bs-body-color);}
+
+
+/* Guida contestuale 0.7.8 */
+#context-help-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    line-height: 1;
+}
+
+#context-help-btn.d-none {
+    display: none !important;
+}
+
+.menu-help-anchor {
+    scroll-margin-top: 88px;
+}
+
+.menu-help-anchor-highlight {
+    outline: 2px solid var(--accent-color, #3498db);
+    outline-offset: 6px;
+    border-radius: 6px;
+    transition: outline-color .3s ease;
+}
