@@ -92,35 +92,56 @@
           </div>
         </li>
 
-        <!-- FATTURE DI VENDITA -->
-        <div class="nav-section-container collapsed" id="section-vendite">
-          <div class="nav-section-header">
-            <span><i class="fas fa-file-invoice me-2"></i>Fatture di Vendita</span>
-            <i class="fas fa-chevron-down chevron"></i>
-          </div>
-          <div class="nav-section-content">
-            <li class="nav-item"><a class="nav-link" data-bs-target="#newInvoiceChoiceModal" data-bs-toggle="modal"
-                href="#" id="menu-nuova-fattura"><i class="fas fa-plus-circle"></i> Nuova Fattura</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="nuova-fattura-accompagnatoria" href="#"
-                id="menu-nuova-nota-credito"><i class="fas fa-file-contract"></i> Nuova Nota Credito</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="elenco-fatture" href="#"><i
-                  class="fas fa-list-check"></i> Elenco Documenti</a></li>
-          </div>
-        </div>
+<!-- VENDITE -->
+<div class="nav-section-container collapsed" id="section-vendite">
+  <div class="nav-section-header">
+    <span><i class="fas fa-chart-line me-2"></i>Vendite</span>
+    <i class="fas fa-chevron-down chevron"></i>
+  </div>
+  <div class="nav-section-content">
+    <span class="nav-section-subtitle">Documenti commerciali</span>
+    <li class="nav-item"><a class="nav-link" data-target="preventivi" href="#"><i
+          class="fas fa-file-lines"></i> Elenco Preventivi cliente</a></li>
+    <li class="nav-item"><a class="nav-link" id="menu-nuovo-preventivo-cliente" href="#"><i
+          class="fas fa-file-circle-plus"></i> Nuovo Preventivo cliente</a></li>
+    <li class="nav-item"><a class="nav-link" data-target="ordini-cliente" href="#"><i
+          class="fas fa-file-signature"></i> Elenco Ordini cliente</a></li>
+    <li class="nav-item"><a class="nav-link" id="menu-nuovo-ordine-cliente" href="#"><i
+          class="fas fa-file-circle-plus"></i> Nuovo Ordine cliente</a></li>
+    <li class="nav-item"><a class="nav-link" data-target="ddt-cliente" href="#"><i
+          class="fas fa-truck-fast"></i> DDT cliente</a></li>
+    <span class="nav-section-subtitle">Fatturazione</span>
+    <li class="nav-item"><a class="nav-link" data-target="fatturazione-ddt-cliente" href="#" id="menu-fatturazione-ddt-cliente"><i class="fas fa-layer-group"></i> Fatturazione DDT cliente</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-target="#newInvoiceChoiceModal" data-bs-toggle="modal"
+        href="#" id="menu-nuova-fattura"><i class="fas fa-plus-circle"></i> Nuova Fattura</a></li>
+    <li class="nav-item"><a class="nav-link" data-target="nuova-fattura-accompagnatoria" href="#"
+        id="menu-nuova-nota-credito"><i class="fas fa-file-contract"></i> Nuova Nota Credito</a></li>
+    <li class="nav-item"><a class="nav-link" data-target="elenco-fatture" href="#"><i
+          class="fas fa-list-check"></i> Elenco Documenti</a></li>
+  </div>
+</div>
 
-        <!-- FATTURE DI ACQUISTO -->
-        <div class="nav-section-container collapsed" id="section-acquisti">
-          <div class="nav-section-header">
-            <span><i class="fas fa-shopping-cart me-2"></i>Fatture di Acquisto</span>
-            <i class="fas fa-chevron-down chevron"></i>
-          </div>
-          <div class="nav-section-content">
-            <li class="nav-item"><a class="nav-link" id="menu-nuovo-acquisto" data-target="nuovo-acquisto" href="#"><i
-                  class="fas fa-cart-plus"></i> Nuovo Acquisto</a></li>
-            <li class="nav-item"><a class="nav-link" id="menu-elenco-acquisti" data-target="elenco-acquisti" href="#"><i
-                  class="fas fa-receipt"></i> Elenco Acquisti</a></li>
-          </div>
-        </div>
+<!-- ACQUISTI -->
+<div class="nav-section-container collapsed" id="section-acquisti">
+  <div class="nav-section-header">
+    <span><i class="fas fa-shopping-cart me-2"></i>Acquisti</span>
+    <i class="fas fa-chevron-down chevron"></i>
+  </div>
+  <div class="nav-section-content">
+    <span class="nav-section-subtitle">Documenti fornitori</span>
+    <li class="nav-item"><a class="nav-link" data-target="ordini-fornitore" href="#"><i
+          class="fas fa-file-invoice"></i> Elenco Ordini fornitore</a></li>
+    <li class="nav-item"><a class="nav-link" id="menu-nuovo-ordine-fornitore" href="#"><i
+          class="fas fa-file-circle-plus"></i> Nuovo Ordine fornitore</a></li>
+    <li class="nav-item"><a class="nav-link" data-target="ddt-fornitore" href="#"><i
+          class="fas fa-truck-ramp-box"></i> DDT fornitore</a></li>
+    <span class="nav-section-subtitle">Fatture fornitori</span>
+    <li class="nav-item"><a class="nav-link" id="menu-nuovo-acquisto" data-target="nuovo-acquisto" href="#"><i
+          class="fas fa-cart-plus"></i> Nuovo Acquisto</a></li>
+    <li class="nav-item"><a class="nav-link" id="menu-elenco-acquisti" data-target="elenco-acquisti" href="#"><i
+          class="fas fa-receipt"></i> Elenco Acquisti</a></li>
+  </div>
+</div>
 
         <!-- ANALISI -->
         <div class="nav-section-container collapsed" id="section-analisi">
@@ -131,8 +152,40 @@
           <div class="nav-section-content">
             <li class="nav-item"><a class="nav-link" data-target="dashboard" href="#"><i class="fas fa-gauge-high"></i>
                 Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="centro-notifiche" href="#"><i class="fas fa-bell"></i> Centro notifiche</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="workflow-approvativi" href="#"><i class="fas fa-list-check"></i> Workflow approvativi</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="audit-trail" href="#"><i class="fas fa-clock-rotate-left"></i> Registro attività</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="ux-accessibilita" href="#"><i class="fas fa-universal-access"></i> UX / accessibilità</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="budget-marginalita" href="#"><i class="fas fa-chart-column"></i> Budget e marginalità</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="centro-stampe" href="#"><i class="fas fa-print"></i> Stampe / PDF</a></li>
             <li class="nav-item"><a class="nav-link" data-target="statistiche" href="#"><i
                   class="fas fa-chart-line"></i> Statistiche</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="report-gestionali" href="#"><i class="fas fa-file-chart-column"></i> Report gestionali</a></li>
+          </div>
+        </div>
+
+
+        <!-- CONTABILITÀ -->
+        <div class="nav-section-container collapsed" id="section-contabilita">
+          <div class="nav-section-header">
+            <span><i class="fas fa-calculator me-2"></i>Contabilità</span>
+            <i class="fas fa-chevron-down chevron"></i>
+          </div>
+          <div class="nav-section-content">
+            <li class="nav-item"><a class="nav-link" data-target="partitario" href="#"><i
+                  class="fas fa-scale-balanced"></i> Partitario</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="incassi-pagamenti" href="#"><i
+                  class="fas fa-money-bill-transfer"></i> Incassi e pagamenti</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="prima-nota" href="#"><i
+                  class="fas fa-cash-register"></i> Prima nota</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="estratto-conto" href="#"><i
+                  class="fas fa-file-invoice-dollar"></i> Estratto conto</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="solleciti" href="#"><i
+                  class="fas fa-bell"></i> Solleciti</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="riconciliazione-banca" href="#"><i
+                  class="fas fa-building-columns"></i> Riconciliazione banca</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="bilancino" href="#"><i
+                  class="fas fa-chart-simple"></i> Bilancino</a></li>
             <li class="nav-item"><a class="nav-link" data-target="scadenziario" href="#"><i
                   class="fas fa-calendar-alt"></i> Scadenziario</a></li>
             <li class="nav-item"><a class="nav-link" id="menu-registri-iva" data-target="registri-iva" href="#"><i
@@ -184,9 +237,35 @@
             <li class="nav-item"><a class="nav-link" id="menu-fornitori" data-target="anagrafica-fornitori" href="#"><i
                   class="fas fa-truck"></i> Fornitori</a></li>
             <li class="nav-item"><a class="nav-link" data-target="anagrafica-prodotti" href="#"><i
-                  class="fas fa-box"></i> Servizi</a></li>
+                  class="fas fa-box"></i> Servizi / Prodotti</a></li>
           </div>
         </div>
+
+<!-- MAGAZZINO -->
+<div class="nav-section-container collapsed" id="section-magazzino">
+  <div class="nav-section-header">
+    <span><i class="fas fa-warehouse me-2"></i>Magazzino</span>
+    <i class="fas fa-chevron-down chevron"></i>
+  </div>
+  <div class="nav-section-content">
+    <li class="nav-item"><a class="nav-link" data-target="magazzino-giacenza-prodotto" href="#"><i
+          class="fas fa-magnifying-glass-chart"></i> Giacenza prodotto</a></li>
+    <li class="nav-item"><a class="nav-link" data-target="magazzino-giacenze" href="#"><i
+          class="fas fa-boxes-stacked"></i> Giacenze</a></li>
+    <li class="nav-item"><a class="nav-link" data-target="magazzino-inventario-fisico" href="#"><i
+          class="fas fa-clipboard-check"></i> Inventario fisico</a></li>
+    <li class="nav-item"><a class="nav-link" data-target="magazzino-inventario" href="#"><i
+          class="fas fa-clipboard-list"></i> Inventario valorizzato</a></li>
+    <li class="nav-item"><a class="nav-link" data-target="magazzino-lotti" href="#"><i
+          class="fas fa-barcode"></i> Lotti / matricole / scadenze</a></li>
+    <li class="nav-item"><a class="nav-link" data-target="magazzino-movimenti" href="#"><i
+          class="fas fa-right-left"></i> Movimenti</a></li>
+    <li class="nav-item"><a class="nav-link" data-target="magazzino-quarantena" href="#"><i
+          class="fas fa-triangle-exclamation"></i> Quarantena</a></li>
+    <li class="nav-item"><a class="nav-link" data-target="magazzino-macerati" href="#"><i
+          class="fas fa-recycle"></i> Prodotti macerati</a></li>
+  </div>
+</div>
 
         <!-- IMPOSTAZIONI -->
         <div class="nav-section-container collapsed" id="section-settings">
@@ -197,8 +276,18 @@
           <div class="nav-section-content">
             <li class="nav-item"><a class="nav-link" data-target="anagrafica-azienda" href="#"><i
                   class="fas fa-building"></i> Azienda</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="tabella-iva" href="#"><i
+                  class="fas fa-percent"></i> Tabella IVA</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="tabella-pagamenti" href="#"><i
+                  class="fas fa-money-check-alt"></i> Codici pagamento</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="banche-aziendali" href="#"><i
+                  class="fas fa-university"></i> Banche aziendali</a></li>
             <li class="nav-item"><a class="nav-link" id="menu-uso-dati" data-target="uso-dati" href="#"><i
                   class="fas fa-database"></i> Uso dati</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="import-massivi" href="#"><i
+                  class="fas fa-file-csv"></i> Import massivi CSV</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="ruoli-permessi" href="#"><i
+                  class="fas fa-user-shield"></i> Ruoli e permessi</a></li>
             <li class="nav-item"><a class="nav-link" data-target="avanzate" href="#"><i
                   class="fas fa-cloud-upload-alt"></i> Gestione Dati</a></li>
           </div>
@@ -252,8 +341,8 @@
                 <i class="fas fa-rocket fa-4x"></i>
               </div>
               <div class="col-md-10">
-                <h3 class="mb-1">CDSDM Versione 0.0.2</h3>
-                <p class="text-muted">Recupero password da login tramite link di reset Firebase.</p>
+                <h3 class="mb-1">CDSDM Versione 0.4.8</h3>
+                <p class="text-muted">Release tecnica di accessibilità: correzione runtime delle label/aria dei campi form e dei nomi accessibili dei pulsanti, con controlli UX aggiornati.</p>
                 <p class="small text-muted mb-0"><i class="fas fa-check-circle text-success"></i> Sincronizzazione Cloud
                   Attiva</p>
                 <p class="small text-muted"><i class="fas fa-shield-halved text-info"></i> Protezione Dati Crittografata
@@ -281,6 +370,29 @@
               </div>
             </div>
           </div>
+        </div>
+
+        <div class="content-section d-none" id="ruoli-permessi">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h2><i class="fas fa-user-shield me-2"></i>Ruoli e permessi</h2>
+              <p class="text-muted mb-0">Controlli applicativi front-end per profili didattici: admin, commerciale, magazzino, contabilità e sola lettura.</p>
+            </div>
+          </div>
+          <div id="roles-permissions-container">
+            <div class="text-center text-muted py-5">Seleziona la voce di menu per caricare la configurazione.</div>
+          </div>
+        </div>
+
+        <div class="content-section d-none" id="report-gestionali">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h2><i class="fas fa-file-chart-column me-2"></i>Report gestionali</h2>
+              <p class="text-muted mb-0">Giacenze valorizzate, merce in quarantena, DDT da fatturare, ordini inevasi e scadenze aperte.</p>
+            </div>
+            <button class="btn btn-outline-primary btn-sm" type="button" onclick="window.AppModules && window.AppModules.warehouseReports && window.AppModules.warehouseReports.render && window.AppModules.warehouseReports.render()"><i class="fas fa-rotate me-1"></i>Aggiorna</button>
+          </div>
+          <div id="warehouse-reports-root"></div>
         </div>
 
         <!-- HOME -->
@@ -555,23 +667,504 @@
             <tbody id="customers-table-body"></tbody>
           </table>
         </div>
-        <!-- SERVIZI -->
+        <!-- SERVIZI / PRODOTTI -->
         <div class="content-section d-none" id="anagrafica-prodotti">
-          <h2>Anagrafica Servizi <button class="btn btn-success float-end" id="newProductBtn"><i
+          <h2>Gestione Servizi, Prodotti e Costi <button class="btn btn-success float-end" id="newProductBtn"><i
                 class="fas fa-plus"></i>
-              Nuovo Servizio</button></h2>
+              Nuova Voce</button></h2>
+          <p class="text-muted small mb-3">Le voci possono essere Servizi, Costi o Prodotti. I Prodotti possono avere prezzi di acquisto/vendita per preparare inventario valorizzato, magazzino e DDT senza modificare le fatture esistenti.</p>
+          <ul class="nav nav-pills gap-2 mb-3" id="products-type-filter" role="tablist" aria-label="Filtro tipo voce">
+            <li class="nav-item" role="presentation"><button class="nav-link active" type="button" data-product-type-filter="all">Tutti</button></li>
+            <li class="nav-item" role="presentation"><button class="nav-link" type="button" data-product-type-filter="service">Servizi</button></li>
+            <li class="nav-item" role="presentation"><button class="nav-link" type="button" data-product-type-filter="product">Prodotti</button></li>
+            <li class="nav-item" role="presentation"><button class="nav-link" type="button" data-product-type-filter="cost">Costi</button></li>
+          </ul>
           <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>Codice</th>
-                <th class="col-description">Descrizione</th>
-                <th class="text-end-numbers col-price pe-5">Prezzo</th>
-                <th class="text-end-numbers">IVA</th>
-                <th class="text-end col-actions">Azioni</th>
-              </tr>
-            </thead>
+            <thead><tr><th>Codice</th><th>Tipo</th><th class="col-description">Descrizione</th><th class="text-end-numbers col-price">Prezzo acquisto</th><th class="text-end-numbers col-price pe-5">Prezzo vendita</th><th>Regola IVA / Natura FE</th><th class="text-end col-actions">Azioni</th></tr></thead>
             <tbody id="products-table-body"></tbody>
           </table>
+        </div>
+
+        <!-- MAGAZZINO: GIACENZE -->
+<div class="content-section d-none" id="preventivi">
+  <div class="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2">
+    <div>
+      <h2 class="mb-1">Elenco Preventivi cliente</h2>
+      <div class="text-muted small">Vista consultiva dei preventivi cliente, con stato, dettaglio e conversione in ordine cliente.</div>
+    </div>
+  </div>
+  <div class="alert alert-info small warehouse-flow-note">
+    <strong>Flusso vendite.</strong> Preventivo → Ordine cliente → DDT cliente → Fattura. La conversione in ordine copia righe e cliente; le giacenze restano invariate fino al DDT.
+  </div>
+  <table class="table table-sm table-hover align-middle">
+    <thead><tr><th>Numero</th><th>Data</th><th>Valido fino</th><th>Cliente</th><th>Stato</th><th class="text-end">Righe</th><th class="text-end">Totale</th><th class="text-end">Azioni</th></tr></thead>
+    <tbody id="quotes-table-body"><tr><td colspan="8"><div class="warehouse-empty-state"><span class="empty-title">Nessun preventivo registrato</span><span class="empty-hint">Crea un preventivo e, quando accettato, convertilo in ordine cliente.</span></div></td></tr></tbody>
+  </table>
+</div>
+
+        
+        <!-- MAGAZZINO: GIACENZA PRODOTTO -->
+        <div class="content-section d-none" id="magazzino-giacenza-prodotto">
+          <div class="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2">
+            <div>
+              <h2 class="mb-1">Giacenza prodotto</h2>
+              <div class="text-muted small">Consultazione rapida della giacenza di un singolo prodotto fisico.</div>
+            </div>
+          </div>
+          <div class="alert alert-info small warehouse-flow-note">
+            <strong>Consultazione.</strong> Seleziona un prodotto per vedere disponibile, riservato, netto, quarantena, scorta minima e ubicazione.
+          </div>
+          <div class="row g-3">
+            <div class="col-md-8 col-lg-6">
+              <label class="form-label" for="warehouseStockQueryProduct">Seleziona prodotto</label>
+              <select class="form-select" id="warehouseStockQueryProduct"><option value="">Seleziona un prodotto...</option></select>
+            </div>
+          </div>
+          <div class="card mt-3 d-none" id="warehouseStockQueryResult">
+            <div class="card-body">
+              <h5 class="card-title mb-3" id="warehouseStockQueryTitle">-</h5>
+              <div class="row g-3">
+                <div class="col-md-3"><div class="text-muted small">Disponibile</div><div class="h4 mb-0" id="warehouseStockQueryAvailable">0</div></div>
+                <div class="col-md-3"><div class="text-muted small">Riservata</div><div class="h4 mb-0" id="warehouseStockQueryReserved">0</div></div>
+                <div class="col-md-3"><div class="text-muted small">Netta</div><div class="h4 mb-0" id="warehouseStockQueryNet">0</div></div>
+                <div class="col-md-3"><div class="text-muted small">Quarantena</div><div class="h4 mb-0" id="warehouseStockQueryQuarantine">0</div></div>
+              </div>
+              <hr>
+              <div class="row g-2 small">
+                <div class="col-md-4"><strong>UM:</strong> <span id="warehouseStockQueryUm">-</span></div>
+                <div class="col-md-4"><strong>Ubicazione:</strong> <span id="warehouseStockQueryLocation">-</span></div>
+                <div class="col-md-4"><strong>Scorta minima:</strong> <span id="warehouseStockQueryMin">-</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-section d-none" id="magazzino-giacenze">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <div>
+              <h2 class="mb-1">Giacenze di magazzino</h2>
+              <div class="text-muted small">Prodotti fisici movimentabili con disponibile, riservato, netto, quarantena e scorta minima.</div>
+            </div>
+          </div>
+          <div class="alert alert-info small warehouse-flow-note">
+            <strong>Flusso.</strong> Le giacenze derivano dai prodotti fisici e dai movimenti registrati. Usa Movimenti per rettifiche manuali; i DDT generano movimenti automatici.
+          </div>
+          <table class="table table-hover align-middle">
+            <thead><tr><th>Codice</th><th>Prodotto</th><th>UM</th><th>Ubicazione</th><th class="text-end">Disp.</th><th class="text-end">Riserv.</th><th class="text-end">Netta</th><th class="text-end">Quarantena</th><th class="text-end">Scorta min.</th><th>Stato</th></tr></thead>
+            <tbody id="warehouse-stocks-table-body"></tbody>
+          </table>
+        </div>
+
+        <!-- MAGAZZINO: INVENTARIO FISICO -->
+        <div class="content-section d-none" id="magazzino-inventario-fisico">
+          <div class="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2">
+            <div>
+              <h2 class="mb-1">Inventario fisico</h2>
+              <div class="text-muted small">Conteggio reale della merce e confronto con la giacenza a gestionale.</div>
+            </div>
+          </div>
+          <div class="alert alert-warning small warehouse-flow-note">
+            <strong>Rettifica controllata.</strong> Inserisci la giacenza fisica contata. Il sistema calcola lo scarto e, solo dopo conferme, rettifica le giacenze disponibili dei prodotti con differenza. La quarantena non viene modificata.
+          </div>
+          <div class="d-flex flex-wrap gap-2 mb-3 align-items-center">
+            <button class="btn btn-outline-danger btn-sm" id="warehousePhysicalResetBtn" type="button"><i class="fas fa-eraser"></i> Azzera conteggi fisici</button>
+            <button class="btn btn-outline-primary btn-sm" id="warehousePhysicalApplyBtn" type="button"><i class="fas fa-balance-scale"></i> Allinea giacenze da inventario</button>
+            <span class="small text-muted">I conteggi sono salvati come bozza Firestore per utente nella collezione <code>warehousePhysicalCounts</code>.</span>
+          </div>
+          <table class="table table-sm table-hover align-middle">
+            <thead><tr><th>Codice</th><th>Prodotto</th><th>UM</th><th>Ubicazione</th><th class="text-end">Giacenza sistema</th><th class="text-end">Giacenza fisica</th><th class="text-end">Differenza</th></tr></thead>
+            <tbody id="warehouse-physical-inventory-table-body"><tr><td colspan="7"><div class="warehouse-empty-state"><span class="empty-title">Nessun prodotto fisico configurato</span><span class="empty-hint">Crea prodotti fisici in Servizi / Prodotti per usare l'inventario fisico.</span></div></td></tr></tbody>
+          </table>
+        </div>
+
+        <!-- MAGAZZINO: MOVIMENTI -->
+        <div class="content-section d-none" id="magazzino-movimenti">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <div>
+              <h2 class="mb-1">Movimenti di magazzino</h2>
+              <div class="text-muted small">Storico operativo dei carichi, scarichi, rettifiche e passaggi da/per quarantena.</div>
+            </div>
+            <button class="btn btn-success" id="newWarehouseMovementBtn" type="button"><i class="fas fa-plus"></i> Nuovo movimento</button>
+          </div>
+          <div class="alert alert-info small warehouse-flow-note">
+            <strong>Uso consigliato.</strong> Registra qui solo movimenti manuali o rettifiche. I DDT cliente/fornitore producono movimenti automatici collegati al documento.
+          </div>
+          <table class="table table-sm table-hover align-middle">
+            <thead><tr><th>Data</th><th>Tipo</th><th>Prodotto</th><th class="text-end">Quantità</th><th>Causale</th><th>Giacenza disp.</th><th>Quarantena</th><th>Documento</th></tr></thead>
+            <tbody id="warehouse-movements-table-body"><tr><td colspan="8"><div class="warehouse-empty-state"><span class="empty-title">Nessun movimento registrato</span><span class="empty-hint">I movimenti manuali e automatici compariranno qui.</span></div></td></tr></tbody>
+          </table>
+        </div>
+
+        <!-- MAGAZZINO: INVENTARIO -->
+        <div class="content-section d-none" id="magazzino-inventario">
+          <div class="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2">
+            <div>
+              <h2 class="mb-1">Valorizzazione magazzino</h2>
+              <div class="text-muted small">Valore economico delle giacenze con metodo selezionabile: prezzo anagrafico, ultimo costo o costo medio ponderato semplificato.</div>
+            </div>
+            <button class="btn btn-outline-secondary" id="warehouseInventoryExportCsvBtn" type="button"><i class="fas fa-file-csv"></i> Esporta CSV</button>
+          </div>
+          <div class="alert alert-info small warehouse-flow-note">
+            <strong>Valorizzazione 0.2.3.</strong> Il valore è calcolato lato front-end dai prodotti e dai DDT fornitore già presenti: nessuna nuova collezione Firestore. Se ultimo costo o costo medio non sono disponibili, il sistema usa il prezzo anagrafico come fallback.
+          </div>
+          <div class="row g-3 mb-3">
+            <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted small">Valore disponibile</div><div class="h4 mb-0" id="warehouse-value-stock">€ 0,00</div></div></div></div>
+            <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted small">Valore quarantena</div><div class="h4 mb-0" id="warehouse-value-quarantine">€ 0,00</div></div></div></div>
+            <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted small">Valore totale</div><div class="h4 mb-0" id="warehouse-value-total">€ 0,00</div></div></div></div>
+            <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted small">Prodotti sotto scorta</div><div class="h4 mb-0" id="warehouse-understock-count">0</div></div></div></div>
+          </div>
+          <div class="row g-2 align-items-end mb-3">
+            <div class="col-md-3">
+              <label class="form-label">Filtro inventario</label>
+              <select class="form-select" id="warehouseInventoryFilter">
+                <option value="all">Tutti i prodotti fisici</option>
+                <option value="with-stock">Solo con giacenza o quarantena</option>
+                <option value="understock">Solo sotto scorta</option>
+                <option value="missing-price">Solo senza costo valorizzabile</option>
+                <option value="fallback-cost">Solo con costo fallback</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Metodo valorizzazione</label>
+              <select class="form-select" id="warehouseValuationMethod">
+                <option value="standard">Prezzo anagrafico</option>
+                <option value="last">Ultimo costo DDT fornitore</option>
+                <option value="average">Costo medio ponderato semplificato</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <div class="small text-muted" id="warehouse-inventory-summary-note">Valorizzazione calcolata sul metodo selezionato.</div>
+            </div>
+          </div>
+          <table class="table table-hover align-middle">
+            <thead><tr><th>Codice</th><th>Prodotto</th><th>UM</th><th class="text-end">Giacenza</th><th class="text-end">Riservata</th><th class="text-end">Netta</th><th class="text-end">Quarantena</th><th class="text-end">Costo unit.</th><th>Origine costo</th><th class="text-end">Valore disp.</th><th class="text-end">Valore quarantena</th><th class="text-end">Totale</th><th>Note</th></tr></thead>
+            <tbody id="warehouse-inventory-table-body"></tbody>
+          </table>
+        </div>
+
+
+        <!-- MAGAZZINO: LOTTI / MATRICOLE / SCADENZE -->
+        <div class="content-section d-none" id="magazzino-lotti">
+          <div class="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2">
+            <div>
+              <h2 class="mb-1">Lotti / matricole / scadenze</h2>
+              <div class="text-muted small">Registro didattico dei prodotti tracciati con lotto, matricola o data scadenza.</div>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-outline-secondary" id="warehouseLotsExportCsvBtn" type="button"><i class="fas fa-file-csv"></i> Esporta CSV</button>
+              <button class="btn btn-success" id="newWarehouseLotBtn" type="button"><i class="fas fa-plus"></i> Nuovo lotto</button>
+            </div>
+          </div>
+          <div class="alert alert-info small warehouse-flow-note">
+            <strong>Tracciabilità 0.2.4.</strong> La tracciabilità è opzionale sui prodotti fisici. I prodotti legacy restano senza lotto; il registro usa la collezione opzionale <code>warehouseLots</code> e può leggere anche campi lotto già presenti su righe DDT fornitore.
+          </div>
+          <div class="row g-2 align-items-end mb-3">
+            <div class="col-md-3"><label class="form-label">Filtro</label><select class="form-select" id="warehouseLotsFilter"><option value="all">Tutti</option><option value="active">Solo attivi</option><option value="expiring">In scadenza entro 30 giorni</option><option value="expired">Scaduti</option><option value="serial">Solo matricole</option><option value="lot">Solo lotti</option></select></div>
+            <div class="col-md-4"><label class="form-label">Prodotto</label><select class="form-select" id="warehouseLotsProductFilter"><option value="all">Tutti i prodotti</option></select></div>
+            <div class="col-md-5"><div class="small text-muted" id="warehouse-lots-summary-note">Registro tracciabilità calcolato dai dati disponibili.</div></div>
+          </div>
+          <div class="row g-3 mb-3">
+            <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted small">Prodotti tracciati</div><div class="h4 mb-0" id="warehouse-lots-tracked-products">0</div></div></div></div>
+            <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted small">Lotti attivi</div><div class="h4 mb-0" id="warehouse-lots-active-count">0</div></div></div></div>
+            <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted small">In scadenza</div><div class="h4 mb-0" id="warehouse-lots-expiring-count">0</div></div></div></div>
+            <div class="col-md-3"><div class="card"><div class="card-body"><div class="text-muted small">Scaduti</div><div class="h4 mb-0" id="warehouse-lots-expired-count">0</div></div></div></div>
+          </div>
+          <table class="table table-sm table-hover align-middle"><thead><tr><th>Prodotto</th><th>Tipo</th><th>Lotto</th><th>Matricola</th><th>Scadenza</th><th class="text-end">Disp.</th><th class="text-end">Quarantena</th><th>Fornitore</th><th>Origine</th><th>Stato</th></tr></thead><tbody id="warehouse-lots-table-body"><tr><td colspan="10"><div class="warehouse-empty-state"><span class="empty-title">Nessun lotto registrato</span><span class="empty-hint">Configura la tracciabilità su un prodotto e registra un lotto.</span></div></td></tr></tbody></table>
+        </div>
+
+
+        <!-- MAGAZZINO: ORDINI CLIENTE -->
+        <div class="content-section d-none" id="ordini-cliente">
+          <div class="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2">
+            <div>
+              <h2 class="mb-1">Elenco Ordini cliente</h2>
+              <div class="text-muted small">Vista consultiva degli ordini cliente con stato aperto, parzialmente evaso, evaso o annullato.</div>
+            </div>
+          </div>
+          <div class="alert alert-info small warehouse-flow-note">
+            <strong>Flusso cliente.</strong> Crea un ordine, poi genera uno o più DDT cliente. L'elenco mostra subito quantità ordinata, evasa e stato operativo.
+          </div>
+          <div class="row g-2 mb-3" id="customer-orders-summary"></div>
+          <div class="row g-2 align-items-end mb-3">
+            <div class="col-md-4 col-lg-3">
+              <label class="form-label small" for="customerOrderStatusFilter">Filtra stato</label>
+              <select class="form-select form-select-sm" id="customerOrderStatusFilter">
+                <option value="all">Tutti gli ordini</option>
+                <option value="open">Aperti e parziali</option>
+                <option value="draft">Bozza</option>
+                <option value="confirmed">Aperti / confermati</option>
+                <option value="partially_fulfilled">Parzialmente evasi</option>
+                <option value="fulfilled">Evasi</option>
+                <option value="cancelled">Annullati</option>
+              </select>
+            </div>
+            <div class="col-md-8 col-lg-9">
+              <div class="small text-muted">Usa il filtro per controllare gli ordini ancora aperti prima di generare i DDT cliente.</div>
+            </div>
+          </div>
+          <table class="table table-sm table-hover align-middle">
+            <thead><tr><th>Numero</th><th>Data</th><th>Cliente</th><th>Stato</th><th class="text-end">Righe</th><th class="text-end">Q.tà ord.</th><th class="text-end">Q.tà evasa</th><th class="text-end">Totale</th><th class="text-end">Azioni</th></tr></thead>
+            <tbody id="customer-orders-table-body"><tr><td colspan="9"><div class="warehouse-empty-state"><span class="empty-title">Nessun ordine cliente registrato</span><span class="empty-hint">Crea un ordine cliente oppure procedi con un DDT diretto.</span></div></td></tr></tbody>
+          </table>
+        </div>
+
+        <!-- MAGAZZINO: ORDINI FORNITORE -->
+        <div class="content-section d-none" id="ordini-fornitore">
+          <div class="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2">
+            <div>
+              <h2 class="mb-1">Elenco Ordini fornitore</h2>
+              <div class="text-muted small">Vista consultiva degli ordini fornitore con stato aperto, parzialmente ricevuto, ricevuto o annullato.</div>
+            </div>
+          </div>
+          <div class="alert alert-info small warehouse-flow-note">
+            <strong>Flusso fornitore.</strong> Crea un ordine, poi registra il DDT fornitore. L'elenco mostra quantità ordinate, ricevute e stato di ricevimento.
+          </div>
+          <div class="row g-2 mb-3" id="supplier-orders-summary"></div>
+          <div class="row g-2 align-items-end mb-3">
+            <div class="col-md-4 col-lg-3">
+              <label class="form-label small" for="supplierOrderStatusFilter">Filtra stato</label>
+              <select class="form-select form-select-sm" id="supplierOrderStatusFilter">
+                <option value="all">Tutti gli ordini</option>
+                <option value="open">Aperti e parziali</option>
+                <option value="draft">Bozza</option>
+                <option value="confirmed">Aperti / confermati</option>
+                <option value="partially_received">Parzialmente ricevuti</option>
+                <option value="received">Ricevuti</option>
+                <option value="cancelled">Annullati</option>
+              </select>
+            </div>
+            <div class="col-md-8 col-lg-9">
+              <div class="small text-muted">Usa il filtro per controllare gli ordini ancora aperti prima del ricevimento merci/DDT fornitore.</div>
+            </div>
+          </div>
+          <table class="table table-sm table-hover align-middle">
+            <thead><tr><th>Numero</th><th>Data</th><th>Fornitore</th><th>Stato</th><th class="text-end">Righe</th><th class="text-end">Q.tà ord.</th><th class="text-end">Q.tà ricev.</th><th class="text-end">Totale</th><th class="text-end">Azioni</th></tr></thead>
+            <tbody id="supplier-orders-table-body"><tr><td colspan="9"><div class="warehouse-empty-state"><span class="empty-title">Nessun ordine fornitore registrato</span><span class="empty-hint">Crea un ordine fornitore oppure registra un DDT fornitore diretto.</span></div></td></tr></tbody>
+          </table>
+        </div>
+
+
+        <!-- MAGAZZINO: DDT FORNITORE -->
+        <div class="content-section d-none" id="ddt-fornitore">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <div>
+              <h2 class="mb-1">DDT fornitore</h2>
+              <div class="text-muted small">Ricevimento merci e resi al fornitore con tracciamento quarantena.</div>
+            </div>
+            <button class="btn btn-success" id="newSupplierDdtBtn" type="button"><i class="fas fa-plus"></i> Nuovo DDT fornitore</button>
+          </div>
+          <div class="alert alert-info small warehouse-flow-note">
+            <strong>Ricevimento e reso.</strong> I DDT ricevuti caricano disponibile/quarantena; i DDT di reso fornitore documentano l'uscita da quarantena verso il fornitore.
+          </div>
+          <ul class="nav nav-tabs mt-3" id="supplierDdtTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="supplier-ddt-received-tab" data-bs-toggle="tab" data-bs-target="#supplier-ddt-received-pane" type="button" role="tab" aria-controls="supplier-ddt-received-pane" aria-selected="true">
+                DDT Ricevuti dal Fornitore
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="supplier-ddt-return-tab" data-bs-toggle="tab" data-bs-target="#supplier-ddt-return-pane" type="button" role="tab" aria-controls="supplier-ddt-return-pane" aria-selected="false">
+                DDT di Reso al Fornitore
+              </button>
+            </li>
+          </ul>
+          <div class="tab-content border border-top-0 rounded-bottom p-3 bg-body" id="supplierDdtTabsContent">
+            <div class="tab-pane fade show active" id="supplier-ddt-received-pane" role="tabpanel" aria-labelledby="supplier-ddt-received-tab" tabindex="0">
+              <table class="table table-sm table-hover align-middle mb-0">
+                <thead><tr><th>Numero</th><th>Data</th><th>Fornitore</th><th>Origine</th><th>Stato</th><th class="text-end">Ricev.</th><th class="text-end">Accett.</th><th class="text-end">Quarant.</th><th class="text-end">Resp.</th><th class="text-end">Azioni</th></tr></thead>
+                <tbody id="supplier-ddts-table-body"><tr><td colspan="10"><div class="warehouse-empty-state"><span class="empty-title">Nessun DDT fornitore ricevuto</span><span class="empty-hint">Registra un ricevimento merci diretto o da ordine fornitore.</span></div></td></tr></tbody>
+              </table>
+            </div>
+            <div class="tab-pane fade" id="supplier-ddt-return-pane" role="tabpanel" aria-labelledby="supplier-ddt-return-tab" tabindex="0">
+              <table class="table table-sm table-hover align-middle mb-0">
+                <thead><tr><th>Numero</th><th>Data</th><th>Fornitore</th><th>Origine</th><th>Stato</th><th class="text-end">Q.tà resa</th><th>Note</th><th class="text-end">Azioni</th></tr></thead>
+                <tbody id="supplier-return-ddts-table-body"><tr><td colspan="8"><div class="warehouse-empty-state"><span class="empty-title">Nessun DDT di reso fornitore</span><span class="empty-hint">I resi generati dalla quarantena compariranno qui.</span></div></td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- MAGAZZINO: DDT CLIENTE -->
+        <div class="content-section d-none" id="ddt-cliente">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <div>
+              <h2 class="mb-1">DDT cliente / Consegna merci</h2>
+              <div class="text-muted small">Consegna merce a cliente diretta, da singolo ordine o da più ordini cliente accorpati, con scarico della giacenza disponibile.</div>
+            </div>
+            <button class="btn btn-success" id="newCustomerDdtBtn" type="button"><i class="fas fa-plus"></i> Nuovo DDT cliente</button>
+          </div>
+          <div class="alert alert-info small warehouse-flow-note">
+            <strong>Consegna.</strong> Il DDT cliente scarica la giacenza disponibile, può accorpare più ordini dello stesso cliente, può essere stampato/PDF e può generare una fattura dal motore fiscale esistente.
+          </div>
+          <table class="table table-sm table-hover align-middle">
+            <thead><tr><th>Numero</th><th>Data</th><th>Cliente</th><th>Origine</th><th>Stato</th><th class="text-end">Consegn.</th><th class="text-end">Totale</th><th>Causale</th><th class="text-end">Azioni</th></tr></thead>
+            <tbody id="customer-ddts-table-body"><tr><td colspan="9"><div class="warehouse-empty-state"><span class="empty-title">Nessun DDT cliente registrato</span><span class="empty-hint">Crea un DDT cliente diretto, da singolo ordine o da più ordini cliente.</span></div></td></tr></tbody>
+          </table>
+        </div>
+
+
+        <!-- VENDITE: FATTURAZIONE DDT CLIENTE MULTIPLI -->
+        <div class="content-section d-none" id="fatturazione-ddt-cliente">
+          <div class="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2">
+            <div>
+              <h2 class="mb-1">Fatturazione DDT cliente</h2>
+              <div class="text-muted small">Crea una fattura riepilogativa selezionando uno o più DDT cliente non ancora fatturati.</div>
+            </div>
+            <button class="btn btn-warning" id="create-summary-invoice-btn" type="button" disabled><i class="fas fa-file-invoice-dollar"></i> Genera fattura da DDT selezionati</button>
+          </div>
+          <div class="alert alert-info small warehouse-flow-note">
+            <strong>Fattura riepilogativa.</strong> Seleziona un cliente, scegli i DDT da includere e controlla l'anteprima righe. I DDT selezionati devono appartenere allo stesso cliente e non essere già fatturati. Al salvataggio della fattura definitiva verranno marcati come fatturati.
+          </div>
+          <div class="row g-3 mb-3">
+            <div class="col-md-4">
+              <label class="form-label" for="summary-ddt-customer-select">Cliente</label>
+              <select class="form-select" id="summary-ddt-customer-select">
+                <option value="">Tutti i clienti con DDT da fatturare</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label" for="summary-ddt-grouping-mode">Righe fattura</label>
+              <select class="form-select" id="summary-ddt-grouping-mode">
+                <option value="separate_by_ddt">Separate per DDT</option>
+                <option value="aggregate_product">Raggruppa prodotti uguali</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label" for="summary-ddt-line-order">Ordinamento righe</label>
+              <select class="form-select" id="summary-ddt-line-order">
+                <option value="by_ddt">Per DDT</option>
+                <option value="date">Per data DDT</option>
+                <option value="product">Per prodotto</option>
+              </select>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+              <div class="form-check small">
+                <input class="form-check-input" type="checkbox" id="summary-ddt-include-note" checked>
+                <label class="form-check-label" for="summary-ddt-include-note">Nota riepilogativa</label>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-check small">
+                <input class="form-check-input" type="checkbox" id="summary-ddt-include-xml-ddt" checked>
+                <label class="form-check-label" for="summary-ddt-include-xml-ddt">Compila DatiDDT nell'XML fattura elettronica</label>
+              </div>
+            </div>
+            <div class="col-md-8 d-flex align-items-end">
+              <div class="small text-muted" id="summary-ddt-selected-summary">Nessun DDT selezionato.</div>
+            </div>
+          </div>
+          <div class="row g-3">
+            <div class="col-lg-7">
+              <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                  <span class="fw-semibold">DDT cliente disponibili</span>
+                  <button class="btn btn-outline-secondary btn-sm" id="summary-ddt-clear-selection" type="button"><i class="fas fa-eraser"></i> Pulisci selezione</button>
+                </div>
+                <div class="card-body p-0 table-responsive">
+                  <table class="table table-sm table-hover align-middle mb-0">
+                    <thead><tr><th></th><th>Numero</th><th>Data</th><th>Cliente</th><th class="text-end">Righe</th><th class="text-end">Totale</th><th>Origine</th></tr></thead>
+                    <tbody id="summary-ddt-table-body"><tr><td colspan="7"><div class="warehouse-empty-state"><span class="empty-title">Nessun DDT da fatturare</span><span class="empty-hint">I DDT cliente non ancora fatturati compariranno qui.</span></div></td></tr></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-5">
+              <div class="card h-100">
+                <div class="card-header fw-semibold">Anteprima righe fattura</div>
+                <div class="card-body p-0 table-responsive">
+                  <table class="table table-sm align-middle mb-0">
+                    <thead><tr><th>Descrizione</th><th class="text-end">Q.tà</th><th class="text-end">Prezzo</th><th class="text-end">Totale</th></tr></thead>
+                    <tbody id="summary-ddt-preview-table-body"><tr><td colspan="4" class="text-muted text-center py-3">Seleziona uno o più DDT.</td></tr></tbody>
+                  </table>
+                </div>
+                <div class="card-footer small" id="summary-ddt-preview-footer">Totale anteprima: € 0,00</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- MAGAZZINO: QUARANTENA -->
+        <div class="content-section d-none" id="magazzino-quarantena">
+          <div class="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2">
+            <div>
+              <h2 class="mb-1">Quarantena merci</h2>
+              <div class="text-muted small">Gestione delle quantità ricevute con riserva: sblocco, scarto o reso fornitore.</div>
+            </div>
+          </div>
+          <div class="alert alert-info small warehouse-flow-note">
+            <strong>Decisione merce con riserva.</strong> Sblocca a disponibile, scarta oppure registra il reso a fornitore. Ogni scelta genera un movimento tracciato.
+          </div>
+          <table class="table table-sm table-hover align-middle">
+            <thead><tr><th>Codice</th><th>Prodotto</th><th>UM</th><th>Ubicazione</th><th class="text-end">Quarantena</th><th class="text-end">Valore</th><th class="text-end">Azioni</th></tr></thead>
+            <tbody id="warehouse-quarantine-table-body"><tr><td colspan="7"><div class="warehouse-empty-state"><span class="empty-title">Nessun prodotto in quarantena</span><span class="empty-hint">Le quantità ricevute con riserva compariranno qui.</span></div></td></tr></tbody>
+          </table>
+        </div>
+
+        <!-- MAGAZZINO: PRODOTTI MACERATI -->
+        <div class="content-section d-none" id="magazzino-macerati">
+          <div class="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2">
+            <div>
+              <h2 class="mb-1">Prodotti macerati / scartati</h2>
+              <div class="text-muted small">Elenco separato degli scarti generati dalla gestione quarantena.</div>
+            </div>
+          </div>
+          <div class="alert alert-secondary small warehouse-flow-note">
+            <strong>Storico scarti.</strong> Le righe derivano dai movimenti <code>SCARTO</code> creati quando una quantità in quarantena viene macerata o scartata.
+          </div>
+          <table class="table table-sm table-hover align-middle">
+            <thead><tr><th>Data</th><th>Codice</th><th>Prodotto</th><th>UM</th><th class="text-end">Quantità</th><th>Causale</th><th>Documento</th><th>Note</th></tr></thead>
+            <tbody id="warehouse-macerated-table-body"><tr><td colspan="8"><div class="warehouse-empty-state"><span class="empty-title">Nessun prodotto macerato/scartato</span><span class="empty-hint">Gli scarti dalla quarantena compariranno qui.</span></div></td></tr></tbody>
+          </table>
+        </div>
+
+
+        <!-- TABELLA IVA / NATURA FE -->
+        <div class="content-section d-none" id="tabella-iva">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <div>
+              <h2 class="mb-1">Tabella IVA / Natura FE</h2>
+              <div class="text-muted small">Catalogo didattico centralizzato per aliquote IVA e codici Natura FE. I codici di sistema non sono cancellabili; puoi aggiungere codici personalizzati.</div>
+            </div>
+            <button class="btn btn-outline-success" id="newVatRateBtn" type="button"><i class="fas fa-plus"></i> Nuovo Codice IVA</button>
+          </div>
+          <table class="table table-sm table-hover align-middle">
+            <thead><tr><th>Codice</th><th>Descrizione</th><th class="text-end">Aliquota</th><th>Natura FE</th><th>Rif. / Esenzione</th><th>Tipo</th><th class="text-end">Azioni</th></tr></thead>
+            <tbody id="vat-rates-table-body"></tbody>
+          </table>
+        </div>
+
+        <!-- TABELLA MODALITA PAGAMENTO FE -->
+        <div class="content-section d-none" id="tabella-pagamenti">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <div>
+              <h2 class="mb-1">Codici pagamento FE</h2>
+              <div class="text-muted small">Catalogo didattico centralizzato per le modalita di pagamento della fattura elettronica. I codici di sistema non sono cancellabili; puoi aggiungere codici personalizzati.</div>
+            </div>
+            <button class="btn btn-outline-success" id="newPaymentMethodBtn" type="button"><i class="fas fa-plus"></i> Nuovo Codice Pagamento</button>
+          </div>
+          <table class="table table-sm table-hover align-middle">
+            <thead><tr><th>Codice FE</th><th>Descrizione</th><th>Macro area</th><th>Banca richiesta</th><th>Tipo</th><th class="text-end">Azioni</th></tr></thead>
+            <tbody id="payment-methods-table-body"></tbody>
+          </table>
+          <div class="alert alert-info small mt-3">Questa tabella alimenta la modalità di pagamento predefinita del cliente e quella effettiva della fattura.</div>
+        </div>
+
+        <!-- BANCHE AZIENDALI -->
+        <div class="content-section d-none" id="banche-aziendali">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <div>
+              <h2 class="mb-1">Banche aziendali</h2>
+              <div class="text-muted small">Conti/IBAN dell'azienda usati in fattura quando la modalità pagamento richiede banca. La banca predefinita viene proposta nei nuovi documenti.</div>
+            </div>
+            <button class="btn btn-outline-success" id="newCompanyBankBtn" type="button"><i class="fas fa-plus"></i> Nuova Banca</button>
+          </div>
+          <table class="table table-sm table-hover align-middle">
+            <thead><tr><th>Etichetta</th><th>Banca</th><th>IBAN</th><th>BIC</th><th>Default</th><th>Stato</th><th class="text-end">Azioni</th></tr></thead>
+            <tbody id="company-banks-table-body"></tbody>
+          </table>
+          <div class="alert alert-secondary small mt-3">I vecchi campi <b>Banca 1/2</b> in Azienda restano disponibili per compatibilità. Se aggiungi banche in questa tabella, le nuove fatture useranno questo elenco dedicato.</div>
         </div>
         <div class="content-section d-none" id="anagrafica-fornitori">
           <h2>Anagrafica Fornitori
@@ -774,11 +1367,353 @@
             <tbody id="purchases-table-body"></tbody>
           </table>
         </div>
-        <!-- ELENCO FATTURE -->
+        <!-- ELENCO FATTURE -->        <!-- BILANCINO GESTIONALE -->
+        <div class="content-section d-none" id="bilancino">
+          <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+            <div>
+              <h2>Bilancino gestionale</h2>
+              <p class="text-muted mb-0">Prospetto 0.4.5 semplificato: ricavi, costi, margine, incassi/pagamenti, aperti e valore magazzino stimato. Non è un bilancio civilistico o fiscale.</p>
+            </div>
+            <div class="btn-group">
+              <button class="btn btn-outline-primary btn-sm" id="mini-balance-refresh-btn" type="button"><i class="fas fa-rotate"></i> Aggiorna</button>
+              <button class="btn btn-outline-secondary btn-sm" id="mini-balance-export-btn" type="button"><i class="fas fa-file-csv"></i> CSV</button>
+            </div>
+          </div>
+          <div class="card mb-3"><div class="card-body"><div class="row g-2 align-items-end">
+            <div class="col-md-2"><label class="form-label" for="mini-balance-from">Da</label><input class="form-control" id="mini-balance-from" type="date"></div>
+            <div class="col-md-2"><label class="form-label" for="mini-balance-to">A</label><input class="form-control" id="mini-balance-to" type="date"></div>
+            <div class="col-md-3"><label class="form-label" for="mini-balance-valuation-method">Valorizzazione magazzino</label><select class="form-select" id="mini-balance-valuation-method"><option value="standard">Prezzo anagrafico</option><option value="last">Ultimo costo DDT fornitore</option><option value="average">Costo medio ponderato semplificato</option></select></div>
+            <div class="col-md-3"><div class="form-check"><input class="form-check-input" type="checkbox" id="mini-balance-include-manual" checked><label class="form-check-label" for="mini-balance-include-manual">Includi movimenti manuali di prima nota</label></div><div class="form-check"><input class="form-check-input" type="checkbox" id="mini-balance-include-warehouse" checked><label class="form-check-label" for="mini-balance-include-warehouse">Mostra valore magazzino stimato</label></div></div>
+            <div class="col-md-2"><button class="btn btn-primary w-100" id="mini-balance-calc-btn" type="button"><i class="fas fa-calculator"></i> Calcola</button></div>
+          </div></div></div>
+          <div class="row g-3 mb-3" id="mini-balance-summary"></div>
+          <div class="row g-3">
+            <div class="col-lg-6"><div class="card h-100"><div class="card-header fw-bold">Conto economico semplificato</div><div class="card-body p-0"><table class="table mb-0"><tbody id="mini-balance-economic-body"></tbody></table></div></div></div>
+            <div class="col-lg-6"><div class="card h-100"><div class="card-header fw-bold">Situazione finanziaria</div><div class="card-body p-0"><table class="table mb-0"><tbody id="mini-balance-financial-body"></tbody></table></div></div></div>
+            <div class="col-lg-6"><div class="card h-100"><div class="card-header fw-bold">Crediti e debiti aperti</div><div class="card-body p-0"><table class="table mb-0"><tbody id="mini-balance-open-body"></tbody></table></div></div></div>
+            <div class="col-lg-6"><div class="card h-100"><div class="card-header fw-bold">Magazzino stimato</div><div class="card-body p-0"><table class="table mb-0"><tbody id="mini-balance-warehouse-body"></tbody></table><div class="alert alert-info small m-3">Il valore magazzino è una stima gestionale e non rappresenta una scrittura contabile di rimanenza.</div></div></div></div>
+          </div>
+          <div class="card mt-3"><div class="card-header fw-bold">Confronto con budget</div><div class="card-body" id="mini-balance-budget-box"></div></div>
+          <div class="mt-3" id="mini-balance-alerts"></div>
+          <div class="card mt-3"><div class="card-header fw-bold">Documenti considerati</div><div class="card-body p-0"><div class="table-responsive"><table class="table table-sm table-hover mb-0"><thead class="table-light"><tr><th>Data</th><th>Tipo</th><th>Numero</th><th>Soggetto</th><th class="text-end">Totale</th><th class="text-end">Pagato/Incassato</th><th class="text-end">Residuo</th></tr></thead><tbody id="mini-balance-documents-body"></tbody></table></div></div></div>
+          <div class="alert alert-warning small mt-3 mb-0">Bilancino didattico: non include ammortamenti, imposte, ratei/risconti, competenze avanzate, scritture di assestamento o schemi di bilancio civilistici.</div>
+        </div>
+
+
+        <!-- PARTITARIO -->
+        <div class="content-section d-none" id="partitario">
+          <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+            <div>
+              <h2>Partitario clienti e fornitori</h2>
+              <p class="text-muted mb-0">Vista dare/avere derivata da fatture, note di credito, acquisti e incassi/pagamenti già registrati. Nessuna nuova collezione Firestore.</p>
+            </div>
+            <button class="btn btn-outline-secondary btn-sm" id="ledger-export-csv-btn" type="button">
+              <i class="fas fa-file-csv"></i> Esporta CSV
+            </button>
+          </div>
+          <div class="row g-2 align-items-end">
+            <div class="col-md-2"><label class="form-label" for="ledger-subject-type">Tipo</label><select class="form-select" id="ledger-subject-type"><option value="customer" selected>Clienti</option><option value="supplier">Fornitori</option></select></div>
+            <div class="col-md-3"><label class="form-label" for="ledger-subject-filter">Soggetto</label><select class="form-select" id="ledger-subject-filter"><option value="all">Tutti i clienti</option></select></div>
+            <div class="col-md-2"><label class="form-label" for="ledger-date-from">Da</label><input class="form-control" type="date" id="ledger-date-from"></div>
+            <div class="col-md-2"><label class="form-label" for="ledger-date-to">A</label><input class="form-control" type="date" id="ledger-date-to"></div>
+            <div class="col-md-2"><label class="form-label" for="ledger-search">Cerca</label><input class="form-control" type="search" id="ledger-search" placeholder="Documento, descrizione..."></div>
+            <div class="col-md-1 d-grid"><button class="btn btn-outline-secondary" id="ledger-reset-btn" type="button"><i class="fas fa-undo"></i></button></div>
+          </div>
+          <div class="row g-3 mt-2" id="ledger-summary"></div>
+          <div class="row g-3 mt-1">
+            <div class="col-lg-9"><div class="table-responsive"><table class="table table-hover align-middle"><thead><tr><th>Data</th><th>Soggetto</th><th>Tipo</th><th>Documento</th><th>Descrizione</th><th class="text-end">Dare</th><th class="text-end">Avere</th><th class="text-end">Saldo</th></tr></thead><tbody id="ledger-table-body"></tbody></table></div></div>
+            <div class="col-lg-3"><div class="card h-100"><div class="card-body"><h6 class="card-title">Saldi per soggetto</h6><div id="ledger-subject-balances" class="small"></div></div></div></div>
+          </div>
+        </div>
+
+        <div class="content-section d-none" id="estratto-conto">
+          <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+            <div>
+              <h2>Estratto conto cliente/fornitore</h2>
+              <p class="text-muted mb-0">Vista 0.3.3 derivata dal partitario: saldo iniziale, movimenti di periodo, saldo progressivo, export CSV e stampa HTML. Nessuna nuova collezione Firestore.</p>
+            </div>
+            <div class="btn-group btn-group-sm">
+              <button class="btn btn-outline-secondary" id="statement-print-btn" type="button"><i class="fas fa-print"></i> Stampa</button>
+              <button class="btn btn-outline-secondary" id="statement-export-csv-btn" type="button"><i class="fas fa-file-csv"></i> Esporta CSV</button>
+            </div>
+          </div>
+          <div class="row g-2 align-items-end">
+            <div class="col-md-2"><label class="form-label" for="statement-subject-type">Tipo</label><select class="form-select" id="statement-subject-type"><option value="customer" selected>Clienti</option><option value="supplier">Fornitori</option></select></div>
+            <div class="col-md-3"><label class="form-label" for="statement-subject-filter">Soggetto</label><select class="form-select" id="statement-subject-filter"><option value="all">Tutti i clienti</option></select></div>
+            <div class="col-md-2"><label class="form-label" for="statement-date-from">Da</label><input class="form-control" type="date" id="statement-date-from"></div>
+            <div class="col-md-2"><label class="form-label" for="statement-date-to">A</label><input class="form-control" type="date" id="statement-date-to"></div>
+            <div class="col-md-2"><label class="form-label" for="statement-search">Cerca</label><input class="form-control" type="search" id="statement-search" placeholder="Documento, descrizione..."></div>
+            <div class="col-md-1 d-grid"><button class="btn btn-outline-secondary" id="statement-reset-btn" type="button"><i class="fas fa-undo"></i></button></div>
+          </div>
+          <div class="small text-muted mt-2">Periodo estratto: <strong id="statement-period-label">inizio → oggi</strong></div>
+          <div class="row g-3 mt-2" id="statement-summary"></div>
+          <div class="table-responsive mt-3"><table class="table table-hover align-middle"><thead><tr><th>Data</th><th>Soggetto</th><th>Tipo</th><th>Documento</th><th>Descrizione</th><th class="text-end">Dare</th><th class="text-end">Avere</th><th class="text-end">Segno</th><th class="text-end">Saldo</th></tr></thead><tbody id="statement-table-body"></tbody></table></div>
+        </div>
+
+
+        <div class="content-section d-none" id="solleciti">
+          <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+            <div>
+              <h2>Solleciti e promemoria scadenze</h2>
+              <p class="text-muted mb-0">Registro operativo 0.3.4 per scadenze aperte/scadute, testo sollecito, storico manuale ed export CSV. Non invia email automatiche e usa la collezione opzionale <code>reminderEvents</code>.</p>
+            </div>
+            <div class="btn-group btn-group-sm">
+              <button class="btn btn-outline-secondary" id="reminder-export-csv-btn" type="button"><i class="fas fa-file-csv"></i> Esporta CSV</button>
+            </div>
+          </div>
+          <div class="row g-2 align-items-end">
+            <div class="col-md-2"><label class="form-label" for="reminder-subject-type">Tipo</label><select class="form-select" id="reminder-subject-type"><option value="all" selected>Tutti</option><option value="customer">Clienti</option><option value="supplier">Fornitori</option></select></div>
+            <div class="col-md-2"><label class="form-label" for="reminder-status">Stato</label><select class="form-select" id="reminder-status"><option value="overdue" selected>Scadute</option><option value="open">Aperte</option><option value="closed">Chiuse</option></select></div>
+            <div class="col-md-2"><label class="form-label" for="reminder-level">Livello</label><select class="form-select" id="reminder-level"><option value="all" selected>Tutti</option><option value="primo">Primo</option><option value="secondo">Secondo</option><option value="terzo">Terzo</option></select></div>
+            <div class="col-md-2"><label class="form-label" for="reminder-today">Data controllo</label><input class="form-control" type="date" id="reminder-today"></div>
+            <div class="col-md-3"><label class="form-label" for="reminder-search">Cerca</label><input class="form-control" type="search" id="reminder-search" placeholder="Soggetto, documento..."></div>
+            <div class="col-md-1 d-grid"><button class="btn btn-outline-secondary" id="reminder-reset-btn" type="button"><i class="fas fa-undo"></i></button></div>
+          </div>
+          <div class="row g-3 mt-2" id="reminder-summary"></div>
+          <div class="small text-muted mt-1" id="reminder-level-summary"></div>
+          <div class="row g-3 mt-2">
+            <div class="col-lg-8">
+              <div class="table-responsive"><table class="table table-hover align-middle"><thead><tr><th></th><th>Scadenza</th><th>Tipo</th><th>Soggetto</th><th>Documento</th><th class="text-end">Residuo</th><th>Livello</th><th class="text-center">Storico</th><th>Ultimo</th></tr></thead><tbody id="reminder-table-body"></tbody></table></div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card h-100"><div class="card-body">
+                <h5 class="card-title">Testo sollecito</h5>
+                <div class="small text-muted mb-2">Documento selezionato: <strong id="reminder-selected-label">-</strong></div>
+                <textarea class="form-control" id="reminder-preview" rows="11"></textarea>
+                <div class="row g-2 mt-2">
+                  <div class="col-md-6"><label class="form-label" for="reminder-event-date">Data</label><input class="form-control" type="date" id="reminder-event-date"></div>
+                  <div class="col-md-6"><label class="form-label" for="reminder-channel">Canale</label><select class="form-select" id="reminder-channel"><option value="email" selected>Email</option><option value="telefono">Telefono</option><option value="pec">PEC</option><option value="interno">Promemoria interno</option></select></div>
+                  <div class="col-md-12"><label class="form-label" for="reminder-event-status">Stato</label><select class="form-select" id="reminder-event-status"><option value="preparato" selected>Preparato</option><option value="inviato">Inviato manualmente</option><option value="promemoria">Promemoria interno</option></select></div>
+                  <div class="col-12"><label class="form-label" for="reminder-notes">Note</label><input class="form-control" id="reminder-notes" placeholder="Annotazioni interne"></div>
+                </div>
+                <div class="d-flex gap-2 mt-3"><button class="btn btn-outline-secondary" id="reminder-generate-btn" type="button">Rigenera</button><button class="btn btn-outline-secondary" id="reminder-copy-btn" type="button">Copia</button><button class="btn btn-primary flex-fill" id="reminder-save-btn" type="button">Registra storico</button></div>
+                <div class="alert alert-info small mt-3 mb-0">L'app non invia comunicazioni automatiche: copia il testo nel tuo client email/PEC e registra manualmente l'esito.</div>
+              </div></div>
+            </div>
+          </div>
+        </div>
+        <div class="content-section d-none" id="incassi-pagamenti">
+          <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+            <div>
+              <h2>Incassi e pagamenti evoluti</h2>
+              <p class="text-muted mb-0">Registro finanziario 0.3.1, consolidato in 0.4.8, con movimenti cliente/fornitore, allocazioni su più documenti, metodo, riferimento e data valuta. La collezione Firestore <code>paymentEvents</code> è opzionale e compatibile con i pagamenti legacy sui documenti.</p>
+            </div>
+            <div class="btn-group btn-group-sm">
+              <button class="btn btn-outline-secondary" id="payev-refresh-btn" type="button"><i class="fas fa-rotate"></i> Aggiorna</button>
+              <button class="btn btn-outline-secondary" id="payev-export-csv-btn" type="button"><i class="fas fa-file-csv"></i> Esporta CSV</button>
+            </div>
+          </div>
+          <div class="row g-3">
+            <div class="col-lg-4"><div class="card h-100"><div class="card-body">
+              <h5 class="card-title">Nuovo movimento</h5>
+              <div class="row g-2">
+                <div class="col-md-6"><label class="form-label" for="payev-subject-type">Tipo</label><select class="form-select" id="payev-subject-type"><option value="customer" selected>Incasso cliente</option><option value="supplier">Pagamento fornitore</option></select></div>
+                <div class="col-md-6"><label class="form-label" for="payev-date">Data</label><input class="form-control" type="date" id="payev-date"></div>
+                <div class="col-12"><label class="form-label" for="payev-subject-id">Soggetto</label><select class="form-select" id="payev-subject-id"><option value="">Seleziona...</option></select></div>
+                <div class="col-md-6"><label class="form-label" for="payev-amount">Importo</label><input class="form-control text-end" id="payev-amount" placeholder="0,00"></div>
+                <div class="col-md-6"><label class="form-label" for="payev-value-date">Data valuta</label><input class="form-control" type="date" id="payev-value-date"></div>
+                <div class="col-md-6"><label class="form-label" for="payev-method">Metodo</label><input class="form-control" id="payev-method" placeholder="Bonifico, carta..."></div>
+                <div class="col-md-6"><label class="form-label" for="payev-reference">Riferimento</label><input class="form-control" id="payev-reference" placeholder="CRO, quietanza..."></div>
+                <div class="col-12"><label class="form-label" for="payev-notes">Note</label><textarea class="form-control" id="payev-notes" rows="2"></textarea></div>
+              </div><hr><h6>Allocazione documenti</h6><div id="payev-open-documents" class="small"></div>
+              <div class="d-grid mt-3"><button class="btn btn-primary" id="payev-save-btn" type="button"><i class="fas fa-save"></i> Registra movimento</button></div>
+            </div></div></div>
+            <div class="col-lg-8">
+              <div class="row g-2 align-items-end mb-2">
+                <div class="col-md-3"><label class="form-label" for="payev-filter-type">Tipo</label><select class="form-select" id="payev-filter-type"><option value="all">Tutti</option><option value="customer">Incassi clienti</option><option value="supplier">Pagamenti fornitori</option></select></div>
+                <div class="col-md-2"><label class="form-label" for="payev-filter-from">Da</label><input class="form-control" type="date" id="payev-filter-from"></div>
+                <div class="col-md-2"><label class="form-label" for="payev-filter-to">A</label><input class="form-control" type="date" id="payev-filter-to"></div>
+                <div class="col-md-5"><label class="form-label" for="payev-filter-text">Cerca</label><input class="form-control" type="search" id="payev-filter-text" placeholder="Soggetto, metodo, riferimento, note..."></div>
+              </div>
+              <div class="row g-3" id="payev-summary"></div>
+              <div class="table-responsive mt-3"><table class="table table-hover align-middle"><thead><tr><th>Data</th><th>Tipo</th><th>Soggetto</th><th class="text-end">Importo</th><th>Metodo</th><th>Riferimento</th><th>Allocazioni</th><th>Note</th></tr></thead><tbody id="payev-table-body"></tbody></table></div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="content-section d-none" id="riconciliazione-banca">
+          <div class="d-flex justify-content-between align-items-start gap-3 mb-3 flex-wrap">
+            <div>
+              <h2>Riconciliazione pagamenti</h2>
+              <p class="text-muted mb-0">Import CSV banca 0.3.5 con proposte di abbinamento a fatture/acquisti aperti. La conferma crea un evento in <code>paymentEvents</code> e registra lo storico opzionale in <code>bankReconciliationEvents</code>.</p>
+            </div>
+            <div class="btn-group btn-group-sm">
+              <button class="btn btn-outline-secondary" id="bank-reco-template-btn" type="button"><i class="fas fa-file-lines"></i> Esempio CSV</button>
+              <button class="btn btn-outline-secondary" id="bank-reco-export-btn" type="button"><i class="fas fa-file-csv"></i> Esporta esito</button>
+            </div>
+          </div>
+          <div class="alert alert-info small">Il sistema propone abbinamenti per importo, soggetto e numero documento nella causale. Nessuna riconciliazione viene salvata automaticamente: ogni riga va confermata manualmente.</div>
+          <div class="row g-3 mb-3">
+            <div class="col-lg-4"><div class="card h-100"><div class="card-body">
+              <label class="form-label" for="bank-reco-file">File CSV banca</label>
+              <input class="form-control" type="file" id="bank-reco-file" accept=".csv,text/csv">
+              <div class="form-text">Colonne supportate: data, dataValuta, importo oppure entrata/uscita, conto, riferimento, descrizione/causale.</div>
+              <button class="btn btn-primary mt-3" id="bank-reco-parse-btn" type="button"><i class="fas fa-magnifying-glass"></i> Analizza CSV</button>
+            </div></div></div>
+            <div class="col-lg-8">
+              <label class="form-label" for="bank-reco-csv-text">Oppure incolla CSV</label>
+              <textarea class="form-control font-monospace small" id="bank-reco-csv-text" rows="7" placeholder="data;dataValuta;importo;conto;riferimento;descrizione"></textarea>
+            </div>
+          </div>
+          <div class="row g-3 mb-3" id="bank-reco-summary"></div>
+          <div class="table-responsive"><table class="table table-hover align-middle"><thead><tr><th>Data</th><th>Tipo</th><th class="text-end">Importo</th><th>Conto</th><th>Rif.</th><th>Causale</th><th>Abbinamento proposto</th><th>Stato</th><th class="text-end">Azione</th></tr></thead><tbody id="bank-reco-table-body"></tbody></table></div>
+        </div>
+
+        <div class="content-section d-none" id="prima-nota">
+          <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+            <div><h2>Prima nota / movimenti finanziari</h2><p class="text-muted mb-0">Registro finanziario 0.3.2: movimenti automatici derivati da incassi/pagamenti e movimenti manuali di cassa/banca. La collezione Firestore <code>cashbookMovements</code> è opzionale e contiene solo i movimenti manuali.</p></div>
+            <div class="btn-group btn-group-sm"><button class="btn btn-outline-secondary" id="cashbook-refresh-btn" type="button"><i class="fas fa-rotate"></i> Aggiorna</button><button class="btn btn-outline-secondary" id="cashbook-export-csv-btn" type="button"><i class="fas fa-file-csv"></i> Esporta CSV</button></div>
+          </div>
+          <div class="row g-3">
+            <div class="col-lg-4"><div class="card h-100"><div class="card-body"><h5 class="card-title">Nuovo movimento manuale</h5><div class="alert alert-info small">Gli incassi e pagamenti registrati sono inclusi automaticamente. Usa questo form per spese, entrate manuali o giroconti non collegati a documenti.</div><div class="row g-2"><div class="col-md-6"><label class="form-label" for="cashbook-date">Data</label><input class="form-control" type="date" id="cashbook-date"></div><div class="col-md-6"><label class="form-label" for="cashbook-value-date">Data valuta</label><input class="form-control" type="date" id="cashbook-value-date"></div><div class="col-md-6"><label class="form-label" for="cashbook-direction">Tipo</label><select class="form-select" id="cashbook-direction"><option value="out" selected>Uscita</option><option value="in">Entrata</option><option value="transfer">Giroconto</option></select></div><div class="col-md-6"><label class="form-label" for="cashbook-amount">Importo</label><input class="form-control text-end" id="cashbook-amount" placeholder="0,00"></div><div class="col-md-6"><label class="form-label" for="cashbook-account">Cassa/Banca</label><input class="form-control" id="cashbook-account" placeholder="Banca"></div><div class="col-md-6"><label class="form-label" for="cashbook-category">Categoria</label><input class="form-control" id="cashbook-category" placeholder="Spesa generica"></div><div class="col-12"><label class="form-label" for="cashbook-reference">Riferimento</label><input class="form-control" id="cashbook-reference" placeholder="Quietanza, causale, riferimento interno..."></div><div class="col-12"><label class="form-label" for="cashbook-description">Descrizione</label><textarea class="form-control" id="cashbook-description" rows="2"></textarea></div></div><div class="d-flex gap-2 mt-3"><button class="btn btn-primary flex-fill" id="cashbook-save-btn" type="button"><i class="fas fa-save"></i> Registra</button><button class="btn btn-outline-secondary" id="cashbook-reset-form-btn" type="button">Pulisci</button></div></div></div></div>
+            <div class="col-lg-8"><div class="row g-2 align-items-end mb-2"><div class="col-md-2"><label class="form-label" for="cashbook-filter-direction">Tipo</label><select class="form-select" id="cashbook-filter-direction"><option value="all">Tutti</option><option value="in">Entrate</option><option value="out">Uscite</option><option value="transfer">Giroconti</option></select></div><div class="col-md-2"><label class="form-label" for="cashbook-filter-account">Conto</label><select class="form-select" id="cashbook-filter-account"><option value="all">Tutti</option></select></div><div class="col-md-2"><label class="form-label" for="cashbook-filter-from">Da</label><input class="form-control" type="date" id="cashbook-filter-from"></div><div class="col-md-2"><label class="form-label" for="cashbook-filter-to">A</label><input class="form-control" type="date" id="cashbook-filter-to"></div><div class="col-md-4"><label class="form-label" for="cashbook-filter-text">Cerca</label><input class="form-control" type="search" id="cashbook-filter-text" placeholder="Conto, categoria, soggetto, causale..."></div></div><div class="row g-3" id="cashbook-summary"></div><div class="row g-3 mt-1"><div class="col-xl-9"><div class="table-responsive"><table class="table table-hover align-middle"><thead><tr><th>Data</th><th>Tipo</th><th>Conto</th><th>Categoria</th><th>Soggetto</th><th>Rif.</th><th>Descrizione</th><th class="text-end">Entrate</th><th class="text-end">Uscite</th><th class="text-end">Saldo</th></tr></thead><tbody id="cashbook-table-body"></tbody></table></div></div><div class="col-xl-3"><div class="card h-100"><div class="card-body"><h6 class="card-title">Saldo per conto</h6><div id="cashbook-account-balances" class="small"></div></div></div></div></div></div>
+          </div>
+        </div>
+
+        <div class="content-section d-none" id="centro-notifiche">
+          <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
+            <div>
+              <h2>Centro notifiche operativo</h2>
+              <p class="text-muted mb-0">Vista 0.4.1 degli alert operativi: scadenze, magazzino, lotti, DDT, ordini, riconciliazioni e QA contabile. Le notifiche sono calcolate dai dati già caricati e non modificano i dati.</p>
+            </div>
+            <div class="btn-group btn-group-sm">
+              <button class="btn btn-outline-secondary" id="notification-refresh-btn" type="button"><i class="fas fa-rotate"></i> Aggiorna</button>
+              <button class="btn btn-outline-primary" id="notification-export-csv-btn" type="button"><i class="fas fa-file-csv"></i> Esporta CSV</button>
+            </div>
+          </div>
+          <div class="row g-2 mb-3" id="notification-summary"></div>
+          <div class="card mb-3"><div class="card-body">
+            <div class="row g-2 align-items-end">
+              <div class="col-md-2"><label class="form-label" for="notification-filter-category">Categoria</label><select class="form-select" id="notification-filter-category"><option value="all">Tutte</option><option value="scadenze">Scadenze</option><option value="magazzino">Magazzino</option><option value="lotti">Lotti</option><option value="documenti">Documenti</option><option value="ordini">Ordini</option><option value="riconciliazione">Riconciliazione</option><option value="qa">QA</option></select></div>
+              <div class="col-md-2"><label class="form-label" for="notification-filter-severity">Priorità</label><select class="form-select" id="notification-filter-severity"><option value="all">Tutte</option><option value="danger">Critiche</option><option value="warning">Attenzioni</option><option value="info">Informative</option></select></div>
+              <div class="col-md-2"><label class="form-label" for="notification-due-horizon">Scadenze entro giorni</label><input class="form-control" id="notification-due-horizon" type="number" min="1" value="15"></div>
+              <div class="col-md-2"><label class="form-label" for="notification-expiry-horizon">Lotti entro giorni</label><input class="form-control" id="notification-expiry-horizon" type="number" min="1" value="30"></div>
+              <div class="col-md-3"><label class="form-label" for="notification-search">Ricerca</label><input class="form-control" id="notification-search" placeholder="documento, soggetto, azione..."></div>
+              <div class="col-md-1"><div class="form-check mb-2"><input class="form-check-input" type="checkbox" id="notification-include-qa" checked><label class="form-check-label small" for="notification-include-qa">QA</label></div></div>
+            </div>
+            <div class="mt-3" id="notification-category-pills"></div>
+          </div></div>
+          <div id="notification-status" class="mb-2"></div>
+          <div class="card"><div class="card-body p-0"><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead class="table-light"><tr><th>Priorità</th><th>Categoria</th><th>Notifica</th><th>Data</th><th class="text-end">Importo</th><th>Azione consigliata</th><th>Apri</th></tr></thead><tbody id="notification-table-body"></tbody></table></div></div></div>
+        </div>
+
+        <div class="content-section d-none" id="budget-marginalita">
+          <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+            <div><h2>Budget, costi e marginalità</h2><p class="text-muted mb-0">Analisi direzionale 0.3.6: budget annuale, confronto ricavi/costi, marginalità lorda e top clienti/prodotti/fornitori. I consuntivi sono derivati dai dati esistenti; la collezione opzionale <code>businessBudgets</code> salva solo i target di budget.</p></div>
+            <div class="btn-group btn-group-sm"><button class="btn btn-outline-secondary" id="budget-refresh-btn" type="button"><i class="fas fa-rotate"></i> Aggiorna</button><button class="btn btn-outline-secondary" id="budget-export-csv-btn" type="button"><i class="fas fa-file-csv"></i> Esporta CSV</button></div>
+          </div>
+          <div class="row g-3 align-items-end mb-3"><div class="col-md-2"><label class="form-label" for="budget-year">Anno</label><select class="form-select" id="budget-year"></select></div><div class="col-md-10"><div id="budget-alerts"></div></div></div>
+          <div class="row g-3 mb-3" id="budget-summary"></div>
+          <div class="row g-3">
+            <div class="col-xl-5"><div class="card h-100"><div class="card-body"><h5 class="card-title">Target annuale per mese</h5><p class="text-muted small">Compila i target di ricavi, costi e margine. Se il margine è lasciato a zero, il servizio usa ricavi - costi come riferimento.</p><div class="table-responsive"><table class="table table-sm align-middle"><thead><tr><th>Mese</th><th>Ricavi</th><th>Costi</th><th>Margine</th><th>Note</th></tr></thead><tbody id="budget-input-body"></tbody></table></div><label class="form-label" for="budget-notes">Note budget</label><textarea class="form-control" id="budget-notes" rows="2"></textarea><div class="d-flex gap-2 mt-3"><button class="btn btn-primary" id="budget-save-btn" type="button"><i class="fas fa-save"></i> Salva budget</button><button class="btn btn-outline-secondary" id="budget-clear-btn" type="button">Azzera campi</button></div></div></div></div>
+            <div class="col-xl-7"><div class="card h-100"><div class="card-body"><h5 class="card-title">Consuntivo vs budget</h5><div class="table-responsive"><table class="table table-hover table-sm align-middle"><thead><tr><th>Mese</th><th class="text-end">Ricavi</th><th class="text-end">Budget</th><th class="text-end">Δ Ric.</th><th class="text-end">Costi</th><th class="text-end">Budget</th><th class="text-end">Δ Costi</th><th class="text-end">Margine</th><th class="text-end">Δ Marg.</th><th class="text-end">%</th></tr></thead><tbody id="budget-comparison-body"></tbody></table></div></div></div></div>
+          </div>
+          <div class="row g-3 mt-1"><div class="col-lg-4"><div class="card h-100"><div class="card-body"><h6 class="card-title">Top clienti per ricavi</h6><div id="budget-top-customers" class="small"></div></div></div></div><div class="col-lg-4"><div class="card h-100"><div class="card-body"><h6 class="card-title">Top prodotti/servizi per margine stimato</h6><div id="budget-top-products" class="small"></div></div></div></div><div class="col-lg-4"><div class="card h-100"><div class="card-body"><h6 class="card-title">Top fornitori per costi</h6><div id="budget-top-suppliers" class="small"></div></div></div></div></div>
+        </div>
+
+
+        <div class="content-section d-none" id="workflow-approvativi">
+          <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
+            <div>
+              <h2>Workflow approvativi leggeri</h2>
+              <p class="text-muted mb-0">Vista operativa 0.4.2 per verificare, approvare, respingere o bloccare documenti e movimenti. Gli eventi sono registrati nella collezione opzionale <code>workflowEvents</code>; non sono presenti automatismi irreversibili.</p>
+            </div>
+            <div class="btn-group btn-group-sm">
+              <button class="btn btn-outline-secondary" id="workflow-refresh-btn" type="button"><i class="fas fa-rotate"></i> Aggiorna</button>
+              <button class="btn btn-outline-secondary" id="workflow-export-csv-btn" type="button"><i class="fas fa-file-csv"></i> Esporta CSV</button>
+            </div>
+          </div>
+          <div id="workflow-status" class="mb-2"></div>
+          <div class="row g-2 align-items-end mb-3">
+            <div class="col-md-3"><label class="form-label" for="workflow-filter-status">Stato</label><select class="form-select" id="workflow-filter-status"><option value="open" selected>Aperti / da lavorare</option><option value="pending_review">Da verificare</option><option value="blocked">Bloccati</option><option value="rejected">Respinti</option><option value="approved">Approvati</option><option value="all">Tutti</option></select></div>
+            <div class="col-md-3"><label class="form-label" for="workflow-filter-type">Tipo</label><select class="form-select" id="workflow-filter-type"><option value="all">Tutti</option><option value="quote">Preventivi</option><option value="customer_order">Ordini cliente</option><option value="supplier_order">Ordini fornitore</option><option value="customer_ddt">DDT cliente</option><option value="supplier_ddt">DDT fornitore</option><option value="invoice">Fatture</option><option value="purchase">Acquisti</option><option value="credit_note">Note credito</option><option value="payment_event">Incassi/Pagamenti</option><option value="bank_reconciliation">Riconciliazioni</option></select></div>
+            <div class="col-md-4"><label class="form-label" for="workflow-search">Cerca</label><input class="form-control" id="workflow-search" type="search" placeholder="Numero, soggetto, stato, azione..."></div>
+            <div class="col-md-2"><label class="form-label" for="workflow-action-note">Nota azione</label><input class="form-control" id="workflow-action-note" placeholder="Opzionale"></div>
+          </div>
+          <div class="row g-3 mb-3" id="workflow-summary"></div>
+          <div class="row g-3">
+            <div class="col-xl-9">
+              <div class="table-responsive"><table class="table table-hover align-middle"><thead><tr><th>Priorità</th><th>Documento</th><th>Data</th><th>Soggetto</th><th class="text-end">Importo</th><th>Stato</th><th>Azione suggerita</th><th>Apri</th><th>Azioni</th></tr></thead><tbody id="workflow-table-body"></tbody></table></div>
+            </div>
+            <div class="col-xl-3"><div class="card h-100"><div class="card-body"><h5 class="card-title">Storico recente</h5><div id="workflow-history" class="small"></div><div class="alert alert-warning small mt-3 mb-0">I controlli workflow sono applicativi/front-end. Per sicurezza multiutente reale servono regole Firestore coerenti.</div></div></div></div>
+          </div>
+        </div>
+
+        <div class="content-section d-none" id="audit-trail">
+          <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3"><div><h2>Registro attività / audit trail</h2><p class="text-muted mb-0">Vista 0.4.3 delle attività applicative: eventi manuali in <code>auditEvents</code> e ricostruzione da workflow, pagamenti, prima nota, solleciti, riconciliazioni e budget. È un audit didattico lato client, non un logging forense server-side.</p></div><div class="btn-group btn-group-sm"><button class="btn btn-outline-secondary" id="audit-refresh-btn" type="button"><i class="fas fa-rotate"></i> Aggiorna</button><button class="btn btn-outline-secondary" id="audit-export-csv-btn" type="button"><i class="fas fa-file-csv"></i> Esporta CSV</button></div></div>
+          <div id="audit-status" class="mb-2"></div><div class="row g-3 mb-3" id="audit-summary"></div>
+          <div class="card mb-3"><div class="card-body"><div class="row g-2 align-items-end"><div class="col-md-2"><label class="form-label" for="audit-filter-category">Categoria</label><select class="form-select" id="audit-filter-category"><option value="all">Tutte</option><option value="manuale">Manuale</option><option value="workflow">Workflow</option><option value="pagamenti">Pagamenti</option><option value="prima_nota">Prima nota</option><option value="solleciti">Solleciti</option><option value="riconciliazione">Riconciliazione</option><option value="budget">Budget</option></select></div><div class="col-md-2"><label class="form-label" for="audit-filter-source">Fonte</label><select class="form-select" id="audit-filter-source"><option value="all">Tutte</option><option value="auditEvents">auditEvents</option><option value="workflowEvents">workflowEvents</option><option value="paymentEvents">paymentEvents</option><option value="cashbookMovements">cashbookMovements</option><option value="reminderEvents">reminderEvents</option><option value="bankReconciliationEvents">bankReconciliationEvents</option><option value="businessBudgets">businessBudgets</option></select></div><div class="col-md-2"><label class="form-label" for="audit-filter-severity">Priorità</label><select class="form-select" id="audit-filter-severity"><option value="all">Tutte</option><option value="info">Info</option><option value="warning">Warning</option><option value="danger">Critica</option><option value="success">OK</option></select></div><div class="col-md-2"><label class="form-label" for="audit-date-from">Da</label><input class="form-control" id="audit-date-from" type="date"></div><div class="col-md-2"><label class="form-label" for="audit-date-to">A</label><input class="form-control" id="audit-date-to" type="date"></div><div class="col-md-2"><label class="form-label" for="audit-search">Ricerca</label><input class="form-control" id="audit-search" type="search" placeholder="azione, soggetto, utente..."></div></div><div class="mt-3" id="audit-source-pills"></div></div></div>
+          <div class="row g-3"><div class="col-xl-9"><div class="card h-100"><div class="card-body p-0"><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead class="table-light"><tr><th>Data/Fonte</th><th>Priorità</th><th>Categoria</th><th>Azione</th><th>Entità</th><th>Riferimento</th><th>Soggetto</th><th class="text-end">Importo</th><th>Utente</th><th>ID</th></tr></thead><tbody id="audit-table-body"></tbody></table></div></div></div></div><div class="col-xl-3"><div class="card h-100"><div class="card-body"><h5 class="card-title">Evento manuale</h5><p class="text-muted small">Registra una nota di audit applicativa. Gli eventi manuali sono salvati nella collezione opzionale <code>auditEvents</code>.</p><label class="form-label" for="audit-manual-category">Categoria</label><select class="form-select mb-2" id="audit-manual-category"><option value="manuale">Manuale</option><option value="workflow">Workflow</option><option value="pagamenti">Pagamenti</option><option value="prima_nota">Prima nota</option><option value="riconciliazione">Riconciliazione</option><option value="budget">Budget</option></select><label class="form-label" for="audit-manual-severity">Priorità</label><select class="form-select mb-2" id="audit-manual-severity"><option value="info">Info</option><option value="warning">Warning</option><option value="danger">Critica</option><option value="success">OK</option></select><label class="form-label" for="audit-manual-action">Azione</label><input class="form-control mb-2" id="audit-manual-action" placeholder="Controllo manuale, verifica, nota..."><label class="form-label" for="audit-manual-entity-type">Entità</label><input class="form-control mb-2" id="audit-manual-entity-type" placeholder="invoice, customer, paymentEvent..."><label class="form-label" for="audit-manual-entity-label">Riferimento</label><input class="form-control mb-2" id="audit-manual-entity-label" placeholder="Numero documento / codice"><label class="form-label" for="audit-manual-subject">Soggetto</label><input class="form-control mb-2" id="audit-manual-subject" placeholder="Cliente, fornitore, utente..."><label class="form-label" for="audit-manual-note">Nota</label><textarea class="form-control mb-3" id="audit-manual-note" rows="3"></textarea><button class="btn btn-primary w-100" id="audit-manual-save-btn" type="button"><i class="fas fa-save"></i> Registra evento</button><div class="alert alert-warning small mt-3 mb-0">Audit client-side: per tracciamento realmente immodificabile servono regole/server log esterni.</div></div></div></div></div>
+        </div>
+        <div class="content-section d-none" id="ux-accessibilita">
+          <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
+            <div>
+              <h2><i class="fas fa-universal-access me-2"></i>UX / accessibilità</h2>
+              <p class="text-muted mb-0">Vista 0.4.8 di consolidamento: controlli non distruttivi su navigazione, landmark, focus, label, pulsanti, coerenza menu/sezioni e contrasto Dark Mode dei controlli form e select dinamiche critiche.</p>
+            </div>
+            <div class="btn-group btn-group-sm">
+              <button class="btn btn-outline-secondary" id="ux-a11y-refresh-btn" type="button"><i class="fas fa-rotate"></i> Aggiorna</button>
+              <button class="btn btn-outline-primary" id="ux-a11y-export-csv-btn" type="button"><i class="fas fa-file-csv"></i> Esporta CSV</button>
+            </div>
+          </div>
+          <div class="row g-2 mb-3" id="ux-a11y-summary"></div>
+          <div class="card mb-3"><div class="card-body"><div id="ux-a11y-status"></div></div></div>
+          <div class="card"><div class="card-body p-0"><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead class="table-light"><tr><th style="width: 140px;">Esito</th><th>Controllo</th><th>Dettaglio</th></tr></thead><tbody id="ux-a11y-table-body"><tr><td colspan="3" class="text-center text-muted py-4">Apri o aggiorna la vista per eseguire i controlli.</td></tr></tbody></table></div></div></div>
+          <div class="alert alert-info small mt-3 mb-0">I controlli 0.4.8 sono consultivi e client-side: applicano aria-label runtime agli elementi legacy/dinamici, verificano gli stili Dark Mode delle combo e il popolamento delle select dinamiche e aiutano a individuare problemi residui, ma non sostituiscono un audit WCAG completo.</div>
+        </div>
+        <div class="content-section d-none" id="centro-stampe">
+          <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
+            <div>
+              <h2>Stampe e PDF HTML</h2>
+              <p class="text-muted mb-0">Centro stampe 0.4.0: genera anteprime HTML stampabili tramite browser. Per ottenere un PDF usa la funzione <strong>Stampa / Salva come PDF</strong> del browser.</p>
+            </div>
+            <div class="btn-group btn-group-sm">
+              <button class="btn btn-outline-secondary" id="print-preview-btn" type="button"><i class="fas fa-rotate"></i> Rigenera</button>
+              <button class="btn btn-primary" id="print-open-btn" type="button"><i class="fas fa-print"></i> Stampa / PDF</button>
+              <button class="btn btn-outline-secondary" id="print-download-html-btn" type="button"><i class="fas fa-file-code"></i> Scarica HTML</button>
+            </div>
+          </div>
+          <div class="row g-3">
+            <div class="col-xl-3"><div class="card h-100"><div class="card-body">
+              <h5 class="card-title">Template stampa</h5>
+              <label class="form-label" for="print-template-type">Documento</label>
+              <select class="form-select mb-2" id="print-template-type">
+                <option value="statement" selected>Estratto conto</option>
+                <option value="ledger">Partitario</option>
+                <option value="invoice">Fattura / nota credito</option>
+                <option value="cashbook">Prima nota</option>
+                <option value="reminders">Solleciti / promemoria</option>
+              </select>
+              <div class="small text-muted mb-3" id="print-template-note"></div>
+              <div class="print-filter-subject">
+                <label class="form-label" for="print-subject-type">Tipo soggetto</label>
+                <select class="form-select mb-2" id="print-subject-type"><option value="customer" selected>Cliente</option><option value="supplier">Fornitore</option></select>
+                <label class="form-label" for="print-subject-id">Soggetto</label>
+                <select class="form-select mb-2" id="print-subject-id"><option value="all">Tutti</option></select>
+              </div>
+              <div class="print-filter-document d-none">
+                <label class="form-label" for="print-document-id">Documento vendita</label>
+                <select class="form-select mb-2" id="print-document-id"><option value="">Prima fattura disponibile</option></select>
+              </div>
+              <div class="row g-2 print-filter-period">
+                <div class="col-6"><label class="form-label" for="print-date-from">Da</label><input class="form-control" type="date" id="print-date-from"></div>
+                <div class="col-6"><label class="form-label" for="print-date-to">A</label><input class="form-control" type="date" id="print-date-to"></div>
+              </div>
+              <label class="form-label mt-2" for="print-search">Filtro testo</label>
+              <input class="form-control" id="print-search" placeholder="Soggetto, documento, causale...">
+              <div class="alert alert-warning small mt-3 mb-0">Nessun backend custom: i template sono generati localmente dai dati già caricati in app.</div>
+            </div></div></div>
+            <div class="col-xl-9">
+              <div id="print-center-status" class="mb-2"></div>
+              <div class="ratio ratio-4x3 border rounded bg-white"><iframe id="print-preview-frame" title="Anteprima stampa CDSDM" style="background:white;"></iframe></div>
+            </div>
+          </div>
+        </div>
+
         <div class="content-section d-none" id="scadenziario">
-          <h2>Scadenziario</h2>
-          <p class="text-muted">Incassi fatture, pagamenti acquisti e scadenze IVA (mensile/trimestrale da Anagrafica
-            Azienda).</p>
+          <h2>Scadenzario evoluto</h2>
+          <p class="text-muted">Incassi clienti, pagamenti fornitori, importi parziali/residui e scadenze IVA didattiche. Vista derivata dai documenti esistenti, senza nuove collezioni Firestore.</p>
 
           <div class="text-end mb-2">
             <button class="btn btn-outline-secondary btn-sm" id="scad-export-csv-btn" type="button">
@@ -787,53 +1722,25 @@
           </div>
 
           <div class="row g-2 align-items-end">
-            <div class="col-md-3">
-              <label class="form-label">Da</label>
-              <input class="form-control" type="date" id="scad-from">
-            </div>
-            <div class="col-md-3">
-              <label class="form-label">A</label>
-              <input class="form-control" type="date" id="scad-to">
-            </div>
-            <div class="col-md-6">
-              <div class="d-flex flex-wrap gap-3">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="scad-show-incassi" checked>
-                  <label class="form-check-label" for="scad-show-incassi">Incassi fatture</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="scad-show-pagamenti" checked>
-                  <label class="form-check-label" for="scad-show-pagamenti">Pagamenti acquisti</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="scad-show-iva" checked>
-                  <label class="form-check-label" for="scad-show-iva">Scadenze IVA</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="scad-show-iva-crediti">
-                  <label class="form-check-label" for="scad-show-iva-crediti">Mostra crediti IVA</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="scad-show-chiuse">
-                  <label class="form-check-label" for="scad-show-chiuse">Mostra pagate</label>
-                </div>
-              </div>
-            </div>
+            <div class="col-md-2"><label class="form-label">Da</label><input class="form-control" type="date" id="scad-from"></div>
+            <div class="col-md-2"><label class="form-label">A</label><input class="form-control" type="date" id="scad-to"></div>
+            <div class="col-md-2"><label class="form-label">Tipo</label><select class="form-select" id="scad-type-filter"><option value="all">Tutti</option><option value="invoice">Incassi clienti</option><option value="purchase">Pagamenti fornitori</option><option value="vat">IVA</option></select></div>
+            <div class="col-md-2"><label class="form-label">Stato</label><select class="form-select" id="scad-status-filter"><option value="open" selected>Aperte</option><option value="overdue">Scadute</option><option value="partial">Parziali</option><option value="closed">Chiuse</option><option value="all">Tutte</option></select></div>
+            <div class="col-md-4"><label class="form-label">Cerca soggetto/documento</label><input class="form-control" type="search" id="scad-subject-filter" placeholder="Cliente, fornitore, numero documento..."></div>
           </div>
+
+          <div class="row g-2 mt-2"><div class="col-12"><div class="d-flex flex-wrap gap-3">
+            <div class="form-check"><input class="form-check-input" type="checkbox" id="scad-show-incassi" checked><label class="form-check-label" for="scad-show-incassi">Incassi fatture</label></div>
+            <div class="form-check"><input class="form-check-input" type="checkbox" id="scad-show-pagamenti" checked><label class="form-check-label" for="scad-show-pagamenti">Pagamenti acquisti</label></div>
+            <div class="form-check"><input class="form-check-input" type="checkbox" id="scad-show-iva" checked><label class="form-check-label" for="scad-show-iva">Scadenze IVA</label></div>
+            <div class="form-check"><input class="form-check-input" type="checkbox" id="scad-show-iva-crediti"><label class="form-check-label" for="scad-show-iva-crediti">Mostra crediti IVA</label></div>
+          </div></div></div>
+
+          <div class="row g-3 mt-2" id="scadenziario-summary"></div>
 
           <div class="table-responsive mt-3">
             <table class="table table-hover align-middle">
-              <thead>
-                <tr>
-                  <th>Data</th>
-                  <th>Tipo</th>
-                  <th>Soggetto</th>
-                  <th>Documento</th>
-                  <th class="text-end">Importo</th>
-                  <th>Stato</th>
-                  <th class="text-end">Azioni</th>
-                </tr>
-              </thead>
+              <thead><tr><th>Data</th><th>Tipo</th><th>Soggetto</th><th>Documento</th><th class="text-end">Importo</th><th class="text-end">Pagato/Incassato</th><th class="text-end">Residuo</th><th>Stato</th><th class="text-end">Azioni</th></tr></thead>
               <tbody id="scadenziario-table-body"></tbody>
             </table>
           </div>
@@ -987,9 +1894,7 @@
               <div class="col-lg-1 d-none" id="invoice-esenzione-iva-container"><label
                   class="form-label small">Esenzione</label><select class="form-select form-select-sm" disabled=""
                   id="invoice-product-esenzioneIva">
-                  <option value="N2.1">N2.1</option>
-                  <option value="N2.2">N2.2</option>
-                  <option value="N4">N4</option>
+                  <option value=""></option><option value="N1">N1</option><option value="N2.1">N2.1</option><option value="N2.2">N2.2</option><option value="N3.1">N3.1</option><option value="N3.2">N3.2</option><option value="N3.3">N3.3</option><option value="N3.4">N3.4</option><option value="N3.5">N3.5</option><option value="N3.6">N3.6</option><option value="N4">N4</option><option value="N5">N5</option><option value="N6.1">N6.1</option><option value="N6.2">N6.2</option><option value="N6.3">N6.3</option><option value="N6.4">N6.4</option><option value="N6.5">N6.5</option><option value="N6.6">N6.6</option><option value="N6.7">N6.7</option><option value="N6.8">N6.8</option><option value="N6.9">N6.9</option><option value="N7">N7</option>
                 </select></div>
               <div class="col-lg-1"><button class="btn btn-success w-100 btn-sm" id="add-product-to-invoice-btn"
                   type="button"><i class="fas fa-plus"></i></button></div>
@@ -1027,7 +1932,7 @@
               <div class="col-md-4 mb-3" id="invoice-bank-container">
                 <label class="form-label">Banca</label>
                 <select class="form-select" id="invoice-bank-select"></select>
-                <div class="form-text">Disponibile solo per Bonifico Bancario.</div>
+                <div class="form-text">Disponibile per modalità di pagamento che richiedono banca/IBAN.</div>
               </div>
             </div>
             <div class="row">
@@ -1173,45 +2078,7 @@
                   <option value="mensile" selected>MENSILE</option>
                   <option value="trimestrale">TRIMESTRALE</option>
                 </select>
-                <div class="content-section d-none" id="manuale">
-                  <h2>Manuale Utente</h2>
-                  <div id="manuale-content" class="markdown-body">Caricamento in corso...</div>
-                </div>
-
-                <div class="content-section d-none" id="versione">
-                  <h2>Informazioni Versione</h2>
-                  <div class="card shadow-sm border-0 bg-light p-4 mb-3">
-                    <div class="row align-items-center">
-                      <div class="col-md-2 text-center">
-                        <i class="fas fa-rocket fa-4x text-primary"></i>
-                      </div>
-                      <div class="col-md-10">
-                        <h3 class="mb-1">CDSDM Versione 0.0.2</h3>
-                        <p class="text-muted">Recupero password da login tramite link di reset Firebase.</p>
-                        <div class="mt-4">
-                          <button class="btn btn-primary" id="btn-view-changelog">
-                            <i class="fas fa-history me-1"></i> Visualizza Changelog
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- MODALE CHANGELOG -->
-                <div class="modal fade" id="changelogModal" tabindex="-1">
-                  <div class="modal-dialog modal-lg modal-dialog-scrollable">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title">Changelog Migliorie</h5>
-                        <button class="btn-close" data-bs-dismiss="modal" type="button"></button>
-                      </div>
-                      <div class="modal-body">
-                        <div id="changelog-content" class="markdown-body"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                
               </div>
             </div>
             <div class="row">
@@ -1550,6 +2417,49 @@
                       class="fas fa-file-export"></i> Esporta CSV</button>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- IMPORT MASSIVI CSV -->
+        <div class="content-section d-none" id="import-massivi">
+          <h2>Import massivi CSV</h2>
+          <div class="alert alert-info mt-3">
+            <strong>Import 0.2.5.</strong> Carica file CSV UTF-8, verifica l’anteprima e conferma il salvataggio su Firestore.
+            Nessun dato viene scritto prima della conferma. I file Excel devono essere salvati come CSV prima dell’import, senza introdurre librerie esterne.
+          </div>
+
+          <div class="card mt-3">
+            <div class="card-body">
+              <div class="row g-3 align-items-end">
+                <div class="col-md-4">
+                  <label class="form-label" for="mass-import-target">Tipo dati</label>
+                  <select class="form-select" id="mass-import-target">
+                    <option value="customers">Clienti</option>
+                    <option value="suppliers">Fornitori</option>
+                    <option value="products">Servizi / prodotti / costi</option>
+                    <option value="warehouseLots">Lotti / matricole / scadenze</option>
+                    <option value="warehouseMovements">Movimenti magazzino</option>
+                  </select>
+                </div>
+                <div class="col-md-5">
+                  <label class="form-label" for="mass-import-file">File CSV</label>
+                  <input class="form-control" type="file" id="mass-import-file" accept=".csv,text/csv,.txt" />
+                </div>
+                <div class="col-md-3 d-grid gap-2">
+                  <button class="btn btn-outline-secondary" type="button" id="mass-import-template-btn"><i class="fas fa-download"></i> Template CSV</button>
+                  <button class="btn btn-primary" type="button" id="mass-import-preview-btn"><i class="fas fa-eye"></i> Genera anteprima</button>
+                </div>
+              </div>
+              <div class="row g-3 mt-3">
+                <div class="col-md-3"><div class="card bg-light"><div class="card-body py-2"><div class="small text-muted">Righe</div><div class="fs-5 fw-bold" id="mass-import-total">0</div></div></div></div>
+                <div class="col-md-3"><div class="card bg-light"><div class="card-body py-2"><div class="small text-muted">Valide</div><div class="fs-5 fw-bold text-success" id="mass-import-valid">0</div></div></div></div>
+                <div class="col-md-3"><div class="card bg-light"><div class="card-body py-2"><div class="small text-muted">Errori</div><div class="fs-5 fw-bold text-danger" id="mass-import-invalid">0</div></div></div></div>
+                <div class="col-md-3 d-grid"><button class="btn btn-success" type="button" id="mass-import-confirm-btn" disabled><i class="fas fa-cloud-upload-alt"></i> Conferma import</button></div>
+              </div>
+              <div class="mt-3" id="mass-import-status"></div>
+              <div class="mt-3" id="mass-import-preview"><div class="alert alert-light border mb-0">Carica un CSV e genera l’anteprima. Nessun dato viene salvato prima della conferma.</div></div>
             </div>
           </div>
         </div>
@@ -1984,6 +2894,13 @@
               <div class="p-2 bg-light border rounded">
                 <div class="fw-bold mb-2">Termini di pagamento (default)</div>
                 <div class="row">
+                  <div class="col-md-4 mb-3">
+                    <label class="form-label">Modalità pagamento</label>
+                    <select class="form-select" id="customer-defaultPaymentMethodId"></select>
+                    <div class="form-text">Proposta automaticamente nelle nuove fatture del cliente.</div>
+                  </div>
+                </div>
+                <div class="row">
                   <div class="col-md-3 mb-3">
                     <label class="form-label">Giorni</label>
                     <input class="form-control" id="customer-giorniTermini" type="number" min="0" step="1"
@@ -2019,71 +2936,53 @@
         </div>
       </div>
     </div>
-    <!-- MODALE PRODOTTO (FIXED ID VISIBLE) -->
+    <!-- MODALE VOCE / PRODOTTO (FIXED ID VISIBLE) -->
     <div class="modal fade" id="productModal" tabindex="-1">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="productModalTitle">Servizio / Prodotto</h5><button class="btn-close"
-              data-bs-dismiss="modal"></button>
-          </div>
+          <div class="modal-header"><h5 class="modal-title" id="productModalTitle">Voce anagrafica</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
           <div class="modal-body">
             <form id="productForm">
-              <div class="mb-3 p-2 bg-light border rounded">
-                <label class="small text-muted fw-bold">ID Scheda (Sistema)</label>
-                <input class="form-control-plaintext fw-bold" id="product-id"
-                  placeholder="Nuovo (Generato al salvataggio)" readonly="" type="text" />
-              </div>
-              <div class="row">
-                <div class="col-md-8 mb-3"><label class="form-label">Descrizione</label><input class="form-control"
-                    id="product-description" required="" type="text" /></div>
-                <div class="col-md-4 mb-3"><label class="form-label">Codice</label><input class="form-control"
-                    id="product-code" type="text" /></div>
-              </div>
-              <div class="row">
-                <div class="col-md-4 mb-3"><label class="form-label">Prezzo Vendita</label><input class="form-control"
-                    id="product-salePrice" step="0.01" type="number" /></div>
-                <div class="col-md-4 mb-3"><label class="form-label">Aliquota IVA</label><select class="form-select"
-                    id="product-iva">
-                    <option value="0">0%</option>
-                    <option value="4">4%</option>
-                    <option value="5">5%</option>
-                    <option value="10">10%</option>
-                    <option value="22">22%</option>
-                  </select></div>
-                <div class="col-md-4 mb-3 d-none" id="esenzione-iva-container"><label
-                    class="form-label">Esenzione</label><select class="form-select" id="product-esenzioneIva">
-                    <option value="N2.1">N2.1</option>
-                    <option value="N2.2">N2.2</option>
-                    <option value="N4">N4</option>
-                  </select></div>
-              </div>
-
-              <div class="row mt-2">
-                <div class="col-md-6 mb-2">
-                  <div class="form-check">
-                    <input class="form-check-input" id="product-isLavoro" type="checkbox" checked />
-                    <label class="form-check-label" for="product-isLavoro">Lavoro (entra nel calcolo Rivalsa
-                      INPS)</label>
-                  </div>
+              <div class="mb-3 p-2 bg-light border rounded"><label class="small text-muted fw-bold">ID Scheda (Sistema)</label><input class="form-control-plaintext fw-bold" id="product-id" placeholder="Nuovo (Generato al salvataggio)" readonly type="text" /></div>
+              <div class="row"><div class="col-md-8 mb-3"><label class="form-label">Descrizione</label><input class="form-control" id="product-description" required type="text" /></div><div class="col-md-4 mb-3"><label class="form-label">Codice</label><input class="form-control" id="product-code" type="text" /></div></div>
+              <div class="row"><div class="col-md-4 mb-3"><label class="form-label">Tipo voce</label><select class="form-select" id="product-itemType"><option value="service">Servizio</option><option value="cost">Costo</option><option value="product">Prodotto</option></select></div><div class="col-md-4 mb-3"><label class="form-label">Prezzo acquisto</label><input class="form-control" id="product-purchasePrice" step="0.01" min="0" type="number" /><div class="form-text">Valore preparatorio per inventario valorizzato e futuri DDT/acquisti.</div></div><div class="col-md-4 mb-3"><label class="form-label">Prezzo vendita</label><input class="form-control" id="product-salePrice" step="0.01" min="0" type="number" /></div></div><div class="row"><div class="col-md-4 mb-3"><label class="form-label">Regola IVA / Natura FE</label><select class="form-select" id="product-vatRateId"></select></div><div class="col-md-8 mb-3"><div class="alert alert-secondary small mb-0" id="product-vat-preview">Seleziona una regola IVA per vedere aliquota, codice Natura FE e riferimento.</div></div></div><div class="border rounded p-3 mb-3 bg-light-subtle" id="product-warehouse-fields">
+                <div class="fw-semibold mb-2"><i class="fas fa-warehouse me-1"></i> Dati magazzino preparatori</div>
+                <div class="row">
+                  <div class="col-md-3 mb-3"><label class="form-label">Unità misura</label><input class="form-control" id="product-unitOfMeasure" placeholder="pz, kg, h" /></div>
+                  <div class="col-md-3 mb-3"><label class="form-label">Giacenza disponibile</label><input class="form-control" id="product-stockQty" step="0.001" type="number" /></div>
+                  <div class="col-md-3 mb-3"><label class="form-label">Giacenza riservata</label><input class="form-control" id="product-reservedQty" step="0.001" type="number" /></div>
+                  <div class="col-md-3 mb-3"><label class="form-label">Giacenza quarantena</label><input class="form-control" id="product-quarantineQty" step="0.001" type="number" /></div>
                 </div>
-                <div class="col-md-6 mb-2">
-                  <div class="form-check">
-                    <input class="form-check-input" id="product-isCosto" type="checkbox" />
-                    <label class="form-check-label" for="product-isCosto">Costo (esclude Rivalsa INPS)</label>
-                  </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3"><label class="form-label">Ubicazione magazzino</label><input class="form-control" id="product-warehouseLocation" placeholder="Corsia / scaffale / piano" /></div>
+                  <div class="col-md-3 mb-3"><label class="form-label">Scorta minima</label><input class="form-control" id="product-minStockQty" step="0.001" type="number" /></div>
+                  <div class="col-md-3 mb-3"><label class="form-label">Valorizzazione</label><div class="form-control-plaintext small" id="product-stock-value-preview">€ 0,00</div></div>
                 </div>
+                <div class="row border-top pt-3 mt-1">
+                  <div class="col-md-4 mb-3"><label class="form-label">Tracciabilità</label><select class="form-select" id="product-trackingMode"><option value="none">Nessuna</option><option value="lot">Lotto</option><option value="serial">Matricola</option><option value="expiry">Lotto + scadenza</option></select></div>
+                  <div class="col-md-4 mb-3"><label class="form-label">Scadenza richiesta</label><select class="form-select" id="product-requiresExpiry"><option value="false">No</option><option value="true">Sì</option></select></div>
+                  <div class="col-md-4 mb-3"><label class="form-label">Shelf life indicativa (giorni)</label><input class="form-control" id="product-shelfLifeDays" step="1" min="0" type="number" placeholder="es. 365" /></div>
+                </div>
+                <div class="form-text">Questi campi sono usati solo per voci di tipo Prodotto e preparano inventario, quarantena e futuri DDT.</div>
               </div>
-              <div class="small text-muted">Se selezioni <b>Costo</b>, questo servizio (es. spese viaggio / rimborso km)
-                non contribuisce alla base per la rivalsa INPS.</div>
+              <div class="row d-none"><div class="col-md-4 mb-3"><select class="form-select" id="product-iva"><option value="0">0%</option><option value="4">4%</option><option value="5">5%</option><option value="10">10%</option><option value="22">22%</option></select></div><div class="col-md-4 mb-3" id="esenzione-iva-container"><select class="form-select" id="product-esenzioneIva"><option value=""></option><option value="N1">N1</option><option value="N2.1">N2.1</option><option value="N2.2">N2.2</option><option value="N3.1">N3.1</option><option value="N3.2">N3.2</option><option value="N3.3">N3.3</option><option value="N3.4">N3.4</option><option value="N3.5">N3.5</option><option value="N3.6">N3.6</option><option value="N4">N4</option><option value="N5">N5</option><option value="N6.1">N6.1</option><option value="N6.2">N6.2</option><option value="N6.3">N6.3</option><option value="N6.4">N6.4</option><option value="N6.5">N6.5</option><option value="N6.6">N6.6</option><option value="N6.7">N6.7</option><option value="N6.8">N6.8</option><option value="N6.9">N6.9</option><option value="N7">N7</option></select></div><input class="form-check-input" id="product-isLavoro" type="checkbox" /><input class="form-check-input" id="product-isCosto" type="checkbox" /></div>
+              <div class="small text-muted">Il tipo <b>Prodotto</b> identifica beni fisici movimentabili in una futura gestione magazzino/DDT. Per compatibilità, i campi legacy <code>isLavoro</code>, <code>isCosto</code>, <code>iva</code> ed <code>esenzioneIva</code> vengono ancora salvati.</div>
             </form>
           </div>
-          <div class="modal-footer">
-            <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Annulla</button>
-            <button class="btn btn-primary" id="saveProductBtn" type="button">Salva Servizio</button>
-          </div>
+          <div class="modal-footer"><button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Annulla</button><button class="btn btn-primary" id="saveProductBtn" type="button">Salva Voce</button></div>
         </div>
       </div>
+    </div>
+    <!-- MODALE CODICE IVA / NATURA FE -->
+    <div class="modal fade" id="vatRateModal" tabindex="-1">
+      <div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Codice IVA / Natura FE</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="vatRateForm"><div class="alert alert-info d-none" id="vatRate-system-alert">Questo è un codice di sistema: puoi consultarlo ma non modificarlo.</div><div class="mb-3 p-2 bg-light border rounded"><label class="small text-muted fw-bold">ID Scheda (Sistema)</label><input class="form-control-plaintext fw-bold" id="vatRate-id" readonly type="text" /></div><div class="row"><div class="col-md-3 mb-3"><label class="form-label">Codice</label><input class="form-control" id="vatRate-code" placeholder="IVA22 / N2.2" required type="text" /></div><div class="col-md-6 mb-3"><label class="form-label">Descrizione</label><input class="form-control" id="vatRate-label" required type="text" /></div><div class="col-md-3 mb-3"><label class="form-label">Aliquota %</label><input class="form-control" id="vatRate-rate" step="0.01" type="number" /></div></div><div class="row"><div class="col-md-3 mb-3"><label class="form-label">Natura FE</label><input class="form-control" id="vatRate-natureCode" placeholder="N2.2" type="text" /></div><div class="col-md-5 mb-3"><label class="form-label">Esenzione / descrizione FE</label><input class="form-control" id="vatRate-exemptionText" type="text" /></div><div class="col-md-4 mb-3"><label class="form-label">Riferimento normativo</label><input class="form-control" id="vatRate-legalReference" type="text" /></div></div><div class="form-check"><input class="form-check-input" id="vatRate-isActive" type="checkbox" checked /><label class="form-check-label" for="vatRate-isActive">Attivo</label></div><div class="small text-muted mt-2">Regola didattica: se l'aliquota è maggiore di 0, la Natura FE deve restare vuota; se l'aliquota è 0, indica il codice Natura FE.</div></form></div><div class="modal-footer"><button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Chiudi</button><button class="btn btn-primary" id="saveVatRateBtn" type="button">Salva Codice</button></div></div></div>
+    </div>
+
+    <div class="modal fade" id="paymentMethodModal" tabindex="-1">
+      <div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Codice pagamento FE</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="paymentMethodForm"><div class="alert alert-info d-none" id="paymentMethod-system-alert">Questo è un codice di sistema: puoi consultarlo ma non modificarlo.</div><div class="mb-3 p-2 bg-light border rounded"><label class="small text-muted fw-bold">ID Scheda (Sistema)</label><input class="form-control-plaintext fw-bold" id="paymentMethod-id" readonly type="text" /></div><div class="row"><div class="col-md-3 mb-3"><label class="form-label">Codice FE</label><input class="form-control" id="paymentMethod-code" placeholder="MP05" required type="text" /></div><div class="col-md-5 mb-3"><label class="form-label">Descrizione</label><input class="form-control" id="paymentMethod-label" placeholder="Bonifico bancario" required type="text" /></div><div class="col-md-4 mb-3"><label class="form-label">Macro area</label><select class="form-select" id="paymentMethod-macroArea"><option value="bonifico">Bonifico</option><option value="contanti">Contanti</option><option value="assegno">Assegno</option><option value="carta">Carta</option><option value="addebito">Addebito / domiciliazione</option><option value="ricevuta_bancaria">Ricevuta bancaria</option><option value="bollettino">Bollettino</option><option value="pago_pa">PagoPA</option><option value="trattenuta">Trattenuta</option><option value="altro">Altro</option></select></div></div><div class="form-check"><input class="form-check-input" id="paymentMethod-requiresBank" type="checkbox" /><label class="form-check-label" for="paymentMethod-requiresBank">Richiede banca/IBAN aziendale</label></div><div class="form-check mt-2"><input class="form-check-input" id="paymentMethod-isActive" type="checkbox" checked /><label class="form-check-label" for="paymentMethod-isActive">Attivo</label></div><div class="small text-muted mt-2">Regola didattica: per il bonifico il codice FE tipico è MP05 e l'app può richiedere una banca aziendale quando verrà collegato alla fattura.</div></form></div><div class="modal-footer"><button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Chiudi</button><button class="btn btn-primary" id="savePaymentMethodBtn" type="button">Salva Codice</button></div></div></div>
+    </div>
+    <div class="modal fade" id="companyBankModal" tabindex="-1">
+      <div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Banca aziendale</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="companyBankForm"><div class="mb-3 p-2 bg-light border rounded"><label class="small text-muted fw-bold">ID Scheda</label><input class="form-control-plaintext fw-bold" id="companyBank-id" readonly type="text" /></div><div class="row"><div class="col-md-5 mb-3"><label class="form-label">Etichetta conto</label><input class="form-control" id="companyBank-accountLabel" placeholder="Conto principale" required type="text" /></div><div class="col-md-4 mb-3"><label class="form-label">Banca</label><input class="form-control" id="companyBank-bankName" placeholder="Nome banca" type="text" /></div><div class="col-md-3 mb-3"><label class="form-label">Intestatario</label><input class="form-control" id="companyBank-accountHolder" type="text" /></div></div><div class="row"><div class="col-md-8 mb-3"><label class="form-label">IBAN</label><input class="form-control" id="companyBank-iban" placeholder="IT..." required type="text" /></div><div class="col-md-4 mb-3"><label class="form-label">BIC/SWIFT</label><input class="form-control" id="companyBank-bic" type="text" /></div></div><div class="mb-3"><label class="form-label">Note</label><input class="form-control" id="companyBank-notes" type="text" /></div><div class="form-check"><input class="form-check-input" id="companyBank-isDefault" type="checkbox" /><label class="form-check-label" for="companyBank-isDefault">Banca predefinita per nuove fatture</label></div><div class="form-check mt-2"><input class="form-check-input" id="companyBank-isActive" type="checkbox" checked /><label class="form-check-label" for="companyBank-isActive">Attiva</label></div></form></div><div class="modal-footer"><button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Chiudi</button><button class="btn btn-primary" id="saveCompanyBankBtn" type="button">Salva Banca</button></div></div></div>
     </div>
     <div aria-hidden="true" aria-labelledby="supplierModalTitle" class="modal fade" id="supplierModal" tabindex="-1">
       <div class="modal-dialog modal-lg modal-dialog-scrollable">
@@ -2217,8 +3116,273 @@
     <!-- App Script Unico -->
     <script src="js/core/domain-constants.js"></script>
     <script src="js/core/tax-regime-policy.js"></script>
+
+    <!-- MODAL MOVIMENTO MAGAZZINO -->
+    <div class="modal fade" id="warehouseQuarantineActionModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Gestisci quarantena</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <form id="warehouseQuarantineActionForm" onsubmit="return false;">
+              <input type="hidden" id="warehouseQuarantine-productId" />
+              <div class="alert alert-secondary small" id="warehouseQuarantine-productPreview">Seleziona un prodotto in quarantena.</div>
+              <div class="row g-2">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Azione</label>
+                  <select class="form-select" id="warehouseQuarantine-action" required>
+                    <option value="release">Sblocca a disponibile</option>
+                    <option value="discard">Scarta / elimina</option>
+                    <option value="return_supplier">Reso a fornitore</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3 d-none" id="warehouseQuarantineReturnFields">
+                  <label class="form-label">Fornitore per DDT reso</label>
+                  <select class="form-select" id="warehouseQuarantine-supplierId"></select>
+                  <div class="form-text">Obbligatorio solo per l'azione Reso a fornitore: genera un DDT reso fornitore stampabile/PDF.</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Data</label>
+                  <input class="form-control" id="warehouseQuarantine-date" type="date" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Quantità</label>
+                  <input class="form-control" id="warehouseQuarantine-quantity" type="number" min="0" step="0.001" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Riferimento documento</label>
+                  <input class="form-control" id="warehouseQuarantine-document" placeholder="Es. DDT reso / decisione interna" />
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Note</label>
+                <textarea class="form-control" id="warehouseQuarantine-notes" rows="2" placeholder="Motivazione o esito controllo qualità"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+            <button type="button" class="btn btn-primary" id="saveWarehouseQuarantineActionBtn">Conferma azione</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="warehouseLotModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Lotto / matricola</h5><button class="btn-close" data-bs-dismiss="modal" type="button"></button></div><div class="modal-body"><form id="warehouseLotForm" onsubmit="return false;"><input type="hidden" id="warehouseLot-id" /><div class="row g-3"><div class="col-md-6"><label class="form-label">Prodotto tracciato</label><select class="form-select" id="warehouseLot-productId" required></select></div><div class="col-md-3"><label class="form-label">Lotto</label><input class="form-control" id="warehouseLot-lotCode" /></div><div class="col-md-3"><label class="form-label">Matricola</label><input class="form-control" id="warehouseLot-serialNumber" /></div><div class="col-md-3"><label class="form-label">Scadenza</label><input class="form-control" id="warehouseLot-expiryDate" type="date" /></div><div class="col-md-3"><label class="form-label">Disponibile</label><input class="form-control" id="warehouseLot-qtyAvailable" type="number" step="0.001" min="0" /></div><div class="col-md-3"><label class="form-label">Quarantena</label><input class="form-control" id="warehouseLot-qtyQuarantine" type="number" step="0.001" min="0" /></div><div class="col-md-3"><label class="form-label">Stato</label><select class="form-select" id="warehouseLot-status"><option value="active">Attivo</option><option value="blocked">Bloccato</option><option value="closed">Chiuso</option></select></div><div class="col-md-6"><label class="form-label">Fornitore</label><select class="form-select" id="warehouseLot-supplierId"></select></div><div class="col-md-6"><label class="form-label">Origine / documento</label><input class="form-control" id="warehouseLot-sourceRef" placeholder="Es. DDT fornitore 12/2026" /></div><div class="col-12"><label class="form-label">Note</label><input class="form-control" id="warehouseLot-notes" /></div></div><div class="alert alert-secondary small mt-3 mb-0">Il registro lotti è didattico e opzionale: non modifica automaticamente la giacenza prodotto legacy, che resta compatibile con i flussi esistenti.</div></form></div><div class="modal-footer"><button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Annulla</button><button class="btn btn-primary" id="saveWarehouseLotBtn" type="button">Salva lotto</button></div></div></div></div>
+    <div class="modal fade" id="warehouseMovementModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Nuovo movimento magazzino</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+          </div>
+          <div class="modal-body">
+            <form id="warehouseMovementForm">
+              <input type="hidden" id="warehouseMovement-id" />
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label class="form-label">Data</label>
+                  <input class="form-control" id="warehouseMovement-date" type="date" required />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label class="form-label">Tipo movimento</label>
+                  <select class="form-select" id="warehouseMovement-type" required>
+                    <option value="CARICO">Carico disponibile</option>
+                    <option value="SCARICO">Scarico disponibile</option>
+                    <option value="RETTIFICA">Rettifica giacenza disponibile</option>
+                    <option value="QUARANTENA_IN">Sposta in quarantena</option>
+                    <option value="QUARANTENA_OUT">Sblocca da quarantena</option>
+                  </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label class="form-label">Quantità</label>
+                  <input class="form-control" id="warehouseMovement-quantity" type="number" min="0" step="0.001" required />
+                  <div class="form-text" id="warehouseMovement-quantity-help">Per rettifica indica la nuova giacenza disponibile.</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-8 mb-3">
+                  <label class="form-label">Prodotto</label>
+                  <select class="form-select" id="warehouseMovement-productId" required></select>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label class="form-label">Causale</label>
+                  <input class="form-control" id="warehouseMovement-causale" placeholder="Es. Carico iniziale, rettifica inventario" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Documento collegato</label>
+                  <input class="form-control" id="warehouseMovement-document" placeholder="Manuale / futuro DDT / ordine" />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Note</label>
+                  <input class="form-control" id="warehouseMovement-notes" />
+                </div>
+              </div>
+              <div class="alert alert-warning small mb-0">
+                Le operazioni manuali sono pensate per assestamenti e carichi/scarichi di base. I DDT fornitore/cliente genereranno movimenti automatici negli step successivi.
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+            <button type="button" class="btn btn-primary" id="saveWarehouseMovementBtn">Registra movimento</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- MODAL ORDINE CLIENTE -->
+    <div class="modal fade" id="quoteModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header"><h5 class="modal-title">Nuovo preventivo</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button></div>
+          <div class="modal-body"><form id="quoteForm"><input type="hidden" id="quote-id" />
+            <div class="row g-3 mb-3"><div class="col-md-3"><label class="form-label">Numero preventivo</label><input class="form-control" id="quote-number" /></div><div class="col-md-3"><label class="form-label">Data</label><input class="form-control" id="quote-date" type="date" /></div><div class="col-md-3"><label class="form-label">Valido fino al</label><input class="form-control" id="quote-validUntil" type="date" /></div><div class="col-md-3"><label class="form-label">Stato</label><select class="form-select" id="quote-status"><option value="draft">Bozza</option><option value="sent">Inviato</option><option value="accepted">Accettato</option><option value="rejected">Rifiutato</option><option value="cancelled">Annullato</option></select></div><div class="col-md-6"><label class="form-label">Cliente</label><select class="form-select" id="quote-customerId"></select></div><div class="col-md-6"><label class="form-label">Note</label><input class="form-control" id="quote-notes" placeholder="Note preventivo / condizioni" /></div></div>
+            <div class="card mb-3"><div class="card-header fw-semibold">Righe preventivo</div><div class="card-body"><div class="row g-2 align-items-end"><div class="col-md-5"><label class="form-label">Prodotto</label><select class="form-select" id="quote-productId"></select></div><div class="col-md-2"><label class="form-label">Quantità</label><input class="form-control text-end" id="quote-lineQty" type="number" min="0" step="0.001" value="1" /></div><div class="col-md-2"><label class="form-label">Prezzo vendita</label><input class="form-control text-end" id="quote-linePrice" type="number" step="0.01" min="0" /></div><div class="col-md-3"><button class="btn btn-outline-primary w-100" id="addQuoteLineBtn" type="button"><i class="fas fa-plus"></i> Aggiungi riga</button></div></div><div class="table-responsive mt-3"><table class="table table-sm align-middle mb-0"><thead><tr><th>Codice</th><th>Prodotto</th><th>UM</th><th class="text-end">Q.tà</th><th class="text-end">Prezzo</th><th class="text-end">Totale</th><th class="text-end">Azioni</th></tr></thead><tbody id="quote-lines-body"><tr><td colspan="7" class="text-center text-muted py-3">Nessuna riga inserita.</td></tr></tbody></table></div><div class="text-end mt-3 h5">Totale: <span id="quote-total">€ 0,00</span></div></div></div>
+          </form></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button><button type="button" class="btn btn-primary" id="saveQuoteBtn">Salva preventivo</button></div></div></div></div>
+    <div class="modal fade" id="quoteDetailModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quoteDetailModalTitle">Dettaglio preventivo</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button></div><div class="modal-body" id="quoteDetailModalBody"></div><div class="modal-footer"><button type="button" class="btn btn-outline-success" id="convertQuoteToOrderBtn">Converti in ordine cliente</button><button type="button" class="btn btn-outline-danger" id="deleteQuoteFromDetailBtn">Elimina preventivo</button><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button></div></div></div></div>
+
+    <div class="modal fade" id="customerOrderModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Nuovo ordine cliente</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+          </div>
+          <div class="modal-body">
+            <form id="customerOrderForm">
+              <input type="hidden" id="customerOrder-id" />
+              <div class="row g-3 mb-3">
+                <div class="col-md-3"><label class="form-label">Numero ordine</label><input class="form-control" id="customerOrder-number" /></div>
+                <div class="col-md-3"><label class="form-label">Data ordine</label><input class="form-control" id="customerOrder-date" type="date" /></div>
+                <div class="col-md-3"><label class="form-label">Consegna prevista</label><input class="form-control" id="customerOrder-expectedDeliveryDate" type="date" /></div>
+                <div class="col-md-3"><label class="form-label">Stato</label><select class="form-select" id="customerOrder-status"><option value="draft">Bozza</option><option value="confirmed">Confermato</option><option value="cancelled">Annullato</option></select></div>
+                <div class="col-md-6"><label class="form-label">Cliente</label><select class="form-select" id="customerOrder-customerId"></select></div>
+                <div class="col-md-6"><label class="form-label">Note</label><input class="form-control" id="customerOrder-notes" placeholder="Note ordine / consegna" /></div>
+              </div>
+              <div class="card mb-3">
+                <div class="card-header fw-semibold">Righe ordine</div>
+                <div class="card-body">
+                  <div class="row g-2 align-items-end">
+                    <div class="col-md-5"><label class="form-label">Prodotto</label><select class="form-select" id="customerOrder-productId"></select></div>
+                    <div class="col-md-2"><label class="form-label">Quantità</label><input class="form-control text-end" id="customerOrder-lineQty" type="number" min="0" step="0.001" value="1" /></div>
+                    <div class="col-md-2"><label class="form-label">Prezzo vendita</label><input class="form-control text-end" id="customerOrder-linePrice" type="number" step="0.01" min="0" /></div>
+                    <div class="col-md-3"><button class="btn btn-outline-primary w-100" id="addCustomerOrderLineBtn" type="button"><i class="fas fa-plus"></i> Aggiungi riga</button></div>
+                  </div>
+                  <div class="table-responsive mt-3">
+                    <table class="table table-sm align-middle mb-0">
+                      <thead><tr><th>Codice</th><th>Prodotto</th><th>UM</th><th class="text-end">Q.tà</th><th class="text-end">Prezzo</th><th class="text-end">Totale</th><th class="text-end">Azioni</th></tr></thead>
+                      <tbody id="customerOrder-lines-body"><tr><td colspan="7" class="text-center text-muted py-3">Nessuna riga inserita.</td></tr></tbody>
+                    </table>
+                  </div>
+                  <div class="text-end mt-3 h5">Totale: <span id="customerOrder-total">€ 0,00</span></div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+            <button type="button" class="btn btn-primary" id="saveCustomerOrderBtn">Salva ordine</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL DETTAGLIO ORDINE CLIENTE -->
+    <div class="modal fade" id="customerOrderDetailModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="customerOrderDetailModalTitle">Dettaglio ordine cliente</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+          </div>
+          <div class="modal-body" id="customerOrderDetailModalBody"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger" id="deleteCustomerOrderFromDetailBtn">Elimina ordine</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- MODAL ORDINE FORNITORE -->
+    <div class="modal fade" id="supplierOrderModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Ordine fornitore</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+          </div>
+          <div class="modal-body">
+            <form id="supplierOrderForm">
+              <input type="hidden" id="supplierOrder-id" />
+              <div class="row g-3 mb-3">
+                <div class="col-md-3"><label class="form-label">Numero ordine</label><input class="form-control" id="supplierOrder-number" /></div>
+                <div class="col-md-3"><label class="form-label">Data ordine</label><input class="form-control" id="supplierOrder-date" type="date" /></div>
+                <div class="col-md-3"><label class="form-label">Consegna prevista</label><input class="form-control" id="supplierOrder-expectedDeliveryDate" type="date" /></div>
+                <div class="col-md-3"><label class="form-label">Stato</label><select class="form-select" id="supplierOrder-status"><option value="draft">Bozza</option><option value="confirmed">Confermato</option><option value="cancelled">Annullato</option></select></div>
+                <div class="col-md-6"><label class="form-label">Fornitore</label><select class="form-select" id="supplierOrder-supplierId"></select></div>
+                <div class="col-md-6"><label class="form-label">Note</label><input class="form-control" id="supplierOrder-notes" placeholder="Note ordine / consegna" /></div>
+              </div>
+              <div class="card mb-3">
+                <div class="card-header fw-semibold">Righe ordine</div>
+                <div class="card-body">
+                  <div class="row g-2 align-items-end">
+                    <div class="col-md-5"><label class="form-label">Prodotto</label><select class="form-select" id="supplierOrder-productId"></select></div>
+                    <div class="col-md-2"><label class="form-label">Quantità</label><input class="form-control text-end" id="supplierOrder-lineQty" type="number" min="0" step="0.001" value="1" /></div>
+                    <div class="col-md-2"><label class="form-label">Prezzo acquisto</label><input class="form-control text-end" id="supplierOrder-linePrice" type="number" step="0.01" min="0" /></div>
+                    <div class="col-md-3"><button class="btn btn-outline-primary w-100" id="addSupplierOrderLineBtn" type="button"><i class="fas fa-plus"></i> Aggiungi riga</button></div>
+                  </div>
+                  <div class="table-responsive mt-3">
+                    <table class="table table-sm align-middle mb-0">
+                      <thead><tr><th>Codice</th><th>Prodotto</th><th>UM</th><th class="text-end">Q.tà</th><th class="text-end">Prezzo</th><th class="text-end">Totale</th><th class="text-end">Azioni</th></tr></thead>
+                      <tbody id="supplierOrder-lines-body"><tr><td colspan="7" class="text-center text-muted py-3">Nessuna riga inserita.</td></tr></tbody>
+                    </table>
+                  </div>
+                  <div class="text-end mt-3 h5">Totale: <span id="supplierOrder-total">€ 0,00</span></div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+            <button type="button" class="btn btn-primary" id="saveSupplierOrderBtn">Salva ordine</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL DETTAGLIO ORDINE FORNITORE -->
+    <div class="modal fade" id="supplierOrderDetailModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="supplierOrderDetailModalTitle">Dettaglio ordine fornitore</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+          </div>
+          <div class="modal-body" id="supplierOrderDetailModalBody"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger" id="deleteSupplierOrderFromDetailBtn">Elimina ordine</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="js/core/app-store.js"></script>
     <script src="js/core/domain-normalizers.js"></script>
+    <script src="js/core/permissions-policy.js"></script>
+    <script src="js/core/vat-rate-catalog.js"></script>
+    <script src="js/core/payment-method-catalog.js"></script>
+    <script src="js/core/company-bank-catalog.js"></script>
     <script src="js/core/utils.js"></script>
     <script src="js/core/form-helpers.js"></script>
     <script src="js/services/firebase-cloud.js"></script>
@@ -2226,7 +3390,36 @@
 <script src="js/ui/navigation-visibility.js"></script>
     <script src="js/ui/company-render.js"></script>
     <script src="js/ui/masterdata-render.js"></script>
+    <script src="js/features/accounting/ledger-service.js"></script>
+    <script src="js/features/accounting/ledger-module.js"></script>
+    <script src="js/features/accounting/account-statement-service.js"></script>
+    <script src="js/features/accounting/account-statement-module.js"></script>
+    <script src="js/features/accounting/payment-events-service.js"></script>
+    <script src="js/features/accounting/payment-events-module.js"></script>
+    <script src="js/features/accounting/reminder-service.js"></script>
+    <script src="js/features/accounting/reminder-module.js"></script>
+    <script src="js/features/accounting/bank-reconciliation-service.js"></script>
+    <script src="js/features/accounting/bank-reconciliation-module.js"></script>
+    <script src="js/features/accounting/business-budget-service.js"></script>
+    <script src="js/features/accounting/business-budget-module.js"></script>
+    <script src="js/features/accounting/mini-balance-service.js"></script>
+    <script src="js/features/accounting/mini-balance-module.js"></script>
+    <script src="js/features/accounting/cashbook-service.js"></script>
+    <script src="js/features/accounting/cashbook-module.js"></script>
+    <script src="js/features/accounting/accounting-consistency-service.js"></script>
+    <script src="js/features/accounting/print-template-service.js"></script>
+    <script src="js/features/accounting/print-center-module.js"></script>
+    <script src="js/features/scadenziario/scadenziario-service.js"></script>
+    <script src="js/features/accounting/workflow-service.js"></script>
+    <script src="js/features/accounting/workflow-module.js"></script>
+    <script src="js/features/accounting/audit-trail-service.js"></script>
+    <script src="js/features/accounting/audit-trail-module.js"></script>
+    <script src="js/features/accounting/notification-center-service.js"></script>
+    <script src="js/features/accounting/notification-center-module.js"></script>
+    <script src="js/ui/accessibility-ux-service.js"></script>
+    <script src="js/ui/accessibility-ux-module.js"></script>
     <script src="js/ui/scadenziario-render.js"></script>
+    <script src="js/features/dashboard/executive-dashboard-service.js"></script>
     <script src="js/ui/dashboard-render.js"></script>
     <script src="js/ui/analysis-render.js"></script>
     <script src="js/ui/tax-render.js"></script>
@@ -2245,6 +3438,9 @@
     <script src="js/features/commesse/timesheet-export.js"></script>
     <script src="js/features/registri-iva/registri-iva-module.js"></script>
     <script src="js/features/masterdata/customers-module.js"></script>
+    <script src="js/features/masterdata/vat-rates-module.js"></script>
+    <script src="js/features/masterdata/payment-methods-module.js"></script>
+    <script src="js/features/masterdata/company-banks-module.js"></script>
     <script src="js/features/masterdata/products-module.js"></script>
     <script src="js/features/masterdata/suppliers-module.js"></script>
     <script src="js/features/invoices/invoices-common-calc.js"></script>
@@ -2270,11 +3466,32 @@
     <script src="js/features/scadenziario/scadenziario-module.js"></script>
     <script src="js/features/notes/notes-module.js"></script>
     <script src="js/features/migration/migration-module.js"></script>
+    <script src="js/features/import/import-csv-module.js"></script>
+    <script src="js/features/settings/roles-permissions-module.js"></script>
     <script src="js/features/purchases/purchases-module.js"></script>
     <script src="js/features/purchases/purchase-xml-import-module.js"></script>
     <script src="js/features/tax/forfettario-calc.js"></script>
     <script src="js/features/tax/ordinario-calc.js"></script>
     <script src="js/features/tax/ordinario-sim-module.js"></script>
+    <script src="js/features/warehouse/inventory-valuation-service.js"></script>
+    <script src="js/features/warehouse/warehouse-lots-service.js"></script>
+    <script src="js/features/warehouse/warehouse-module.js"></script>
+    <script src="js/features/warehouse/document-lifecycle-service.js"></script>
+    <script src="js/features/warehouse/document-links-service.js"></script>
+    <script src="js/features/warehouse/document-cancellation-service.js"></script>
+    <script src="js/features/warehouse/customer-returns-service.js"></script>
+    <script src="js/features/warehouse/quotes-module.js"></script>
+    <script src="js/features/warehouse/customer-orders-module.js"></script>
+    <script src="js/features/warehouse/supplier-orders-module.js"></script>
+    <script src="js/features/warehouse/ddt-print-service.js"></script>
+    <script src="js/features/warehouse/warehouse-price-update-service.js"></script>
+    <script src="js/features/warehouse/ddt-to-invoice-service.js"></script>
+    <script src="js/features/warehouse/customer-ddt-invoicing-module.js"></script>
+    <script src="js/features/warehouse/supplier-ddts-module.js"></script>
+    <script src="js/features/warehouse/customer-ddts-module.js"></script>
+
+    <script src="js/features/warehouse/warehouse-qa-service.js"></script>
+    <script src="js/features/warehouse/warehouse-reports-module.js"></script>
 
     <script src="js/app/invoice-xml-migration.js"></script>
     <script src="js/app/app-bootstrap.js"></script>
