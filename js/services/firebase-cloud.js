@@ -1,5 +1,5 @@
 // firebase-cloud.js
-// Inizializzazione Firebase + funzioni Cloud (Firestore/Auth)
+// Inizializzazione Firebase + accesso diretto Firebase Auth/Firestore (nessun backend custom richiesto)
 
 function initFirebase() {
 
@@ -36,7 +36,7 @@ function initFirebase() {
 }
 
 
-// 2. GESTIONE DATI CLOUD (MULTI-UTENTE)
+// 2. GESTIONE DATI CLOUD (legacy utente + Gruppi aziendali 0.6.0)
 // =========================================================
 
 async function loadAllDataFromCloud() {
@@ -46,10 +46,13 @@ async function loadAllDataFromCloud() {
     }
 
     try {
-        const userRef = getUserDocRef();
+        if (window.BusinessGroupsService && typeof window.BusinessGroupsService.ensureStateReady === 'function') {
+            await window.BusinessGroupsService.ensureStateReady();
+        }
+        const dataRootRef = getDataRootRef();
 
         // 1) settings/companyInfo
-        const companyDoc = await userRef.collection('settings').doc('companyInfo').get();
+        const companyDoc = await dataRootRef.collection('settings').doc('companyInfo').get();
         if (companyDoc.exists) {
             globalData.companyInfo = companyDoc.data();
             if (window.AppStore) window.AppStore.set('companyInfo', globalData.companyInfo, { silent: true });
@@ -59,9 +62,9 @@ async function loadAllDataFromCloud() {
         }
 
         // 2) Altre collezioni: products, customers, invoices, notes
-        const collections = ['products', 'customers', 'suppliers', 'purchases', 'invoices', 'notes', 'commesse', 'projects', 'worklogs', 'vatRates', 'paymentMethods', 'companyBanks', 'warehouseMovements', 'quotes', 'customerOrders', 'supplierOrders', 'supplierDDTs', 'customerDDTs', 'warehousePhysicalCounts', 'warehouseLots', 'paymentEvents', 'cashbookMovements', 'reminderEvents', 'bankReconciliationEvents', 'businessBudgets', 'workflowEvents', 'auditEvents'];
+        const collections = window.CDSDM_DATA_COLLECTIONS || ['products', 'customers', 'suppliers', 'purchases', 'invoices', 'notes', 'commesse', 'projects', 'worklogs', 'vatRates', 'paymentMethods', 'companyBanks', 'warehouseMovements', 'quotes', 'customerOrders', 'supplierOrders', 'supplierDDTs', 'customerDDTs', 'warehousePhysicalCounts', 'warehouseLots', 'paymentEvents', 'cashbookMovements', 'reminderEvents', 'bankReconciliationEvents', 'businessBudgets', 'workflowEvents', 'auditEvents', 'teachingScenarios', 'simulationEvents', 'migrationReports', 'permissionProfiles', 'permissionMatrices', 'securityAccessReports'];
         for (const col of collections) {
-            const snapshot = await userRef.collection(col).get();
+            const snapshot = await dataRootRef.collection(col).get();
             globalData[col] = snapshot.docs.map(doc => ({
                 id: String(doc.id),
                 ...doc.data()
@@ -69,7 +72,8 @@ async function loadAllDataFromCloud() {
             if (window.AppStore) window.AppStore.set(col, globalData[col], { silent: true });
         }
 
-        console.log("Dati sincronizzati per utente:", currentUser.uid, globalData);
+        console.log("Dati sincronizzati:", window.currentBusinessGroup ? ('Gruppo aziendale ' + window.currentBusinessGroup.id) : ('Utente legacy ' + currentUser.uid), globalData);
+        if (window.BusinessGroupsService && typeof window.BusinessGroupsService.updateSidebarBadge === 'function') window.BusinessGroupsService.updateSidebarBadge();
     } catch (e) {
         console.error("Errore Load Cloud:", e);
         throw e;
@@ -82,11 +86,19 @@ async function saveDataToCloud(collection, dataObj, id = null) {
         return;
     }
     try {
-        const userRef = getUserDocRef();
+        const dataRootRef = getDataRootRef();
+        const scopedData = { ...(dataObj || {}) };
+        if (window.currentBusinessGroup && window.currentBusinessGroup.id && collection !== 'companyInfo') {
+            scopedData.businessGroupId = window.currentBusinessGroup.id;
+        }
 
         if (collection === 'companyInfo') {
-            await userRef.collection('settings').doc('companyInfo').set(dataObj, { merge: true });
-            globalData.companyInfo = { ...(globalData.companyInfo || {}), ...dataObj };
+            if (window.currentBusinessGroup && window.currentBusinessGroup.id) scopedData.businessGroupId = window.currentBusinessGroup.id;
+            const result = (window.ConcurrencyService && window.db)
+                ? await window.ConcurrencyService.safeSet(dataRootRef, 'companyInfo', 'companyInfo', scopedData, {})
+                : await dataRootRef.collection('settings').doc('companyInfo').set(scopedData, { merge: true });
+            const savedData = result && result.data ? result.data : scopedData;
+            globalData.companyInfo = { ...(globalData.companyInfo || {}), ...savedData };
             if (window.AppStore) window.AppStore.set('companyInfo', globalData.companyInfo);
         } else {
             if (!id) {
@@ -94,16 +106,19 @@ async function saveDataToCloud(collection, dataObj, id = null) {
                 return;
             }
             const strId = String(id);
-            await userRef.collection(collection).doc(strId).set(dataObj, { merge: true });
+            const result = (window.ConcurrencyService && window.db)
+                ? await window.ConcurrencyService.safeSet(dataRootRef, collection, strId, scopedData, {})
+                : await dataRootRef.collection(collection).doc(strId).set(scopedData, { merge: true });
+            const savedData = result && result.data ? result.data : scopedData;
 
             if (!globalData[collection]) globalData[collection] = [];
             const index = globalData[collection].findIndex(item => String(item.id) === strId);
             if (index > -1) {
-                globalData[collection][index] = { ...globalData[collection][index], ...dataObj };
+                globalData[collection][index] = { ...globalData[collection][index], ...savedData };
             } else {
-                globalData[collection].push({ id: strId, ...dataObj });
+                globalData[collection].push({ id: strId, ...savedData });
             }
-            if (window.AppStore) window.AppStore.mergeItem(collection, strId, dataObj, { silent: true });
+            if (window.AppStore) window.AppStore.mergeItem(collection, strId, savedData, { silent: true });
             if (window.AppStore) window.AppStore.notify(collection);
         }
     } catch (e) {
@@ -124,17 +139,31 @@ async function batchSaveDataToCloud(collection, updates) {
     if (!list.length) return;
 
     try {
-        const userRef = getUserDocRef();
-        const batch = db.batch();
-
-        list.forEach(u => {
-            if (!u || u.id == null) return;
+        const dataRootRef = getDataRootRef();
+        const prepared = list.map(u => {
+            if (!u || u.id == null) return null;
             const strId = String(u.id);
-            const dataObj = u.data || {};
-            const docRef = userRef.collection(collection).doc(strId);
-            batch.set(docRef, dataObj, { merge: true });
+            const dataObj = { ...(u.data || {}) };
+            if (window.currentBusinessGroup && window.currentBusinessGroup.id) dataObj.businessGroupId = window.currentBusinessGroup.id;
+            return { id: strId, data: dataObj, expectedDocVersion: u.expectedDocVersion };
+        }).filter(Boolean);
 
-            // aggiorna anche globalData (in memoria)
+        let results = [];
+        if (window.ConcurrencyService && window.db) {
+            results = await window.ConcurrencyService.safeBatchSet(dataRootRef, collection, prepared, {});
+        } else {
+            const batch = db.batch();
+            prepared.forEach(u => {
+                const docRef = dataRootRef.collection(collection).doc(u.id);
+                batch.set(docRef, u.data, { merge: true });
+                results.push({ id: u.id, data: u.data });
+            });
+            await batch.commit();
+        }
+
+        results.forEach(r => {
+            const strId = String(r.id);
+            const dataObj = r.data || {};
             if (!globalData[collection]) globalData[collection] = [];
             const idx = globalData[collection].findIndex(it => String(it.id) === strId);
             if (idx > -1) {
@@ -144,8 +173,6 @@ async function batchSaveDataToCloud(collection, updates) {
             }
             if (window.AppStore) window.AppStore.mergeItem(collection, strId, dataObj, { silent: true });
         });
-
-        await batch.commit();
     } catch (e) {
         console.error('Errore batch Cloud:', e);
         alert('Errore batch Cloud: ' + e.message);
@@ -162,9 +189,14 @@ async function deleteDataFromCloud(collection, id, options = {}) {
     if (!confirm("Sei sicuro di voler eliminare questo elemento?")) return;
 
     try {
-        const userRef = getUserDocRef();
+        const dataRootRef = getDataRootRef();
         const strId = String(id);
-        await userRef.collection(collection).doc(strId).delete();
+        if (window.ConcurrencyService && window.db) {
+            const current = (globalData[collection] || []).find(item => String(item.id) === strId) || {};
+            await window.ConcurrencyService.safeDelete(dataRootRef, collection, strId, { expectedDocVersion: current.docVersion });
+        } else {
+            await dataRootRef.collection(collection).doc(strId).delete();
+        }
 
         if (globalData[collection]) {
             globalData[collection] = globalData[collection].filter(item => String(item.id) !== strId);

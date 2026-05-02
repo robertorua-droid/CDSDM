@@ -52,6 +52,7 @@ function renderAll() {
     const companyInfo = getCurrentCompanyInfo();
     renderCompanyInfoForm();
     renderNavigationVisibility();
+    if (window.BusinessGroupsService && typeof window.BusinessGroupsService.updateSidebarBadge === 'function') window.BusinessGroupsService.updateSidebarBadge();
     renderMasterDataArea();
     if (typeof renderWarehouseArea === 'function') renderWarehouseArea();
     renderPurchasesArea(companyInfo);
