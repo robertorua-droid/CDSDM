@@ -1,0 +1,22 @@
+// js/features/warehouse/warehouse-reports-module.js
+// Versione 0.1.5: reportistica gestionale di magazzino e documenti.
+(function () {
+  window.AppModules = window.AppModules || {};
+  window.AppModules.warehouseReports = window.AppModules.warehouseReports || {};
+  function esc(v){ return String(v==null?'':v).replace(/[&<>'"]/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'})[c];}); }
+  function str(v){ return v==null?'':String(v); }
+  function num(v){ const n=parseFloat(str(v).replace(',', '.')); return isNaN(n)?0:n; }
+  function money(v){ return '€ '+num(v).toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  function get(k){ if(window.AppStore&&typeof window.AppStore.get==='function') return window.AppStore.get(k)||[]; if(typeof window.getData==='function') return window.getData(k)||[]; return (window.globalData&&window.globalData[k])||[]; }
+  function productLabel(p){ return p ? (p.code ? p.code+' - '+(p.description||p.name||'') : (p.description||p.name||p.id)) : '-'; }
+  function inventoryValue(){ return get('products').map(function(p){ const q=num(p.stockQty||p.giacenzaDisponibile); const val=q*num(p.purchasePrice||p.lastPurchasePrice||p.cost||0); return {label:productLabel(p), qty:q, value:val}; }).filter(function(r){return r.qty||r.value;}); }
+  function quarantine(){ return get('products').map(function(p){ const q=num(p.quarantineQty||p.giacenzaQuarantena); return {label:productLabel(p), qty:q}; }).filter(function(r){return r.qty>0;}); }
+  function ddtToInvoice(){ return get('customerDDTs').filter(function(d){ return !(d.invoiceId||d.invoiceNumber||d.status==='invoiced'||d.status==='cancelled'); }); }
+  function openOrders(){ return {customer:get('customerOrders').filter(function(o){return ['confirmed','partially_fulfilled','open'].indexOf(str(o.status))!==-1;}), supplier:get('supplierOrders').filter(function(o){return ['confirmed','partially_received','open'].indexOf(str(o.status))!==-1;})}; }
+  function duePayments(){ return get('invoices').filter(function(i){ return !(i.isPaid||i.status==='paid'||i.status==='pagata') && (i.dueDate||i.paymentDueDate); }); }
+  function card(title,value,hint){ return '<div class="col-md-3"><div class="card h-100"><div class="card-body"><div class="text-muted small">'+esc(title)+'</div><div class="h4 mb-1">'+esc(value)+'</div><div class="small text-muted">'+esc(hint)+'</div></div></div></div>'; }
+  function table(title,heads,rows){ return '<div class="card mt-3"><div class="card-header fw-semibold">'+esc(title)+'</div><div class="table-responsive"><table class="table table-sm table-striped mb-0"><thead><tr>'+heads.map(function(h){return '<th>'+esc(h)+'</th>';}).join('')+'</tr></thead><tbody>'+(rows.length?rows.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+esc(c)+'</td>';}).join('')+'</tr>';}).join(''):'<tr><td colspan="'+heads.length+'" class="text-muted">Nessun dato.</td></tr>')+'</tbody></table></div></div>'; }
+  function render(){ const root=$('#warehouse-reports-root'); if(!root.length) return; const inv=inventoryValue(); const q=quarantine(); const ddt=ddtToInvoice(); const ord=openOrders(); const due=duePayments(); const total=inv.reduce(function(a,r){return a+r.value;},0); root.html('<div class="row g-3">'+card('Giacenze valorizzate',money(total),'Valore stimato sul costo/prezzo acquisto disponibile')+card('Merce in quarantena',q.length+' prodotti','Prodotti con quantità non disponibile')+card('DDT da fatturare',ddt.length+' DDT','DDT cliente emessi e non fatturati')+card('Ordini inevasi',(ord.customer.length+ord.supplier.length)+' ordini','Cliente e fornitore aperti/parziali')+'</div>'+table('Giacenze valorizzate',['Prodotto','Qtà','Valore'],inv.map(function(r){return [r.label,r.qty,money(r.value)];}))+table('DDT cliente da fatturare',['Numero','Data','Cliente'],ddt.map(function(d){return [d.number||d.id,d.date||'',d.customerName||d.customerId||''];}))+table('Scadenze pagamento aperte',['Documento','Cliente/Fornitore','Scadenza'],due.map(function(i){return [i.number||i.id,i.customerName||i.supplierName||'',i.dueDate||i.paymentDueDate||''];}))); }
+  function bind(){ if(window.AppStore&&typeof window.AppStore.subscribe==='function'){ ['products','customerDDTs','customerOrders','supplierOrders','invoices'].forEach(function(k){window.AppStore.subscribe(k,render);}); } render(); }
+  window.AppModules.warehouseReports.bind=bind; window.AppModules.warehouseReports.render=render;
+})();

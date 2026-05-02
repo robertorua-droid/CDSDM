@@ -68,6 +68,12 @@
       { label: 'Budget e marginalità', value: (getData('businessBudgets') || []) },
       { label: 'Workflow approvativi', value: (getData('workflowEvents') || []) },
       { label: 'Registro attività', value: (getData('auditEvents') || []) },
+      { label: 'Scenari docente', value: (getData('teachingScenarios') || []) },
+      { label: 'Eventi simulazione', value: (getData('simulationEvents') || []) },
+      { label: 'Report migrazione/QA', value: (getData('migrationReports') || []) },
+      { label: 'Profili permesso', value: (getData('permissionProfiles') || []) },
+      { label: 'Matrici permessi', value: (getData('permissionMatrices') || []) },
+      { label: 'Report audit sicurezza', value: (getData('securityAccessReports') || []) },
       { label: 'Documenti (fatture/NC)', value: (getData('invoices') || []) },
       { label: 'Acquisti', value: (getData('purchases') || []) },
       { label: 'Fornitori', value: (getData('suppliers') || []) },
@@ -236,9 +242,9 @@
 
   async function _resetAllUserData() {
     if (!currentUser) throw new Error('Utente non autenticato');
-    const userRef = getUserDocRef();
+    const userRef = getDataRootRef();
 
-    // 1) settings/* (cancella TUTTI i documenti presenti, anche futuri)
+    // 1) settings/* del root dati corrente (legacy o Gruppo aziendale) (cancella TUTTI i documenti presenti, anche futuri)
     let deletedSettings = 0;
     try {
       deletedSettings = await _deleteDocsInCollection(userRef, 'settings');
@@ -248,7 +254,7 @@
     }
 
     // 2) Collezioni principali
-    const collections = ['products', 'customers', 'suppliers', 'purchases', 'invoices', 'notes', 'commesse', 'projects', 'worklogs', 'vatRates', 'paymentMethods', 'companyBanks', 'warehouseMovements', 'quotes', 'customerOrders', 'supplierOrders', 'supplierDDTs', 'customerDDTs', 'warehousePhysicalCounts', 'warehouseLots', 'paymentEvents', 'cashbookMovements', 'reminderEvents', 'bankReconciliationEvents', 'businessBudgets', 'workflowEvents', 'auditEvents'];
+    const collections = window.CDSDM_DATA_COLLECTIONS || ['products', 'customers', 'suppliers', 'purchases', 'invoices', 'notes', 'commesse', 'projects', 'worklogs', 'vatRates', 'paymentMethods', 'companyBanks', 'warehouseMovements', 'quotes', 'customerOrders', 'supplierOrders', 'supplierDDTs', 'customerDDTs', 'warehousePhysicalCounts', 'warehouseLots', 'paymentEvents', 'cashbookMovements', 'reminderEvents', 'bankReconciliationEvents', 'businessBudgets', 'workflowEvents', 'auditEvents', 'teachingScenarios', 'simulationEvents', 'migrationReports', 'permissionProfiles', 'permissionMatrices', 'securityAccessReports'];
     const perCol = {};
     for (const col of collections) {
       try {
@@ -270,6 +276,8 @@
     const r = raw || {};
     return {
       userId: r.userId || r.uid || null,
+      businessGroup: r.businessGroup || null,
+      persistenceScope: r.persistenceScope || null,
       companyInfo: r.companyInfo || {},
       products: Array.isArray(r.products) ? r.products : [],
       customers: Array.isArray(r.customers) ? r.customers : [],
@@ -297,7 +305,13 @@
       bankReconciliationEvents: Array.isArray(r.bankReconciliationEvents) ? r.bankReconciliationEvents : [],
       businessBudgets: Array.isArray(r.businessBudgets) ? r.businessBudgets : [],
       workflowEvents: Array.isArray(r.workflowEvents) ? r.workflowEvents : [],
-      auditEvents: Array.isArray(r.auditEvents) ? r.auditEvents : []
+      auditEvents: Array.isArray(r.auditEvents) ? r.auditEvents : [],
+      teachingScenarios: Array.isArray(r.teachingScenarios) ? r.teachingScenarios : [],
+      simulationEvents: Array.isArray(r.simulationEvents) ? r.simulationEvents : [],
+      migrationReports: Array.isArray(r.migrationReports) ? r.migrationReports : [],
+      permissionProfiles: Array.isArray(r.permissionProfiles) ? r.permissionProfiles : [],
+      permissionMatrices: Array.isArray(r.permissionMatrices) ? r.permissionMatrices : [],
+      securityAccessReports: Array.isArray(r.securityAccessReports) ? r.securityAccessReports : []
     };
   }
 
@@ -354,6 +368,12 @@
       ['businessBudgets', backup.businessBudgets],
       ['workflowEvents', backup.workflowEvents],
       ['auditEvents', backup.auditEvents],
+      ['teachingScenarios', backup.teachingScenarios],
+      ['simulationEvents', backup.simulationEvents],
+      ['migrationReports', backup.migrationReports],
+      ['permissionProfiles', backup.permissionProfiles],
+      ['permissionMatrices', backup.permissionMatrices],
+      ['securityAccessReports', backup.securityAccessReports],
       ['invoices', backup.invoices],
       ['notes', backup.notes]
     ];
@@ -398,7 +418,11 @@
         await loadAllDataFromCloud();
 
         const backup = {
+          exportedAt: new Date().toISOString(),
+          appVersion: '0.7.5',
           userId: currentUser.uid,
+          persistenceScope: window.currentBusinessGroup && window.currentBusinessGroup.id ? 'businessGroup' : 'legacyUser',
+          businessGroup: window.currentBusinessGroup || null,
           companyInfo: globalData.companyInfo || {},
           products: globalData.products || [],
           customers: globalData.customers || [],
@@ -426,7 +450,13 @@
           bankReconciliationEvents: globalData.bankReconciliationEvents || [],
           businessBudgets: globalData.businessBudgets || [],
           workflowEvents: globalData.workflowEvents || [],
-          auditEvents: globalData.auditEvents || []
+          auditEvents: globalData.auditEvents || [],
+          teachingScenarios: globalData.teachingScenarios || [],
+          simulationEvents: globalData.simulationEvents || [],
+          migrationReports: globalData.migrationReports || [],
+          permissionProfiles: globalData.permissionProfiles || [],
+          permissionMatrices: globalData.permissionMatrices || [],
+          securityAccessReports: globalData.securityAccessReports || []
         };
 
         const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
@@ -465,8 +495,8 @@
         const msg2 = 'OPERAZIONE IRREVERSIBILE. Consigliato: fai prima un Backup JSON.\n\nConfermi eliminazione?';
         if (!confirm(msg2)) return;
 
-        const userRef = getUserDocRef();
-        const snap = await userRef.collection('purchases').get();
+        const dataRootRef = getDataRootRef();
+        const snap = await dataRootRef.collection('purchases').get();
 
         const toDelete = snap.docs.filter((doc) => {
           const data = doc.data() || {};
@@ -536,8 +566,8 @@
         const msg2 = 'OPERAZIONE IRREVERSIBILE. Consigliato: fai prima un Backup JSON.\n\nConfermi eliminazione?';
         if (!confirm(msg2)) return;
 
-        const userRef = getUserDocRef();
-        const snap = await userRef.collection('invoices').get();
+        const dataRootRef = getDataRootRef();
+        const snap = await dataRootRef.collection('invoices').get();
 
         const toDelete = snap.docs.filter((doc) => {
           const data = doc.data() || {};
@@ -599,7 +629,7 @@
           const backup = _normalizeBackup(raw);
 
           let warn = 'Importa Backup JSON:\n\n' +
-            '- I dati verranno salvati nel Cloud dell\'utente corrente.\n' +
+            '- I dati verranno salvati nel root dati attivo: Gruppo aziendale selezionato o dati personali legacy.\n' +
             '- Record con lo stesso ID verranno aggiornati.\n' +
             '- Non verranno eliminati record già presenti ma non nel backup.\n\n' +
             'Vuoi continuare?';
@@ -648,7 +678,7 @@
           const backup = _normalizeBackup(raw);
 
           const lines = [
-            'Questa operazione cancella TUTTI i dati nel Cloud dell\'utente corrente (incluse eventuali impostazioni future in settings) e poi importa il backup.',
+            'Questa operazione cancella TUTTI i dati nel root dati attivo (Gruppo aziendale selezionato o legacy personale, incluse eventuali impostazioni future in settings) e poi importa il backup.',
             'È IRREVERSIBILE (consigliato: fai prima un Backup JSON).',
             '',
             'Utente corrente: ' + currentUser.uid
@@ -693,11 +723,11 @@
         const ok = _confirmDangerTyped(
           'Reset totale dati (Reset classe)',
           [
-            'Questa operazione elimina dal Cloud TUTTI i dati dell\'utente corrente:',
+            'Questa operazione elimina dal root dati attivo TUTTI i dati gestionali:',
             '- anagrafiche (clienti/fornitori/servizi)',
             '- documenti (fatture/NC) e acquisti',
             '- commesse, progetti, worklog/timesheet, note',
-            '- impostazioni in settings (incluse eventuali doc future)',
+            '- impostazioni in settings del root attivo (incluse eventuali doc future)',
             '',
             'Operazione IRREVERSIBILE.'
           ]

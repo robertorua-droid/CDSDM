@@ -6,6 +6,105 @@
 
   let _bound = false;
 
+
+  const MENU_HELP_DOC_KEY = '55_GUIDA_MENU_COMPLETA_078';
+  const MENU_HELP_DEFAULT_TARGET = 'home';
+  const MENU_HELP_TARGETS = {
+    'home': 'Home',
+    'dashboard': 'Dashboard',
+    'statistiche': 'Statistiche',
+    'report-gestionali': 'Report gestionali',
+    'centro-notifiche': 'Centro notifiche',
+    'workflow-approvativi': 'Workflow approvativi',
+    'audit-trail': 'Registro attività',
+    'ux-accessibilita': 'UX / accessibilità',
+    'budget-marginalita': 'Budget e marginalità',
+    'centro-stampe': 'Stampe / PDF',
+    'partitario': 'Partitario',
+    'incassi-pagamenti': 'Incassi e pagamenti',
+    'prima-nota': 'Prima nota',
+    'estratto-conto': 'Estratto conto',
+    'solleciti': 'Solleciti',
+    'riconciliazione-banca': 'Riconciliazione banca',
+    'bilancino': 'Bilancino',
+    'scadenziario': 'Scadenziario',
+    'registri-iva': 'Registri IVA',
+    'simulazione-ordinario': 'Simulazione ordinario',
+    'simulazione-lm': 'Simulazione LM',
+    'preventivi': 'Elenco Preventivi cliente',
+    'ordini-cliente': 'Elenco Ordini cliente',
+    'ddt-cliente': 'DDT cliente',
+    'fatturazione-ddt-cliente': 'Fatturazione DDT cliente',
+    'nuova-fattura-accompagnatoria': 'Nuova Fattura / Nota Credito',
+    'elenco-fatture': 'Elenco Documenti',
+    'ordini-fornitore': 'Elenco Ordini fornitore',
+    'ddt-fornitore': 'DDT fornitore',
+    'nuovo-acquisto': 'Nuovo Acquisto',
+    'elenco-acquisti': 'Elenco Acquisti',
+    'commesse': 'Commesse',
+    'progetti': 'Progetti',
+    'timesheet': 'Timesheet',
+    'export-timesheet': 'Export CSV timesheet',
+    'anagrafica-clienti': 'Clienti',
+    'anagrafica-fornitori': 'Fornitori',
+    'anagrafica-prodotti': 'Servizi / Prodotti',
+    'magazzino-giacenza-prodotto': 'Giacenza prodotto',
+    'magazzino-giacenze': 'Giacenze',
+    'magazzino-inventario-fisico': 'Inventario fisico',
+    'magazzino-inventario': 'Inventario valorizzato',
+    'magazzino-lotti': 'Lotti / matricole / scadenze',
+    'magazzino-movimenti': 'Movimenti',
+    'magazzino-quarantena': 'Quarantena',
+    'magazzino-macerati': 'Prodotti macerati',
+    'anagrafica-azienda': 'Azienda',
+    'tabella-iva': 'Tabella IVA',
+    'tabella-pagamenti': 'Codici pagamento',
+    'banche-aziendali': 'Banche aziendali',
+    'uso-dati': 'Uso dati',
+    'import-massivi': 'Import massivi CSV',
+    'ruoli-permessi': 'Ruoli e permessi',
+    'superadmin': 'Superadmin',
+    'profili-permesso': 'Profili permesso',
+    'matrice-permessi': 'Matrice permessi',
+    'override-permessi': 'Override permessi',
+    'audit-sicurezza': 'Audit sicurezza',
+    'gruppi-aziendali': 'Gruppi aziendali',
+    'console-docente': 'Console docente',
+    'migrazione-qa': 'Migrazione e QA',
+    'avanzate': 'Gestione Dati',
+    'manuale': 'Manuale Utente',
+    'versione': 'Versione'
+  };
+
+  function ensureContextHelpButton() {
+    if ($('#context-help-btn').length) return;
+    $('#top-navbar').append(`
+      <button class="btn btn-outline-info btn-sm ms-auto d-none" id="context-help-btn" type="button" title="Apri la guida per questa pagina" aria-label="Apri la guida contestuale per questa pagina">
+        <i class="fas fa-question" aria-hidden="true"></i>
+      </button>
+    `);
+  }
+
+  function updateContextHelp(target, label) {
+    ensureContextHelpButton();
+    const title = MENU_HELP_TARGETS[target] || label || target || MENU_HELP_DEFAULT_TARGET;
+    $('#context-help-btn')
+      .removeClass('d-none')
+      .attr('data-help-target', target || MENU_HELP_DEFAULT_TARGET)
+      .attr('title', `Apri la guida: ${title}`)
+      .attr('aria-label', `Apri la guida contestuale: ${title}`);
+  }
+
+  function scrollToHelpTarget(target) {
+    const anchorId = `help-target-${target || MENU_HELP_DEFAULT_TARGET}`;
+    const el = document.getElementById(anchorId) || document.getElementById(`help-target-${MENU_HELP_DEFAULT_TARGET}`);
+    if (el && typeof el.scrollIntoView === 'function') {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      el.classList.add('menu-help-anchor-highlight');
+      setTimeout(() => el.classList.remove('menu-help-anchor-highlight'), 1800);
+    }
+  }
+
   function bind() {
     if (_bound) return;
     _bound = true;
@@ -60,7 +159,7 @@
       // Regime fiscale (gestionale) obbligatorio: finché non è selezionato,
       // consenti solo Home / Azienda / Migrazione.
       const regimeCapabilities = getRegimeCapabilities();
-      if (!regimeCapabilities.hasTaxRegime && target !== 'home' && target !== 'dashboard' && target !== 'anagrafica-azienda' && target !== 'avanzate') {
+      if (!regimeCapabilities.hasTaxRegime && target !== 'home' && target !== 'dashboard' && target !== 'anagrafica-azienda' && target !== 'avanzate' && target !== 'gruppi-aziendali' && target !== 'superadmin' && target !== 'profili-permesso' && target !== 'matrice-permessi' && target !== 'override-permessi' && target !== 'audit-sicurezza' && target !== 'migrazione-qa') {
         alert('Prima di usare il gestionale, imposta il Regime fiscale (gestionale) in "Azienda".');
         $('[data-target="anagrafica-azienda"]').click();
         return;
@@ -101,6 +200,14 @@
       if (target === 'avanzate' && typeof window.refreshDeleteDocumentsYearSelect === 'function') window.refreshDeleteDocumentsYearSelect();
       if (target === 'import-massivi' && window.AppModules && window.AppModules.importCsv && typeof window.AppModules.importCsv.render === 'function') window.AppModules.importCsv.render();
       if (target === 'ruoli-permessi' && window.AppModules && window.AppModules.rolesPermissions && typeof window.AppModules.rolesPermissions.render === 'function') window.AppModules.rolesPermissions.render();
+      if (target === 'gruppi-aziendali' && window.AppModules && window.AppModules.businessGroups && typeof window.AppModules.businessGroups.render === 'function') window.AppModules.businessGroups.render();
+      if (target === 'superadmin' && window.AppModules && window.AppModules.superadmin && typeof window.AppModules.superadmin.render === 'function') window.AppModules.superadmin.render();
+      if (target === 'profili-permesso' && window.AppModules && window.AppModules.permissionProfiles && typeof window.AppModules.permissionProfiles.render === 'function') window.AppModules.permissionProfiles.render();
+      if (target === 'matrice-permessi' && window.AppModules && window.AppModules.permissionMatrix && typeof window.AppModules.permissionMatrix.render === 'function') window.AppModules.permissionMatrix.render();
+      if (target === 'override-permessi' && window.AppModules && window.AppModules.permissionOverrides && typeof window.AppModules.permissionOverrides.render === 'function') window.AppModules.permissionOverrides.render();
+      if (target === 'audit-sicurezza' && window.AppModules && window.AppModules.securityAudit && typeof window.AppModules.securityAudit.render === 'function') window.AppModules.securityAudit.render();
+      if (target === 'console-docente' && window.AppModules && window.AppModules.teacherConsole && typeof window.AppModules.teacherConsole.render === 'function') window.AppModules.teacherConsole.render();
+      if (target === 'migrazione-qa' && window.AppModules && window.AppModules.migrationQa && typeof window.AppModules.migrationQa.render === 'function') window.AppModules.migrationQa.render();
       if (target === 'elenco-fatture' && typeof renderInvoicesTable === 'function') renderInvoicesTable();
 
       if (target === 'anagrafica-fornitori') {
@@ -150,7 +257,9 @@
       $('#' + target).removeClass('d-none');
 
       // Update Breadcrumb & Header
-      updateBreadcrumb($(this).text().trim());
+      const currentMenuLabel = $(this).text().trim();
+      updateBreadcrumb(currentMenuLabel);
+      updateContextHelp(target, currentMenuLabel);
 
       if (window.PermissionsPolicy && typeof window.PermissionsPolicy.applyUiRestrictions === 'function') {
         setTimeout(window.PermissionsPolicy.applyUiRestrictions, 0);
@@ -235,6 +344,18 @@
       }
     }
 
+    $('#context-help-btn').on('click', function () {
+      const target = $(this).attr('data-help-target') || MENU_HELP_DEFAULT_TARGET;
+      $('.sidebar .nav-link').removeClass('active');
+      $('[data-target="manuale"]').addClass('active');
+      $('.content-section').addClass('d-none');
+      $('#manuale').removeClass('d-none');
+      updateBreadcrumb('Manuale Utente');
+      loadDocumentation(MENU_HELP_DOC_KEY, '#manuale-content', false).then(function () {
+        setTimeout(function () { scrollToHelpTarget(target); }, 80);
+      });
+    });
+
     $('#btn-view-changelog').on('click', function () {
       loadDocumentation('11_CHANGELOG', '#changelog-content');
       new bootstrap.Modal('#changelogModal').show();
@@ -282,6 +403,8 @@
       });
     }
     restoreUiState();
+    ensureContextHelpButton();
+    updateContextHelp('home', 'Home');
 
     function updateBreadcrumb(text) {
       $('#breadcrumb').text(text);
