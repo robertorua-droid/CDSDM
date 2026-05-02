@@ -1,0 +1,2 @@
+// CDSDM 0.7.5 - Validatore dataset demo statico.
+(function(){const REQUIRED=['companyInfo','customers','suppliers','products','quotes','customerOrders','supplierOrders','supplierDDTs','customerDDTs','invoices','paymentEvents','worklogs','warehouseMovements'];function validateDataset(payload){const data=payload&&payload.data?payload.data:{};const missing=REQUIRED.filter(k=>typeof data[k]==='undefined');return {version:payload&&payload.version,ok:missing.length===0,missing,required:REQUIRED.slice()};}window.DemoDatasetService={VERSION:'0.7.4',REQUIRED,validateDataset};})();
