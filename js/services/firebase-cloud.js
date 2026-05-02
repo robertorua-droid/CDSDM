@@ -59,7 +59,7 @@ async function loadAllDataFromCloud() {
         }
 
         // 2) Altre collezioni: products, customers, invoices, notes
-        const collections = ['products', 'customers', 'suppliers', 'purchases', 'invoices', 'notes', 'commesse', 'projects', 'worklogs'];
+        const collections = ['products', 'customers', 'suppliers', 'purchases', 'invoices', 'notes', 'commesse', 'projects', 'worklogs', 'vatRates', 'paymentMethods', 'companyBanks', 'warehouseMovements', 'quotes', 'customerOrders', 'supplierOrders', 'supplierDDTs', 'customerDDTs', 'warehousePhysicalCounts', 'warehouseLots', 'paymentEvents', 'cashbookMovements', 'reminderEvents', 'bankReconciliationEvents', 'businessBudgets', 'workflowEvents', 'auditEvents'];
         for (const col of collections) {
             const snapshot = await userRef.collection(col).get();
             globalData[col] = snapshot.docs.map(doc => ({

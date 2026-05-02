@@ -55,6 +55,9 @@ function updateCompanyUI() {
 
     $('#tax-simulation-section').toggleClass('d-none', !regimeCapabilities.isForfettario);
     if (!regimeCapabilities.isForfettario) $('#tax-simulation-container').empty();
+    if (window.PermissionsPolicy && typeof window.PermissionsPolicy.applyUiRestrictions === 'function') {
+        window.PermissionsPolicy.applyUiRestrictions();
+    }
 }
 
 window.updateCompanyUI = updateCompanyUI;

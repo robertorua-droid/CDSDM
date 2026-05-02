@@ -36,17 +36,94 @@ function renderProductsTable() {
     const table = $('#products-table-body').empty();
     const ci = getStoreValue('companyInfo', {}) || {};
     const isForf = window.TaxRegimePolicy ? window.TaxRegimePolicy.isForfettario(ci) : false;
-    (getStoreValue('products', []) || []).forEach(p => {
-        const price = parseFloat(p.salePrice || 0).toFixed(2);
+    const esc = (window.VatRateCatalog && window.VatRateCatalog.escapeHtml) ? window.VatRateCatalog.escapeHtml : function (v) { return String(v || ''); };
+
+    const activeTypeFilter = String($('#products-type-filter .nav-link.active').attr('data-product-type-filter') || 'all');
+    const products = (getStoreValue('products', []) || [])
+        .map(pRaw => (window.DomainNormalizers && typeof window.DomainNormalizers.normalizeProductInfo === 'function')
+            ? window.DomainNormalizers.normalizeProductInfo(pRaw)
+            : (pRaw || {}))
+        .filter(p => activeTypeFilter === 'all' || String(p.itemType || 'service') === activeTypeFilter);
+
+    products.forEach(p => {
+        const purchasePrice = p.purchasePrice === '' || p.purchasePrice == null ? '-' : '€ ' + parseFloat(p.purchasePrice || 0).toFixed(2);
+        const salePrice = p.salePrice === '' || p.salePrice == null ? '-' : '€ ' + parseFloat(p.salePrice || 0).toFixed(2);
+        const typeLabel = p.itemType === 'product' ? 'Prodotto' : (p.itemType === 'cost' ? 'Costo' : 'Servizio');
+        const vatRate = (window.VatRateCatalog && typeof window.VatRateCatalog.resolve === 'function')
+            ? window.VatRateCatalog.resolve(isForf ? { vatRateId: 'n2_2_forfettario' } : p, isForf ? 'n2_2_forfettario' : 'iva_22')
+            : null;
+        const vatLabel = vatRate ? vatRate.label : ((isForf ? '0' : (p.iva || '0')) + '%');
+        const trackingLabels = { none: 'No lotto', lot: 'Lotto', serial: 'Matricola', expiry: 'Scadenza' };
+        const trackingLabel = p.itemType === 'product' && p.trackingMode && p.trackingMode !== 'none' ? '<div class="small mt-1"><span class="badge text-bg-info">' + esc(trackingLabels[p.trackingMode] || p.trackingMode) + '</span></div>' : '';
         table.append(`
 <tr>
-  <td>${p.code || ''}</td>
-  <td>${p.description || ''}</td>
-  <td class="text-end-numbers col-price pe-5">€ ${price}</td>
-  <td class="text-end-numbers">${(isForf ? '0' : (p.iva || '0'))}%</td>
+  <td>${esc(p.code || '')}</td>
+  <td><span class="badge text-bg-${p.itemType === 'product' ? 'primary' : (p.itemType === 'cost' ? 'warning' : 'secondary')}">${typeLabel}</span></td>
+  <td>${esc(p.description || '')}${trackingLabel}</td>
+  <td class="text-end-numbers col-price">${p.itemType === 'product' ? purchasePrice : '<span class="text-muted">-</span>'}</td>
+  <td class="text-end-numbers col-price pe-5">${salePrice}</td>
+  <td>${esc(vatLabel)}</td>
   <td class="text-end col-actions">
-    <button class="btn btn-sm btn-outline-secondary btn-edit-product" data-id="${p.id}"><i class="fas fa-edit"></i></button>
-    <button class="btn btn-sm btn-outline-danger btn-delete-product" data-id="${p.id}"><i class="fas fa-trash"></i></button>
+    <button class="btn btn-sm btn-outline-secondary btn-edit-product" data-id="${esc(p.id)}"><i class="fas fa-edit"></i></button>
+    <button class="btn btn-sm btn-outline-danger btn-delete-product" data-id="${esc(p.id)}"><i class="fas fa-trash"></i></button>
+  </td>
+</tr>`);
+    });
+
+    if (!products.length) {
+        const labels = { service: 'servizi', product: 'prodotti', cost: 'costi', all: 'voci' };
+        table.append(`<tr><td colspan="7" class="text-center text-muted py-4">Nessuna voce da mostrare per il filtro ${labels[activeTypeFilter] || 'selezionato'}.</td></tr>`);
+    }
+}
+
+function renderVatRatesTable() {
+    const table = $('#vat-rates-table-body');
+    if (!table.length) return;
+    table.empty();
+    const esc = (window.VatRateCatalog && window.VatRateCatalog.escapeHtml) ? window.VatRateCatalog.escapeHtml : function (v) { return String(v || ''); };
+    const rates = (window.VatRateCatalog && typeof window.VatRateCatalog.getAll === 'function')
+        ? window.VatRateCatalog.getAll()
+        : [];
+
+    rates.forEach(r => {
+        const isSystem = r.isSystem === true || r.isSystem === 'true';
+        table.append(`
+<tr class="${r.isActive === false ? 'table-secondary opacity-75' : ''}">
+  <td><code>${esc(r.code || '')}</code></td>
+  <td>${esc(r.label || r.description || '')}</td>
+  <td class="text-end">${parseFloat(r.rate || 0)}%</td>
+  <td>${r.natureCode ? '<code>' + esc(r.natureCode) + '</code>' : '-'}</td>
+  <td class="small">${esc(r.legalReference || r.exemptionText || '-')}</td>
+  <td>${isSystem ? '<span class="badge text-bg-secondary">Sistema</span>' : '<span class="badge text-bg-info">Custom</span>'}${r.isActive === false ? ' <span class="badge text-bg-light">Disattivo</span>' : ''}</td>
+  <td class="text-end">
+    <button class="btn btn-sm btn-outline-secondary btn-edit-vat-rate" data-id="${esc(r.id)}"><i class="fas fa-eye"></i></button>
+    <button class="btn btn-sm btn-outline-danger btn-delete-vat-rate" data-id="${esc(r.id)}" ${isSystem ? 'disabled' : ''}><i class="fas fa-trash"></i></button>
+  </td>
+</tr>`);
+    });
+}
+
+function renderPaymentMethodsTable() {
+    const table = $('#payment-methods-table-body');
+    if (!table.length) return;
+    table.empty();
+    const esc = (window.PaymentMethodCatalog && window.PaymentMethodCatalog.escapeHtml) ? window.PaymentMethodCatalog.escapeHtml : function (v) { return String(v || ''); };
+    const methods = (window.PaymentMethodCatalog && typeof window.PaymentMethodCatalog.getAll === 'function')
+        ? window.PaymentMethodCatalog.getAll()
+        : [];
+
+    methods.forEach(m => {
+        const isSystem = m.isSystem === true || m.isSystem === 'true';
+        table.append(`
+<tr class="${m.isActive === false ? 'table-secondary opacity-75' : ''}">
+  <td><code>${esc(m.code || '')}</code></td>
+  <td>${esc(m.label || m.description || '')}</td>
+  <td><span class="badge text-bg-light text-dark">${esc(m.macroArea || 'altro')}</span></td>
+  <td>${m.requiresBank ? '<span class="badge text-bg-primary">Sì</span>' : '<span class="text-muted">No</span>'}</td>
+  <td>${isSystem ? '<span class="badge text-bg-secondary">Sistema</span>' : '<span class="badge text-bg-info">Custom</span>'}${m.isActive === false ? ' <span class="badge text-bg-light">Disattivo</span>' : ''}</td>
+  <td class="text-end">
+    <button class="btn btn-sm btn-outline-secondary btn-edit-payment-method" data-id="${esc(m.id)}"><i class="fas fa-eye"></i></button>
+    <button class="btn btn-sm btn-outline-danger btn-delete-payment-method" data-id="${esc(m.id)}" ${isSystem ? 'disabled' : ''}><i class="fas fa-trash"></i></button>
   </td>
 </tr>`);
     });
@@ -125,5 +202,36 @@ function renderSuppliersTable() {
 
 window.bindAnagraficheSearchOnce = bindAnagraficheSearchOnce;
 window.renderProductsTable = renderProductsTable;
+window.renderVatRatesTable = renderVatRatesTable;
 window.renderCustomersTable = renderCustomersTable;
 window.renderSuppliersTable = renderSuppliersTable;
+
+function renderCompanyBanksTable() {
+    const table = $('#company-banks-table-body');
+    if (!table.length) return;
+    table.empty();
+    const esc = (window.CompanyBankCatalog && window.CompanyBankCatalog.escapeHtml) ? window.CompanyBankCatalog.escapeHtml : function (v) { return String(v || ''); };
+    const customBanks = getStoreValue('companyBanks', []) || [];
+    const banks = customBanks.length && window.CompanyBankCatalog ? window.CompanyBankCatalog.getAll() : (window.CompanyBankCatalog ? window.CompanyBankCatalog.getAll() : []);
+
+    banks.forEach(b => {
+        const isLegacy = b.isLegacy === true || b.isLegacy === 'true';
+        table.append(`
+<tr class="${b.isActive === false ? 'table-secondary opacity-75' : ''}">
+  <td>${esc(b.accountLabel || b.label || '')}${isLegacy ? ' <span class="badge text-bg-secondary">Legacy</span>' : ''}</td>
+  <td>${esc(b.bankName || '')}</td>
+  <td><code>${esc(b.iban || '')}</code></td>
+  <td>${esc(b.bic || '-')}</td>
+  <td>${b.isDefault ? '<span class="badge text-bg-primary">Sì</span>' : '<span class="text-muted">No</span>'}</td>
+  <td>${b.isActive !== false ? '<span class="badge text-bg-success">Attiva</span>' : '<span class="badge text-bg-light">Disattiva</span>'}</td>
+  <td class="text-end">
+    <button class="btn btn-sm btn-outline-secondary btn-edit-company-bank" data-id="${esc(b.id)}" ${isLegacy ? 'disabled title="Modifica i campi legacy in Impostazioni → Azienda"' : ''}><i class="fas fa-edit"></i></button>
+    <button class="btn btn-sm btn-outline-danger btn-delete-company-bank" data-id="${esc(b.id)}" ${isLegacy ? 'disabled' : ''}><i class="fas fa-trash"></i></button>
+  </td>
+</tr>`);
+    });
+    if (!banks.length) {
+        table.append('<tr><td colspan="7" class="text-center text-muted py-4">Nessuna banca aziendale configurata. Aggiungi una banca oppure compila Banca 1/IBAN 1 in Impostazioni → Azienda.</td></tr>');
+    }
+}
+window.renderCompanyBanksTable = renderCompanyBanksTable;

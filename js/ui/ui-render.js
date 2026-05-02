@@ -6,6 +6,9 @@
 function renderMasterDataArea() {
     renderProductsTable();
     renderCustomersTable();
+    if (typeof renderVatRatesTable === 'function') renderVatRatesTable();
+    if (typeof renderPaymentMethodsTable === 'function') renderPaymentMethodsTable();
+    if (typeof renderCompanyBanksTable === 'function') renderCompanyBanksTable();
     if (typeof bindAnagraficheSearchOnce === 'function') bindAnagraficheSearchOnce();
 }
 
@@ -50,6 +53,7 @@ function renderAll() {
     renderCompanyInfoForm();
     renderNavigationVisibility();
     renderMasterDataArea();
+    if (typeof renderWarehouseArea === 'function') renderWarehouseArea();
     renderPurchasesArea(companyInfo);
     renderSalesArea();
     renderAnalysisArea(companyInfo);
@@ -369,6 +373,20 @@ function renderInvoicesTable() {
 }
 
 function populateDropdowns() {
+    // modalità pagamento FE (clienti/fatture)
+    const paymentMethodsForSelect = (window.PaymentMethodCatalog && typeof window.PaymentMethodCatalog.getActive === 'function') ? window.PaymentMethodCatalog.getActive() : [];
+    const paymentOptionsHtml = paymentMethodsForSelect.map(m => `<option value="${m.id}">${m.code || m.feCode || ''} - ${m.label || m.description || ''}</option>`).join('');
+    if ($('#customer-defaultPaymentMethodId').length) {
+        const curCustomerPay = $('#customer-defaultPaymentMethodId').val();
+        $('#customer-defaultPaymentMethodId').empty().append('<option value="">Nessun default</option>').append(paymentOptionsHtml);
+        if (curCustomerPay) $('#customer-defaultPaymentMethodId').val(curCustomerPay);
+    }
+    if ($('#invoice-modalitaPagamento').length && paymentOptionsHtml) {
+        const curPay = $('#invoice-modalitaPagamento').val();
+        $('#invoice-modalitaPagamento').empty().append(paymentOptionsHtml);
+        const resolved = window.PaymentMethodCatalog && typeof window.PaymentMethodCatalog.resolve === 'function' ? window.PaymentMethodCatalog.resolve({ paymentMethodId: curPay, modalitaPagamento: curPay }, 'mp05_bonifico') : null;
+        $('#invoice-modalitaPagamento').val((resolved && resolved.id) || curPay || 'mp05_bonifico');
+    }
     // clienti
     $('#invoice-customer-select')
         .empty()

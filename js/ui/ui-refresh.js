@@ -30,6 +30,14 @@
     if (typeof renderPurchasesArea === 'function') renderPurchasesArea(info);
   }
 
+  function refreshWarehouseArea() {
+    if (typeof renderWarehouseArea === 'function') renderWarehouseArea();
+  }
+
+  function refreshCustomerOrdersArea() {
+    if (typeof renderCustomerOrdersArea === 'function') renderCustomerOrdersArea();
+  }
+
   function refreshScadenziarioArea() {
     if (typeof renderScadenziarioPage === 'function') renderScadenziarioPage();
   }
@@ -78,6 +86,8 @@
     refreshNavigationArea,
     refreshCompanyArea,
     refreshMasterDataArea,
+    refreshWarehouseArea,
+    refreshCustomerOrdersArea,
     refreshSalesArea,
     refreshPurchasesArea,
     refreshScadenziarioArea,

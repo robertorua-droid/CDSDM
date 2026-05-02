@@ -205,313 +205,163 @@ function renderDashboardPage() {
         end = endDate.toISOString().slice(0, 10);
     }
 
-    const commesseMap = new Map((getData('commesse') || []).map(c => [String(c.id), c]));
-    const projectsMap = new Map((getData('projects') || []).map(p => [String(p.id), p]));
-    const customersMap = new Map((getData('customers') || []).map(c => [String(c.id), c]));
-
-    const worklogs = (getData('worklogs') || []).filter(wl => wl && wl.date && String(wl.date) >= start && String(wl.date) <= end);
-
-    let totMin = 0;
-    let totMinFinal = 0;
-    let billMin = 0;
-    let billMinFinal = 0;
-    let invoicedMin = 0;
-    let invoicedMinFinal = 0;
-
-    // aggregazioni (commessa = fatturo a, CF = cliente finale)
-    const byProject = {};   // projectId -> {tot,bill,invoiced, totFinal,billFinal,invoicedFinal, commessaId, endCustomerName, projectCode, projectName}
-    const byCommessa = {};  // commessaId -> {tot,bill,invoiced, totFinal,billFinal,invoicedFinal, endCustomers:Set}
-    const byPeriod = {};    // YYYY-MM o YYYY-MM-DD -> {tot,bill, totFinal,billFinal}
-
-    function getMinutesFinal(wl) {
-        const base = parseInt(wl.minutes, 10) || 0;
-        // Fix: se minutesFinal è 0, deve restituire 0, non base!
-        if (wl.minutesFinal != null && wl.minutesFinal !== '') {
-            return parseInt(wl.minutesFinal, 10) || 0;
-        }
-        return base;
+    if (!window.ExecutiveDashboardService || typeof window.ExecutiveDashboardService.computeDashboardSummary !== 'function') {
+        $container.html('<div class="alert alert-warning">Servizio Dashboard Direzionale non disponibile.</div>');
+        return;
     }
 
-    function getEndCustomerName(projectId) {
-        const pr = projectsMap.get(String(projectId));
-        if (!pr || !pr.endCustomerId) return '';
-        const c = customersMap.get(String(pr.endCustomerId));
-        return c ? (c.name || '') : '';
-    }
+    const summary = window.ExecutiveDashboardService.computeDashboardSummary({ start: start, end: end, mode: mode });
+    const periodLabel = (mode === 'month') ? (_dashMonthName(parseInt(month, 10)) + ' ' + year) : ('Anno ' + year);
 
-    function summarizeNamesSet(setObj) {
-        const arr = Array.from(setObj || []).map(s => String(s || '').trim()).filter(Boolean);
-        if (!arr.length) return '-';
-        if (arr.length === 1) return arr[0];
-        const shown = arr.slice(0, 3).join(', ');
-        return arr.length > 3 ? (shown + ` +${arr.length - 3}`) : shown;
-    }
-
-    for (const wl of worklogs) {
-        const minutes = parseInt(wl.minutes, 10) || 0;
-        const minutesFinal = getMinutesFinal(wl);
-        const billable = (wl.billable !== false);
-        const invoiced = !!wl.invoiceId;
-
-        totMin += minutes;
-        totMinFinal += minutesFinal;
-        if (billable) billMin += minutes;
-        if (billable) billMinFinal += minutesFinal;
-        if (invoiced) invoicedMin += minutes;
-        if (invoiced) invoicedMinFinal += minutesFinal;
-
-        const pid = String(wl.projectId || '');
-        const cid = String(wl.commessaId || '');
-
-        const pr = pid ? (projectsMap.get(pid) || {}) : {};
-        const endCustName = pid ? getEndCustomerName(pid) : '';
-        const projectCode = pr.code || '';
-        const projectName = pr.name || '';
-
-        if (pid) {
-            if (!byProject[pid]) {
-                byProject[pid] = {
-                    tot: 0, bill: 0, invoiced: 0,
-                    totFinal: 0, billFinal: 0, invoicedFinal: 0,
-                    commessaId: cid,
-                    endCustomerName: endCustName,
-                    projectCode: projectCode,
-                    projectName: projectName
-                };
-            }
-            byProject[pid].tot += minutes;
-            byProject[pid].totFinal += minutesFinal;
-            if (billable) byProject[pid].bill += minutes;
-            if (billable) byProject[pid].billFinal += minutesFinal;
-            if (invoiced) byProject[pid].invoiced += minutes;
-            if (invoiced) byProject[pid].invoicedFinal += minutesFinal;
-            if (!byProject[pid].commessaId) byProject[pid].commessaId = cid;
-            if (!byProject[pid].endCustomerName && endCustName) byProject[pid].endCustomerName = endCustName;
-            if (!byProject[pid].projectCode && projectCode) byProject[pid].projectCode = projectCode;
-            if (!byProject[pid].projectName && projectName) byProject[pid].projectName = projectName;
-        }
-
-        if (cid) {
-            if (!byCommessa[cid]) {
-                byCommessa[cid] = {
-                    tot: 0, bill: 0, invoiced: 0,
-                    totFinal: 0, billFinal: 0, invoicedFinal: 0,
-                    endCustomers: new Set()
-                };
-            }
-            byCommessa[cid].tot += minutes;
-            byCommessa[cid].totFinal += minutesFinal;
-            if (billable) byCommessa[cid].bill += minutes;
-            if (billable) byCommessa[cid].billFinal += minutesFinal;
-            if (invoiced) byCommessa[cid].invoiced += minutes;
-            if (invoiced) byCommessa[cid].invoicedFinal += minutesFinal;
-            if (endCustName) byCommessa[cid].endCustomers.add(endCustName);
-        }
-
-        let key;
-        if (mode === 'month') key = String(wl.date).slice(0, 10);
-        else key = String(wl.date).slice(0, 7);
-
-        if (!byPeriod[key]) byPeriod[key] = { tot: 0, bill: 0, totFinal: 0, billFinal: 0 };
-        byPeriod[key].tot += minutes;
-        byPeriod[key].totFinal += minutesFinal;
-        if (billable) byPeriod[key].bill += minutes;
-        if (billable) byPeriod[key].billFinal += minutesFinal;
-    }
-
-    // KPI cards
-    const periodLabel = (mode === 'month')
-        ? (`${_dashMonthName(parseInt(month, 10))} ${year}`)
-        : (`Anno ${year}`);
-
-    const kpiHtml = `
-      <div class="row g-3 mb-3">
-        <div class="col-12 col-md-6 col-lg-3">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <div class="text-muted small">Ore timesheet totali (commessa)</div>
-              <div class="display-6">${_dashFormatHoursFromMinutes(totMin)}</div>
-              <div class="small text-muted">Cliente finale: <b>${_dashFormatHoursFromMinutes(totMinFinal)}</b></div>
-              <div class="small text-muted">${worklogs.length} righe nel periodo (${_dashFormatDateIT(start)} - ${_dashFormatDateIT(end)})</div>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-6 col-lg-3">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <div class="text-muted small">Ore fatturabili (commessa)</div>
-              <div class="display-6">${_dashFormatHoursFromMinutes(billMin)}</div>
-              <div class="small text-muted">Cliente finale: <b>${_dashFormatHoursFromMinutes(billMinFinal)}</b></div>
-              <div class="small text-muted">${totMin ? Math.round((billMin / totMin) * 100) : 0}% del totale commessa</div>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-6 col-lg-3">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <div class="text-muted small">Ore già fatturate (commessa)</div>
-              <div class="display-6">${_dashFormatHoursFromMinutes(invoicedMin)}</div>
-              <div class="small text-muted">Cliente finale: <b>${_dashFormatHoursFromMinutes(invoicedMinFinal)}</b></div>
-              <div class="small text-muted">worklog collegati a fatture</div>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-6 col-lg-3">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              <div class="text-muted small">Periodo</div>
-              <div class="h4 mb-0">${escapeHtml(periodLabel)}</div>
-              <div class="small text-muted">Selettore Annuale/Mensile</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-
-    // Tabella dettaglio per periodo (mesi o giorni) - con confronto CF
-    let periodRows = '';
-    const fmtCell = (main, fin) => {
-        const mainHtml = _dashFormatHoursFromMinutes(main);
-        const finHtml = _dashFormatHoursFromMinutes(fin);
-        return `${mainHtml}<div class="small text-muted">CF: ${finHtml}</div>`;
+    const fmtMoney = function (value) {
+        const n = (typeof window.safeFloat === 'function') ? window.safeFloat(value) : (parseFloat(value) || 0);
+        try { return n.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' }); }
+        catch (e) { return '€ ' + n.toFixed(2); }
+    };
+    const fmtNum = function (value) {
+        const n = parseInt(value, 10) || 0;
+        try { return n.toLocaleString('it-IT'); } catch (e) { return String(n); }
+    };
+    const esc = (typeof window.escapeHtml === 'function') ? window.escapeHtml : function (v) {
+        return String(v == null ? '' : v).replace(/[&<>"]/g, function (m) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[m]; });
     };
 
-    if (mode === 'year') {
-        for (let m = 1; m <= 12; m++) {
-            const key = year + '-' + _dashPad2(m);
-            const v = byPeriod[key] || { tot: 0, bill: 0, totFinal: 0, billFinal: 0 };
-            periodRows += `<tr>
-              <td>${escapeHtml(_dashMonthName(m))}</td>
-              <td class="text-end">${fmtCell(v.tot, v.totFinal)}</td>
-              <td class="text-end">${fmtCell(v.bill, v.billFinal)}</td>
-              <td class="text-end">${v.tot ? Math.round((v.bill / v.tot) * 100) : 0}%</td>
-            </tr>`;
-        }
-    } else {
-        const keys = Object.keys(byPeriod).sort();
-        for (const k of keys) {
-            const v = byPeriod[k] || { tot: 0, bill: 0, totFinal: 0, billFinal: 0 };
-            periodRows += `<tr>
-              <td>${escapeHtml(_dashFormatDateIT(k))}</td>
-              <td class="text-end">${fmtCell(v.tot, v.totFinal)}</td>
-              <td class="text-end">${fmtCell(v.bill, v.billFinal)}</td>
-              <td class="text-end">${v.tot ? Math.round((v.bill / v.tot) * 100) : 0}%</td>
-            </tr>`;
-        }
-        if (!keys.length) {
-            periodRows = `<tr><td colspan="4" class="text-muted">Nessun worklog nel periodo selezionato.</td></tr>`;
-        }
-    }
+    const marginClass = summary.estimatedGrossMargin >= 0 ? 'text-success' : 'text-danger';
+    const uninvoicedHours = _dashFormatHoursFromMinutes(summary.uninvoicedMinutes);
 
-    const periodTableTitle = (mode === 'year') ? 'Dettaglio Mensile (Timesheet)' : 'Dettaglio Giornaliero (Timesheet)';
-    const periodTable = `
-      <div class="card shadow-sm mb-3">
-        <div class="card-header"><strong>${escapeHtml(periodTableTitle)}</strong></div>
-        <div class="card-body p-0">
-          <div class="table-responsive">
-            <table class="table table-striped table-sm mb-0">
-              <thead>
-                <tr>
-                  <th>${mode === 'year' ? 'Mese' : 'Data'}</th>
-                  <th class="text-end">Ore totali</th>
-                  <th class="text-end">Ore fatturabili</th>
-                  <th class="text-end">%</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${periodRows}
-              </tbody>
-            </table>
+    const kpiHtml = `
+      <div class="alert alert-info shadow-sm">
+        <strong>Dashboard Direzionale 0.2.1.</strong>
+        Vista sintetica calcolata dai dati già presenti in archivio: fatture, acquisti, magazzino, DDT, ordini e timesheet. Nessuna nuova collezione Firestore.
+      </div>
+      <div class="row g-3 mb-3">
+        <div class="col-12 col-md-6 col-xl-3">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <div class="text-muted small">Fatturato netto</div>
+              <div class="display-6">${fmtMoney(summary.revenue)}</div>
+              <div class="small text-muted">Note credito incluse: ${fmtMoney(summary.creditNotes)}</div>
+              <div class="small text-muted">${esc(periodLabel)} · ${_dashFormatDateIT(start)} - ${_dashFormatDateIT(end)}</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <div class="text-muted small">Acquisti / costi periodo</div>
+              <div class="display-6">${fmtMoney(summary.purchases)}</div>
+              <div class="small text-muted">Margine lordo stimato</div>
+              <div class="h5 ${marginClass}">${fmtMoney(summary.estimatedGrossMargin)}</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <div class="text-muted small">Scadenze aperte</div>
+              <div class="display-6">${fmtMoney(summary.openReceivables)}</div>
+              <div class="small text-muted">Clienti scaduti: <b>${fmtMoney(summary.overdueReceivables)}</b></div>
+              <div class="small text-muted">Fornitori aperti: <b>${fmtMoney(summary.openPayables)}</b></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <div class="text-muted small">Valore magazzino</div>
+              <div class="display-6">${fmtMoney(summary.inventory.totalValue)}</div>
+              <div class="small text-muted">Disponibile: <b>${fmtMoney(summary.inventory.availableValue)}</b></div>
+              <div class="small text-muted">Quarantena: <b>${fmtMoney(summary.inventory.quarantineValue)}</b></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mb-3">
+        <div class="col-12 col-md-6 col-xl-3"><div class="card shadow-sm h-100"><div class="card-body"><div class="text-muted small">DDT cliente da fatturare</div><div class="h2 mb-0">${fmtNum(summary.openCustomerDDTs.length)}</div><div class="small text-muted">documenti non ancora collegati a fattura</div></div></div></div>
+        <div class="col-12 col-md-6 col-xl-3"><div class="card shadow-sm h-100"><div class="card-body"><div class="text-muted small">Ordini cliente aperti</div><div class="h2 mb-0">${fmtNum(summary.openCustomerOrders.length)}</div><div class="small text-muted">non evasi/annullati</div></div></div></div>
+        <div class="col-12 col-md-6 col-xl-3"><div class="card shadow-sm h-100"><div class="card-body"><div class="text-muted small">Ordini fornitore aperti</div><div class="h2 mb-0">${fmtNum(summary.openSupplierOrders.length)}</div><div class="small text-muted">non ricevuti/completati</div></div></div></div>
+        <div class="col-12 col-md-6 col-xl-3"><div class="card shadow-sm h-100"><div class="card-body"><div class="text-muted small">Timesheet non fatturato</div><div class="h2 mb-0">${esc(uninvoicedHours)}</div><div class="small text-muted">ore fatturabili prive di fattura</div></div></div></div>
+      </div>
+    `;
+
+    const trendRows = summary.byPeriod.map(function (r) {
+        return `<tr>
+          <td>${esc(mode === 'month' ? _dashFormatDateIT(r.key) : r.key)}</td>
+          <td class="text-end">${fmtMoney(r.revenue)}</td>
+          <td class="text-end">${fmtMoney(r.purchases)}</td>
+          <td class="text-end ${r.margin >= 0 ? 'text-success' : 'text-danger'}">${fmtMoney(r.margin)}</td>
+        </tr>`;
+    }).join('') || '<tr><td colspan="4" class="text-muted">Nessun dato economico nel periodo selezionato.</td></tr>';
+
+    const topCustomerRows = summary.topCustomers.map(function (r) {
+        return `<tr><td>${esc(r.name)}</td><td class="text-end">${fmtMoney(r.total)}</td></tr>`;
+    }).join('') || '<tr><td colspan="2" class="text-muted">Nessun cliente nel periodo selezionato.</td></tr>';
+
+    const openDdtRows = summary.openCustomerDDTs.slice(0, 8).map(function (d) {
+        return `<tr><td>${esc(d.number || d.numero || d.id)}</td><td>${esc(d.date || d.data || '')}</td><td>${esc(d.customerName || d.clienteNome || '')}</td></tr>`;
+    }).join('') || '<tr><td colspan="3" class="text-muted">Nessun DDT cliente da fatturare.</td></tr>';
+
+    const detailHtml = `
+      <div class="row g-3">
+        <div class="col-12 col-xl-7">
+          <div class="card shadow-sm mb-3">
+            <div class="card-header"><strong>Andamento direzionale</strong></div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-striped table-sm mb-0">
+                  <thead><tr><th>${mode === 'month' ? 'Giorno' : 'Periodo'}</th><th class="text-end">Fatturato</th><th class="text-end">Acquisti</th><th class="text-end">Margine stimato</th></tr></thead>
+                  <tbody>${trendRows}</tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-xl-5">
+          <div class="card shadow-sm mb-3">
+            <div class="card-header"><strong>Top clienti per fatturato</strong></div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-striped table-sm mb-0">
+                  <thead><tr><th>Cliente</th><th class="text-end">Totale</th></tr></thead>
+                  <tbody>${topCustomerRows}</tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-12 col-xl-7">
+          <div class="card shadow-sm mb-3">
+            <div class="card-header"><strong>DDT cliente da fatturare</strong></div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-striped table-sm mb-0">
+                  <thead><tr><th>Numero</th><th>Data</th><th>Cliente</th></tr></thead>
+                  <tbody>${openDdtRows}</tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-xl-5">
+          <div class="card shadow-sm mb-3">
+            <div class="card-header"><strong>Alert operativi</strong></div>
+            <div class="card-body">
+              <ul class="mb-0">
+                <li>Prodotti sotto scorta: <strong>${fmtNum(summary.inventory.lowStockCount)}</strong></li>
+                <li>Valore merce in quarantena: <strong>${fmtMoney(summary.inventory.quarantineValue)}</strong></li>
+                <li>Scadenze clienti scadute: <strong>${fmtMoney(summary.overdueReceivables)}</strong></li>
+                <li>Scadenze fornitori scadute: <strong>${fmtMoney(summary.overduePayables)}</strong></li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
     `;
 
-    // Top progetti
-    const projectRows = Object.keys(byProject)
-        .map(pid => ({ pid, ...byProject[pid] }))
-        .sort((a, b) => (b.bill - a.bill) || (b.tot - a.tot))
-        .slice(0, 10)
-        .map(r => {
-            const p = projectsMap.get(String(r.pid)) || {};
-            const c = commesseMap.get(String(r.commessaId)) || {};
-            const projLabel = (p.code ? (p.code + ' - ') : '') + (p.name || ('Progetto #' + r.pid));
-            return `<tr>
-              <td>${escapeHtml(projLabel)}</td>
-              <td>${escapeHtml(r.endCustomerName || '-')}</td>
-              <td>${escapeHtml(c.name || (r.commessaId ? ('Commessa #' + r.commessaId) : '-'))}</td>
-              <td class="text-end">${fmtCell(r.tot, r.totFinal)}</td>
-              <td class="text-end">${fmtCell(r.bill, r.billFinal)}</td>
-              <td class="text-end">${r.tot ? Math.round((r.bill / r.tot) * 100) : 0}%</td>
-            </tr>`;
-        }).join('') || `<tr><td colspan="6" class="text-muted">Nessun dato.</td></tr>`;
-
-    const projectsTable = `
-      <div class="card shadow-sm mb-3">
-        <div class="card-header"><strong>Top Progetti (ore fatturabili)</strong></div>
-        <div class="card-body p-0">
-          <div class="table-responsive">
-            <table class="table table-striped table-sm mb-0">
-              <thead>
-                <tr>
-                  <th>Progetto</th>
-                  <th>Cliente finale</th>
-                  <th>Commessa</th>
-                  <th class="text-end">Ore totali</th>
-                  <th class="text-end">Ore fatturabili</th>
-                  <th class="text-end">%</th>
-                </tr>
-              </thead>
-              <tbody>${projectRows}</tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    `;
-
-    // Top commesse
-    const commessaRows = Object.keys(byCommessa)
-        .map(cid => ({ cid, ...byCommessa[cid] }))
-        .sort((a, b) => (b.bill - a.bill) || (b.tot - a.tot))
-        .slice(0, 10)
-        .map(r => {
-            const c = commesseMap.get(String(r.cid)) || {};
-            const billTo = customersMap.get(String(c.billToCustomerId || '')) || {};
-            const endCustOut = summarizeNamesSet(r.endCustomers);
-            return `<tr>
-              <td>${escapeHtml(c.name || ('Commessa #' + r.cid))}</td>
-              <td>${escapeHtml(endCustOut)}</td>
-              <td>${escapeHtml(billTo.name || '-')}</td>
-              <td class="text-end">${fmtCell(r.tot, r.totFinal)}</td>
-              <td class="text-end">${fmtCell(r.bill, r.billFinal)}</td>
-              <td class="text-end">${r.tot ? Math.round((r.bill / r.tot) * 100) : 0}%</td>
-            </tr>`;
-        }).join('') || `<tr><td colspan="6" class="text-muted">Nessun dato.</td></tr>`;
-
-    const commesseTable = `
-      <div class="card shadow-sm mb-3">
-        <div class="card-header"><strong>Top Commesse (ore fatturabili)</strong></div>
-        <div class="card-body p-0">
-          <div class="table-responsive">
-            <table class="table table-striped table-sm mb-0">
-              <thead>
-                <tr>
-                  <th>Commessa</th>
-                  <th>Cliente finale</th>
-                  <th>Fatturo a</th>
-                  <th class="text-end">Ore totali</th>
-                  <th class="text-end">Ore fatturabili</th>
-                  <th class="text-end">%</th>
-                </tr>
-              </thead>
-              <tbody>${commessaRows}</tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    `;
-
-    $container.html(kpiHtml + periodTable + projectsTable + commesseTable);
+    $container.html(kpiHtml + detailHtml);
 }
 
 window.renderStatisticsPage = renderStatisticsPage;
