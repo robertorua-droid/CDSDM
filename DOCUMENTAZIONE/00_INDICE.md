@@ -1,6 +1,6 @@
 # Documentazione – Gestionale Cloud (didattico)
 
-Documentazione aggiornata alla versione **0.4.8**.
+Documentazione aggiornata alla versione **0.7.8**.
 
 > Nota: il progetto è didattico. Le simulazioni fiscali e i calcoli gestionali sono semplificazioni e non sostituiscono consulenza professionale, contabile o fiscale.
 
@@ -38,11 +38,52 @@ Documentazione aggiornata alla versione **0.4.8**.
 30) [Accessibilità form e pulsanti 0.4.6](./30_ACCESSIBILITA_FORM_PULSANTI.md)
 31) [Dark Mode form e combo 0.4.7](./31_DARK_MODE_FORM_CONTROLS.md)
 32) [Select dinamiche soggetti 0.4.8](./32_SELECT_DINAMICHE_SOGGETTI.md)
+33) [Gruppi aziendali condivisi 0.5.0](./33_GRUPPI_AZIENDALI.md)
+34) [Membri, inviti e ruoli 0.5.1](./34_MEMBRI_INVITI_RUOLI.md)
+35) [Permessi UI e visibilità menu 0.5.2](./35_PERMESSI_UI_RUOLI.md)
+36) [Regole Firestore gruppi e ruoli 0.5.3](./36_REGOLE_FIRESTORE_GRUPPI_RUOLI.md)
+37) [Concorrenza e scritture sicure 0.5.4](./37_CONCORRENZA_SCRITTURE_SICURE.md)
+38) [Console docente e simulazioni 0.5.5](./38_CONSOLE_DOCENTE_SIMULAZIONI.md)
+39) [Migrazione guidata e QA multiutente 0.5.6](./39_MIGRAZIONE_QA_MULTIUTENTE.md)
+40) [Superadmin e registrazione con invito 0.6.0](./40_SUPERADMIN_REGISTRAZIONE_INVITO.md)
+41) [Inviti avanzati e onboarding 0.6.1](./41_INVITI_AVANZATI_ONBOARDING.md)
+42) [Profili permesso configurabili 0.6.2](./42_PROFILI_PERMESSO.md)
+43) [Matrice permessi moduli 0.6.3](./43_MATRICE_PERMESSI.md)
+44) [Override permessi per singolo utente 0.6.4](./44_OVERRIDE_PERMESSI.md)
+45) [Regole Firestore rafforzate 0.6.5](./45_REGOLE_FIRESTORE_RAFFORZATE.md)
+46) [Audit sicurezza, report utenti e QA accessi 0.6.6](./46_AUDIT_SICUREZZA_QA_ACCESSI.md)
+47) [Consolidamento tecnico generale 0.7.0](./47_CONSOLIDAMENTO_TECNICO_070.md)
+48) [QA funzionale end-to-end 0.7.1](./48_QA_END_TO_END_071.md)
+49) [Manuale d’uso completo e guida didattica 0.7.2](./49_MANUALE_GUIDA_DIDATTICA_072.md)
+50) [UX, testi di aiuto e onboarding in-app 0.7.3](./50_UX_ONBOARDING_073.md)
+51) [Dataset demo e scenari didattici 0.7.4](./51_DATASET_DEMO_074.md)
+52) [Pacchetto stabile per uso in classe 0.7.5](./52_PACCHETTO_STABILE_CLASSE_075.md)
 
 ## Ultime release
 
-- **0.4.7**: Dark Mode form e combo.
+- **0.7.8**: Guida completa alle voci di menu e aiuto contestuale.
+- **0.7.5**: Pacchetto stabile per uso in classe, collaudo finale e checklist docente.
+- **0.7.4**: Dataset demo, scenari didattici e casi d’uso guidati.
+- **0.7.3**: Miglioramento UX, testi di aiuto, onboarding e messaggi di errore.
+- **0.7.2**: Manuale d’uso completo e guida didattica docente/studente.
+- **0.7.1**: QA funzionale end-to-end e correzione regressioni operative.
+- **0.7.0**: Consolidamento tecnico generale e pulizia regressioni.
+- **0.6.6**: Audit sicurezza, report utenti e QA accessi.
+- **0.6.5**: Regole Firestore rafforzate su ruoli, profili e operazioni sensibili.
+- **0.6.4**: Override permessi per singolo utente.
+- **0.6.3**: Matrice permessi moduli.
+- **0.6.2**: Profili permesso configurabili per gruppo.
+- **0.6.1**: Inviti avanzati e onboarding collaboratori.
+- **0.6.0**: Bootstrap superadmin e registrazione con invito.
+- **0.5.6**: Migrazione guidata, backup 0.5.x e QA multiutente.
+- **0.5.5**: Console docente e simulazioni di gruppo.
+- **0.5.4**: Controllo concorrenza e scritture sicure.
+- **0.5.3**: Regole Firestore per gruppi e ruoli.
+- **0.5.2**: Permessi UI e visibilità menu per ruolo.
+- **0.5.1**: Membri, inviti e ruoli per Gruppi aziendali.
+- **0.5.0**: Gruppi aziendali condivisi.
 - **0.4.8**: Correzione select dinamiche soggetti.
+- **0.4.7**: Dark Mode form e combo.
 - **0.4.6**: correzione accessibilità form e pulsanti.
 - **0.4.5**: bilancino gestionale semplificato.
 - **0.4.4**: consolidamento UX e accessibilità.
@@ -59,4 +100,8 @@ Documentazione aggiornata alla versione **0.4.8**.
 - **0.3.1**: incassi e pagamenti evoluti.
 - **0.3.0**: partitario clienti e fornitori.
 
-28) [UX / Accessibilità](./28_UX_ACCESSIBILITA.md)
+- [53 - Chiarimento Superadmin e inviti studenti 0.7.6](53_CHIARIMENTO_SUPERADMIN_INVITI_076.md)
+
+- [54. Correzione bootstrap Superadmin 0.7.7](54_CORREZIONE_BOOTSTRAP_SUPERADMIN_077.md)
+
+- [55. Guida completa alle voci di menu e aiuto contestuale 0.7.8](55_GUIDA_MENU_COMPLETA_078.md)

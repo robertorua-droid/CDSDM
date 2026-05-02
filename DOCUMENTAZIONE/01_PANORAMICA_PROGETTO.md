@@ -1,3 +1,13 @@
+## Aggiornamento 0.5.6 - Migrazione guidata e QA multiutente
+
+La release 0.5.6 consolida i Gruppi aziendali con una sezione dedicata a confronto dati legacy/gruppo, copia prudente, report diagnostici e piano QA multiutente. La nuova collezione `migrationReports` salva report didattici sotto `businessGroups/{groupId}`.
+
+
+
+## Aggiornamento 0.5.5 - Console docente
+
+La release 0.5.5 introduce **Impostazioni → Console docente** per scenari didattici e simulazioni di gruppo sui Gruppi aziendali. Le nuove collezioni `teachingScenarios` e `simulationEvents` sono salvate sotto `businessGroups/{groupId}` e sono protette dalle regole Firestore dedicate.
+
 # 1. Panoramica del progetto
 
 ## Obiettivo didattico
@@ -119,3 +129,31 @@ La versione 0.4.7 consolida la Dark Mode dei controlli form: combo/select, opzio
 ## Aggiornamento 0.4.8
 
 La versione 0.4.8 corregge il popolamento delle select dinamiche soggetto nelle sezioni contabili. In particolare, **Incassi e pagamenti** ora mostra correttamente clienti o fornitori in base al tipo movimento, anche quando la select contiene già un placeholder statico.
+
+## Aggiornamento 0.5.1 — Collaborazione nei Gruppi aziendali
+
+Il ramo 0.5.x introduce collaborazione didattica multiutente. La versione 0.5.1 aggiunge membri, inviti semplici e ruoli per gruppo, preparando la successiva 0.5.2 dedicata a permessi UI e visibilità menu per ruolo.
+
+
+## Aggiornamento 0.5.2 — Permessi UI per ruolo
+
+La versione 0.5.2 collega i ruoli dei Gruppi aziendali alla navigazione e ai principali comandi dell’interfaccia. I controlli restano didattici/front-end; la sicurezza Firestore completa è pianificata nella 0.5.3.
+
+
+## Aggiornamento 0.5.3 — Regole Firestore per gruppi e ruoli
+
+La versione 0.5.3 aggiunge `firestore.rules` e `firebase.json` per rendere deployabile la protezione dati dei Gruppi aziendali. L'accesso ai dataset condivisi è basato su membership attiva e ruolo; lo spazio legacy `users/{uid}` resta isolato per proprietario.
+
+## Aggiornamento 0.5.4 — Concorrenza e scritture sicure
+
+La versione 0.5.4 aggiunge una base tecnica per il lavoro contemporaneo nei Gruppi aziendali: salvataggi transazionali tramite `ConcurrencyService`, campo `docVersion`, metadata autore/aggiornamento, lock leggeri con scadenza, idempotenza opzionale e audit dei conflitti. La compatibilità con i dati legacy resta preservata.
+
+
+## Aggiornamento 0.6.0 — Superadmin e registrazione con invito
+
+La login include ora **Registrati con invito**. Il collaboratore crea il proprio account Firebase Auth usando email, password, ID gruppo e codice invito. Il pannello **Impostazioni → Superadmin** consente il bootstrap del primo amministratore applicativo senza backend custom.
+
+
+## Aggiornamento 0.6.1 — Inviti avanzati
+
+Gli inviti ai Gruppi aziendali ora supportano stati, scadenza, revoca, rigenerazione codice, filtri e note onboarding. La sicurezza resta basata su Firebase Auth, membership e regole Firestore.

@@ -1,3 +1,46 @@
+## Versione 0.7.0 - Consolidamento tecnico
+
+La versione 0.7.0 non aggiunge nuovi flussi operativi: rende più coerenti backup/import/reset, test e documentazione. Per l'utente, il comportamento atteso resta quello della 0.6.6, con maggiore affidabilità nel passaggio tra dati legacy personali e Gruppi aziendali.
+
+### Cosa cambia nell'uso quotidiano
+
+- Il backup JSON esporta anche profili permesso, matrici permessi e report audit sicurezza del gruppo attivo.
+- L'import da backup 0.7.0 ripristina anche queste collezioni quando presenti.
+- La pagina test include una nuova verifica di consolidamento 0.7.0.
+- La documentazione in-app contiene il capitolo **47. Consolidamento tecnico generale 0.7.0**.
+
+---
+
+## Versione 0.6.6 - Audit sicurezza
+
+La sezione **Impostazioni → Audit sicurezza** consente ad admin, teacher e superadmin di generare un report sul Gruppo aziendale attivo. Il report evidenzia membri, ruoli, inviti, profili permesso, override e possibili criticità prima di una simulazione multiutente.
+
+## Aggiornamento 0.6.5 — Regole Firestore rafforzate
+
+La versione 0.6.5 non cambia il flusso operativo quotidiano, ma rende più coerente la sicurezza: i permessi effettivi del membro vengono considerati anche dalle regole Firestore quando il progetto viene pubblicato con il nuovo `firestore.rules`. Il livello `write` consente creazione/modifica, mentre le eliminazioni richiedono `admin` sul modulo o un ruolo admin/teacher.
+
+## Aggiornamento 0.6.4 — Override permessi
+
+In **Impostazioni → Override permessi**, un admin/teacher può selezionare un membro e definire eccezioni puntuali rispetto al profilo permesso assegnato. Il valore **Eredita dal profilo** mantiene il comportamento standard; `none`, `read`, `write` e `admin` sostituiscono il livello del profilo solo per quel modulo.
+
+## Aggiornamento 0.6.3 - Matrice permessi
+
+Gli amministratori del gruppo possono usare **Impostazioni → Matrice permessi** per verificare il catalogo moduli e configurare il modello azioni associato ai livelli `none/read/write/admin`.
+
+## Aggiornamento 0.6.2 - Profili permesso
+
+In **Impostazioni → Profili permesso** gli amministratori del gruppo possono creare profili, configurare i livelli per modulo e assegnarli ai membri.
+
+## Aggiornamento 0.5.6 - Migrazione guidata e QA multiutente
+
+La release 0.5.6 consolida i Gruppi aziendali con una sezione dedicata a confronto dati legacy/gruppo, copia prudente, report diagnostici e piano QA multiutente. La nuova collezione `migrationReports` salva report didattici sotto `businessGroups/{groupId}`.
+
+
+
+## Aggiornamento 0.5.5 - Console docente
+
+La release 0.5.5 introduce **Impostazioni → Console docente** per scenari didattici e simulazioni di gruppo sui Gruppi aziendali. Le nuove collezioni `teachingScenarios` e `simulationEvents` sono salvate sotto `businessGroups/{groupId}` e sono protette dalle regole Firestore dedicate.
+
 ### Versione 0.4.3 - Registro attività / audit trail
 La versione 0.4.3 introduce Analisi → Registro attività: una vista applicativa che centralizza eventi manuali e attività derivate da workflow, pagamenti, prima nota, solleciti, riconciliazioni e budget. È possibile filtrare, esportare CSV e registrare note manuali nella collezione opzionale `auditEvents`. Il registro è didattico/front-end e non sostituisce logging server-side o audit forense.
 
@@ -975,3 +1018,55 @@ La voce **Analisi → UX / accessibilità** include un controllo consultivo sull
 In **Contabilità → Incassi e pagamenti**, il campo **Soggetto** mostra ora l’elenco clienti quando il tipo è **Incasso cliente** e l’elenco fornitori quando il tipo è **Pagamento fornitore**.
 
 La stessa logica di inizializzazione è stata consolidata anche nei filtri soggetto di **Partitario**, **Estratto conto** e **Stampe / PDF**.
+
+## Aggiornamento 0.5.1 — Membri, inviti e ruoli per Gruppi aziendali
+
+Percorso: **Impostazioni → Gruppi aziendali**.
+
+Con un Gruppo aziendale attivo, un utente con ruolo **Amministratore** o **Docente/Revisore** può:
+
+1. visualizzare i membri del gruppo;
+2. aggiungere un membro tramite UID Firebase, email e ruolo;
+3. cambiare il ruolo di un membro;
+4. rimuovere un membro dal gruppo;
+5. generare un invito semplice con codice.
+
+Per invitare uno studente senza backend custom:
+
+1. genera un invito indicando email e ruolo;
+2. copia ID gruppo e codice invito;
+3. comunica questi dati allo studente;
+4. lo studente accede con Firebase, apre **Gruppi aziendali**, inserisce ID gruppo e codice, quindi accetta.
+
+Gli inviti sono pensati per simulazioni didattiche. L’app non invia email automaticamente.
+
+
+## Aggiornamento 0.5.2 — Menu e comandi in base al ruolo
+
+Quando lavori in un Gruppo aziendale, la sidebar mostra le sezioni coerenti con il tuo ruolo. Alcuni pulsanti di salvataggio, import, reset, approvazione o cancellazione possono essere disabilitati se il ruolo non consente la scrittura nello scope operativo corrente.
+
+La pagina **Impostazioni → Ruoli e permessi** mostra il ruolo effettivo; in modalità gruppo il cambio ruolo si effettua da **Gruppi aziendali** da parte di un amministratore o docente.
+
+
+## Aggiornamento 0.5.3 — Sicurezza Firestore dei Gruppi aziendali
+
+La collaborazione tra studenti richiede che il docente o l'amministratore del progetto Firebase pubblichi le regole incluse in `firestore.rules`. Dopo il deploy, solo i membri attivi del Gruppo aziendale possono leggere il dataset condiviso e le scritture sono limitate dal ruolo.
+
+## Aggiornamento 0.5.4 — Uso multiutente più sicuro
+
+Quando più studenti lavorano sullo stesso Gruppo aziendale, l'app registra metadata di modifica e una versione tecnica dei documenti (`docVersion`). In caso di conflitto rilevato, l'utente viene invitato a ricaricare i dati e ripetere l'operazione. I lock leggeri sono predisposti per operazioni critiche e scadono automaticamente.
+
+
+## Aggiornamento 0.6.0 — Superadmin e registrazione con invito
+
+La login include ora **Registrati con invito**. Il collaboratore crea il proprio account Firebase Auth usando email, password, ID gruppo e codice invito. Il pannello **Impostazioni → Superadmin** consente il bootstrap del primo amministratore applicativo senza backend custom.
+
+
+## Aggiornamento 0.6.1 — Inviti avanzati e onboarding
+
+Nel pannello **Gruppi aziendali** gli inviti ora includono validità, note, stato, filtri e azioni di revoca/rigenerazione. Per invitare uno studente, crea l’invito, copia il testo generato e comunica ID gruppo + codice. Lo studente usa **Registrati con invito** dalla schermata iniziale.
+
+
+## Percorso didattico consolidato 0.7.2
+
+Docente: prepara gruppo, profili, inviti e dataset. Studente: completa flussi guidati. Verifica: usa test 0.7.x, audit e backup finale.

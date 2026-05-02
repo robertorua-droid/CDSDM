@@ -1,3 +1,98 @@
+## Aggiornamento 0.7.5 - Pacchetto stabile per uso in classe, collaudo finale e checklist docente
+
+Chiusura ramo 0.7.x e checklist finale.
+
+## Aggiornamento 0.7.4 - Dataset demo, scenari didattici e casi d’uso guidati
+
+Dataset statico in data/ senza import automatico.
+
+## Aggiornamento 0.7.3 - Miglioramento UX, testi di aiuto, onboarding e messaggi di errore
+
+Aiuti runtime non distruttivi sul DOM.
+
+## Aggiornamento 0.7.2 - Manuale d’uso completo e guida didattica docente/studente
+
+Release documentale senza nuove collezioni.
+
+## Aggiornamento 0.7.1 - QA funzionale end-to-end e correzione regressioni operative
+
+Aggiunto servizio QA non distruttivo.
+
+## Aggiornamento 0.7.0 - Consolidamento tecnico generale
+
+La release 0.7.0 consolida il ramo 0.6.x senza introdurre nuove funzioni gestionali. Gli interventi principali sono statici e conservativi:
+
+- allineamento `globalData`, `AppStore`, `DomainConstants.DATA_COLLECTIONS`, backup/import/reset e documentazione sulle collezioni reali;
+- rimozione del modulo legacy `customer-quotes-module.js`, non caricato in `index.html` e non coerente con la collezione ufficiale `quotes`;
+- aggiornamento export JSON a `appVersion: 0.7.0`;
+- nuova suite browser `tests/consolidamento-070.test.html`;
+- nuovo report `REPORT_INCOERENZE_0.7.0.md`.
+
+La persistenza resta invariata: `users/{uid}` per dati legacy e `businessGroups/{groupId}` per dati condivisi. Non sono richiesti backend custom o Cloud Functions.
+
+---
+
+## Aggiornamento 0.6.6 - Audit sicurezza e QA accessi
+
+La release 0.6.6 aggiunge `SecurityAuditService` e `security-audit-module.js`. La sezione **Impostazioni → Audit sicurezza** produce report diagnostici su membri, inviti, profili, override e `effectiveProfilePermissions`, con salvataggio opzionale in `businessGroups/{groupId}/securityAccessReports`.
+
+La checklist include un punto manuale sulla pubblicazione delle regole Firestore, perché una SPA front-end non può verificare autonomamente se `firestore.rules` sia stato distribuito nel progetto Firebase.
+
+## Aggiornamento 0.6.5 - Rules rafforzate
+
+Le regole Firestore mappano le collection operative su scope applicativi e leggono `businessGroups/{groupId}/members/{uid}.effectiveProfilePermissions`. Se il campo non è presente, resta attivo il fallback a ruolo per compatibilità. Le eliminazioni sono più restrittive e richiedono livello `admin` sullo scope o ruolo admin/teacher.
+
+## Aggiornamento 0.6.4 - Override permessi utente
+
+La release 0.6.4 aggiunge `PermissionOverridesService` e `permission-overrides-module.js`. Gli override sono salvati sui documenti `members/{uid}` e `users/{uid}/memberships/{groupId}` come campi `permissionOverrides` ed `effectiveProfilePermissions`, così la `PermissionsPolicy` può applicarli senza query aggiuntive.
+
+Ordine di valutazione: ruolo base → profilo permesso → override utente.
+
+## Aggiornamento 0.6.3 - Matrice permessi moduli
+
+La release 0.6.3 aggiunge `PermissionMatrixService`, `permission-matrix-module.js` e la collezione `businessGroups/{groupId}/permissionMatrices/moduleMatrix`. La matrice formalizza catalogo moduli, target menu e modello azioni per i livelli `none/read/write/admin`.
+
+## Aggiornamento 0.6.2 - Profili permesso configurabili
+
+La persistenza include `businessGroups/{groupId}/permissionProfiles/{profileId}`. L'assegnazione profilo viene denormalizzata su `members/{uid}` e `users/{uid}/memberships/{groupId}` per consentire alla `PermissionsPolicy` di lavorare in modo sincrono lato UI.
+
+## Aggiornamento 0.6.1 - Inviti avanzati e onboarding
+
+La release 0.6.1 estende `BusinessGroupsService` con inviti a stato esplicito, scadenza, revoca, rigenerazione codice e consolidamento degli scaduti. La creazione invito salva `expiresAt` come timestamp quando possibile e `expiresAtIso` per compatibilità UI/export.
+
+La registrazione con invito resta client-side: l’account Firebase Auth viene creato dal collaboratore e l’accettazione invito crea `members/{uid}` e `users/{uid}/memberships/{groupId}`. Se l’accettazione fallisce subito dopo la creazione account, il client tenta `user.delete()` per pulire l’account appena creato.
+
+
+## Aggiornamento 0.6.0 - Superadmin e registrazione con invito
+
+La release 0.6.0 introduce un flusso di gestione utenti senza backend custom: il primo amministratore inizializza `appSettings/system`, mentre i collaboratori usano **Registrati con invito** per creare il proprio account Firebase Auth e accettare una membership di gruppo.
+
+Nuove entità:
+
+```text
+appSettings/system
+userProfiles/{uid}
+```
+
+Il superadmin globale è riconosciuto dalle regole Firestore e può supervisionare i gruppi. L'accettazione invito resta email-based e richiede corrispondenza tra email Firebase Auth e email salvata nell'invito.
+
+
+## Aggiornamento 0.5.6 - Migrazione guidata e QA multiutente
+
+La release 0.5.6 consolida i Gruppi aziendali con una sezione dedicata a confronto dati legacy/gruppo, copia prudente, report diagnostici e piano QA multiutente. La nuova collezione `migrationReports` salva report didattici sotto `businessGroups/{groupId}`.
+
+
+
+## Aggiornamento 0.5.5 - Console docente
+
+La release 0.5.5 introduce **Impostazioni → Console docente** per scenari didattici e simulazioni di gruppo sui Gruppi aziendali. Le nuove collezioni `teachingScenarios` e `simulationEvents` sono salvate sotto `businessGroups/{groupId}` e sono protette dalle regole Firestore dedicate.
+
+## Versione 0.5.4 - Scritture sicure e concorrenza
+
+La persistenza comune passa da scritture dirette a funzioni transazionali tramite `js/core/concurrency-service.js`. Il servizio aggiunge metadata di audit, `docVersion`, supporto a `_expectedDocVersion`, lock leggero e idempotenza opzionale. I moduli nuovi dovrebbero usare `saveDataToCloud`, `batchSaveDataToCloud` e `deleteDataFromCloud` invece di scrivere direttamente su Firestore.
+
+---
+
 ## Release 0.4.2 - Workflow approvativi leggeri
 
 La release introduce `js/features/accounting/workflow-service.js` e `js/features/accounting/workflow-module.js`. Il servizio costruisce attività approvative derivate dai dati esistenti e registra eventi manuali in `workflowEvents`. Le azioni aggiornano anche il documento sorgente con `workflowStatus`/`approvalStatus`, mantenendo compatibilità con documenti legacy.
@@ -382,3 +477,46 @@ js/ui/accessibility-ux-module.js
 ```
 
 La release non modifica persistenza, collezioni Firestore o modello dati.
+
+## Aggiornamento 0.5.0 — Gruppi aziendali
+
+La persistenza passa da root fisso utente a root dinamico:
+
+```text
+users/{uid}                         # legacy personale
+businessGroups/{groupId}            # dataset condiviso attivo
+```
+
+I moduli applicativi continuano a usare `saveDataToCloud`, `batchSaveDataToCloud`, `deleteDataFromCloud` e `loadAllDataFromCloud`. La scelta del root è centralizzata in `getDataRootRef()` e nel servizio Gruppi aziendali, per non duplicare logica nei singoli moduli.
+
+
+## Aggiornamento 0.5.1 — Membri, inviti e ruoli
+
+La release estende `BusinessGroupsService` con gestione membri e inviti:
+
+```text
+businessGroups/{groupId}/members/{uid}
+businessGroups/{groupId}/invites/{inviteCode}
+users/{uid}/memberships/{groupId}
+```
+
+Gli inviti sono semplici: non inviano email e non richiedono backend custom. L'amministratore/docente comunica ID gruppo e codice allo studente, che accetta l'invito dalla UI dopo login Firebase.
+
+Per manutenzione futura:
+
+- i controlli `admin`/`teacher` sono UI/client-side;
+- le regole Firestore complete sono previste nella 0.5.3;
+- i ruoli applicativi saranno usati dalla 0.5.2 per visibilità menu e blocchi operativi;
+- non introdurre Cloud Functions come requisito per accettare inviti.
+
+
+## Aggiornamento 0.5.2 — Policy UI centralizzata
+
+`PermissionsPolicy` diventa il punto unico per ruoli, alias legacy, target di navigazione e scope di scrittura. Con un gruppo attivo legge `currentBusinessGroup.role`; senza gruppo mantiene `companyInfo.accessControl`.
+
+La policy applica visibilità menu e disabilitazioni UI, ma non sostituisce le regole Firestore previste nella 0.5.3.
+
+
+## Aggiornamento 0.5.3 — Regole Firestore deployabili
+
+La release aggiunge `firestore.rules` e `firebase.json`. Le regole preservano il path legacy `users/{uid}` e proteggono `businessGroups/{groupId}` tramite membership attiva. Per attivarle usare Firebase Console oppure `firebase deploy --only firestore:rules`. La 0.5.4 dovrà occuparsi di concorrenza, versionamento e scritture critiche.

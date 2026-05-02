@@ -187,3 +187,8 @@ Quando vuoi verificare che il refactoring non abbia rotto i flussi, prova sempre
 10. scadenziario
 
 Se tutti questi casi funzionano, il progetto è in uno stato molto solido anche a livello funzionale.
+
+
+## Percorso didattico consolidato 0.7.2
+
+Docente: prepara gruppo, profili, inviti e dataset. Studente: completa flussi guidati. Verifica: usa test 0.7.x, audit e backup finale.

@@ -93,3 +93,12 @@ Backup, import e reset includono anche la collezione opzionale `paymentEvents`, 
 ## Aggiornamento 0.3.2
 
 Backup, import e reset totale includono anche `cashbookMovements`, la collezione opzionale dei movimenti manuali di prima nota. I movimenti automatici derivati da `paymentEvents` non vengono duplicati in questa collezione.
+
+## Aggiornamento 0.5.0 — root dati attivo
+
+Con i Gruppi aziendali, backup, import e reset operano sul **root dati attivo**:
+
+- con un Gruppo aziendale selezionato: `businessGroups/{groupId}`;
+- senza gruppo selezionato: dati personali legacy `users/{uid}`.
+
+L'export JSON include `persistenceScope` e, quando presente, `businessGroup`. La copia legacy verso un gruppo è prudente: non elimina i dati personali dell'utente.
