@@ -168,24 +168,46 @@
 }
 
 /* Fatture: blocco allegato XML da Timesheet in Dark Mode
-   Correzione mirata per bg-light-subtle, non coperto dagli override globali. */
-[data-theme="dark"] #invoice-timesheet-attachment-options {
-    background-color: rgba(52, 152, 219, 0.08) !important;
+   Correzione mirata e prudente: il pannello usa bg-light-subtle Bootstrap,
+   che in tema scuro può lasciare testo/controlli con contrasto insufficiente. */
+html[data-theme="dark"] #invoice-timesheet-attachment-options {
+    background-color: rgba(52, 152, 219, 0.10) !important;
     color: var(--text-main) !important;
-    border-color: rgba(52, 152, 219, 0.28) !important;
+    border-color: rgba(52, 152, 219, 0.35) !important;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
 }
 
-[data-theme="dark"] #invoice-timesheet-attachment-options .form-check-label,
-[data-theme="dark"] #invoice-timesheet-attachment-options .fw-semibold {
+html[data-theme="dark"] #invoice-timesheet-attachment-options .fw-semibold,
+html[data-theme="dark"] #invoice-timesheet-attachment-options .form-check-label,
+html[data-theme="dark"] #invoice-timesheet-attachment-options strong {
     color: var(--text-main) !important;
 }
 
-[data-theme="dark"] #invoice-timesheet-attachment-options .text-muted {
-    color: var(--text-muted) !important;
+html[data-theme="dark"] #invoice-timesheet-attachment-options .fa-paperclip {
+    color: #8ecbff !important;
 }
 
-[data-theme="dark"] #invoice-timesheet-attachment-options .form-check-input:disabled ~ .form-check-label {
-    color: rgba(236, 240, 241, 0.62) !important;
+html[data-theme="dark"] #invoice-timesheet-attachment-options .text-muted,
+html[data-theme="dark"] #invoice-timesheet-attachment-options .small.text-muted {
+    color: #c7d3dd !important;
+}
+
+html[data-theme="dark"] #invoice-timesheet-attachment-options .form-check-input {
+    background-color: var(--input-bg);
+    border-color: rgba(255, 255, 255, 0.45);
+}
+
+html[data-theme="dark"] #invoice-timesheet-attachment-options .form-check-input:checked {
+    background-color: #3498db;
+    border-color: #5dade2;
+}
+
+html[data-theme="dark"] #invoice-timesheet-attachment-options .form-check-input:disabled {
+    opacity: 0.55;
+}
+
+html[data-theme="dark"] #invoice-timesheet-attachment-options .form-check-input:disabled ~ .form-check-label {
+    color: rgba(236, 240, 241, 0.72) !important;
 }
 
 /* ============================================
@@ -898,4 +920,310 @@ tr.invoice-paid .btn {
 html[data-theme="dark"] .google-calendar-card .card-footer {
     color: var(--text-muted) !important;
     border-top-color: var(--border-color);
+}
+
+
+/* Step 12B - Pulizia UX Magazzino/DDT */
+.nav-section-subtitle {
+  display: block;
+  padding: 0.55rem 1rem 0.25rem 2.75rem;
+  color: var(--bs-secondary-color, #6c757d);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.warehouse-flow-note {
+  border-left: 4px solid var(--bs-primary);
+  background: var(--bs-tertiary-bg, #f8f9fa);
+}
+.warehouse-empty-state {
+  padding: 1.25rem .75rem;
+  text-align: center;
+  color: var(--bs-secondary-color, #6c757d);
+}
+.warehouse-empty-state .empty-title {
+  display: block;
+  color: var(--bs-body-color, #212529);
+  font-weight: 700;
+  margin-bottom: .25rem;
+}
+.warehouse-empty-state .empty-hint {
+  display: block;
+  font-size: .875rem;
+}
+.warehouse-actions .btn {
+  min-width: 2rem;
+}
+.warehouse-status-badge {
+  white-space: nowrap;
+}
+[data-theme="dark"] .warehouse-flow-note,
+.dark-mode .warehouse-flow-note,
+body.dark-mode .warehouse-flow-note {
+  background: rgba(255,255,255,.05);
+}
+
+/* Step 13 UX polish - visibilità sidebar e Dark Mode
+   I separatori restano elementi non cliccabili, ma devono essere chiaramente distinguibili
+   dalle voci modulo. */
+.sidebar .nav-section-subtitle {
+  margin: 0.45rem 0.75rem 0.15rem 0.95rem;
+  padding: 0.42rem 0.75rem 0.32rem 1.8rem;
+  color: #d7e3ef;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .085em;
+  line-height: 1.15;
+  border-left: 3px solid rgba(52, 152, 219, 0.75);
+  background: rgba(255, 255, 255, 0.075);
+  border-radius: 0 0.45rem 0.45rem 0;
+  cursor: default;
+  user-select: none;
+  opacity: 1;
+}
+
+.sidebar .nav-section-subtitle::after {
+  content: "";
+  display: block;
+  height: 1px;
+  margin-top: 0.32rem;
+  background: linear-gradient(90deg, rgba(255,255,255,0.24), rgba(255,255,255,0));
+}
+
+.sidebar .nav-section-subtitle:hover,
+.sidebar .nav-section-subtitle:focus {
+  color: #d7e3ef;
+  background: rgba(255, 255, 255, 0.075);
+}
+
+/* Dark Mode: uniforma pannelli Bootstrap chiari che in alcuni moduli restavano poco leggibili. */
+html[data-theme="dark"] .bg-light-subtle,
+html[data-theme="dark"] .bg-body-tertiary,
+html[data-theme="dark"] .warehouse-flow-note,
+html[data-theme="dark"] #product-warehouse-fields {
+  background-color: rgba(255, 255, 255, 0.065) !important;
+  color: var(--text-main) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+html[data-theme="dark"] #product-warehouse-fields .form-label,
+html[data-theme="dark"] #product-warehouse-fields .form-text,
+html[data-theme="dark"] #product-warehouse-fields .form-control-plaintext,
+html[data-theme="dark"] #product-stock-value-preview {
+  color: var(--text-main) !important;
+}
+
+html[data-theme="dark"] #product-warehouse-fields .form-text {
+  color: #c7d3dd !important;
+}
+
+html[data-theme="dark"] .alert-secondary {
+  background-color: rgba(148, 163, 184, 0.14) !important;
+  border-color: rgba(148, 163, 184, 0.30) !important;
+  color: var(--text-main) !important;
+}
+
+html[data-theme="dark"] .alert-info {
+  background-color: rgba(13, 202, 240, 0.12) !important;
+  border-color: rgba(13, 202, 240, 0.30) !important;
+  color: #d8f6ff !important;
+}
+
+html[data-theme="dark"] .alert-success {
+  background-color: rgba(25, 135, 84, 0.16) !important;
+  border-color: rgba(25, 135, 84, 0.34) !important;
+  color: #d8fbe8 !important;
+}
+
+html[data-theme="dark"] .badge.text-bg-light {
+  background-color: rgba(236, 240, 241, 0.16) !important;
+  color: var(--text-main) !important;
+  border: 1px solid rgba(255,255,255,0.18);
+}
+
+html[data-theme="dark"] code {
+  color: #9bd2ff;
+}
+
+/* Step 20: scheda Documenti collegati leggibile anche in Dark Mode. */
+.document-links-card .table {
+  margin-bottom: 0;
+}
+html[data-theme="dark"] .document-links-card {
+  background-color: rgba(255, 255, 255, 0.055) !important;
+  color: var(--text-main) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+}
+html[data-theme="dark"] .document-links-card .table,
+html[data-theme="dark"] .document-links-card .table th,
+html[data-theme="dark"] .document-links-card .table td {
+  color: var(--text-main) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+}
+html[data-theme="dark"] .document-links-card .text-muted {
+  color: #c7d3dd !important;
+}
+
+/* Versione 0.1.6 - consolidamento leggibilità e QA visivo.
+   Regole conservative per moduli nuovi: mantengono contrasto in Dark Mode senza
+   modificare layout, dati o flussi applicativi. */
+html[data-theme="dark"] .card.bg-light,
+html[data-theme="dark"] .card.bg-white,
+html[data-theme="dark"] .modal-content,
+html[data-theme="dark"] .dropdown-menu,
+html[data-theme="dark"] .list-group-item,
+html[data-theme="dark"] .accordion-item,
+html[data-theme="dark"] .offcanvas,
+html[data-theme="dark"] .toast {
+  background-color: var(--card-bg) !important;
+  color: var(--text-main) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+}
+
+html[data-theme="dark"] .text-muted,
+html[data-theme="dark"] .form-text,
+html[data-theme="dark"] .small.text-muted,
+html[data-theme="dark"] .lead.text-muted,
+html[data-theme="dark"] p.text-muted {
+  color: #c7d3dd !important;
+}
+
+html[data-theme="dark"] .table-light,
+html[data-theme="dark"] .table-light > th,
+html[data-theme="dark"] .table-light > td,
+html[data-theme="dark"] .table thead.table-light th {
+  background-color: rgba(255,255,255,0.08) !important;
+  color: var(--text-main) !important;
+  border-color: rgba(255,255,255,0.14) !important;
+}
+
+html[data-theme="dark"] .input-group-text,
+html[data-theme="dark"] .form-control,
+html[data-theme="dark"] .form-select,
+html[data-theme="dark"] textarea.form-control {
+  background-color: rgba(255, 255, 255, 0.07) !important;
+  color: var(--text-main) !important;
+  border-color: rgba(255, 255, 255, 0.20) !important;
+}
+
+html[data-theme="dark"] .form-control::placeholder,
+html[data-theme="dark"] textarea.form-control::placeholder {
+  color: #9fb0bd !important;
+}
+
+html[data-theme="dark"] .btn-outline-secondary,
+html[data-theme="dark"] .btn-outline-primary,
+html[data-theme="dark"] .btn-outline-info {
+  color: #d7e3ef;
+  border-color: rgba(215, 227, 239, 0.45);
+}
+
+html[data-theme="dark"] .dropdown-item {
+  color: var(--text-main) !important;
+}
+html[data-theme="dark"] .dropdown-item:hover,
+html[data-theme="dark"] .dropdown-item:focus {
+  background-color: rgba(255, 255, 255, 0.10) !important;
+}
+
+/* CDSDM 0.4.4 - Consolidamento UX/accessibilita */
+.skip-link { position: absolute; left: 1rem; top: -4rem; z-index: 2000; padding: .65rem 1rem; border-radius: .5rem; background: var(--bs-primary, #0d6efd); color: #fff; text-decoration: none; box-shadow: 0 .5rem 1rem rgba(0,0,0,.25); }
+.skip-link:focus { top: 1rem; outline: 3px solid rgba(255,255,255,.9); outline-offset: 2px; }
+:focus-visible { outline: 3px solid rgba(13,110,253,.55); outline-offset: 2px; }
+.nav-section-header[role="button"]:focus-visible, .sidebar .nav-link:focus-visible, .btn:focus-visible, .form-control:focus-visible, .form-select:focus-visible { box-shadow: 0 0 0 .25rem rgba(13,110,253,.25); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+@media (forced-colors: active) { .card, .modal-content, .table, .form-control, .form-select { border: 1px solid CanvasText; } .badge { border: 1px solid CanvasText; } }
+
+/* CDSDM 0.4.7 - Consolidamento Dark Mode e contrasto controlli form
+   Migliora leggibilità di select/combo, opzioni native e campi data in tema scuro. */
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] .form-control,
+html[data-theme="dark"] .form-select,
+html[data-theme="dark"] .input-group-text {
+  color-scheme: dark;
+}
+
+html[data-theme="dark"] .form-select,
+html[data-theme="dark"] select.form-select,
+html[data-theme="dark"] select.form-control,
+html[data-theme="dark"] select {
+  background-color: #34495e !important;
+  color: #f8fbfd !important;
+  border-color: rgba(255, 255, 255, 0.30) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+html[data-theme="dark"] .form-select:focus,
+html[data-theme="dark"] select:focus,
+html[data-theme="dark"] input[type="date"]:focus,
+html[data-theme="dark"] input[type="month"]:focus,
+html[data-theme="dark"] input[type="number"]:focus,
+html[data-theme="dark"] input[type="text"]:focus,
+html[data-theme="dark"] textarea:focus {
+  background-color: #3b536b !important;
+  color: #ffffff !important;
+  border-color: #63b3ed !important;
+  box-shadow: 0 0 0 0.25rem rgba(99, 179, 237, 0.30) !important;
+}
+
+html[data-theme="dark"] select option,
+html[data-theme="dark"] .form-select option {
+  background-color: #243447 !important;
+  color: #f8fbfd !important;
+}
+
+html[data-theme="dark"] select option:checked,
+html[data-theme="dark"] .form-select option:checked {
+  background-color: #1f6fd1 !important;
+  color: #ffffff !important;
+}
+
+html[data-theme="dark"] select option:disabled,
+html[data-theme="dark"] .form-select option:disabled,
+html[data-theme="dark"] select optgroup:disabled,
+html[data-theme="dark"] .form-select optgroup:disabled {
+  background-color: #203040 !important;
+  color: #9fb0bd !important;
+}
+
+html[data-theme="dark"] select optgroup,
+html[data-theme="dark"] .form-select optgroup {
+  background-color: #1d2b3a !important;
+  color: #dce7f1 !important;
+}
+
+html[data-theme="dark"] .form-select:disabled,
+html[data-theme="dark"] select:disabled,
+html[data-theme="dark"] .form-control:disabled,
+html[data-theme="dark"] .form-control[readonly] {
+  background-color: #283a4d !important;
+  color: #b9c8d4 !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  opacity: 1;
+}
+
+html[data-theme="dark"] .form-select option[hidden],
+html[data-theme="dark"] select option[hidden] {
+  color: #aebdca !important;
+}
+
+html[data-theme="dark"] input[type="date"],
+html[data-theme="dark"] input[type="month"],
+html[data-theme="dark"] input[type="time"],
+html[data-theme="dark"] input[type="datetime-local"] {
+  background-color: #34495e !important;
+  color: #f8fbfd !important;
+  border-color: rgba(255, 255, 255, 0.30) !important;
+}
+
+html[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator,
+html[data-theme="dark"] input[type="month"]::-webkit-calendar-picker-indicator,
+html[data-theme="dark"] input[type="time"]::-webkit-calendar-picker-indicator,
+html[data-theme="dark"] input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(1.4);
+  opacity: .9;
 }

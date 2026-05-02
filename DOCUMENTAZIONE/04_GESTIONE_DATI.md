@@ -1,3 +1,6 @@
+### Versione 0.2.3 - Valorizzazione magazzino
+La versione 0.2.3 evolve l'inventario valorizzato in una vista di valorizzazione magazzino con metodo selezionabile: prezzo anagrafico, ultimo costo da DDT fornitore e costo medio ponderato semplificato. I calcoli restano derivati dai dati esistenti (prodotti e DDT fornitore), senza nuove collezioni Firestore, senza backend custom e con fallback compatibile ai prezzi anagrafici.
+
 # 4. Gestione Dati (Backup / Import / Eliminazioni / Reset)
 
 Percorso: **Impostazioni → Gestione Dati**.
@@ -9,7 +12,7 @@ Questa pagina contiene operazioni “amministrative” sull’utente corrente (d
 ## 4.1 Backup dal Cloud (utente corrente)
 **Scarica Backup JSON** esporta un file `.json` con **TUTTI** i dati salvati nel Cloud per l’utente connesso:
 - `companyInfo` (Azienda)
-- `products`, `customers`, `suppliers`
+- `products`, `vatRates`, `paymentMethods`, `companyBanks`, `customers`, `suppliers`
 - `invoices` (fatture/NC), `purchases` (acquisti)
 - `commesse`, `projects`, `worklogs` (timesheet)
 - `notes`
@@ -63,7 +66,7 @@ Quando usarlo:
 
 ## 4.6 Reset totale dati (Reset classe)
 Cancella **TUTTI** i dati dell’utente corrente dal Cloud:
-- anagrafiche (clienti/fornitori/servizi)
+- anagrafiche (clienti/fornitori/voci), codici IVA/pagamento personalizzati e banche aziendali
 - documenti (fatture/NC) e acquisti
 - commesse, progetti, worklog/timesheet, note
 - **settings** (tutti i doc presenti e futuri)
@@ -80,3 +83,13 @@ Quando usarlo:
 - I dati sono per-utente (`users/{uid}/...`).
 - L’import salva `companyInfo` in `settings/companyInfo` e le collezioni principali nelle rispettive collection.
 
+
+
+## Aggiornamento 0.3.1
+
+Backup, import e reset includono anche la collezione opzionale `paymentEvents`, usata dal registro **Contabilità → Incassi e pagamenti**. I backup legacy senza questa chiave restano validi: l'import normalizza `paymentEvents` come array vuoto.
+
+
+## Aggiornamento 0.3.2
+
+Backup, import e reset totale includono anche `cashbookMovements`, la collezione opzionale dei movimenti manuali di prima nota. I movimenti automatici derivati da `paymentEvents` non vengono duplicati in questa collezione.

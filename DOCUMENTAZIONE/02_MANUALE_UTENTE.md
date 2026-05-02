@@ -1,3 +1,48 @@
+### Versione 0.4.3 - Registro attività / audit trail
+La versione 0.4.3 introduce Analisi → Registro attività: una vista applicativa che centralizza eventi manuali e attività derivate da workflow, pagamenti, prima nota, solleciti, riconciliazioni e budget. È possibile filtrare, esportare CSV e registrare note manuali nella collezione opzionale `auditEvents`. Il registro è didattico/front-end e non sostituisce logging server-side o audit forense.
+
+## Workflow approvativi leggeri (0.4.2)
+
+La sezione **Analisi → Workflow approvativi** mostra documenti e movimenti da verificare. È possibile approvare, respingere, bloccare o riportare in revisione un elemento, aggiungendo una nota opzionale.
+
+### Versione 0.3.4 - Solleciti e promemoria scadenze
+La versione 0.3.4 introduce Contabilità → Solleciti: scadenze aperte/scadute derivate dallo scadenzario, livelli di sollecito, testo copiabile, storico manuale su collezione opzionale `reminderEvents` ed export CSV. Nessun invio automatico e nessun backend custom.
+
+### Versione 0.3.4 - Estratto conto cliente/fornitore
+La versione 0.3.3 introduce Contabilità → Estratto conto: saldo iniziale, movimenti di periodo, saldo progressivo, saldo finale, export CSV e stampa HTML. Non introduce nuove collezioni Firestore.
+
+### Versione 0.3.2 - Prima nota / movimenti finanziari
+La versione 0.3.2 introduce Contabilità → Prima nota: registro finanziario semplificato con movimenti automatici derivati da incassi/pagamenti, movimenti manuali di cassa/banca, saldi per conto ed export CSV. La nuova collezione opzionale `cashbookMovements` contiene solo i movimenti manuali.
+
+### Versione 0.3.1 - Incassi e pagamenti evoluti
+La versione 0.3.1 introduce la sezione Contabilità → Incassi e pagamenti, con registrazione movimenti cliente/fornitore, allocazione su più documenti, metodo, riferimento, data valuta e collezione opzionale paymentEvents. I dati legacy negli array payments restano compatibili e vengono letti da scadenzario e partitario.
+
+### Versione 0.3.0 - Partitario clienti e fornitori
+La versione 0.3.0 apre il ramo contabile/economico 0.3.x introducendo il partitario clienti e fornitori come vista derivata. La nuova funzione legge fatture, note di credito, acquisti e pagamenti già presenti nei documenti, calcolando dare/avere, saldo progressivo e saldo per soggetto senza nuove collezioni Firestore e senza backend custom.
+
+### Versione 0.2.6 - Ruoli e permessi
+Introdotti controlli applicativi front-end per ruoli e permessi: Admin, Commerciale, Magazzino, Contabilità e Sola lettura. La persistenza resta in `settings/companyInfo.accessControl`, senza backend custom e senza nuove collezioni Firestore obbligatorie. Nota: i controlli sono didattici/UX e non sostituiscono regole Firestore di sicurezza.
+
+## Novità 0.2.5 - Import massivi CSV
+
+In **Impostazioni → Import massivi CSV** puoi caricare dati da CSV per clienti, fornitori, prodotti/servizi/costi, lotti e movimenti magazzino. Scarica prima il template, compila il file, genera l’anteprima e conferma l’import solo quando tutte le righe risultano valide.
+
+### Versione 0.2.4 - Lotti / matricole / scadenze
+In **Servizi / Prodotti** puoi impostare la tracciabilità di un prodotto fisico. In **Magazzino → Lotti / matricole / scadenze** puoi consultare, registrare ed esportare lotti, matricole e scadenze.
+
+### Versione 0.2.3 - Valorizzazione magazzino
+La versione 0.2.3 evolve l'inventario valorizzato in una vista di valorizzazione magazzino con metodo selezionabile: prezzo anagrafico, ultimo costo da DDT fornitore e costo medio ponderato semplificato. I calcoli restano derivati dai dati esistenti (prodotti e DDT fornitore), senza nuove collezioni Firestore, senza backend custom e con fallback compatibile ai prezzi anagrafici.
+
+### Versione 0.2.2 - Scadenzario evoluto clienti/fornitori
+La versione 0.2.2 evolve lo scadenzario in una vista operativa clienti/fornitori: filtri per tipo, stato e soggetto, riepiloghi da incassare/da pagare, gestione importi parziali e residui, registrazione incassi/pagamenti su array `payments` interni ai documenti esistenti. Non introduce nuove collezioni Firestore né backend custom.
+
+### Versione 0.2.1 - Dashboard Direzionale
+La sezione **Analisi → Dashboard** diventa una vista direzionale: mostra fatturato netto, acquisti, margine lordo stimato, scadenze clienti/fornitori aperte, valore magazzino, DDT cliente da fatturare, ordini aperti e timesheet non ancora fatturato. I dati sono calcolati dagli archivi già esistenti e non richiedono configurazioni Firestore aggiuntive.
+
+
+### Versione 0.2.0 - Release tecnica di coerenza
+Per l'utente finale la versione 0.2.0 non cambia i flussi operativi principali: rende disponibili in modo coerente le funzioni già documentate nelle release 0.1.x, in particolare reportistica gestionale, annullamenti/rettifiche documentali e resi cliente/note di credito collegate. La persistenza resta su Firebase/Firestore per utente.
+
 # 2. Manuale utente
 
 Questo manuale descrive l’uso quotidiano del gestionale, con particolare attenzione a:
@@ -74,16 +119,30 @@ Il regime gestionale determina il comportamento dell’app:
 > Se il dato `taxRegime` non è valorizzato, il sistema prova a risolvere il comportamento anche da `codiceRegimeFiscale`, ma è sempre meglio compilare esplicitamente il regime gestionale.
 
 #### C. Dati bancari
-Compila almeno il conto principale:
+I campi storici **Banca 1/IBAN 1** e **Banca 2/IBAN 2** restano disponibili per compatibilità con documenti e dataset esistenti.
+
+Per le nuove configurazioni usa preferibilmente **Impostazioni → Banche aziendali**, dove puoi creare uno o più conti aziendali con:
+- etichetta conto
 - nome banca
 - IBAN
+- BIC/SWIFT opzionale
+- intestatario
+- flag predefinita
 
-Se usi più conti, puoi compilare anche il conto secondario.
+La banca predefinita viene proposta nelle nuove fatture quando la modalità di pagamento richiede banca/IBAN, per esempio il bonifico
 
-Questi dati servono per:
-- dettaglio fattura
-- esportazione XML
-- controlli formali sui pagamenti
+
+### 2.2.4 Impostazioni → Codici pagamento e Banche aziendali
+La gestione pagamento è divisa in tre livelli:
+
+- **Cliente → modalità pagamento predefinita**: indica come paga normalmente quel cliente.
+- **Azienda → banche aziendali**: contiene i conti/IBAN dell'emittente.
+- **Fattura → modalità pagamento effettiva + banca effettiva**: fotografa il metodo e il conto usati nel singolo documento.
+
+In **Impostazioni → Codici pagamento** trovi i codici FE `MPxx` usati dalla fattura elettronica.
+In **Impostazioni → Banche aziendali** puoi inserire i conti dell'azienda.
+
+Questa razionalizzazione non introduce ancora gestione incassi, rate multiple o riconciliazione bancaria.
 
 #### D. Parametri IVA e fiscali
 In **Ordinario** compila in modo coerente:
@@ -153,17 +212,24 @@ Esempio:
 
 Se lasci il campo vuoto, l’import non aggiunge alcun prefisso fisso.
 
-### 2.3.2 Servizi
-Menu: **Anagrafiche → Servizi**
+### 2.3.2 Servizi / Prodotti: servizi, prodotti e costi
+Menu: **Anagrafiche → Servizi / Prodotti**
 
-Qui definisci il catalogo base delle prestazioni:
+Qui definisci il catalogo base delle voci usabili nei documenti:
 - codice
 - descrizione
-- prezzo
-- IVA
-- eventuali attributi usati nei flussi progetto/fattura
+- prezzo di vendita
+- prezzo di acquisto, utile soprattutto per i Prodotti fisici
+- **tipo voce**: Servizio, Costo o Prodotto
+- **regola IVA / Natura FE** selezionata dalla tabella centralizzata
 
-In **Forfettario**, l’IVA proposta dal servizio non prevale sul comportamento del regime: nel documento l’IVA viene comunque gestita come zero.
+Il tipo **Servizio** è pensato per prestazioni professionali. Il tipo **Costo** continua a escludere la voce dalla base della rivalsa INPS. Il tipo **Prodotto** prepara beni fisici movimentabili nella futura gestione magazzino/DDT, senza introdurre ancora giacenze. Per i prodotti fisici puoi valorizzare prezzo di acquisto e prezzo di vendita: il prezzo di acquisto servirà in seguito per inventario valorizzato e aggiornamenti controllati da DDT/fatture fornitore.
+
+La pagina usa schede di filtro **Tutti / Servizi / Prodotti / Costi**: i dati restano in un'unica anagrafica, ma la consultazione è più chiara. La separazione completa del magazzino arriverà in una sezione dedicata quando verranno introdotti giacenze, movimenti e DDT cliente/fornitore.
+
+La tabella **IVA / Natura FE** non è più sotto questa anagrafica: si trova in **Impostazioni → Tabella IVA**, perché è una configurazione fiscale trasversale usata da prodotti, servizi e documenti.
+
+In **Forfettario**, l’IVA proposta dalla voce non prevale sul comportamento del regime: nel documento l’IVA viene comunque gestita come zero con Natura FE coerente.
 
 ### 2.3.3 Fornitori
 Menu: **Anagrafiche → Fornitori**
@@ -179,7 +245,7 @@ Serve per:
 ---
 
 ## 2.4 Fatture di vendita
-Menu: **Fatture di Vendita**
+Menu: **Vendite**
 
 ### 2.4.1 Nuova fattura
 Crea una nuova fattura selezionando:
@@ -225,7 +291,7 @@ In **Forfettario**:
 - il bollo può essere inserito automaticamente sopra soglia
 
 ### 2.4.4 Elenco documenti
-Menu: **Fatture di Vendita → Elenco Documenti**
+Menu: **Vendite → Elenco Documenti**
 
 Da qui puoi:
 - filtrare per anno
@@ -257,7 +323,7 @@ Il menu **XML** contiene:
 ---
 
 ## 2.5 Fatture di acquisto
-Menu: **Fatture di Acquisto**
+Menu: **Acquisti**
 
 Disponibile solo in **Ordinario**.
 
@@ -291,7 +357,7 @@ Se il fornitore non esiste, viene proposta la creazione in anagrafica.
 ---
 
 ## 2.6 Scadenziario
-Menu: **Analisi → Scadenziario**
+Menu: **Contabilità → Scadenziario**
 
 Lo scadenziario raccoglie eventi di natura diversa:
 - incassi fatture
@@ -486,8 +552,10 @@ Formati disponibili:
 
 ---
 
-## 2.9 Dashboard e statistiche
+## 2.9 Dashboard direzionale e statistiche
 Menu: **Analisi → Dashboard** / **Statistiche**
+
+La Dashboard Direzionale 0.2.1 aggrega le informazioni operative più importanti: fatturato netto, acquisti, margine stimato, scadenze aperte, valore magazzino, documenti da fatturare, ordini aperti e ore timesheet non fatturate. È una vista derivata: non salva nuove entità e non cambia i dati esistenti.
 
 Queste pagine aiutano a leggere i dati gestionali del periodo:
 - ore lavorate
@@ -520,7 +588,16 @@ Serve per stimare il comportamento del reddito forfettario e dei contributi/impo
 
 ---
 
-## 2.11 Gestione dati
+## 2.11 Impostazioni → Tabella IVA
+Menu: **Impostazioni → Tabella IVA**
+
+Questa pagina contiene il catalogo centralizzato per aliquote IVA e codici Natura FE. I codici di sistema sono consultabili ma non cancellabili; puoi aggiungere codici personalizzati, con regola didattica prudente: se l'aliquota è maggiore di 0 la Natura FE resta vuota, se l'aliquota è 0 va indicata la Natura FE.
+
+Le voci in **Servizi / Prodotti** pescano da questa tabella tramite la regola IVA selezionata. I documenti già emessi non vengono modificati quando aggiorni o aggiungi codici personalizzati.
+
+---
+
+## 2.12 Gestione dati
 Menu: **Impostazioni → Gestione Dati**
 
 Da qui puoi:
@@ -538,12 +615,12 @@ Questa sezione è molto utile in laboratorio, quando vuoi:
 
 ---
 
-## 2.12 Suggerimento operativo per l’uso corretto
+## 2.13 Suggerimento operativo per l’uso corretto
 Per lavorare bene col progetto, l’ordine consigliato è:
 
 1. **Compila Azienda**
 2. **Configura il regime**
-3. **Crea Clienti e Servizi**
+3. **Configura Tabella IVA, poi crea Clienti e Servizi / Prodotti**
 4. **Crea Commesse**
 5. **Crea Progetti**
 6. **Inserisci Timesheet**
@@ -560,3 +637,341 @@ Questo ordine riduce errori e rende più chiaro il legame tra i moduli.
 Nel form fattura, sotto i pulsanti di importazione ore dal Timesheet, puoi attivare l'opzione **Allega il dettaglio non aggregato del timesheet all'XML della fattura (PDF)**.
 
 Quando è attiva, il gestionale genera durante l'export XML un allegato PDF con il dettaglio dei worklog collegati alla fattura. Puoi anche scegliere se **includere le note operative** del timesheet. L'allegato è solo descrittivo e non modifica i totali fiscali della fattura.
+
+In Dark Mode il riquadro usa contrasti dedicati per mantenere leggibili titolo, opzioni, testo descrittivo e checkbox.
+
+## 2.12 Impostazioni → Codici pagamento FE
+Menu: **Impostazioni → Codici pagamento**
+
+La pagina contiene i codici di modalità pagamento previsti per la fattura elettronica, ad esempio `MP01` Contanti, `MP02` Assegno, `MP05` Bonifico bancario, `MP12` Ri.Ba. e gli altri codici di sistema.
+
+I codici di sistema sono consultabili ma non cancellabili. Puoi aggiungere codici personalizzati con codice FE, descrizione, macro area e indicazione se richiedono banca/IBAN aziendale.
+
+In questa versione la tabella è preparatoria: il pagamento resta ancora gestito nel flusso cliente/fattura esistente. Il collegamento con default cliente, fattura e banche aziendali sarà valutato in uno step successivo.
+
+
+## Magazzino base e inventario valorizzato
+
+La sezione **Magazzino** gestisce le prime funzioni operative sui prodotti fisici:
+
+- **Giacenze**: mostra prodotti di tipo Prodotto, unità di misura, ubicazione, giacenza disponibile, riservata, netta, quarantena e scorta minima.
+- **Movimenti**: registra carichi, scarichi, rettifiche e passaggi da/per quarantena in `warehouseMovements`, aggiornando il prodotto collegato.
+- **Inventario**: calcola il valore disponibile, il valore in quarantena e il valore totale usando il prezzo di acquisto indicato nella scheda prodotto.
+
+Nella pagina **Inventario** sono disponibili anche:
+
+- riepilogo del valore disponibile, quarantena e totale;
+- conteggio dei prodotti sotto scorta;
+- filtri per prodotti con giacenza/quarantena, sotto scorta o senza prezzo acquisto;
+- export CSV dell'inventario valorizzato filtrato.
+
+Per usare queste viste, crea o modifica una voce in **Anagrafiche → Servizi / Prodotti**, imposta **Tipo voce = Prodotto** e compila i dati magazzino preparatori. I prezzi sono ancora anagrafici: l'aggiornamento da DDT o fatture verrà introdotto in uno step successivo.
+
+
+## Step 4 - Ordini cliente
+
+La sezione **Vendite → Elenco Ordini cliente** permette di registrare ordini con cliente, numero, data, data consegna prevista, stato e righe prodotto. Le righe salvano quantità ordinata, quantità evasa/residua e prezzo vendita. In questa fase gli ordini sono preparatori: non scaricano ancora il magazzino e saranno usati dai futuri DDT cliente da ordine.
+
+
+### Magazzino - Ordini fornitore
+La sezione **Acquisti → Elenco Ordini fornitore** registra ordini preparatori per i futuri DDT fornitore. In questa fase salva righe prodotto, quantità ordinate, quantità ricevute/residue e prezzo di acquisto, ma non carica ancora il magazzino.
+
+
+## DDT fornitore e ricevimento merci
+
+La sezione **Acquisti → DDT fornitore** consente di registrare un ricevimento diretto o collegato a un ordine fornitore. Per ogni riga prodotto occorre indicare quantità ricevuta, accettata, in quarantena/riserva e respinta. Il sistema applica la regola: accettata + quarantena + respinta = ricevuta.
+
+Le quantità accettate aumentano la giacenza disponibile; le quantità in quarantena aumentano la giacenza in quarantena; le quantità respinte restano tracciate nel DDT ma non caricano il magazzino.
+
+
+## Magazzino → Quarantena
+
+La sezione **Magazzino → Quarantena** mostra i prodotti fisici con quantità ricevute con riserva o non ancora rese disponibili. Per ogni prodotto è possibile:
+
+- **Sbloccare a disponibile**: la quantità esce dalla quarantena e aumenta la giacenza disponibile.
+- **Scartare / eliminare**: la quantità esce dalla quarantena senza diventare disponibile.
+- **Registrare reso a fornitore**: la quantità esce dalla quarantena come reso documentale preparatorio; il DDT di reso stampabile sarà uno step futuro.
+
+Ogni operazione genera un movimento in **Magazzino → Movimenti** e conserva giacenza/quarantena prima e dopo l'azione.
+
+
+## Vendite → DDT cliente
+
+La sezione **Vendite → DDT cliente** consente di registrare una consegna merce diretta, collegata a un singolo ordine cliente oppure collegata a più ordini cliente dello stesso cliente. Le righe salvano prodotto, quantità consegnata, prezzo vendita e, quando presenti, riferimenti agli ordini sorgente. Al salvataggio il sistema controlla la giacenza disponibile, crea un movimento `SCARICO` in `warehouseMovements` e riduce `stockQty` del prodotto.
+
+Se il DDT deriva da un ordine cliente, l'ordine viene aggiornato con quantità evasa/residua e stato `parzialmente evaso` o `evaso`.
+
+
+### Versione 0.0.18 - Step 9 Magazzino: stampa/PDF DDT
+- Aggiunto layout stampabile per DDT cliente e DDT fornitore.
+- Aggiunti pulsanti Stampa / PDF negli elenchi e nei dettagli DDT.
+- Il PDF viene prodotto tramite dialogo di stampa del browser, senza backend e senza librerie esterne.
+- Nessun impatto su giacenze, movimenti, ordini, fatture o XML.
+
+
+## Aggiornamento prezzi prodotto da DDT
+
+Nei dettagli e negli elenchi dei DDT sono disponibili comandi dedicati:
+
+- **DDT fornitore → Aggiorna prezzi acquisto**: propone di aggiornare il prezzo di acquisto anagrafico dei prodotti in base al prezzo indicato nel DDT.
+- **DDT cliente → Aggiorna prezzi vendita**: propone di aggiornare il prezzo di vendita anagrafico dei prodotti in base al prezzo indicato nel DDT.
+
+Il sistema mostra sempre una modale di conferma con prezzo attuale, nuovo prezzo e documento sorgente. La conferma aggiorna solo l'anagrafica prodotto; non ricalcola documenti, fatture, ordini o movimenti già registrati.
+
+
+### Magazzino - Step 11: Crea fattura da DDT cliente
+
+In **Vendite → DDT cliente** è disponibile il comando **Crea fattura**. Il comando apre una nuova fattura precompilata con cliente e righe del DDT. Prima del salvataggio è possibile controllare dati fiscali, pagamento e banca aziendale. La fattura usa il motore fiscale esistente; il DDT resta il documento che ha già generato lo scarico di magazzino.
+
+
+## Flussi operativi Magazzino/DDT
+
+La sezione **Magazzino** è organizzata in tre gruppi logici:
+
+1. **Giacenze e controlli**: Giacenze, Inventario valorizzato, Movimenti e Quarantena.
+2. **Ciclo cliente**: Ordini cliente e DDT cliente.
+3. **Ciclo fornitore**: Ordini fornitore e DDT fornitore/ricevimento merci.
+
+Flusso cliente consigliato: crea uno o più ordini cliente, genera uno o più DDT cliente anche accorpando più ordini dello stesso cliente, poi crea la fattura dal DDT quando la merce è stata consegnata. I DDT cliente scaricano il magazzino; la fattura non genera un secondo scarico.
+
+Flusso fornitore consigliato: crea un ordine fornitore, registra il DDT fornitore al ricevimento, separa quantità accettate, in quarantena e respinte. Le quantità accettate aumentano la giacenza disponibile; quelle in quarantena vanno gestite dalla sezione **Quarantena**.
+
+Le tabelle mostrano messaggi vuoti con il passo operativo successivo quando non ci sono dati da visualizzare.
+
+## Menu per aree operative
+
+Dalla versione 0.0.25 il menu è organizzato per area funzionale:
+### Area Contabilità
+
+Dalla versione 0.0.27 le viste contabili trasversali sono raccolte in **Contabilità**:
+
+- **Scadenziario**: incassi, pagamenti e scadenze IVA.
+- **Registri IVA**: riepilogo IVA vendite/acquisti, disponibile per il regime Ordinario.
+
+Lo spostamento è solo organizzativo: non cambia dati, calcoli, documenti o Firestore.
+
+
+- **Anagrafiche**: Clienti, Fornitori, Servizi / Prodotti.
+- **Vendite**: Elenco Preventivi cliente, Nuovo Preventivo cliente, Elenco Ordini cliente, Nuovo Ordine cliente, DDT cliente, Nuova Fattura, Nuova Nota Credito, Elenco Documenti.
+- **Acquisti**: Elenco Ordini fornitore, Nuovo Ordine fornitore, DDT fornitore, Nuovo Acquisto, Elenco Acquisti.
+- **Magazzino**: Giacenze, Inventario valorizzato, Movimenti, Quarantena, Prodotti macerati.
+- **Impostazioni**: Azienda, Tabella IVA, Codici pagamento, Banche aziendali e gestione dati.
+
+La versione 0.0.32 separa le voci di consultazione dalle voci di creazione: gli elenchi servono a leggere stato, dettaglio e azioni sui documenti esistenti; le voci **Nuovo...** aprono direttamente il form di inserimento.
+
+## Preventivi nel ciclo vendite
+La sezione **Vendite → Elenco Preventivi cliente** mostra i preventivi esistenti. La voce **Vendite → Nuovo Preventivo cliente** apre il form per creare un preventivo preliminare con cliente, righe prodotto/servizio, validità e stato. Quando il preventivo viene accettato puoi usare **Converti in ordine cliente**: il sistema crea un ordine cliente copiando righe, quantità e prezzi. La conversione non modifica le giacenze; lo scarico resta collegato al DDT cliente. Il flusso completo previsto è: **Preventivo → Ordine cliente → DDT cliente → Fattura**.
+
+
+### Elenchi ordini e stati operativi
+Le sezioni **Vendite → Elenco Ordini cliente** e **Acquisti → Elenco Ordini fornitore** sono viste di controllo: mostrano riepiloghi per stato, filtro stato e quantità ordinate/evase o ordinate/ricevute. Gli ordini confermati sono presentati come **Aperti** per rendere più chiaro quali documenti devono ancora proseguire verso DDT cliente o DDT fornitore. Per creare nuovi ordini usa le voci separate **Vendite → Nuovo Ordine cliente** e **Acquisti → Nuovo Ordine fornitore**.
+
+
+
+### Versione 0.0.32 - Menu documentale più chiaro
+- **Elenco Preventivi cliente**, **Elenco Ordini cliente** ed **Elenco Ordini fornitore** sono ora pagine consultive: mostrano stato, filtri, riepiloghi, dettaglio e azioni sui documenti già registrati.
+- **Nuovo Preventivo cliente**, **Nuovo Ordine cliente** e **Nuovo Ordine fornitore** sono voci separate del menu e aprono direttamente il form di inserimento.
+- La modifica è solo UX: non cambia le collezioni `quotes`, `customerOrders` e `supplierOrders`, né la logica di conversione preventivo → ordine o i DDT.
+
+## DDT fornitore ricevuti e resi / Quarantena avanzata
+
+Nella versione 0.0.27 la sezione **Acquisti → DDT fornitore** distingue due tab:
+
+- **Ricevuti dal fornitore**, per i documenti di ricevimento merci con quantità accettata, in quarantena o respinta.
+- **Resi al fornitore**, per i documenti generati quando una quantità in quarantena viene restituita al fornitore.
+
+In **Magazzino → Quarantena** puoi scegliere:
+
+- **Sblocca a disponibile**, che riduce la quarantena e aumenta la giacenza disponibile.
+- **Scarta / elimina**, che riduce la quarantena e registra il prodotto nella sezione separata **Magazzino → Prodotti macerati**.
+- **Reso a fornitore**, che riduce la quarantena, richiede il fornitore e genera un DDT di reso fornitore stampabile/PDF.
+
+Il DDT di reso è un resoconto logistico-didattico: documenta l'uscita merce verso il fornitore e non modifica fatture, XML fiscale o documenti fiscali principali.
+
+
+## Versione 0.0.31 - Magazzino: giacenza prodotto e inventario fisico
+
+### Magazzino → Giacenza prodotto
+La sezione consente una consultazione rapida di un singolo prodotto fisico. Dopo la selezione vengono mostrati giacenza disponibile, quantità riservata, giacenza netta, quarantena, unità di misura, ubicazione e scorta minima. La vista è solo consultiva e non crea movimenti.
+
+### Magazzino → Inventario fisico
+La sezione permette di inserire la giacenza fisica contata per ogni prodotto fisico. Il sistema confronta il conteggio con la giacenza disponibile a gestionale e mostra la differenza.
+
+Il pulsante **Azzera conteggi fisici** elimina le bozze di conteggio salvate. Il pulsante **Allinea giacenze da inventario** rettifica solo i prodotti con differenza, dopo messaggio di riepilogo e conferma testuale `ALLINEA INVENTARIO`. L'operazione aggiorna la giacenza disponibile del prodotto e registra un movimento `RETTIFICA` con causale `Rettifica da inventario fisico`. Le quantità in quarantena non vengono modificate.
+
+
+### Versione 0.0.33 - Fatturazione DDT cliente multipli
+
+La voce **Vendite → Fatturazione DDT cliente** permette di creare una fattura riepilogativa partendo da più DDT cliente non ancora fatturati. Seleziona il cliente, spunta i DDT da includere, controlla l'anteprima righe e premi **Genera fattura da DDT selezionati**. Il sistema apre la normale maschera fattura già precompilata: prima del salvataggio vanno comunque verificati dati fiscali, pagamento, numero e data.
+
+Regole operative: i DDT selezionati devono appartenere allo stesso cliente, non devono essere già fatturati e devono contenere righe consegnate. Dopo il salvataggio di una fattura definitiva, tutti i DDT inclusi vengono marcati come fatturati; il salvataggio in bozza non blocca i DDT.
+
+
+### Versione 0.0.34 - DDT cliente da ordini multipli
+In **Vendite → DDT cliente**, nella modale nuovo DDT, il campo **Origine** ora include anche **Da più ordini cliente**.
+
+Uso operativo:
+1. scegli **Da più ordini cliente**;
+2. seleziona il cliente oppure spunta direttamente gli ordini aperti dello stesso cliente;
+3. controlla le righe residue proposte;
+4. riduci eventualmente le quantità consegnate riga per riga;
+5. salva il DDT.
+
+Il sistema blocca l'accorpamento di ordini appartenenti a clienti diversi, impedisce quantità superiori al residuo dell'ordine e aggiorna ogni ordine sorgente in base alle quantità effettivamente consegnate. La giacenza viene scaricata una sola volta dal DDT, non dagli ordini.
+
+
+### Versione 0.0.35 - DDT fornitore da ordini multipli
+In **Acquisti → DDT fornitore**, nella modale nuovo DDT, il campo **Origine** include anche **Da più ordini fornitore**.
+
+Uso operativo:
+1. scegli **Da più ordini fornitore**;
+2. seleziona il fornitore oppure spunta direttamente gli ordini aperti dello stesso fornitore;
+3. controlla le righe residue proposte;
+4. ripartisci le quantità tra **accettata**, **quarantena** e **respinta**;
+5. salva il DDT.
+
+Il sistema blocca l'accorpamento di ordini appartenenti a fornitori diversi, impedisce quantità ricevute superiori al residuo dell'ordine e aggiorna ogni ordine sorgente in base alle quantità effettivamente ricevute. La merce accettata aumenta la giacenza disponibile; la merce in quarantena resta separata e va gestita dalla sezione **Magazzino → Quarantena**.
+
+
+### Versione 0.0.36 - Stati, blocchi e rollback documentali
+La versione introduce un controllo centralizzato degli stati documentali. Gli elenchi continuano a mostrare lo stato operativo dei documenti, ma alcune azioni distruttive vengono bloccate quando esistono documenti collegati: un ordine cliente con DDT non può essere eliminato, un ordine fornitore con DDT ricevuto non può essere eliminato e un DDT cliente già fatturato non può generare una seconda fattura.
+
+L'eliminazione di una fattura non pagata e non inviata resta possibile solo con conferma. Quando la fattura è collegata a record Timesheet o DDT cliente, il sistema avvisa l'utente e sblocca i riferimenti collegati per consentire una nuova fatturazione controllata.
+
+### Versione 0.0.37 - Documenti collegati
+Nei dettagli di preventivi, ordini cliente, DDT cliente, fatture, ordini fornitore e DDT fornitore è disponibile la scheda **Documenti collegati**.
+
+La scheda aiuta a leggere il ciclo operativo:
+
+- da un preventivo puoi vedere l'ordine generato;
+- da un ordine cliente puoi vedere i DDT emessi e le fatture collegate indirettamente;
+- da un DDT cliente puoi vedere ordini sorgente, fattura collegata e movimenti di scarico;
+- da una fattura puoi vedere i DDT inclusi, gli ordini origine indiretti e gli eventuali timesheet fatturati;
+- da un ordine fornitore puoi vedere i DDT ricevuti;
+- da un DDT fornitore puoi vedere ordini sorgente e movimenti di carico/quarantena.
+
+La funzione è consultiva: non modifica documenti, stati, XML fiscale o movimenti.
+
+
+### Versione 0.1.1 - Fattura riepilogativa avanzata
+In **Vendite → Fatturazione DDT cliente** puoi scegliere come costruire la fattura riepilogativa:
+
+- **Separate per DDT** mantiene le righe distinte e prefissa la descrizione con numero/data DDT.
+- **Raggruppa prodotti uguali** accorpa righe con stesso prodotto, prezzo, IVA/natura e tipo prezzo.
+- **Ordinamento righe** permette di leggere l'anteprima per DDT, per data DDT o per prodotto.
+- **Nota riepilogativa** aggiunge in fattura una causale automatica con i DDT inclusi.
+- **DatiDDT XML** compila nell'XML della fattura elettronica i riferimenti ai DDT origine.
+
+La modifica non altera i DDT né i movimenti di magazzino: i DDT vengono marcati come fatturati solo al salvataggio definitivo della fattura.
+
+### Versione 0.1.2 - Stabilizzazione e QA
+
+- Introdotti controlli di coerenza non distruttivi su magazzino e collegamenti documentali.
+
+### Versione 0.1.3 - Annullamenti e rettifiche documentali
+
+- Introdotto servizio per annullamento controllato e rettifiche operative di magazzino.
+
+### Versione 0.1.4 - Resi cliente e note di credito collegate
+
+- Introdotto servizio applicativo per resi cliente, rientro merce e bozza nota di credito collegata.
+
+### Versione 0.1.5 - Reportistica gestionale
+
+- Aggiunta pagina Analisi → Report gestionali con indicatori sintetici e tabelle operative.
+
+### Versione 0.1.6 - Consolidamento tecnico e UX
+Questa release rende più stabile e leggibile l’applicazione dopo l’introduzione di report, rettifiche e documenti collegati. Per l’utente non cambia il modo di lavorare: le voci di menu restano le stesse, ma la navigazione è più coerente, le pagine non hanno sezioni duplicate e la modalità scura mantiene un contrasto più uniforme su schede, input, tabelle e modali.
+
+Controlli principali:
+- le voci di menu puntano a sezioni esistenti;
+- i separatori della sidebar restano non cliccabili;
+- Report gestionali è una sezione contenuto autonoma, non più annidata nella sidebar;
+- il test QA può segnalare incoerenze tra movimenti, giacenze, documenti collegati e residui ordini.
+
+## Scadenzario evoluto 0.2.2
+
+La sezione **Scadenzario** mostra incassi clienti, pagamenti fornitori e scadenze IVA didattiche. La versione 0.2.2 aggiunge:
+
+- filtri per intervallo date, tipo scadenza, stato e testo libero su soggetto/documento;
+- riepiloghi di da incassare, da pagare, saldo operativo e numero scadenze scadute/parziali;
+- colonne separate per importo documento, importo già pagato/incassato e residuo;
+- registrazione di incassi o pagamenti parziali tramite il pulsante con icona euro;
+- saldo rapido del documento tramite il pulsante di spunta;
+- export CSV esteso con importi pagati/incassati e residui.
+
+Gli eventi di pagamento vengono salvati nel documento sorgente esistente (`invoices` o `purchases`) nell'array `payments`, insieme a campi compatibili come `paidAmount`, `amountPaid`, `paymentStatus`, `status` e `isPaid`. Non viene creata una nuova collezione Firestore.
+
+
+## Valorizzazione magazzino 0.2.3
+
+La sezione **Magazzino → Inventario** diventa **Valorizzazione magazzino**. L'utente può selezionare il metodo di valorizzazione:
+
+- **Prezzo anagrafico**: usa il prezzo di acquisto salvato nella scheda prodotto.
+- **Ultimo costo DDT fornitore**: usa l'ultimo prezzo rilevato nelle righe dei DDT fornitore ricevuti.
+- **Costo medio ponderato semplificato**: calcola una media ponderata dai DDT fornitore ricevuti, usando quantità accettate e in quarantena.
+
+Se il metodo scelto non ha dati sufficienti, il gestionale usa il prezzo anagrafico come fallback e lo segnala nella colonna origine costo. L'export CSV include metodo, costo unitario, costo standard, ultimo costo, costo medio, origine costo e valori di magazzino.
+
+
+## Incassi e pagamenti evoluti
+
+La sezione **Contabilità → Incassi e pagamenti** permette di registrare movimenti finanziari cliente/fornitore, indicare metodo e riferimento, e allocare l'importo a uno o più documenti aperti. I movimenti sono salvati in `paymentEvents` e rispecchiati sui documenti per mantenere compatibilità con scadenzario e partitario.
+
+## Estratto conto cliente/fornitore 0.3.3
+
+Dal menu **Contabilità → Estratto conto** puoi filtrare clienti o fornitori, selezionare soggetto e periodo, consultare saldo iniziale, movimenti del periodo e saldo finale. La vista può essere esportata in CSV o stampata tramite browser.
+
+## Note versione 0.3.7
+
+La versione 0.3.7 è una release di consolidamento: non aggiunge una nuova voce operativa di menu, ma migliora la qualità tecnica del ramo contabile con controlli di coerenza tra scadenzario, incassi/pagamenti, partitario, estratto conto, prima nota, riconciliazione banca e budget/marginalità.
+
+
+## Note versione 0.4.0
+
+La sezione **Analisi → Stampe / PDF** consente di generare anteprime HTML stampabili per i principali documenti gestionali: estratto conto, partitario, fattura/nota credito, prima nota e solleciti.
+
+Flusso operativo:
+
+1. scegli il template;
+2. imposta soggetto, periodo o documento;
+3. rigenera l'anteprima;
+4. usa **Stampa / PDF** per aprire la finestra di stampa del browser;
+5. seleziona **Salva come PDF** se vuoi creare un file PDF.
+
+La funzione non invia dati a servizi esterni e non richiede un backend applicativo.
+
+## Note versione 0.4.1
+
+La sezione **Analisi → Centro notifiche** raccoglie gli alert operativi più importanti in un’unica vista: scadenze clienti/fornitori, prodotti sotto scorta, lotti in scadenza, DDT cliente da fatturare, ordini aperti, anomalie di riconciliazione e controlli QA contabili.
+
+Le notifiche sono solo consultive: non salvano dati, non correggono automaticamente anomalie e non introducono nuove collezioni Firestore. I pulsanti **Apri** portano alle sezioni operative collegate, dove l’utente può intervenire manualmente.
+
+
+## UX / Accessibilità
+
+La sezione **Analisi → UX / accessibilità** mostra controlli consultivi sulla qualità dell'interfaccia: navigazione, landmark, label, pulsanti e coerenza tra voci menu e sezioni. Il pulsante **Aggiorna** riesegue i controlli sul DOM corrente; **Esporta CSV** scarica l'elenco dei risultati.
+
+La funzione è pensata per QA e didattica. Non modifica dati, non salva nuove collezioni e non sostituisce un audit accessibilità professionale.
+
+## Bilancino gestionale 0.4.5
+
+La sezione **Contabilità → Bilancino** mostra una sintesi gestionale del periodo selezionato: ricavi netti, costi netti, margine operativo, incassi, pagamenti, crediti/debiti aperti e valore magazzino stimato. La vista è pensata per controllo direzionale semplice e non produce un bilancio civilistico.
+
+
+## UX / accessibilità 0.4.6
+
+La sezione **Analisi → UX / accessibilità** applica ora correzioni runtime ai campi e ai pulsanti legacy/dinamici privi di etichetta accessibile. Il controllo resta consultivo: serve a migliorare navigazione da tastiera e screen reader, ma non sostituisce un audit WCAG completo.
+
+
+## Dark Mode form e combo 0.4.7
+
+La Dark Mode è stata rifinita per rendere più leggibili combo, select e campi data. In particolare, i menu a tendina delle sezioni Contabilità, Magazzino, Analisi e Stampe hanno ora sfondo, testo, opzioni selezionate e opzioni disabilitate più coerenti con il tema scuro.
+
+La voce **Analisi → UX / accessibilità** include un controllo consultivo sulla presenza delle regole Dark Mode dedicate alle combo. Alcuni dettagli del menu aperto possono variare in base al browser perché le select native sono gestite anche dal sistema operativo.
+
+## Select dinamiche soggetti 0.4.8
+
+In **Contabilità → Incassi e pagamenti**, il campo **Soggetto** mostra ora l’elenco clienti quando il tipo è **Incasso cliente** e l’elenco fornitori quando il tipo è **Pagamento fornitore**.
+
+La stessa logica di inizializzazione è stata consolidata anche nei filtri soggetto di **Partitario**, **Estratto conto** e **Stampe / PDF**.

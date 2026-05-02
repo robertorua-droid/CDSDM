@@ -1,3 +1,6 @@
+### Versione 0.2.3 - Valorizzazione magazzino
+La versione 0.2.3 evolve l'inventario valorizzato in una vista di valorizzazione magazzino con metodo selezionabile: prezzo anagrafico, ultimo costo da DDT fornitore e costo medio ponderato semplificato. I calcoli restano derivati dai dati esistenti (prodotti e DDT fornitore), senza nuove collezioni Firestore, senza backend custom e con fallback compatibile ai prezzi anagrafici.
+
 # 3. Guida passo‑passo (esercitazioni)
 
 Questa guida propone un percorso pratico per usare il progetto in aula o in autoapprendimento.
@@ -29,7 +32,7 @@ Capire il flusso base documento → dettaglio → PDF → XML.
 ### Passaggi
 1. Crea un cliente.
 2. Crea un servizio.
-3. Vai su **Fatture di Vendita → Nuova Fattura**.
+3. Vai su **Vendite → Nuova Fattura**.
 4. Inserisci cliente, numero, data, pagamento.
 5. Aggiungi una riga servizio.
 6. Salva.
@@ -58,8 +61,8 @@ Vedere il comportamento di un professionista in regime ordinario.
 3. Crea una fattura con IVA.
 4. Crea un acquisto con IVA.
 5. Vai in:
-   - **Scadenziario**
-   - **Registri IVA**
+   - **Contabilità → Scadenziario**
+   - **Contabilità → Registri IVA**
    - **Simulazione ordinario**
 
 ### Cosa osservare

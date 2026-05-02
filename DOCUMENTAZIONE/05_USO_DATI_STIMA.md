@@ -10,7 +10,7 @@ La pagina mostra una stima della “dimensione dati” dell’utente, calcolata 
 
 Categorie principali:
 - Azienda (`companyInfo`)
-- Clienti, Servizi, Fornitori
+- Clienti, Voci, Codici IVA, Fornitori
 - Documenti, Acquisti
 - Note
 - Commesse, Progetti
