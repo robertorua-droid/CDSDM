@@ -1713,3 +1713,61 @@ html[data-theme="dark"] .app-sidebar-brand-subtitle {
 html[data-theme="dark"] #login-container .app-brand-login {
   padding-bottom: 0.1rem;
 }
+
+/* CDSDM 0.12.14 - Aiuto contestuale evoluto */
+.cdsdm-help-callout {
+  border: 1px solid rgba(13, 110, 253, .22);
+  border-left: .35rem solid #0dcaf0;
+  border-radius: .85rem;
+  box-shadow: 0 .35rem .9rem rgba(15, 23, 42, .08);
+  background: linear-gradient(135deg, rgba(13, 202, 240, .14), rgba(13, 110, 253, .06));
+}
+.cdsdm-help-card-inner { line-height: 1.45; }
+.cdsdm-help-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.65rem;
+  height: 1.65rem;
+  border-radius: 999px;
+  background: #0dcaf0;
+  color: #06283d;
+  font-weight: 800;
+}
+.cdsdm-help-label {
+  font-weight: 700;
+  margin: .4rem 0 .2rem;
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  opacity: .85;
+}
+.cdsdm-help-steps { padding-left: 1.25rem; }
+.cdsdm-help-example,
+.cdsdm-help-note {
+  border-radius: .65rem;
+  padding: .45rem .6rem;
+  margin-top: .35rem;
+}
+.cdsdm-help-example { background: rgba(25, 135, 84, .10); border: 1px solid rgba(25, 135, 84, .18); }
+.cdsdm-help-note { background: rgba(255, 193, 7, .14); border: 1px solid rgba(255, 193, 7, .22); }
+.manual-flow-card {
+  border: 1px solid rgba(13, 110, 253, .18);
+  border-radius: 1rem;
+  padding: 1rem;
+  margin: .75rem 0;
+  background: rgba(248, 249, 250, .85);
+  box-shadow: 0 .25rem .7rem rgba(15, 23, 42, .06);
+}
+.manual-flow-card h4 { margin-bottom: .5rem; }
+.manual-flow-badges .badge { margin-right: .25rem; margin-bottom: .25rem; }
+body.dark-mode .cdsdm-help-callout,
+.dark-mode .cdsdm-help-callout {
+  background: linear-gradient(135deg, rgba(13, 202, 240, .16), rgba(13, 110, 253, .10));
+  border-color: rgba(13, 202, 240, .35);
+}
+body.dark-mode .manual-flow-card,
+.dark-mode .manual-flow-card {
+  background: rgba(30, 41, 59, .75);
+  border-color: rgba(148, 163, 184, .25);
+}

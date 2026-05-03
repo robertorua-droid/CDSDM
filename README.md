@@ -1,4 +1,4 @@
-## CDSDM Versione 0.12.13 — UX segnalazioni, conversione preventivi approvati e quantità intere
+## CDSDM Versione 0.12.14 — Manuale in-app evoluto, aiuto contestuale e guide operative
 
 Questa release introduce e stabilizza il ramo 0.12.x dedicato alle **Segnalazioni operative**: anomalie, richieste di verifica, comunicazioni interne simulate, scheda stampabile e integrazione prudente con gli alert Mini B.I.
 
@@ -453,6 +453,14 @@ Gli override 0.6.4 restano una granularità applicativa/front-end didattica. Le 
 - Reso il bootstrap Superadmin più tollerante quando la lettura preventiva di `appSettings/system` è negata da regole Firestore non ancora allineate.
 - Migliorato il messaggio di errore: se Firestore nega anche la scrittura, occorre pubblicare `firestore.rules` del pacchetto o creare manualmente `appSettings/system` in Firebase Console.
 - Chiarito che gli inviti studenti si creano da **Gruppi aziendali**, non dal pannello Superadmin.
+
+
+### 0.12.14 — Manuale in-app evoluto, aiuto contestuale e guide operative
+
+- Aiuto rapido aggiornato alla versione 0.12.14.
+- Guide contestuali arricchite con passi, esempi e note didattiche.
+- Manuale utente aggiornato sui flussi Vendite, Acquisti, Workflow, Segnalazioni operative e Mini B.I.
+- Nessuna nuova collezione Firestore, nessun backend custom, nessuna Cloud Function obbligatoria.
 
 ### 0.12.13 — UX segnalazioni, conversione preventivi approvati e quantità intere
 

@@ -1,3 +1,13 @@
+
+## 0.12.14 - Manuale in-app evoluto, aiuto contestuale e guide operative
+
+- Aggiornato `OnboardingHelpService` alla versione 0.12.14.
+- Sostituiti gli aiuti rapidi generici/obsoleti con testi contestuali per vendite, acquisti, workflow, DDT, segnalazioni operative, Mini B.I., quarantena e gestione dati.
+- Aggiunti passi consigliati, esempi pratici e note didattiche nei riquadri di aiuto.
+- Aggiornato il manuale utente con flussi operativi completi: preventivo → ordine → DDT → fattura; ordine fornitore → DDT fornitore → quarantena → segnalazione.
+- Migliorata la grafica dei riquadri di aiuto con card, icona, passi, esempi e note.
+- Aggiunto test browser-based `manuale-aiuto-01214.test.html`.
+
 ## 0.12.13 — UX segnalazioni, conversione preventivi approvati e quantità intere
 
 - Preventivi cliente: il pulsante Crea ordine cliente è abilitato solo per preventivi approvati/accettati; se il preventivo è ancora in bozza va approvato da Analisi → Workflow approvativi.

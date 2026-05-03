@@ -1,3 +1,72 @@
+# Manuale utente operativo — aggiornamento 0.12.14
+
+Questa sezione riassume i flussi principali aggiornati della versione **0.12.14**. Il progetto resta una SPA didattica front-end: Firebase Auth e Firestore sono la base, senza backend custom e senza Cloud Functions obbligatorie.
+
+## Come usare il pulsante `?`
+
+Il pulsante **?** nella barra superiore apre la guida contestuale della pagina corrente. La guida non è solo cronologica: spiega il flusso operativo, i passaggi consigliati, esempi e limiti didattici.
+
+## Flusso Vendite consigliato
+
+1. **Anagrafiche → Clienti**: crea o verifica il cliente.
+2. **Anagrafiche → Servizi / Prodotti**: verifica righe vendibili.
+3. **Vendite → Preventivi cliente**: crea il preventivo.
+4. **Analisi → Workflow approvativi**: approva il preventivo se nasce in bozza.
+5. **Preventivi cliente → Crea ordine cliente**: trasforma il preventivo approvato/accettato in ordine.
+6. **Vendite → DDT cliente**: collega ordini cliente confermati.
+7. **Vendite → Fatturazione DDT cliente** oppure **Nuova fattura**: genera la fattura.
+8. **Contabilità → Incassi e pagamenti**: registra l’incasso.
+
+> Esempio: un preventivo approvato diventa ordine cliente; l’ordine confermato alimenta il DDT; il DDT può essere fatturato.
+
+## Flusso Acquisti e ricezione merce
+
+1. **Anagrafiche → Fornitori**: crea o verifica il fornitore.
+2. **Acquisti → Nuovo Ordine fornitore**: crea l’ordine.
+3. **Analisi → Workflow approvativi**: approva l’ordine se è in bozza.
+4. **Acquisti → DDT fornitore**: seleziona fornitore e ordine confermato/lavorabile.
+5. Registra quantità ricevute, accettate, mancanti o in quarantena.
+6. Se c’è un’anomalia, crea una **Segnalazione operativa** verso il reparto corretto.
+
+> Esempio: ordine fornitore approvato → merce ricevuta → 8 pezzi accettati e 2 in quarantena → segnalazione da Magazzino ad Acquisti.
+
+## Workflow approvativo: da bozza a documento operativo
+
+Un documento in **Bozza** non è ancora operativo. Il passaggio corretto avviene tramite **Analisi → Workflow approvativi**:
+
+- ordine fornitore approvato → `confirmed` e selezionabile nei DDT fornitore;
+- ordine cliente approvato → `confirmed` e selezionabile nei DDT cliente;
+- preventivo approvato/accettato → trasformabile in ordine cliente.
+
+## Segnalazioni operative
+
+Le **Segnalazioni operative** servono per anomalie, richieste di verifica e comunicazioni interne. Non sostituiscono documenti gestionali.
+
+Stati tipici:
+
+1. **Bozza**: segnalazione preparata ma non inviata.
+2. **Segnalata**: inviata al reparto destinatario.
+3. **Presa in carico / In lavorazione**: il referente la gestisce.
+4. **Risolta / Chiusa**: il caso è concluso.
+
+Esempi d’uso:
+
+- merce ricevuta e messa in quarantena;
+- prodotto non trovato in ubicazione;
+- DDT fornitore non coerente;
+- ordine cliente non evadibile;
+- documento con dati mancanti.
+
+## Mini B.I.
+
+La **Mini B.I. didattica** legge dati già presenti, rispetta i permessi e mostra KPI, drill-down, alert ed export CSV. È utile per controllo gestionale e discussione in aula, ma non sostituisce contabilità professionale o consulenza fiscale.
+
+## Backup/import/reset
+
+Prima di import, reset o cambio scenario didattico, esegui sempre un backup JSON del contesto dati attivo. La versione 0.12.x include anche la collezione `operationalReports`.
+
+---
+
 ## Versione 0.7.0 - Consolidamento tecnico
 
 La versione 0.7.0 non aggiunge nuovi flussi operativi: rende più coerenti backup/import/reset, test e documentazione. Per l'utente, il comportamento atteso resta quello della 0.6.6, con maggiore affidabilità nel passaggio tra dati legacy personali e Gruppi aziendali.

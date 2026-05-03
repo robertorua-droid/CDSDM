@@ -251,3 +251,10 @@ Aggiunti collegamenti guidati a ordini/DDT lavorabili e creazione contestuale bo
 - `index.html`: Segnalazioni operative in tab elenco/dettaglio e nuova segnalazione; quantità documentali con incremento unitario.
 - `js/features/operations/operational-reports-module.js`: render e ritorno automatico all’elenco dopo salvataggio/invio.
 - `js/features/warehouse/customer-ddts-module.js`, `supplier-ddts-module.js`, `js/features/invoices/invoices-form-module.js`: quantità con step unitario e decimali manuali accettati.
+
+
+## 0.12.14 - Manuale in-app evoluto
+
+- `js/ui/onboarding-help-service.js`: aiuti rapidi contestuali con passi, esempi e note.
+- `DOCUMENTAZIONE/02_MANUALE_UTENTE.md`: flussi operativi aggiornati.
+- `DOCUMENTAZIONE/108_MANUALE_IN_APP_EVOLUTO_01214.md`: note di release documentali.

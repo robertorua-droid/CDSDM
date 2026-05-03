@@ -491,3 +491,44 @@ La versione **0.7.8** aggiunge una guida ordinata per menu e un pulsante contest
 **Serve per:** registrare anomalie operative, richieste di verifica e comunicazioni interne simulate tra reparti.  
 **Quando usarla:** prodotto non trovato in ubicazione, merce non conforme, documento incompleto, ordine non evadibile, differenza inventariale o alert B.I. da trasformare in caso operativo.  
 **Dati collegati:** nuova collezione `operationalReports`, eventuali riferimenti a prodotti, clienti, fornitori e documenti.
+
+---
+
+## Guide operative aggiornate 0.12.14
+
+### Flusso Vendite completo
+
+1. **Preventivo cliente**: crea il documento e salvalo.
+2. **Workflow approvativi**: approva il preventivo se è in bozza.
+3. **Preventivo → Crea ordine cliente**: disponibile solo se il preventivo è approvato o accettato.
+4. **Ordine cliente**: dopo approvazione/conferma diventa lavorabile.
+5. **DDT cliente**: collega uno o più ordini confermati.
+6. **Fatturazione DDT cliente**: genera fattura da DDT.
+7. **Incassi e pagamenti**: registra l’incasso.
+
+**Esempio:** preventivo P-001 approvato → ordine OC-001 → DDT cliente → fattura riepilogativa.
+
+### Flusso Acquisti e ricezione merce
+
+1. **Ordine fornitore**: crea il documento.
+2. **Workflow approvativi**: approva l’ordine se è in bozza.
+3. **DDT fornitore**: seleziona fornitore e ordine confermato/lavorabile.
+4. **Ricezione merce**: registra quantità ricevute, accettate e in quarantena.
+5. **Segnalazione operativa**: crea comunicazione interna se merce non conforme, quantità diversa o documento non coerente.
+
+**Esempio:** ordine OF-001 approvato → DDT fornitore DDF-001 → 10 pezzi ricevuti, 2 in quarantena → segnalazione da Magazzino ad Acquisti.
+
+### Segnalazioni operative
+
+Le segnalazioni operative sono casi interni: anomalie, richieste di verifica e comunicazioni tra reparti. Non trasformano bozze in documenti operativi: questa funzione resta del **Workflow approvativo**.
+
+Stati consigliati:
+
+1. **Bozza**: preparazione.
+2. **Segnalata**: comunicazione inviata.
+3. **Presa in carico / In lavorazione**: gestione del referente.
+4. **Risolta / Chiusa**: caso concluso.
+
+### Mini B.I. operativa
+
+La Mini B.I. aiuta a leggere i dati: KPI, drill-down, alert, export CSV e report stampabile. Gli alert possono portare a una segnalazione operativa, ma non sostituiscono le decisioni aziendali o contabili.

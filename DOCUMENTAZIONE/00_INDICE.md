@@ -1,6 +1,6 @@
 # Documentazione – CDSDM (didattico)
 
-Documentazione aggiornata alla versione **0.11.6**.
+Documentazione aggiornata alla versione **0.12.14**.
 
 > Nota: il progetto è didattico. Le simulazioni fiscali e i calcoli gestionali sono semplificazioni e non sostituiscono consulenza professionale, contabile o fiscale.
 
@@ -203,3 +203,5 @@ Documentazione aggiornata alla versione **0.11.6**.
 - [106 - Segnalazioni operative: hotfix filtri 0.12.12](106_SEGNALAZIONI_FILTRI_HOTFIX_01212.md)
 
 - [107 - UX segnalazioni, conversione preventivi e quantità 0.12.13](107_UX_SEGNALAZIONI_PREVENTIVI_QTA_01213.md)
+
+- [108. Manuale in-app evoluto, aiuto contestuale e guide operative 0.12.14](108_MANUALE_IN_APP_EVOLUTO_01214.md)

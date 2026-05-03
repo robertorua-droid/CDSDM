@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Test manuale e aiuto contestuale 0.12.14</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="p-4">
+  <main class="container">
+    <h1 class="mb-3">Manuale e aiuto contestuale 0.12.14</h1>
+    <div id="results" class="list-group"></div>
+  </main>
+  <section id="operational-reports" class="content-section d-none"><h2>Segnalazioni operative</h2></section>
+  <section id="ordini-fornitore" class="content-section d-none"><h2>Ordini fornitore</h2></section>
+  <section id="mini-bi" class="content-section d-none"><h2>Mini B.I.</h2></section>
+  <script src="../js/ui/onboarding-help-service.js"></script>
+  <script>
+    const out = document.getElementById('results');
+    function ok(name, pass, detail){
+      const div = document.createElement('div');
+      div.className = 'list-group-item ' + (pass ? 'list-group-item-success' : 'list-group-item-danger');
+      div.innerHTML = '<strong>' + (pass ? 'OK' : 'KO') + '</strong> ' + name + (detail ? '<br><small>' + detail + '</small>' : '');
+      out.appendChild(div);
+    }
+    try {
+      ok('Versione servizio', window.OnboardingHelpService && window.OnboardingHelpService.VERSION === '0.12.14', window.OnboardingHelpService && window.OnboardingHelpService.VERSION);
+      ok('Help segnalazioni operative', /comunicazioni interne/i.test(window.OnboardingHelpService.messageFor('operational-reports')), window.OnboardingHelpService.messageFor('operational-reports'));
+      ok('Help ordini fornitore', /ordine fornitore/i.test(window.OnboardingHelpService.messageFor('ordini-fornitore')), window.OnboardingHelpService.messageFor('ordini-fornitore'));
+      ok('Callout creati', document.querySelectorAll('.cdsdm-help-callout').length >= 3, 'callout=' + document.querySelectorAll('.cdsdm-help-callout').length);
+      ok('Passi consigliati visibili', document.querySelectorAll('.cdsdm-help-steps li').length > 0, 'steps=' + document.querySelectorAll('.cdsdm-help-steps li').length);
+    } catch(e) { ok('Eccezione test', false, e.message); }
+  </script>
+</body>
+</html>
