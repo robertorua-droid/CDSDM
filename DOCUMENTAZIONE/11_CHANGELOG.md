@@ -1,3 +1,17 @@
+## 0.12.13 — UX segnalazioni, conversione preventivi approvati e quantità intere
+
+- Preventivi cliente: il pulsante Crea ordine cliente è abilitato solo per preventivi approvati/accettati; se il preventivo è ancora in bozza va approvato da Analisi → Workflow approvativi.
+- Quantità documentali: gli input quantità di preventivi, ordini, DDT e righe fattura incrementano di 1 con i controlli browser, ma i calcoli continuano ad accettare quantità decimali inserite manualmente.
+- Segnalazioni operative: elenco/dettaglio e form Nuova segnalazione sono separati in due tab, così la tabella usa tutta la larghezza disponibile.
+- Aggiornati test browser-based e documentazione in-app.
+
+## 0.12.12 — Hotfix filtri Segnalazioni operative e coerenza elenco
+
+- Corretto il rendering dei filtri in **Workflow → Segnalazioni operative**: Stato, Area e Gravità non vengono più reimpostati ai valori predefiniti a ogni refresh/render.
+- Il filtro iniziale ora è coerente con il riepilogo: `Aperte / da gestire`, `Tutte le aree`, `Tutte le gravità`.
+- Risolto il caso in cui il riepilogo mostrava segnalazioni aperte, ma l'elenco risultava vuoto perché i filtri venivano forzati su `Segnalata / Magazzino / Media`.
+- Aggiunto test browser-based dedicato alla persistenza dei filtri e alla coerenza elenco/riepilogo.
+
 ## 0.12.11 — Workflow approvativo operativo e coerenza bozze/documenti
 
 - Allineato il comportamento del workflow approvativo al ciclo aziendale: l’approvazione non registra solo un evento, ma rende operativo il documento quando opportuno.

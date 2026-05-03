@@ -200,3 +200,6 @@ Documentazione aggiornata alla versione **0.11.6**.
 - [104 - Segnalazioni operative collegamenti guidati 0.12.10](104_SEGNALAZIONI_COLLEGAMENTI_GUIDATI_01210.md)
 
 - [105 - Workflow approvativo operativo 0.12.11](105_WORKFLOW_APPROVATIVO_OPERATIVO_01211.md)
+- [106 - Segnalazioni operative: hotfix filtri 0.12.12](106_SEGNALAZIONI_FILTRI_HOTFIX_01212.md)
+
+- [107 - UX segnalazioni, conversione preventivi e quantità 0.12.13](107_UX_SEGNALAZIONI_PREVENTIVI_QTA_01213.md)

@@ -447,7 +447,7 @@
                 </picture>
               </div>
               <div class="col-md-10">
-                <h3 class="mb-1">CDSDM Versione 0.12.11</h3>
+                <h3 class="mb-1">CDSDM Versione 0.12.13</h3>
                 <p class="mb-1"><strong>Cloud Data Suite for Digital Management</strong></p>
                 <p class="text-muted">Riorganizzazione menu: impostazioni, organizzazione, didattica e amministrazione.</p>
                 <p class="small text-muted mb-0"><i class="fas fa-check-circle text-success"></i> Sincronizzazione CDSDM Cloud
@@ -1911,7 +1911,7 @@
           <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
             <div>
               <h2>Segnalazioni operative</h2>
-              <p class="text-muted mb-0">Workflow operativo 0.12.11 per registrare anomalie e comunicazioni interne. I documenti gestionali in Bozza diventano operativi tramite Analisi → Workflow approvativi: ad esempio gli ordini cliente/fornitore approvati passano a Confermato e diventano selezionabili nei DDT. I dati sono salvati nella collezione <code>operationalReports</code> e restano coerenti con gruppi aziendali, backup/import/reset e permessi UI.</p>
+              <p class="text-muted mb-0">Workflow operativo 0.12.13 per registrare anomalie e comunicazioni interne, con elenco a tutta larghezza e form separato in tab. I documenti gestionali in Bozza diventano operativi tramite Analisi → Workflow approvativi: ad esempio gli ordini cliente/fornitore approvati passano a Confermato e diventano selezionabili nei DDT. I dati sono salvati nella collezione <code>operationalReports</code> e restano coerenti con gruppi aziendali, backup/import/reset e permessi UI.</p>
             </div>
             <div class="btn-group btn-group-sm">
               <button class="btn btn-outline-secondary" id="operational-report-refresh" type="button"><i class="fas fa-rotate"></i> Aggiorna</button>
@@ -1928,26 +1928,33 @@
               <div class="col-md-6"><label class="form-label" for="operational-report-search">Ricerca</label><input class="form-control" id="operational-report-search" type="search" placeholder="codice, titolo, referente, documento, prodotto..."></div>
             </div>
           </div></div>
-          <div class="row g-3">
-            <div class="col-xl-8">
+          <ul class="nav nav-tabs mb-3" id="operationalReportsTabs" role="tablist">
+            <li class="nav-item" role="presentation"><button class="nav-link active" id="operational-reports-list-tab" data-bs-toggle="tab" data-bs-target="#operational-reports-list-pane" type="button" role="tab" aria-controls="operational-reports-list-pane" aria-selected="true"><i class="fas fa-list"></i> Elenco e dettaglio</button></li>
+            <li class="nav-item" role="presentation"><button class="nav-link" id="operational-reports-new-tab" data-bs-toggle="tab" data-bs-target="#operational-reports-new-pane" type="button" role="tab" aria-controls="operational-reports-new-pane" aria-selected="false"><i class="fas fa-plus"></i> Nuova segnalazione</button></li>
+          </ul>
+          <div class="tab-content" id="operationalReportsTabsContent">
+            <div class="tab-pane fade show active" id="operational-reports-list-pane" role="tabpanel" aria-labelledby="operational-reports-list-tab">
               <div class="card mb-3"><div class="card-body p-0"><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead class="table-light"><tr><th>Codice</th><th>Stato</th><th>Gravità</th><th>Segnalazione</th><th>Origine</th><th>Destinatario</th><th>Referente</th><th>Collegamento</th><th>Azioni</th></tr></thead><tbody id="operational-report-table-body"></tbody></table></div></div></div>
               <div id="operational-report-detail"></div>
             </div>
-            <div class="col-xl-4">
+            <div class="tab-pane fade" id="operational-reports-new-pane" role="tabpanel" aria-labelledby="operational-reports-new-tab">
               <div class="card" id="operational-report-form"><div class="card-body">
-                <h5 class="card-title">Nuova segnalazione</h5>
-                <p class="text-muted small">Compila una segnalazione operativa da assegnare a un reparto. La scheda può essere stampata come modulistica didattica/operativa.</p>
-                <label class="form-label" for="operational-report-type">Tipo</label><select class="form-select mb-2" id="operational-report-type"></select>
-                <div class="row g-2"><div class="col-md-6"><label class="form-label" for="operational-report-origin">Origine</label><select class="form-select mb-2" id="operational-report-origin"></select></div><div class="col-md-6"><label class="form-label" for="operational-report-target">Destinatario</label><select class="form-select mb-2" id="operational-report-target"></select></div></div>
-                <div class="row g-2"><div class="col-md-6"><label class="form-label" for="operational-report-severity">Gravità</label><select class="form-select mb-2" id="operational-report-severity"></select></div><div class="col-md-6"><label class="form-label" for="operational-report-status">Stato iniziale</label><select class="form-select mb-2" id="operational-report-status"></select><div class="form-text">Le nuove segnalazioni partono come bozza finché non vengono inviate.</div></div></div>
-                <label class="form-label" for="operational-report-title">Titolo</label><input class="form-control mb-2" id="operational-report-title" placeholder="Es. Prodotto non trovato in ubicazione">
-                <label class="form-label" for="operational-report-description">Descrizione</label><textarea class="form-control mb-2" id="operational-report-description" rows="3"></textarea>
-                <label class="form-label" for="operational-report-action">Azione richiesta</label><input class="form-control mb-2" id="operational-report-action" placeholder="Verificare, autorizzare, correggere...">
-                <label class="form-label" for="operational-report-assignee">Referente</label><input class="form-control mb-2" id="operational-report-assignee" placeholder="Nome referente o reparto">
-                <div class="alert alert-light border small mb-2">
+                <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3"><div><h5 class="card-title mb-1">Nuova segnalazione</h5><p class="text-muted small mb-0">Compila una segnalazione operativa da assegnare a un reparto. La scheda può essere stampata come modulistica didattica/operativa.</p></div><button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="tab" data-bs-target="#operational-reports-list-pane"><i class="fas fa-list"></i> Torna all'elenco</button></div>
+                <div class="row g-3">
+                  <div class="col-lg-4"><label class="form-label" for="operational-report-type">Tipo</label><select class="form-select" id="operational-report-type"></select></div>
+                  <div class="col-lg-2"><label class="form-label" for="operational-report-origin">Origine</label><select class="form-select" id="operational-report-origin"></select></div>
+                  <div class="col-lg-2"><label class="form-label" for="operational-report-target">Destinatario</label><select class="form-select" id="operational-report-target"></select></div>
+                  <div class="col-lg-2"><label class="form-label" for="operational-report-severity">Gravità</label><select class="form-select" id="operational-report-severity"></select></div>
+                  <div class="col-lg-2"><label class="form-label" for="operational-report-status">Stato iniziale</label><select class="form-select" id="operational-report-status"></select><div class="form-text">Le nuove segnalazioni partono come bozza finché non vengono inviate.</div></div>
+                  <div class="col-lg-6"><label class="form-label" for="operational-report-title">Titolo</label><input class="form-control" id="operational-report-title" placeholder="Es. Prodotto non trovato in ubicazione"></div>
+                  <div class="col-lg-6"><label class="form-label" for="operational-report-assignee">Referente</label><input class="form-control" id="operational-report-assignee" placeholder="Nome referente o reparto"></div>
+                  <div class="col-lg-6"><label class="form-label" for="operational-report-description">Descrizione</label><textarea class="form-control" id="operational-report-description" rows="4"></textarea></div>
+                  <div class="col-lg-6"><label class="form-label" for="operational-report-action">Azione richiesta</label><textarea class="form-control" id="operational-report-action" rows="4" placeholder="Verificare, autorizzare, correggere..."></textarea></div>
+                </div>
+                <div class="alert alert-light border small my-3">
                   <strong>Bozza o documento effettivo?</strong> Con <em>Salva bozza</em> prepari la segnalazione senza comunicarla. Con <em>Invia segnalazione</em> diventa effettiva, passa a stato <strong>Segnalata</strong> e genera la prima comunicazione interna. Le bozze già salvate si trasformano dal dettaglio con il pulsante <strong>Invia segnalazione</strong>.
                 </div>
-                <div class="card border-info-subtle mb-2"><div class="card-body py-2">
+                <div class="card border-info-subtle mb-3"><div class="card-body">
                   <div class="fw-semibold mb-2">Collegamento guidato a documenti operativi</div>
                   <div class="row g-2 align-items-end">
                     <div class="col-md-4"><label class="form-label" for="operational-report-link-supplier">Fornitore</label><select class="form-select" id="operational-report-link-supplier"><option value="">Seleziona fornitore...</option></select></div>
@@ -1957,10 +1964,14 @@
                   <div class="form-text">Per gli ordini fornitore vengono proposti solo stati lavorabili/approvati, escludendo bozze, eliminati, annullati, non approvati, ricevuti o chiusi.</div>
                 </div></div>
                 <input type="hidden" id="operational-report-related-doc-id">
-                <div class="row g-2"><div class="col-md-6"><label class="form-label" for="operational-report-related-product">Prodotto</label><input class="form-control mb-2" id="operational-report-related-product"></div><div class="col-md-6"><label class="form-label" for="operational-report-related-doc-number">Numero documento</label><input class="form-control mb-2" id="operational-report-related-doc-number"></div></div>
-                <div class="row g-2"><div class="col-md-6"><label class="form-label" for="operational-report-related-customer">Cliente</label><input class="form-control mb-2" id="operational-report-related-customer"></div><div class="col-md-6"><label class="form-label" for="operational-report-related-supplier">Fornitore</label><input class="form-control mb-2" id="operational-report-related-supplier"></div></div>
-                <label class="form-label" for="operational-report-initial-message">Comunicazione interna iniziale</label><textarea class="form-control mb-3" id="operational-report-initial-message" rows="2" placeholder="Messaggio da inviare al reparto destinatario quando la segnalazione diventa effettiva"></textarea>
-                <div class="d-grid gap-2"><button class="btn btn-outline-secondary" id="operational-report-save-draft" type="button"><i class="fas fa-save"></i> Salva bozza</button><button class="btn btn-primary" id="operational-report-send" type="button"><i class="fas fa-paper-plane"></i> Invia segnalazione</button></div>
+                <div class="row g-3">
+                  <div class="col-md-3"><label class="form-label" for="operational-report-related-product">Prodotto</label><input class="form-control" id="operational-report-related-product"></div>
+                  <div class="col-md-3"><label class="form-label" for="operational-report-related-doc-number">Numero documento</label><input class="form-control" id="operational-report-related-doc-number"></div>
+                  <div class="col-md-3"><label class="form-label" for="operational-report-related-customer">Cliente</label><input class="form-control" id="operational-report-related-customer"></div>
+                  <div class="col-md-3"><label class="form-label" for="operational-report-related-supplier">Fornitore</label><input class="form-control" id="operational-report-related-supplier"></div>
+                  <div class="col-12"><label class="form-label" for="operational-report-initial-message">Comunicazione interna iniziale</label><textarea class="form-control" id="operational-report-initial-message" rows="2" placeholder="Messaggio da inviare al reparto destinatario quando la segnalazione diventa effettiva"></textarea></div>
+                </div>
+                <div class="d-flex flex-wrap gap-2 justify-content-end mt-3"><button class="btn btn-outline-secondary" id="operational-report-save-draft" type="button"><i class="fas fa-save"></i> Salva bozza</button><button class="btn btn-primary" id="operational-report-send" type="button"><i class="fas fa-paper-plane"></i> Invia segnalazione</button></div>
               </div></div>
             </div>
           </div>
@@ -3570,9 +3581,9 @@
           <div class="modal-header"><h5 class="modal-title">Nuovo preventivo</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button></div>
           <div class="modal-body"><form id="quoteForm"><input type="hidden" id="quote-id" />
             <div class="row g-3 mb-3"><div class="col-md-3"><label class="form-label">Numero preventivo</label><input class="form-control" id="quote-number" /></div><div class="col-md-3"><label class="form-label">Data</label><input class="form-control" id="quote-date" type="date" /></div><div class="col-md-3"><label class="form-label">Valido fino al</label><input class="form-control" id="quote-validUntil" type="date" /></div><div class="col-md-3"><label class="form-label">Stato</label><select class="form-select" id="quote-status"><option value="draft">Bozza</option><option value="sent">Inviato</option><option value="accepted">Accettato</option><option value="rejected">Rifiutato</option><option value="cancelled">Annullato</option></select></div><div class="col-md-6"><label class="form-label">Cliente</label><select class="form-select" id="quote-customerId"></select></div><div class="col-md-6"><label class="form-label">Note</label><input class="form-control" id="quote-notes" placeholder="Note preventivo / condizioni" /></div></div>
-            <div class="card mb-3"><div class="card-header fw-semibold">Righe preventivo</div><div class="card-body"><div class="row g-2 align-items-end"><div class="col-md-5"><label class="form-label">Prodotto</label><select class="form-select" id="quote-productId"></select></div><div class="col-md-2"><label class="form-label">Quantità</label><input class="form-control text-end" id="quote-lineQty" type="number" min="0" step="0.001" value="1" /></div><div class="col-md-2"><label class="form-label">Prezzo vendita</label><input class="form-control text-end" id="quote-linePrice" type="number" step="0.01" min="0" /></div><div class="col-md-3"><button class="btn btn-outline-primary w-100" id="addQuoteLineBtn" type="button"><i class="fas fa-plus"></i> Aggiungi riga</button></div></div><div class="table-responsive mt-3"><table class="table table-sm align-middle mb-0"><thead><tr><th>Codice</th><th>Prodotto</th><th>UM</th><th class="text-end">Q.tà</th><th class="text-end">Prezzo</th><th class="text-end">Totale</th><th class="text-end">Azioni</th></tr></thead><tbody id="quote-lines-body"><tr><td colspan="7" class="text-center text-muted py-3">Nessuna riga inserita.</td></tr></tbody></table></div><div class="text-end mt-3 h5">Totale: <span id="quote-total">€ 0,00</span></div></div></div>
+            <div class="card mb-3"><div class="card-header fw-semibold">Righe preventivo</div><div class="card-body"><div class="row g-2 align-items-end"><div class="col-md-5"><label class="form-label">Prodotto</label><select class="form-select" id="quote-productId"></select></div><div class="col-md-2"><label class="form-label">Quantità</label><input class="form-control text-end" id="quote-lineQty" type="number" min="0" step="1" inputmode="decimal" value="1" /></div><div class="col-md-2"><label class="form-label">Prezzo vendita</label><input class="form-control text-end" id="quote-linePrice" type="number" step="0.01" min="0" /></div><div class="col-md-3"><button class="btn btn-outline-primary w-100" id="addQuoteLineBtn" type="button"><i class="fas fa-plus"></i> Aggiungi riga</button></div></div><div class="table-responsive mt-3"><table class="table table-sm align-middle mb-0"><thead><tr><th>Codice</th><th>Prodotto</th><th>UM</th><th class="text-end">Q.tà</th><th class="text-end">Prezzo</th><th class="text-end">Totale</th><th class="text-end">Azioni</th></tr></thead><tbody id="quote-lines-body"><tr><td colspan="7" class="text-center text-muted py-3">Nessuna riga inserita.</td></tr></tbody></table></div><div class="text-end mt-3 h5">Totale: <span id="quote-total">€ 0,00</span></div></div></div>
           </form></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button><button type="button" class="btn btn-primary" id="saveQuoteBtn">Salva preventivo</button></div></div></div></div>
-    <div class="modal fade" id="quoteDetailModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quoteDetailModalTitle">Dettaglio preventivo</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button></div><div class="modal-body" id="quoteDetailModalBody"></div><div class="modal-footer"><button type="button" class="btn btn-outline-success" id="convertQuoteToOrderBtn">Converti in ordine cliente</button><button type="button" class="btn btn-outline-danger" id="deleteQuoteFromDetailBtn">Elimina preventivo</button><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button></div></div></div></div>
+    <div class="modal fade" id="quoteDetailModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quoteDetailModalTitle">Dettaglio preventivo</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button></div><div class="modal-body" id="quoteDetailModalBody"></div><div class="modal-footer"><button type="button" class="btn btn-outline-success" id="convertQuoteToOrderBtn">Crea ordine cliente</button><button type="button" class="btn btn-outline-danger" id="deleteQuoteFromDetailBtn">Elimina preventivo</button><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button></div></div></div></div>
 
     <div class="modal fade" id="customerOrderModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-xl modal-dialog-scrollable">
@@ -3597,7 +3608,7 @@
                 <div class="card-body">
                   <div class="row g-2 align-items-end">
                     <div class="col-md-5"><label class="form-label">Prodotto</label><select class="form-select" id="customerOrder-productId"></select></div>
-                    <div class="col-md-2"><label class="form-label">Quantità</label><input class="form-control text-end" id="customerOrder-lineQty" type="number" min="0" step="0.001" value="1" /></div>
+                    <div class="col-md-2"><label class="form-label">Quantità</label><input class="form-control text-end" id="customerOrder-lineQty" type="number" min="0" step="1" inputmode="decimal" value="1" /></div>
                     <div class="col-md-2"><label class="form-label">Prezzo vendita</label><input class="form-control text-end" id="customerOrder-linePrice" type="number" step="0.01" min="0" /></div>
                     <div class="col-md-3"><button class="btn btn-outline-primary w-100" id="addCustomerOrderLineBtn" type="button"><i class="fas fa-plus"></i> Aggiungi riga</button></div>
                   </div>
@@ -3663,7 +3674,7 @@
                 <div class="card-body">
                   <div class="row g-2 align-items-end">
                     <div class="col-md-5"><label class="form-label">Prodotto</label><select class="form-select" id="supplierOrder-productId"></select></div>
-                    <div class="col-md-2"><label class="form-label">Quantità</label><input class="form-control text-end" id="supplierOrder-lineQty" type="number" min="0" step="0.001" value="1" /></div>
+                    <div class="col-md-2"><label class="form-label">Quantità</label><input class="form-control text-end" id="supplierOrder-lineQty" type="number" min="0" step="1" inputmode="decimal" value="1" /></div>
                     <div class="col-md-2"><label class="form-label">Prezzo acquisto</label><input class="form-control text-end" id="supplierOrder-linePrice" type="number" step="0.01" min="0" /></div>
                     <div class="col-md-3"><button class="btn btn-outline-primary w-100" id="addSupplierOrderLineBtn" type="button"><i class="fas fa-plus"></i> Aggiungi riga</button></div>
                   </div>

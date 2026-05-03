@@ -375,7 +375,7 @@
         <tr>
           <td class="line-desc-cell" data-i="${i}">${descCellInner}</td>
           <td class="text-end" style="width: 90px;">
-            <input type="number" step="0.01" class="form-control form-control-sm text-end line-qty" data-i="${i}" value="${qty}">
+            <input type="number" step="1" inputmode="decimal" class="form-control form-control-sm text-end line-qty" data-i="${i}" value="${qty}">
           </td>
           <td class="text-end" style="width: 120px;">
             <input type="number" step="0.01" class="form-control form-control-sm text-end line-price" data-i="${i}" value="${price.toFixed(2)}">

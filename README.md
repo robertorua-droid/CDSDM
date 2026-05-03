@@ -1,4 +1,4 @@
-## CDSDM Versione 0.12.11 — Workflow approvativo operativo e coerenza bozze/documenti
+## CDSDM Versione 0.12.13 — UX segnalazioni, conversione preventivi approvati e quantità intere
 
 Questa release introduce e stabilizza il ramo 0.12.x dedicato alle **Segnalazioni operative**: anomalie, richieste di verifica, comunicazioni interne simulate, scheda stampabile e integrazione prudente con gli alert Mini B.I.
 
@@ -454,6 +454,12 @@ Gli override 0.6.4 restano una granularità applicativa/front-end didattica. Le 
 - Migliorato il messaggio di errore: se Firestore nega anche la scrittura, occorre pubblicare `firestore.rules` del pacchetto o creare manualmente `appSettings/system` in Firebase Console.
 - Chiarito che gli inviti studenti si creano da **Gruppi aziendali**, non dal pannello Superadmin.
 
+### 0.12.13 — UX segnalazioni, conversione preventivi approvati e quantità intere
+
+- Corretto il reset involontario dei filtri Stato/Area/Gravità nella pagina **Workflow → Segnalazioni operative**.
+- Il filtro iniziale mostra ora tutte le segnalazioni aperte/da gestire e non solo `Segnalata / Magazzino / Media`.
+- Aggiunto test browser-based `operational-reports-01212.test.html`.
+
 ### 0.12.11 — Workflow approvativo operativo e coerenza bozze/documenti
 
 - Chiarito che gli ordini cliente/fornitore in Bozza diventano operativi tramite **Analisi → Workflow approvativi → Approva**.
@@ -476,3 +482,9 @@ Gli override 0.6.4 restano una granularità applicativa/front-end didattica. Le 
 - Aggiunti pulsanti workflow guidati: invia, prendi in carico, avvia lavorazione, richiedi info, risolvi, chiudi/annulla.
 - Corretto il conflitto DOM tra messaggio di stato pagina e campo stato del form.
 
+
+
+### 0.12.13 — UX segnalazioni, conversione preventivi approvati e quantità intere
+- Preventivi cliente: conversione in ordine cliente consentita solo dopo approvazione/accettazione tramite Workflow approvativo.
+- Quantità documentali: incremento browser a 1, mantenendo accettazione di valori decimali nei calcoli.
+- Segnalazioni operative: elenco/dettaglio e nuova segnalazione separati in tab per usare l’intera larghezza della pagina.

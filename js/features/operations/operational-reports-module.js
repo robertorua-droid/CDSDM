@@ -1,5 +1,5 @@
 // js/features/operations/operational-reports-module.js
-// CDSDM 0.12.10 - UI Segnalazioni operative: collegamenti guidati, bozze effettive e quarantena.
+// CDSDM 0.12.13 - UI Segnalazioni operative: elenco e form separati in tab, layout a tutta larghezza.
 (function () {
   'use strict';
   window.AppModules = window.AppModules || {};
@@ -21,6 +21,7 @@
   function badgeSeverity(sev) { const tone = { low:'info text-dark', medium:'warning text-dark', high:'danger', blocking:'dark' }[sev] || 'secondary'; return '<span class="badge bg-' + tone + '">' + esc((svc().SEVERITIES || {})[sev] || sev) + '</span>'; }
   function filters() { return { status: getVal('operational-report-filter-status') || 'open', area: getVal('operational-report-filter-area') || 'all', severity: getVal('operational-report-filter-severity') || 'all', search: getVal('operational-report-search') || '' }; }
   function download(filename, content, type) { const blob = new Blob([content], { type: type || 'text/plain;charset=utf-8' }); const a = document.createElement('a'); a.download = filename; a.href = URL.createObjectURL(blob); a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 500); }
+  function activateListTab() { const el = document.getElementById('operational-reports-list-tab'); if (el && window.bootstrap && window.bootstrap.Tab) window.bootstrap.Tab.getOrCreateInstance(el).show(); }
   function currentReport() { const result = svc().list({ status:'all' }); return arr(result.all).find(r => String(r.id) === String(_selectedId)) || null; }
 
   function renderSummary(summary) {
@@ -126,15 +127,37 @@
     renderLinkableDocumentOptions();
   }
 
+  function selectValue(id, fallback) {
+    const current = getVal(id);
+    return current || fallback;
+  }
+
+  function setSelectOptions(id, html, selected, fallback) {
+    const $el = $('#' + id);
+    $el.html(html);
+    const wanted = selected || fallback || '';
+    if (wanted && $el.find('option[value="' + String(wanted).replace(/"/g, '\"') + '"]').length) $el.val(wanted);
+    else if (fallback && $el.find('option[value="' + String(fallback).replace(/"/g, '\"') + '"]').length) $el.val(fallback);
+  }
+
   function fillFormOptions() {
-    $('#operational-report-type').html(optionHtml(svc().REPORT_TYPES, 'generic_operational_note'));
-    $('#operational-report-origin,#operational-report-target,#operational-report-area').html('<option value="all">Tutte</option>' + optionHtml(svc().AREAS, 'warehouse'));
-    $('#operational-report-origin option[value="all"],#operational-report-target option[value="all"]').remove();
-    $('#operational-report-severity').html(optionHtml(svc().SEVERITIES, 'medium'));
-    $('#operational-report-status').html(optionHtml(svc().STATUSES, 'draft')); $('#operational-report-status').val('draft');
-    $('#operational-report-filter-status').html('<option value="open">Aperte / da gestire</option><option value="all">Tutte</option>' + optionHtml(svc().STATUSES, 'reported'));
-    $('#operational-report-filter-area').html('<option value="all">Tutte</option>' + optionHtml(svc().AREAS, 'warehouse'));
-    $('#operational-report-filter-severity').html('<option value="all">Tutte</option>' + optionHtml(svc().SEVERITIES, 'medium'));
+    const formType = selectValue('operational-report-type', 'generic_operational_note');
+    const formOrigin = selectValue('operational-report-origin', 'warehouse');
+    const formTarget = selectValue('operational-report-target', 'management');
+    const formSeverity = selectValue('operational-report-severity', 'medium');
+    const formStatus = selectValue('operational-report-status', 'draft');
+    const filterStatus = selectValue('operational-report-filter-status', 'open');
+    const filterArea = selectValue('operational-report-filter-area', 'all');
+    const filterSeverity = selectValue('operational-report-filter-severity', 'all');
+
+    setSelectOptions('operational-report-type', optionHtml(svc().REPORT_TYPES, ''), formType, 'generic_operational_note');
+    setSelectOptions('operational-report-origin', optionHtml(svc().AREAS, ''), formOrigin, 'warehouse');
+    setSelectOptions('operational-report-target', optionHtml(svc().AREAS, ''), formTarget, 'management');
+    setSelectOptions('operational-report-severity', optionHtml(svc().SEVERITIES, ''), formSeverity, 'medium');
+    setSelectOptions('operational-report-status', optionHtml(svc().STATUSES, ''), formStatus, 'draft');
+    setSelectOptions('operational-report-filter-status', '<option value="open">Aperte / da gestire</option><option value="all">Tutte</option>' + optionHtml(svc().STATUSES, ''), filterStatus, 'open');
+    setSelectOptions('operational-report-filter-area', '<option value="all">Tutte</option>' + optionHtml(svc().AREAS, ''), filterArea, 'all');
+    setSelectOptions('operational-report-filter-severity', '<option value="all">Tutte</option>' + optionHtml(svc().SEVERITIES, ''), filterSeverity, 'all');
     refreshGuidedLinks();
   }
 
@@ -147,7 +170,7 @@
     renderTable(result.reports);
     if (_selectedId) renderDetail(); else renderDetail(null);
     const qa = svc().runQa();
-    $('#operational-report-feedback').html('<div class="alert alert-light border small mb-0">Segnalazioni operative 0.12.10: collezione <code>operationalReports</code>, invio segnalazioni, comunicazioni interne, workflow guidato e collegamenti a ordini/DDT lavorabili. QA locale: ' + (qa.passed ? '<span class="text-success">OK</span>' : '<span class="text-danger">attenzione</span>') + '.</div>');
+    $('#operational-report-feedback').html('<div class="alert alert-light border small mb-0">Segnalazioni operative 0.12.13: collezione <code>operationalReports</code>, invio segnalazioni, comunicazioni interne, workflow guidato, collegamenti a ordini/DDT lavorabili, filtri persistenti e layout elenco/form in tab. QA locale: ' + (qa.passed ? '<span class="text-success">OK</span>' : '<span class="text-danger">attenzione</span>') + '.</div>');
   }
 
   async function saveForm(mode) {
@@ -160,6 +183,7 @@
       const saved = await svc().submitReport(payload, sendNow ? 'send' : 'draft', initialMessage);
       _selectedId = saved.id;
       if (typeof window.loadAllDataFromCloud === 'function' && window.currentUser) await window.loadAllDataFromCloud();
+      activateListTab();
       render();
       $('#operational-report-form input,#operational-report-form textarea').val('');
       $('#operational-report-status').val('draft');
@@ -183,6 +207,7 @@
       const saved = await svc().submitReport(payload, 'draft', 'Bozza generata da DDT fornitore con merce in quarantena. Verificare e usare Invia segnalazione per renderla effettiva.');
       _selectedId = saved.id;
       if (typeof window.loadAllDataFromCloud === 'function' && window.currentUser) await window.loadAllDataFromCloud();
+      activateListTab();
       if ($('[data-target="operational-reports"]').length) $('[data-target="operational-reports"]').first().trigger('click');
       render();
       return saved;

@@ -239,3 +239,15 @@ Aggiunti collegamenti guidati a ordini/DDT lavorabili e creazione contestuale bo
 - `js/features/accounting/workflow-module.js`: messaggio UI aggiornato per chiarire che il workflow approvativo rende operativi i documenti, mentre le segnalazioni operative gestiscono anomalie/comunicazioni interne.
 - `js/features/warehouse/customer-ddts-module.js` e `js/features/warehouse/supplier-ddts-module.js`: selezione ordini limitata a documenti lavorabili, cioè confermati o parzialmente evasi/ricevuti, con bozze escluse.
 - `js/features/warehouse/customer-orders-module.js` e `js/features/warehouse/supplier-orders-module.js`: riepiloghi aggiornati per distinguere bozze da ordini confermati.
+
+## 0.12.12 - Hotfix filtri Segnalazioni operative
+
+- `js/features/operations/operational-reports-module.js`: preserva i valori dei filtri Stato/Area/Gravità durante render, refresh, apertura dettaglio e cambio stato.
+- `tests/operational-reports-01212.test.html`: verifica che la lista parta da Aperte/Tutte/Tutte e resti coerente col riepilogo.
+
+## 0.12.13 - UX segnalazioni, preventivi approvati e quantità
+
+- `js/features/warehouse/quotes-module.js`: conversione preventivo → ordine cliente solo dopo approvazione/accettazione.
+- `index.html`: Segnalazioni operative in tab elenco/dettaglio e nuova segnalazione; quantità documentali con incremento unitario.
+- `js/features/operations/operational-reports-module.js`: render e ritorno automatico all’elenco dopo salvataggio/invio.
+- `js/features/warehouse/customer-ddts-module.js`, `supplier-ddts-module.js`, `js/features/invoices/invoices-form-module.js`: quantità con step unitario e decimali manuali accettati.

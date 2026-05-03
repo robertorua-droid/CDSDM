@@ -198,6 +198,9 @@
     "101_SEGNALAZIONI_SCENARI_0127": "# 0.12.7 — Scenari di simulazione aziendale\n\nCasi operativi per esercitazioni tra reparti.",
     "102_SEGNALAZIONI_QA_0128": "# 0.12.8 — QA e pacchetto stabile\n\nRegole, permessi, test, backup/import/reset e documentazione allineati.",
     "103_SEGNALAZIONI_HOTFIX_OPERATIVO_0129": "# 0.12.9 — Hotfix operativo segnalazioni\n\nLa 0.12.9 distingue Salva bozza e Invia segnalazione, crea una prima comunicazione interna all’invio e aggiunge pulsanti workflow guidati per presa in carico, lavorazione, risoluzione e chiusura.",
-
+    "104_SEGNALAZIONI_COLLEGAMENTI_GUIDATI_01210": "# 0.12.10 — Collegamenti guidati e quarantena\n\nCollegamento guidato a ordini/DDT lavorabili e bozza da DDT fornitore con merce in quarantena.",
+    "105_WORKFLOW_APPROVATIVO_OPERATIVO_01211": "# 0.12.11 — Workflow approvativo operativo\n\nL’approvazione dal Workflow rende operativi gli ordini cliente/fornitore in bozza, portandoli a Confermato e rendendoli selezionabili nei DDT.",
+    "106_SEGNALAZIONI_FILTRI_HOTFIX_01212": "# 0.12.12 — Hotfix filtri segnalazioni\n\nCorretto il reset involontario dei filtri Stato, Area e Gravità nella pagina Workflow → Segnalazioni operative. L’elenco ora parte da Aperte/Tutte/Tutte e resta coerente con il riepilogo.",
+    "107_UX_SEGNALAZIONI_PREVENTIVI_QTA_01213": "# 0.12.13 — UX segnalazioni, preventivi e quantità\n\nPreventivo cliente convertibile in ordine solo se approvato/accettato. Quantità documentali con incremento unitario ma decimali manuali ammessi. Segnalazioni operative divise in tab Elenco e Nuova segnalazione per usare tutta la larghezza disponibile."
   };
 })();

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Test Segnalazioni operative 0.12.12</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<main class="container py-4">
+  <h1 class="h3">Segnalazioni operative 0.12.12</h1>
+  <p class="text-muted">Verifica persistenza filtri Stato/Area/Gravità e coerenza elenco/riepilogo.</p>
+  <div id="results" class="list-group mb-4"></div>
+  <div id="operational-reports" class="d-none">
+    <div id="operational-report-feedback"></div>
+    <div id="operational-report-summary"></div>
+    <select id="operational-report-filter-status"></select>
+    <select id="operational-report-filter-area"></select>
+    <select id="operational-report-filter-severity"></select>
+    <input id="operational-report-search">
+    <table><tbody id="operational-report-table-body"></tbody></table>
+    <div id="operational-report-detail"></div>
+    <select id="operational-report-type"></select>
+    <select id="operational-report-origin"></select>
+    <select id="operational-report-target"></select>
+    <select id="operational-report-severity"></select>
+    <select id="operational-report-status"></select>
+    <select id="operational-report-link-supplier"></select>
+    <select id="operational-report-related-doc-type"></select>
+    <select id="operational-report-link-document"></select>
+    <input id="operational-report-title"><textarea id="operational-report-description"></textarea><input id="operational-report-action"><input id="operational-report-assignee"><input id="operational-report-related-doc-id"><input id="operational-report-related-doc-number"><input id="operational-report-related-supplier"><input id="operational-report-related-product"><input id="operational-report-related-customer"><input id="operational-report-initial-message">
+    <button id="operational-report-refresh"></button><button id="operational-report-export-csv"></button><button id="operational-report-save-draft"></button><button id="operational-report-send"></button>
+  </div>
+</main>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+window.globalData = {
+  operationalReports: [
+    { id:'r1', code:'SO-2026-0001', type:'quarantine_goods', title:'Quarantena da gestire', status:'reported', severity:'medium', originArea:'warehouse', targetArea:'purchases', createdAt:'2026-01-01T10:00:00Z', updatedAt:'2026-01-01T10:00:00Z' },
+    { id:'r2', code:'SO-2026-0002', type:'document_data_missing', title:'Documento da verificare', status:'assigned', severity:'high', originArea:'accounting', targetArea:'purchases', createdAt:'2026-01-02T10:00:00Z', updatedAt:'2026-01-02T10:00:00Z' }
+  ], suppliers: [], supplierOrders: [], supplierDDTs: []
+};
+window.AppStore = { get: function(k){ return window.globalData[k]; }, set: function(k,v){ window.globalData[k]=v; } };
+window.currentUser = { uid:'u1', email:'tester@example.com' };
+window.PermissionsPolicy = { canWrite:function(){ return true; }, canAdmin:function(){ return true; }, isAdmin:function(){ return true; } };
+</script>
+<script src="../js/features/operations/operational-reports-service.js"></script>
+<script src="../js/features/operations/operational-reports-module.js"></script>
+<script>
+(function(){
+  const out = document.getElementById('results');
+  function row(ok, label, detail){ const item=document.createElement('div'); item.className='list-group-item '+(ok?'list-group-item-success':'list-group-item-danger'); item.innerHTML='<strong>'+(ok?'OK':'KO')+'</strong> '+label+(detail?'<div class="small text-muted">'+detail+'</div>':''); out.appendChild(item); }
+  try {
+    window.AppModules.operationalReports.render();
+    row($('#operational-report-filter-status').val()==='open', 'Filtro stato iniziale su Aperte / da gestire', $('#operational-report-filter-status').val());
+    row($('#operational-report-filter-area').val()==='all', 'Filtro area iniziale su Tutte', $('#operational-report-filter-area').val());
+    row($('#operational-report-filter-severity').val()==='all', 'Filtro gravità iniziale su Tutte', $('#operational-report-filter-severity').val());
+    const initialRows = $('#operational-report-table-body tr').length;
+    row(initialRows >= 2, 'Elenco coerente con riepilogo: mostra le segnalazioni aperte', 'righe='+initialRows);
+    $('#operational-report-filter-status').val('open');
+    $('#operational-report-filter-area').val('purchases');
+    $('#operational-report-filter-severity').val('high');
+    window.AppModules.operationalReports.render();
+    row($('#operational-report-filter-area').val()==='purchases' && $('#operational-report-filter-severity').val()==='high', 'I filtri scelti non vengono reimpostati dal render');
+    const text = $('#operational-report-table-body').text();
+    row(text.indexOf('SO-2026-0002') >= 0 && text.indexOf('SO-2026-0001') < 0, 'Filtro area/gravità applicato alla tabella', text.trim());
+  } catch(e) { row(false, 'Eccezione test', e.message || e); }
+})();
+</script>
+</body>
+</html>

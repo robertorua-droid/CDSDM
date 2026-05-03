@@ -419,7 +419,7 @@
 
         const backup = {
           exportedAt: new Date().toISOString(),
-          appVersion: '0.12.11',
+          appVersion: '0.12.13',
           userId: currentUser.uid,
           persistenceScope: window.currentBusinessGroup && window.currentBusinessGroup.id ? 'businessGroup' : 'legacyUser',
           businessGroup: window.currentBusinessGroup || null,
