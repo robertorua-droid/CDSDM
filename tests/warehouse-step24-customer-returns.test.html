@@ -1,0 +1,6 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Warehouse Step 24 Returns</title></head><body><script src="test-harness.js"></script><script src="../js/features/warehouse/customer-returns-service.js"></script><script>
+const inv={id:'i1',number:'1',customerId:'c1',lines:[{productId:'p1',description:'Prodotto',qty:2,price:10,vatRate:22}]};
+test('bozza reso da fattura', function(){ const r=CustomerReturnsService.buildReturnDraftFromInvoice(inv); assertEqual(r.lines[0].returnQty,2); });
+test('bozza nota credito da reso', function(){ const c=CustomerReturnsService.buildCreditNoteDraft({id:'r1',customerId:'c1',lines:[{productId:'p1',qty:1,price:10}]}); assertEqual(c.type,'credit_note'); });
+runTests();
+</script></body></html>

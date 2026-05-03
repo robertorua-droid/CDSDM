@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>CDSDM 0.4.4 - UX / Accessibilità</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="sidebar">
+    <div class="nav-section-container collapsed"><div class="nav-section-header">Analisi</div><div class="nav-section-content"><a class="nav-link" data-target="ux-accessibilita" href="#">UX / accessibilità</a></div></div>
+  </div>
+  <div class="main-content"><div class="content-section" id="ux-accessibilita"><label for="demo-input">Campo demo</label><input id="demo-input"><button type="button">Aggiorna</button></div></div>
+  <script src="test-harness.js"></script>
+  <script src="../js/ui/accessibility-ux-service.js"></script>
+  <script>
+    test('applica skip link e landmark principali', function () {
+      AccessibilityUXService.applyRuntimeEnhancements();
+      assertTrue(!!document.getElementById('skip-to-content'), 'skip link presente');
+      assertEquals('main', document.querySelector('.main-content').getAttribute('role'), 'main landmark');
+      assertEquals('navigation', document.querySelector('.sidebar').getAttribute('role'), 'navigation landmark');
+    });
+    test('audit DOM segnala controlli base coerenti', function () {
+      AccessibilityUXService.applyRuntimeEnhancements();
+      const result = AccessibilityUXService.buildAudit(document);
+      assertTrue(result.summary.total >= 5, 'controlli disponibili');
+      assertTrue(result.checks.some(c => c.id === 'menu-targets' && c.ok), 'target menu coerenti');
+      assertTrue(result.checks.some(c => c.id === 'form-labels' && c.ok), 'label form coerenti');
+    });
+    test('export CSV contiene le intestazioni', function () {
+      const csv = AccessibilityUXService.toCsv(AccessibilityUXService.buildAudit(document));
+      assertTrue(csv.indexOf('"check";"esito";"severita";"dettaglio"') === 0, 'header csv');
+    });
+  </script>
+</body>
+</html>

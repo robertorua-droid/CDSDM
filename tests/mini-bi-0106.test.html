@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Mini B.I. 0.10.6 - Hotfix tab</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="p-4">
+  <h1>Mini B.I. 0.10.6 - Hotfix tab</h1>
+  <div id="mini-bi">
+    <select id="mini-bi-year"><option value="all">Tutti</option></select>
+    <select id="mini-bi-month"><option value="all">Tutti</option></select>
+    <button id="mini-bi-refresh-btn" type="button">Aggiorna</button>
+    <div id="mini-bi-overview"></div>
+    <div id="mini-bi-sources"></div>
+    <div id="mini-bi-warnings"></div>
+    <button class="btn btn-outline-primary mini-bi-area-tab active" data-area="direzione" type="button">Direzione</button>
+    <button class="btn btn-outline-primary mini-bi-area-tab" data-area="vendite" type="button">Vendite</button>
+    <button class="btn btn-outline-primary mini-bi-area-tab" data-area="acquisti" type="button">Acquisti</button>
+    <button class="btn btn-outline-primary mini-bi-area-tab" data-area="contabilita" type="button">Contabilità</button>
+    <button class="btn btn-outline-primary mini-bi-area-tab" data-area="magazzino" type="button">Magazzino</button>
+    <button class="btn btn-outline-primary mini-bi-area-tab" data-area="didattica" type="button">Didattica</button>
+    <h2 id="mini-bi-area-title"></h2>
+    <div id="mini-bi-area-cards"></div>
+    <div id="mini-bi-area-details"></div>
+    <div id="mini-bi-kpi-catalog"></div>
+  </div>
+  <pre id="out">Esecuzione...</pre>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    window.globalData={invoices:[{id:'i1',date:'2026-01-10',total:1000,customerName:'Cliente A'}],notes:[],purchases:[{id:'p1',date:'2026-01-11',total:300,supplierName:'Fornitore A'}],products:[{id:'x',name:'Prodotto',stockQty:5,cost:10}],customers:[],suppliers:[],paymentEvents:[],customerOrders:[],supplierOrders:[],customerDDTs:[],quotes:[],warehouseMovements:[],warehouseLots:[],businessBudgets:[],teachingScenarios:[],simulationEvents:[]};
+    window.PermissionsPolicy={ getCurrentRole:function(){return {id:'admin',label:'Admin'};}, isAdmin:function(){return true;}, accessRank:function(l){return {none:0,read:1,write:2,admin:3}[l]||0;}, getPermissionLevel:function(){return 'admin';}, canAccessTarget:function(){return true;} };
+  </script>
+  <script src="../js/features/bi/mini-bi-service.js"></script>
+  <script src="../js/features/bi/mini-bi-module.js"></script>
+  <script>
+    const out=[]; function ok(name,cond){out.push((cond?'✅ ':'❌ ')+name); if(!cond) throw new Error(name);}
+    window.AppModules.miniBI.render();
+    ok('render iniziale direzione', document.getElementById('mini-bi-area-title').textContent.indexOf('Direzione')>=0);
+    $('.mini-bi-area-tab[data-area="vendite"]').trigger('click');
+    ok('click vendite aggiorna titolo', document.getElementById('mini-bi-area-title').textContent.indexOf('Vendite')>=0);
+    ok('una sola tab attiva dopo vendite', $('.mini-bi-area-tab.active').length===1 && $('.mini-bi-area-tab.active').data('area')==='vendite');
+    $('.mini-bi-area-tab[data-area="magazzino"]').trigger('click');
+    ok('click magazzino aggiorna titolo', document.getElementById('mini-bi-area-title').textContent.indexOf('Magazzino')>=0);
+    ok('una sola tab attiva dopo magazzino', $('.mini-bi-area-tab.active').length===1 && $('.mini-bi-area-tab.active').data('area')==='magazzino');
+    ok('area cards sempre valorizzata', document.getElementById('mini-bi-area-cards').textContent.trim().length>0);
+    document.getElementById('out').textContent=out.join('\n');
+  </script>
+</body>
+</html>

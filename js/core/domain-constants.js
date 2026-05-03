@@ -26,11 +26,16 @@
       'companyBanks', 'warehouseMovements', 'quotes', 'customerOrders',
       'supplierOrders', 'supplierDDTs', 'customerDDTs', 'warehousePhysicalCounts',
       'warehouseLots', 'paymentEvents', 'cashbookMovements', 'reminderEvents',
-      'bankReconciliationEvents', 'businessBudgets', 'workflowEvents', 'auditEvents',
+      'bankReconciliationEvents', 'businessBudgets', 'workflowEvents', 'auditEvents', 'operationalReports',
       'teachingScenarios', 'simulationEvents', 'migrationReports', 'permissionProfiles', 'permissionMatrices', 'securityAccessReports'
     ]
   };
 
+  function getDataCollections() {
+    return DomainConstants.DATA_COLLECTIONS.slice();
+  }
+
   window.DomainConstants = DomainConstants;
-  window.CDSDM_DATA_COLLECTIONS = DomainConstants.DATA_COLLECTIONS.slice();
+  window.CDSDM_DATA_COLLECTIONS = getDataCollections();
+  window.getCDSDMDataCollections = getDataCollections;
 })();

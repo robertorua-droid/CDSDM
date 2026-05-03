@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Lotti / matricole / scadenze 0.2.4</title>
+</head>
+<body>
+  <h1>Lotti / matricole / scadenze 0.2.4</h1>
+  <div id="test-output"></div>
+
+  <script src="test-harness.js"></script>
+  <script>
+    window.DomainNormalizers = {
+      normalizeProductInfo: function(p){ return Object.assign({ itemType:'product', trackingMode:'none' }, p || {}); },
+      normalizeWarehouseLot: function(l){ return Object.assign({ status:'active', qtyAvailable:0, qtyQuarantine:0 }, l || {}); }
+    };
+  </script>
+  <script src="../js/features/warehouse/warehouse-lots-service.js"></script>
+  <script>
+    function assertThrows(fn, expected, message){ var thrown=false, msg=""; try { fn(); } catch(e){ thrown=true; msg=String(e && e.message ? e.message : e); } if(!thrown) throw new Error((message || "Errore atteso") + " | nessuna eccezione"); if(expected && msg.toLowerCase().indexOf(String(expected).toLowerCase()) === -1) throw new Error((message || "Errore non coerente") + " | messaggio=" + msg); }
+
+    test('riepiloga lotti attivi, in scadenza e prodotti tracciati', function(){
+      var today = new Date();
+      var exp = new Date(today.getTime() + 10 * 86400000).toISOString().slice(0, 10);
+      var summary = window.WarehouseLotsService.summarize({
+        products: [
+          { id:'p1', itemType:'product', code:'A', description:'Prodotto A', trackingMode:'expiry' },
+          { id:'p2', itemType:'product', code:'B', description:'Prodotto B', trackingMode:'none' }
+        ],
+        warehouseLots: [
+          { id:'l1', productId:'p1', lotCode:'LOT-1', expiryDate:exp, qtyAvailable:5, status:'active' }
+        ],
+        supplierDDTs: [],
+        suppliers: []
+      });
+      assertEqual(summary.trackedProducts, 1, 'Conteggio prodotti tracciati non corretto');
+      assertEqual(summary.activeCount, 1, 'Conteggio lotti attivi non corretto');
+      assertEqual(summary.expiringCount, 1, 'Lotto in scadenza non rilevato');
+      assertEqual(summary.rows[0].type, 'expiry', 'Tipo lotto/scadenza non corretto');
+    });
+
+    test('legge lotti legacy da righe DDT fornitore', function(){
+      var rows = window.WarehouseLotsService.buildRows({
+        products: [{ id:'p1', itemType:'product', code:'A', description:'Prodotto A', trackingMode:'lot' }],
+        warehouseLots: [],
+        supplierDDTs: [{ id:'d1', number:'DDF-1', supplierId:'s1', lines:[{ productId:'p1', lotCode:'BATCH-77', acceptedQty:3, quarantineQty:1 }] }],
+        suppliers: [{ id:'s1', name:'Fornitore Uno' }]
+      });
+      assertEqual(rows.length, 1, 'Riga lotto derivata da DDT non generata');
+      assertEqual(rows[0].lotCode, 'BATCH-77', 'Codice lotto non letto');
+      assertEqual(rows[0].qtyAvailable, 3, 'Quantità accettata non letta');
+      assertEqual(rows[0].qtyQuarantine, 1, 'Quantità quarantena non letta');
+      assertEqual(rows[0].supplierLabel, 'Fornitore Uno', 'Fornitore non risolto');
+    });
+
+    test('valida obblighi lotto, matricola e scadenza in base al prodotto', function(){
+      assertThrows(function(){
+        window.WarehouseLotsService.validateLot({ productId:'p1', qtyAvailable:1 }, { id:'p1', itemType:'product', trackingMode:'lot' });
+      }, 'lotto', 'Deve richiedere il lotto');
+      assertThrows(function(){
+        window.WarehouseLotsService.validateLot({ productId:'p2', lotCode:'L1', qtyAvailable:1 }, { id:'p2', itemType:'product', trackingMode:'serial' });
+      }, 'matricola', 'Deve richiedere la matricola');
+      assertThrows(function(){
+        window.WarehouseLotsService.validateLot({ productId:'p3', lotCode:'L1', qtyAvailable:1 }, { id:'p3', itemType:'product', trackingMode:'expiry' });
+      }, 'scadenza', 'Deve richiedere la scadenza');
+    });
+
+    runTests('test-output');
+  </script>
+</body>
+</html>

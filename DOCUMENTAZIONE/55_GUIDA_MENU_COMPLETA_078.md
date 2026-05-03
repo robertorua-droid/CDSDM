@@ -44,6 +44,12 @@ La versione **0.7.8** aggiunge una guida ordinata per menu e un pulsante contest
 **Serve per:** vedere indicatori sintetici su documenti, incassi, scadenze, magazzino e andamento gestionale.  
 **Quando usarla:** per una panoramica iniziale o per riepilogo a fine esercitazione.
 
+<a id="help-target-mini-bi" class="menu-help-anchor"></a>
+### Mini B.I. didattica
+**Percorso:** Analisi → Mini B.I. didattica  
+**Serve per:** leggere KPI semplici e spiegabili su vendite, acquisti, contabilità, magazzino e didattica.  
+**Quando usarla:** in aula o per controllo gestionale prudente, senza valore fiscale/certificativo.
+
 <a id="help-target-centro-notifiche" class="menu-help-anchor"></a>
 ### Centro notifiche
 **Percorso:** Analisi → Centro notifiche  
@@ -352,7 +358,7 @@ La versione **0.7.8** aggiunge una guida ordinata per menu e un pulsante contest
 
 ---
 
-## Impostazioni e amministrazione
+## Impostazioni
 
 <a id="help-target-anagrafica-azienda" class="menu-help-anchor"></a>
 ### Azienda
@@ -363,92 +369,89 @@ La versione **0.7.8** aggiunge una guida ordinata per menu e un pulsante contest
 <a id="help-target-tabella-iva" class="menu-help-anchor"></a>
 ### Tabella IVA
 **Percorso:** Impostazioni → Tabella IVA  
-**Serve per:** gestire aliquote, natura e configurazioni IVA usate nei documenti.  
-**Quando usarla:** prima di creare fatture/righe con IVA o natura specifica.
+**Serve per:** gestire aliquote, natura e configurazioni IVA usate nei documenti.
 
 <a id="help-target-tabella-pagamenti" class="menu-help-anchor"></a>
 ### Codici pagamento
 **Percorso:** Impostazioni → Codici pagamento  
-**Serve per:** configurare modalità e condizioni di pagamento.  
-**Usata da:** fatture, acquisti, scadenziario, incassi e pagamenti.
+**Serve per:** configurare modalità e condizioni di pagamento.
 
 <a id="help-target-banche-aziendali" class="menu-help-anchor"></a>
 ### Banche aziendali
 **Percorso:** Impostazioni → Banche aziendali  
-**Serve per:** gestire IBAN e banche dell'azienda.  
-**Usata da:** documenti, stampe, XML e pagamenti.
+**Serve per:** gestire IBAN e banche dell'azienda.
 
 <a id="help-target-uso-dati" class="menu-help-anchor"></a>
 ### Uso dati
 **Percorso:** Impostazioni → Uso dati  
-**Serve per:** stimare quantità di dati e collezioni gestite.  
-**Quando usarla:** per controllo didattico, backup e pulizia archivi.
+**Serve per:** stimare quantità di dati e collezioni gestite.
 
 <a id="help-target-import-massivi" class="menu-help-anchor"></a>
 ### Import massivi CSV
 **Percorso:** Impostazioni → Import massivi CSV  
-**Serve per:** importare dati strutturati da file CSV.  
-**Attenzione:** verificare formato e backup prima di importare.
-
-<a id="help-target-ruoli-permessi" class="menu-help-anchor"></a>
-### Ruoli e permessi
-**Percorso:** Impostazioni → Ruoli e permessi  
-**Serve per:** consultare ruolo corrente e regole UI applicate.  
-**Quando usarla:** per capire perché una voce è visibile, nascosta o in sola lettura.
-
-<a id="help-target-superadmin" class="menu-help-anchor"></a>
-### Superadmin
-**Percorso:** Impostazioni → Superadmin  
-**Serve per:** bootstrap e diagnostica del superadmin globale applicativo.  
-**Nota importante:** Superadmin globale e amministratore/docente di gruppo sono ruoli diversi. Gli inviti agli studenti si creano da **Gruppi aziendali**, non da qui.
-
-<a id="help-target-profili-permesso" class="menu-help-anchor"></a>
-### Profili permesso
-**Percorso:** Impostazioni → Profili permesso  
-**Serve per:** definire profili riutilizzabili con livelli di accesso per moduli.  
-**Quando usarla:** prima di assegnare ruoli differenziati agli studenti.
-
-<a id="help-target-matrice-permessi" class="menu-help-anchor"></a>
-### Matrice permessi
-**Percorso:** Impostazioni → Matrice permessi  
-**Serve per:** descrivere cosa significano i livelli nessuno/lettura/scrittura/admin sui moduli.  
-**Quando usarla:** per spiegare governance e controllo accessi.
-
-<a id="help-target-override-permessi" class="menu-help-anchor"></a>
-### Override permessi
-**Percorso:** Impostazioni → Override permessi  
-**Serve per:** personalizzare i permessi di un singolo utente rispetto al profilo.  
-**Quando usarla:** in scenari didattici con eccezioni controllate.
-
-<a id="help-target-audit-sicurezza" class="menu-help-anchor"></a>
-### Audit sicurezza
-**Percorso:** Impostazioni → Audit sicurezza  
-**Serve per:** controllare accessi, ruoli, permessi e report utenti.  
-**Quando usarla:** per verifiche docente o collaudo multiutente.
-
-<a id="help-target-gruppi-aziendali" class="menu-help-anchor"></a>
-### Gruppi aziendali
-**Percorso:** Impostazioni → Gruppi aziendali  
-**Serve per:** creare gruppi condivisi, gestire membri e creare inviti per studenti/collaboratori.  
-**Inviti studenti:** crea l'invito, copia ID gruppo + codice e comunicali allo studente. L'app non invia email automaticamente.
-
-<a id="help-target-console-docente" class="menu-help-anchor"></a>
-### Console docente
-**Percorso:** Impostazioni → Console docente  
-**Serve per:** simulazioni e controllo didattico dei gruppi aziendali.  
-**Quando usarla:** durante lezioni multiutente e scenari guidati.
-
-<a id="help-target-migrazione-qa" class="menu-help-anchor"></a>
-### Migrazione e QA
-**Percorso:** Impostazioni → Migrazione e QA  
-**Serve per:** confrontare dati legacy personali e dati di gruppo, verificare migrazioni e QA multiutente.  
-**Quando usarla:** dopo aver introdotto gruppi aziendali condivisi.
+**Serve per:** importare dati strutturati da file CSV.
 
 <a id="help-target-avanzate" class="menu-help-anchor"></a>
 ### Gestione Dati
 **Percorso:** Impostazioni → Gestione Dati  
-**Serve per:** eseguire backup, import e reset controllato dei dati.  
-**Attenzione:** prima di reset/import fare sempre un backup e verificare il contesto dati attivo: legacy personale o gruppo aziendale.
+**Serve per:** eseguire backup, import e reset controllato dei dati.
+
+---
+
+## Organizzazione
+
+<a id="help-target-gruppi-aziendali" class="menu-help-anchor"></a>
+### Gruppi aziendali
+**Percorso:** Organizzazione → Gruppi aziendali  
+**Serve per:** creare gruppi condivisi, gestire membri e creare inviti per studenti/collaboratori.
+
+<a id="help-target-ruoli-permessi" class="menu-help-anchor"></a>
+### Ruoli e permessi
+**Percorso:** Organizzazione → Ruoli e permessi  
+**Serve per:** consultare ruolo corrente e regole UI applicate.
+
+<a id="help-target-profili-permesso" class="menu-help-anchor"></a>
+### Profili permesso
+**Percorso:** Organizzazione → Profili permesso  
+**Serve per:** definire profili riutilizzabili con livelli di accesso per moduli.
+
+<a id="help-target-matrice-permessi" class="menu-help-anchor"></a>
+### Matrice permessi
+**Percorso:** Organizzazione → Matrice permessi  
+**Serve per:** descrivere i livelli nessuno/lettura/scrittura/admin sui moduli.
+
+<a id="help-target-override-permessi" class="menu-help-anchor"></a>
+### Override permessi
+**Percorso:** Organizzazione → Override permessi  
+**Serve per:** personalizzare i permessi di un singolo utente rispetto al profilo.
+
+---
+
+## Didattica
+
+<a id="help-target-console-docente" class="menu-help-anchor"></a>
+### Console docente
+**Percorso:** Didattica → Console docente  
+**Serve per:** simulazioni e controllo didattico dei gruppi aziendali.
+
+<a id="help-target-migrazione-qa" class="menu-help-anchor"></a>
+### Migrazione e QA
+**Percorso:** Didattica → Migrazione e QA  
+**Serve per:** confrontare dati legacy personali e dati di gruppo, verificare migrazioni e QA multiutente.
+
+---
+
+## Amministrazione
+
+<a id="help-target-superadmin" class="menu-help-anchor"></a>
+### Superadmin
+**Percorso:** Amministrazione → Superadmin  
+**Serve per:** bootstrap e diagnostica del superadmin globale applicativo.
+
+<a id="help-target-audit-sicurezza" class="menu-help-anchor"></a>
+### Audit sicurezza
+**Percorso:** Amministrazione → Audit sicurezza  
+**Serve per:** controllare accessi, ruoli, permessi e report utenti.
 
 ---
 
@@ -481,3 +484,10 @@ La versione **0.7.8** aggiunge una guida ordinata per menu e un pulsante contest
 5. **Override permessi**
 6. **Audit sicurezza**
 7. **Console docente**
+
+<a id="help-target-operational-reports" class="menu-help-anchor"></a>
+### Segnalazioni operative
+**Percorso:** Workflow → Segnalazioni operative  
+**Serve per:** registrare anomalie operative, richieste di verifica e comunicazioni interne simulate tra reparti.  
+**Quando usarla:** prodotto non trovato in ubicazione, merce non conforme, documento incompleto, ordine non evadibile, differenza inventariale o alert B.I. da trasformare in caso operativo.  
+**Dati collegati:** nuova collezione `operationalReports`, eventuali riferimenti a prodotti, clienti, fornitori e documenti.

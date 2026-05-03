@@ -10,45 +10,20 @@
     return value;
   }
 
+  function getDataCollections() {
+    if (typeof window.getCDSDMDataCollections === 'function') return window.getCDSDMDataCollections();
+    if (window.DomainConstants && Array.isArray(window.DomainConstants.DATA_COLLECTIONS)) return window.DomainConstants.DATA_COLLECTIONS.slice();
+    if (Array.isArray(window.CDSDM_DATA_COLLECTIONS)) return window.CDSDM_DATA_COLLECTIONS.slice();
+    return [];
+  }
+
   function ensureGlobalData() {
-    if (!window.globalData) {
-      window.globalData = {
-        companyInfo: {},
-        products: [],
-        customers: [],
-        suppliers: [],
-        purchases: [],
-        invoices: [],
-        notes: [],
-        commesse: [],
-        projects: [],
-        worklogs: [],
-        vatRates: [],
-        paymentMethods: [],
-        companyBanks: [],
-        warehouseMovements: [],
-        quotes: [],
-        customerOrders: [],
-        supplierOrders: [],
-        supplierDDTs: [],
-        warehousePhysicalCounts: [],
-        warehouseLots: [],
-        paymentEvents: [],
-        cashbookMovements: [],
-        reminderEvents: [],
-        bankReconciliationEvents: [],
-        businessBudgets: [],
-        workflowEvents: [],
-        auditEvents: [],
-        teachingScenarios: [],
-        simulationEvents: [],
-        migrationReports: [],
-        permissionProfiles: [],
-        permissionMatrices: [],
-        securityAccessReports: [],
-        customerDDTs: []
-      };
-    }
+    const store = window.globalData && typeof window.globalData === 'object' ? window.globalData : {};
+    if (!store.companyInfo || typeof store.companyInfo !== 'object' || Array.isArray(store.companyInfo)) store.companyInfo = {};
+    getDataCollections().forEach(collectionName => {
+      if (!Array.isArray(store[collectionName])) store[collectionName] = [];
+    });
+    window.globalData = store;
     return window.globalData;
   }
 

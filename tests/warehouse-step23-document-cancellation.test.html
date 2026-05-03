@@ -1,0 +1,6 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Warehouse Step 23 Cancellation</title></head><body><script src="test-harness.js"></script><script src="../js/features/warehouse/document-lifecycle-service.js"></script><script src="../js/features/warehouse/document-cancellation-service.js"></script><script>
+window.globalData={products:[{id:'p1',stockQty:3,quarantineQty:0}],warehouseMovements:[],customerDDTs:[],supplierDDTs:[]};
+window.saveDataToCloud=async function(col,obj,id){ if(col==='products') Object.assign(window.globalData.products[0],obj); else window.globalData[col].push(obj); };
+test('DDT cliente fatturato non annullabile', function(){ const r=DocumentCancellationService.canCancelCustomerDDT({id:'d1',invoiceId:'i1'}); assertEqual(r.ok,false); });
+runTests();
+</script></body></html>

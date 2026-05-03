@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>CDSDM Test 0.6.3 - Matrice permessi</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <h1>Test 0.6.3 - Matrice permessi moduli</h1>
+  <pre id="out"></pre>
+  <script src="test-harness.js"></script>
+  <script src="../js/features/business-groups/permission-matrix-service.js"></script>
+  <script>
+    (function () {
+      const out = document.getElementById('out');
+      function log(msg) { out.textContent += msg + '\n'; }
+      function assert(name, cond) {
+        if (!cond) throw new Error(name);
+        log('OK - ' + name);
+      }
+      try {
+        const svc = window.PermissionMatrixService;
+        assert('PermissionMatrixService esposto', !!svc);
+        assert('versione 0.6.3', svc.VERSION === '0.6.3');
+        assert('livelli previsti', JSON.stringify(svc.LEVELS) === JSON.stringify(['none','read','write','admin']));
+        const matrix = svc.defaultMatrix();
+        assert('matrice standard contiene sales', !!matrix.modules.sales);
+        assert('sales include preventivi', matrix.modules.sales.targets.indexOf('preventivi') >= 0);
+        assert('read apre menu ma non modifica', matrix.modules.sales.actionModel.read.canOpenMenu === true && matrix.modules.sales.actionModel.read.canEdit === false);
+        assert('write modifica ma non elimina', matrix.modules.sales.actionModel.write.canEdit === true && matrix.modules.sales.actionModel.write.canDelete === false);
+        assert('admin può eliminare/configurare', matrix.modules.sales.actionModel.admin.canDelete === true && matrix.modules.sales.actionModel.admin.canConfigure === true);
+        const normalized = svc.normalizeMatrix({ modules: { sales: { defaultLevel: 'bad', actionModel: { read: { canEdit: true } } } } });
+        assert('livello non valido normalizzato a none', normalized.modules.sales.defaultLevel === 'none');
+        assert('override azione conservato', normalized.modules.sales.actionModel.read.canEdit === true);
+        assert('lookup target menu', svc.getModuleByTarget('ddt-cliente').id === 'sales');
+        log('Tutti i test 0.6.3 completati.');
+      } catch (e) {
+        log('ERRORE: ' + (e && e.message ? e.message : e));
+        throw e;
+      }
+    })();
+  </script>
+</body>
+</html>

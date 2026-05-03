@@ -12,10 +12,12 @@
   const MENU_HELP_TARGETS = {
     'home': 'Home',
     'dashboard': 'Dashboard',
+    'mini-bi': 'Mini B.I. didattica',
     'statistiche': 'Statistiche',
     'report-gestionali': 'Report gestionali',
     'centro-notifiche': 'Centro notifiche',
     'workflow-approvativi': 'Workflow approvativi',
+    'operational-reports': 'Workflow → Segnalazioni operative',
     'audit-trail': 'Registro attività',
     'ux-accessibilita': 'UX / accessibilità',
     'budget-marginalita': 'Budget e marginalità',
@@ -62,16 +64,16 @@
     'banche-aziendali': 'Banche aziendali',
     'uso-dati': 'Uso dati',
     'import-massivi': 'Import massivi CSV',
-    'ruoli-permessi': 'Ruoli e permessi',
-    'superadmin': 'Superadmin',
-    'profili-permesso': 'Profili permesso',
-    'matrice-permessi': 'Matrice permessi',
-    'override-permessi': 'Override permessi',
-    'audit-sicurezza': 'Audit sicurezza',
-    'gruppi-aziendali': 'Gruppi aziendali',
-    'console-docente': 'Console docente',
-    'migrazione-qa': 'Migrazione e QA',
-    'avanzate': 'Gestione Dati',
+    'ruoli-permessi': 'Organizzazione → Ruoli e permessi',
+    'superadmin': 'Amministrazione → Superadmin',
+    'profili-permesso': 'Organizzazione → Profili permesso',
+    'matrice-permessi': 'Organizzazione → Matrice permessi',
+    'override-permessi': 'Organizzazione → Override permessi',
+    'audit-sicurezza': 'Amministrazione → Audit sicurezza',
+    'gruppi-aziendali': 'Organizzazione → Gruppi aziendali',
+    'console-docente': 'Didattica → Console docente',
+    'migrazione-qa': 'Didattica → Migrazione e QA',
+    'avanzate': 'Impostazioni → Gestione Dati',
     'manuale': 'Manuale Utente',
     'versione': 'Versione'
   };
@@ -178,6 +180,7 @@
 
       if (target === 'statistiche' && typeof renderStatisticsPage === 'function') renderStatisticsPage();
       if (target === 'dashboard' && typeof renderDashboardPage === 'function') renderDashboardPage();
+      if (target === 'mini-bi' && window.AppModules && window.AppModules.miniBI && typeof window.AppModules.miniBI.render === 'function') window.AppModules.miniBI.render();
 
       if (target === 'registri-iva') {
         if (!regimeCapabilities.canUseVatRegisters) { alert('Registri IVA disponibili solo per il regime Ordinario.'); return; }
@@ -241,6 +244,7 @@
       if (target === 'centro-stampe' && window.AppModules && window.AppModules.printCenter && typeof window.AppModules.printCenter.render === 'function') window.AppModules.printCenter.render();
       if (target === 'centro-notifiche' && window.AppModules && window.AppModules.notificationCenter && typeof window.AppModules.notificationCenter.render === 'function') window.AppModules.notificationCenter.render();
       if (target === 'workflow-approvativi' && window.AppModules && window.AppModules.workflow && typeof window.AppModules.workflow.render === 'function') window.AppModules.workflow.render();
+      if (target === 'operational-reports' && window.AppModules && window.AppModules.operationalReports && typeof window.AppModules.operationalReports.render === 'function') window.AppModules.operationalReports.render();
       if (target === 'audit-trail' && window.AppModules && window.AppModules.auditTrail && typeof window.AppModules.auditTrail.render === 'function') window.AppModules.auditTrail.render();
       if (target === 'ux-accessibilita' && window.AppModules && window.AppModules.accessibilityUx && typeof window.AppModules.accessibilityUx.render === 'function') window.AppModules.accessibilityUx.render();
       if (target === 'scadenziario' && typeof renderScadenziarioPage === 'function') renderScadenziarioPage();
@@ -344,15 +348,20 @@
       }
     }
 
-    $('#context-help-btn').on('click', function () {
+    // Delegated binding: il pulsante ? viene creato dinamicamente nella top bar.
+    // In 0.7.8 il binding diretto poteva essere eseguito prima della creazione del bottone,
+    // lasciando tooltip visibile ma click non operativo.
+    $(document).off('click.cdsdmContextHelp', '#context-help-btn').on('click.cdsdmContextHelp', '#context-help-btn', function (e) {
+      e.preventDefault();
       const target = $(this).attr('data-help-target') || MENU_HELP_DEFAULT_TARGET;
       $('.sidebar .nav-link').removeClass('active');
       $('[data-target="manuale"]').addClass('active');
       $('.content-section').addClass('d-none');
       $('#manuale').removeClass('d-none');
       updateBreadcrumb('Manuale Utente');
+      $('#manuale-title').text('Guida menu');
       loadDocumentation(MENU_HELP_DOC_KEY, '#manuale-content', false).then(function () {
-        setTimeout(function () { scrollToHelpTarget(target); }, 80);
+        setTimeout(function () { scrollToHelpTarget(target); }, 120);
       });
     });
 

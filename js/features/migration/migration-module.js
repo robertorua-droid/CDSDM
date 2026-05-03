@@ -254,7 +254,7 @@
     }
 
     // 2) Collezioni principali
-    const collections = window.CDSDM_DATA_COLLECTIONS || ['products', 'customers', 'suppliers', 'purchases', 'invoices', 'notes', 'commesse', 'projects', 'worklogs', 'vatRates', 'paymentMethods', 'companyBanks', 'warehouseMovements', 'quotes', 'customerOrders', 'supplierOrders', 'supplierDDTs', 'customerDDTs', 'warehousePhysicalCounts', 'warehouseLots', 'paymentEvents', 'cashbookMovements', 'reminderEvents', 'bankReconciliationEvents', 'businessBudgets', 'workflowEvents', 'auditEvents', 'teachingScenarios', 'simulationEvents', 'migrationReports', 'permissionProfiles', 'permissionMatrices', 'securityAccessReports'];
+    const collections = (typeof window.getCDSDMDataCollections === 'function') ? window.getCDSDMDataCollections() : (window.CDSDM_DATA_COLLECTIONS || []);
     const perCol = {};
     for (const col of collections) {
       try {
@@ -419,7 +419,7 @@
 
         const backup = {
           exportedAt: new Date().toISOString(),
-          appVersion: '0.7.5',
+          appVersion: '0.12.11',
           userId: currentUser.uid,
           persistenceScope: window.currentBusinessGroup && window.currentBusinessGroup.id ? 'businessGroup' : 'legacyUser',
           businessGroup: window.currentBusinessGroup || null,

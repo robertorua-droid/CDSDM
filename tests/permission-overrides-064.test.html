@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>CDSDM 0.6.4 - Override permessi</title>
+</head>
+<body>
+  <h1>Test 0.6.4 - Override permessi per singolo utente</h1>
+  <pre id="output"></pre>
+  <script src="../js/features/business-groups/permission-matrix-service.js"></script>
+  <script src="../js/features/business-groups/permission-overrides-service.js"></script>
+  <script src="../js/core/permissions-policy.js"></script>
+  <script>
+    const out = document.getElementById('output');
+    function assert(condition, message) {
+      if (!condition) throw new Error(message);
+      out.textContent += '✓ ' + message + '\n';
+    }
+
+    (function run() {
+      assert(!!window.PermissionOverridesService, 'PermissionOverridesService disponibile');
+      assert(window.PermissionOverridesService.VERSION === '0.6.4', 'versione servizio override 0.6.4');
+      assert(['0.6.4','0.6.5','0.6.6','0.7.0'].indexOf(window.PermissionsPolicy.VERSION) >= 0, 'PermissionsPolicy compatibile con override 0.6.4+');
+
+      const base = { customers: 'read', sales: 'write', invoices: 'read', warehouse: 'none' };
+      const overrides = window.PermissionOverridesService.normalizeOverrides({ customers: 'write', sales: 'inherit', warehouse: 'read', bogus: 'admin' });
+      const effective = window.PermissionOverridesService.mergePermissions(base, overrides);
+
+      assert(overrides.customers === 'write', 'override write normalizzato');
+      assert(!('sales' in overrides), 'inherit non viene salvato come override');
+      assert(effective.customers === 'write', 'override sostituisce il profilo');
+      assert(effective.sales === 'write', 'modulo senza override eredita il profilo');
+      assert(effective.warehouse === 'read', 'override può elevare o ridurre un modulo specifico');
+
+      window.currentBusinessGroup = {
+        id: 'grp-test',
+        role: 'sales',
+        membership: {
+          role: 'sales',
+          profilePermissions: base,
+          permissionOverrides: overrides
+        }
+      };
+      assert(window.PermissionsPolicy.getPermissionLevel('customers') === 'write', 'PermissionsPolicy applica override su customers');
+      assert(window.PermissionsPolicy.getPermissionLevel('sales') === 'write', 'PermissionsPolicy mantiene profilo su sales');
+      assert(window.PermissionsPolicy.canWrite('customers') === true, 'canWrite rispetta override write');
+      assert(window.PermissionsPolicy.canAccessTarget('anagrafica-clienti') === true, 'menu target ereditato/override visibile');
+
+      out.textContent += '\nTutti i controlli 0.6.4 superati.';
+    })();
+  </script>
+</body>
+</html>

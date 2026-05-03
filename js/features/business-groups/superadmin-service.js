@@ -51,7 +51,7 @@
     const email = lower(win.currentUser.email || '');
     if (!email) throw new Error('L’account corrente non ha email verificabile.');
     const payload = {
-      appName: 'Gestionale Cloud - Professionisti',
+      appName: 'CDSDM - Cloud Data Suite for Digital Management',
       version: VERSION,
       schemaVersion: 'superadmin-0.7.7',
       status: 'active',

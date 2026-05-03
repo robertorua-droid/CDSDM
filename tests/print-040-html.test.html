@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Stampe HTML 0.4.0 - Test</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="p-4">
+  <h1 class="h4">Stampe e PDF HTML 0.4.0 - Test</h1>
+  <div id="results" class="mt-3"></div>
+  <script>
+    const results = [];
+    function assertTrue(condition, message) { results.push({ ok: !!condition, message }); }
+    window.globalData = {
+      companyInfo: { name: 'Studio Demo', partitaIva: 'IT00000000000', comune: 'Roma' },
+      customers: [{ id: 'c1', name: 'Cliente Demo' }],
+      suppliers: [{ id: 's1', name: 'Fornitore Demo' }],
+      invoices: [{ id: 'i1', number: 'FAT-1', date: '2026-01-10', customerId: 'c1', total: 122, lines: [{ code: 'A', description: 'Servizio', qty: 1, price: 100, total: 100 }] }],
+      purchases: [], paymentEvents: [], cashbookMovements: [], reminderEvents: []
+    };
+    window.getData = function (key) { return window.globalData[key]; };
+    window.LedgerService = {
+      buildEntries: function () { return [{ date: '2026-01-10', subjectName: 'Cliente Demo', type: 'Fattura', documentNumber: 'FAT-1', description: 'Vendita', debit: 122, credit: 0 }]; }
+    };
+    window.AccountStatementService = {
+      buildStatement: function () { return { entries: [{ date: '2026-01-10', subjectName: 'Cliente Demo', type: 'Fattura', documentNumber: 'FAT-1', description: 'Vendita', debit: 122, credit: 0, statementRunningBalance: 122 }], summary: { from: '2026-01-01', to: '2026-12-31', openingBalance: 0, debit: 122, credit: 0, closingBalance: 122 } }; }
+    };
+  </script>
+  <script src="../js/features/accounting/print-template-service.js"></script>
+  <script>
+    const statement = window.PrintTemplateService.buildHtml('statement', { subjectType: 'customer', from: '2026-01-01', to: '2026-12-31' });
+    const ledger = window.PrintTemplateService.buildHtml('ledger', { subjectType: 'customer' });
+    const invoice = window.PrintTemplateService.buildHtml('invoice', { documentId: 'i1' });
+    assertTrue(statement.includes('Estratto conto') && statement.includes('Cliente Demo') && statement.includes('Saldo finale'), 'Genera estratto conto HTML con soggetto e saldo');
+    assertTrue(ledger.includes('Partitario') && ledger.includes('FAT-1'), 'Genera partitario HTML con documento');
+    assertTrue(invoice.includes('Fattura') && invoice.includes('Servizio') && invoice.includes('Studio Demo'), 'Genera documento vendita HTML con intestazione aziendale e righe');
+    assertTrue(statement.includes('Stampa / Salva come PDF'), 'Template include comando stampa/salva PDF browser');
+    document.getElementById('results').innerHTML = results.map(r => '<div class="alert '+(r.ok?'alert-success':'alert-danger')+'">'+(r.ok?'OK':'KO')+' - '+r.message+'</div>').join('');
+    if (results.some(r => !r.ok)) throw new Error('Test stampe HTML 0.4.0 fallito');
+  </script>
+</body>
+</html>

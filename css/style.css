@@ -1271,3 +1271,445 @@ body.dark-mode .sidebar-business-group {
     border-radius: 6px;
     transition: outline-color .3s ease;
 }
+
+
+/* Branding 0.8.0 */
+.app-brand-login-logo { width: 88px; height: 88px; object-fit: contain; }
+.app-sidebar-brand { display:flex; align-items:center; gap:0.75rem; justify-content:center; }
+.app-sidebar-brand-logo { width: 42px; height: 42px; object-fit: contain; border-radius: 0.5rem; background: rgba(255,255,255,0.08); padding: 0.25rem; }
+.app-sidebar-brand-title { color:#fff; font-weight:700; line-height:1.1; }
+.app-sidebar-brand-subtitle { color: rgba(255,255,255,0.72); font-size:0.68rem; line-height:1.1; max-width: 180px; }
+#top-navbar { display:flex; align-items:center; gap: 0.75rem; }
+.top-navbar-brand { align-items:center; gap:0.6rem; padding: 0.2rem 0.65rem; border:1px solid rgba(13,110,253,0.15); border-radius: 999px; background: rgba(13,110,253,0.04); }
+.top-navbar-brand-logo { width: 28px; height: 28px; object-fit: contain; }
+.top-navbar-brand-title { font-weight:700; line-height:1; }
+.top-navbar-brand-subtitle { font-size:0.72rem; color:#6c757d; line-height:1.1; }
+#breadcrumb { margin-left: auto; }
+.version-brand-logo { width: 96px; max-width:100%; height:auto; }
+.app-home-brand-card { background: linear-gradient(135deg, rgba(13,110,253,0.07), rgba(13,110,253,0.02)); }
+.app-home-brand-logo { width: 72px; height: 72px; object-fit: contain; }
+@media (max-width: 991.98px) { .app-sidebar-brand-subtitle { max-width: none; } }
+
+
+/* Branding 0.8.2 — rifinitura estetica login/home/sidebar */
+#login-container {
+  max-width: none;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(13,110,253,0.14), transparent 32rem),
+    radial-gradient(circle at bottom right, rgba(10,88,202,0.12), transparent 28rem),
+    linear-gradient(135deg, #f7fbff 0%, #eef6ff 48%, #ffffff 100%);
+}
+#login-container .row { min-height: 100vh; }
+#login-container .card {
+  border: 0;
+  border-radius: 1.35rem;
+  box-shadow: 0 1.25rem 3.5rem rgba(13, 49, 94, 0.18);
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+}
+#login-container .card-body { padding: 2rem; }
+.app-brand-login { position: relative; }
+.app-brand-login-logo {
+  width: 96px;
+  height: 96px;
+  filter: drop-shadow(0 0.75rem 1.25rem rgba(13, 110, 253, 0.18));
+}
+.app-brand-login .card-title {
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #073b77;
+}
+.app-login-badges,
+.app-home-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem;
+}
+.app-login-badges span,
+.app-home-pill-row span {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.76rem;
+  background: rgba(13, 110, 253, 0.09);
+  color: #0a4f98;
+  border: 1px solid rgba(13, 110, 253, 0.13);
+}
+#login-container .btn-primary,
+#login-container .btn-success {
+  border-radius: 0.8rem;
+  box-shadow: 0 0.55rem 1.1rem rgba(13, 110, 253, 0.18);
+}
+#login-container .form-control,
+#login-container .btn-outline-secondary,
+#login-container .btn-outline-primary {
+  border-radius: 0.75rem;
+}
+.app-sidebar-brand {
+  justify-content: flex-start;
+  text-align: left;
+  padding: 0.35rem 0.25rem;
+}
+.app-sidebar-brand-logo {
+  width: 46px;
+  height: 46px;
+  background: rgba(255,255,255,0.16);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08), 0 0.4rem 1rem rgba(0,0,0,0.12);
+}
+.app-sidebar-brand-title { letter-spacing: 0.06em; }
+.app-sidebar-brand-line {
+  width: 100%;
+  height: 1px;
+  margin: 0.55rem 0 0.8rem;
+  background: linear-gradient(90deg, rgba(255,255,255,0.05), rgba(255,255,255,0.35), rgba(255,255,255,0.05));
+}
+.sidebar-header #company-name-sidebar {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.top-navbar-brand {
+  box-shadow: 0 0.35rem 1rem rgba(13,110,253,0.06);
+}
+.app-home-brand-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.35rem;
+  background:
+    radial-gradient(circle at top right, rgba(13,110,253,0.16), transparent 20rem),
+    linear-gradient(135deg, rgba(13,110,253,0.085), rgba(255,255,255,0.86));
+}
+.app-home-brand-card::after {
+  content: '';
+  position: absolute;
+  right: -4rem;
+  top: -4rem;
+  width: 12rem;
+  height: 12rem;
+  border-radius: 50%;
+  background: rgba(13,110,253,0.08);
+}
+.app-home-logo-shell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 92px;
+  height: 92px;
+  border-radius: 1.25rem;
+  background: rgba(255,255,255,0.72);
+  box-shadow: inset 0 0 0 1px rgba(13,110,253,0.08), 0 0.75rem 1.75rem rgba(13,49,94,0.10);
+  z-index: 1;
+}
+.app-home-brand-card .card-body { position: relative; z-index: 1; }
+.app-home-brand-logo { width: 74px; height: 74px; }
+.app-home-kicker {
+  text-transform: uppercase;
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: #0d6efd;
+}
+.app-home-pill-row { justify-content: flex-start; }
+html[data-theme="dark"] #login-container,
+body.dark-mode #login-container {
+  background:
+    radial-gradient(circle at top left, rgba(66,153,225,0.16), transparent 32rem),
+    radial-gradient(circle at bottom right, rgba(13,110,253,0.13), transparent 28rem),
+    linear-gradient(135deg, #0d1724 0%, #111f2e 50%, #0a1018 100%);
+}
+html[data-theme="dark"] #login-container .card,
+body.dark-mode #login-container .card {
+  background: rgba(18, 31, 45, 0.96);
+  color: #eef6ff;
+}
+html[data-theme="dark"] .app-brand-login .card-title,
+body.dark-mode .app-brand-login .card-title { color: #e9f4ff; }
+html[data-theme="dark"] .app-login-badges span,
+body.dark-mode .app-login-badges span,
+html[data-theme="dark"] .app-home-pill-row span,
+body.dark-mode .app-home-pill-row span {
+  background: rgba(66,153,225,0.16);
+  color: #d7ecff;
+  border-color: rgba(142,203,255,0.22);
+}
+html[data-theme="dark"] .app-home-brand-card,
+body.dark-mode .app-home-brand-card {
+  background: linear-gradient(135deg, rgba(66,153,225,0.13), rgba(20,33,47,0.92));
+}
+html[data-theme="dark"] .app-home-logo-shell,
+body.dark-mode .app-home-logo-shell {
+  background: rgba(255,255,255,0.08);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08), 0 0.75rem 1.75rem rgba(0,0,0,0.20);
+}
+@media (max-width: 575.98px) {
+  #login-container .card-body { padding: 1.35rem; }
+  .app-brand-login-logo { width: 82px; height: 82px; }
+  .app-home-logo-shell { width: 78px; height: 78px; }
+  .app-home-brand-logo { width: 62px; height: 62px; }
+}
+
+
+/* Branding 0.8.3 */
+.brand-auto-dark { display:block; }
+.app-sidebar-brand-logo, .top-navbar-brand-logo { background: rgba(255,255,255,0.08); }
+[data-theme="dark"] .app-sidebar-brand-logo,
+.dark-mode .app-sidebar-brand-logo,
+[data-theme="dark"] .brand-auto-dark,
+.dark-mode .brand-auto-dark { filter: drop-shadow(0 0 10px rgba(255,255,255,0.18)); }
+[data-theme="dark"] .app-brand-login-logo,
+.dark-mode .app-brand-login-logo { filter: drop-shadow(0 4px 18px rgba(255,255,255,0.14)); }
+[data-theme="dark"] .version-brand-logo,
+.dark-mode .version-brand-logo,
+[data-theme="dark"] .app-home-brand-logo,
+.dark-mode .app-home-brand-logo { filter: drop-shadow(0 4px 18px rgba(255,255,255,0.12)); }
+
+
+/* Branding / Sidebar UX 0.8.4 */
+/* Obiettivi: distinguere meglio voci menu vs separatori, rendere la sidebar coerente col tema e ridurre lo scroll verticale. */
+
+/* Light mode: sidebar finalmente chiara e coerente col resto dell'interfaccia */
+html:not([data-theme="dark"]) .sidebar {
+  background: linear-gradient(180deg, #eef4fb 0%, #e7eef7 100%);
+  color: #213547;
+  border-right: 1px solid rgba(44, 62, 80, 0.10);
+  box-shadow: 2px 0 14px rgba(15, 23, 42, 0.08);
+  scrollbar-color: #b8c6d8 #e7eef7;
+}
+html:not([data-theme="dark"]) .sidebar::-webkit-scrollbar-track { background: #e7eef7; }
+html:not([data-theme="dark"]) .sidebar::-webkit-scrollbar-thumb { background: #b6c4d5; }
+html:not([data-theme="dark"]) .sidebar::-webkit-scrollbar-thumb:hover { background: #91a7c0; }
+html:not([data-theme="dark"]) .sidebar-header { border-bottom-color: rgba(44,62,80,0.10); }
+html:not([data-theme="dark"]) .sidebar h4,
+html:not([data-theme="dark"]) .app-sidebar-brand-title { color: #17324d; }
+html:not([data-theme="dark"]) .app-sidebar-brand-subtitle,
+html:not([data-theme="dark"]) .sidebar #user-name-sidebar,
+html:not([data-theme="dark"]) .sidebar-business-group,
+html:not([data-theme="dark"]) .sidebar-theme-toggle .form-check-label,
+html:not([data-theme="dark"]) .nav-section-header { color: #5a6f84 !important; }
+html:not([data-theme="dark"]) .sidebar-business-group,
+html:not([data-theme="dark"]) .sidebar-theme-toggle {
+  background: rgba(255,255,255,0.55);
+  border-color: rgba(44,62,80,0.10);
+}
+html:not([data-theme="dark"]) .sidebar-theme-toggle .form-check-input {
+  background-color: rgba(23,50,77,0.08);
+  border-color: rgba(23,50,77,0.20);
+}
+html:not([data-theme="dark"]) .sidebar-action-icon { color: #6b7f93; }
+html:not([data-theme="dark"]) .sidebar-action-icon:hover { background: rgba(13,110,253,0.10); color: #0d6efd; }
+
+/* Dark mode: sidebar più nettamente distinta e coerente con il tema */
+html[data-theme="dark"] .sidebar {
+  background: linear-gradient(180deg, #101923 0%, #0f1720 100%);
+  color: #ecf3fb;
+  border-right: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 2px 0 16px rgba(0,0,0,0.28);
+  scrollbar-color: #33475d #101923;
+}
+html[data-theme="dark"] .sidebar::-webkit-scrollbar-track { background: #101923; }
+html[data-theme="dark"] .sidebar::-webkit-scrollbar-thumb { background: #33475d; }
+html[data-theme="dark"] .sidebar::-webkit-scrollbar-thumb:hover { background: #48637e; }
+html[data-theme="dark"] .sidebar-header { border-bottom-color: rgba(255,255,255,0.08); }
+html[data-theme="dark"] .sidebar h4,
+html[data-theme="dark"] .app-sidebar-brand-title { color: #f4f8fc; }
+html[data-theme="dark"] .app-sidebar-brand-subtitle,
+html[data-theme="dark"] .sidebar #user-name-sidebar,
+html[data-theme="dark"] .nav-section-header { color: #8ea3b6 !important; }
+html[data-theme="dark"] .sidebar-theme-toggle,
+html[data-theme="dark"] .sidebar-business-group {
+  background: rgba(255,255,255,0.035);
+  border-color: rgba(255,255,255,0.08);
+}
+
+/* Compattazione generale */
+.sidebar { width: 252px !important; min-width: 252px !important; max-width: 252px !important; }
+.main-content { margin-left: 252px; width: calc(100% - 252px); }
+.sidebar-header { padding: 12px 12px 10px; margin-bottom: 6px; }
+.nav-section-header { padding: 10px 14px 8px; font-size: 0.76rem; letter-spacing: 0.09em; }
+.sidebar .nav-section-content { padding-bottom: 0.20rem; }
+.sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.60rem;
+  padding: 6px 14px 6px 16px;
+  font-size: 0.92rem;
+  line-height: 1.2;
+  border-left-width: 2px;
+  margin: 0;
+}
+.sidebar .nav-item i:not(.chevron) { width: 16px; margin-right: 0; font-size: 0.95rem; opacity: 0.92; }
+
+/* Menu item: più visibile del separatore */
+html:not([data-theme="dark"]) .sidebar .nav-link { color: #30475f; }
+html:not([data-theme="dark"]) .sidebar .nav-link:hover { background: rgba(13,110,253,0.10); color: #17324d; border-left-color: rgba(13,110,253,0.40); }
+html:not([data-theme="dark"]) .sidebar .nav-link.active { background: #0d6efd; color: #fff; border-left-color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06); }
+html[data-theme="dark"] .sidebar .nav-link { color: #d8e3ee; }
+html[data-theme="dark"] .sidebar .nav-link:hover { background: rgba(255,255,255,0.06); color: #fff; border-left-color: rgba(144, 202, 249, 0.55); }
+html[data-theme="dark"] .sidebar .nav-link.active { background: rgba(52, 152, 219, 0.25); color: #fff; border-left-color: #8ecbff; box-shadow: inset 0 0 0 1px rgba(142,203,255,0.14); }
+
+/* Separatori/sottosezioni: devono sembrare etichette, non voci cliccabili */
+.sidebar .nav-section-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.45rem 0.9rem 0.10rem 0.95rem;
+  padding: 0.15rem 0.10rem 0.15rem 0.15rem;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  line-height: 1.1;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  cursor: default;
+  user-select: none;
+}
+.sidebar .nav-section-subtitle::before {
+  content: "";
+  width: 3px;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(13,110,253,0.75);
+  flex: 0 0 auto;
+}
+.sidebar .nav-section-subtitle::after {
+  content: "";
+  flex: 1 1 auto;
+  height: 1px;
+  margin-top: 0;
+}
+html:not([data-theme="dark"]) .sidebar .nav-section-subtitle { color: #7d8fa0; opacity: 0.95; }
+html:not([data-theme="dark"]) .sidebar .nav-section-subtitle::after { background: linear-gradient(90deg, rgba(125,143,160,0.35), rgba(125,143,160,0)); }
+html[data-theme="dark"] .sidebar .nav-section-subtitle { color: #8ea3b6; opacity: 0.92; }
+html[data-theme="dark"] .sidebar .nav-section-subtitle::after { background: linear-gradient(90deg, rgba(142,163,182,0.30), rgba(142,163,182,0)); }
+.sidebar .nav-section-subtitle:hover, .sidebar .nav-section-subtitle:focus { background: transparent; }
+
+/* Leggera riduzione spazi nelle utility laterali */
+.sidebar-global-actions.d-flex { gap: 0.35rem !important; }
+.app-sidebar-brand-line { margin-top: 0.6rem; opacity: 0.55; }
+
+/* Responsive: ulteriore compattazione sotto 1200px */
+@media (max-width: 1199.98px) {
+  .sidebar .nav-link { padding-top: 5px; padding-bottom: 5px; font-size: 0.90rem; }
+  .nav-section-header { padding-top: 9px; padding-bottom: 7px; }
+}
+
+
+/* Sidebar / Branding fine tuning 0.8.5 */
+/* Toggle Dark Mode su una sola riga */
+.sidebar-theme-toggle { padding: 8px 12px; }
+.sidebar-theme-toggle .form-check {
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+}
+.sidebar-theme-toggle .form-check-input {
+  flex: 0 0 auto;
+}
+.sidebar-theme-toggle .form-check-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  white-space: nowrap;
+  flex: 0 1 auto;
+  line-height: 1;
+}
+.sidebar-theme-toggle .form-check-label span {
+  white-space: nowrap;
+  display: inline-block;
+}
+.sidebar-theme-toggle .form-check-label .fa-moon {
+  margin-right: 0 !important;
+  line-height: 1;
+}
+
+/* Migliora la resa del logo in Dark Mode senza cambiarne la sostanza */
+.app-sidebar-brand picture,
+.app-home-brand-card picture,
+#version-info picture,
+#login-container picture {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+html[data-theme="dark"] .app-sidebar-brand picture {
+  padding: 0.35rem;
+  border-radius: 1rem;
+  background: linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.04));
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 10px 24px rgba(0,0,0,0.26);
+}
+html[data-theme="dark"] .app-sidebar-brand-logo {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.05);
+  filter: brightness(1.05) contrast(1.08) saturate(1.06) drop-shadow(0 3px 14px rgba(142,203,255,0.18));
+}
+html[data-theme="dark"] .brand-auto-dark {
+  filter: brightness(1.05) contrast(1.08) saturate(1.06) drop-shadow(0 3px 14px rgba(142,203,255,0.16));
+}
+html[data-theme="dark"] .app-home-brand-card picture,
+html[data-theme="dark"] #version-info picture,
+html[data-theme="dark"] #login-container picture {
+  padding: 0.25rem;
+  border-radius: 1rem;
+}
+html[data-theme="dark"] .version-brand-logo,
+html[data-theme="dark"] .app-home-brand-logo,
+html[data-theme="dark"] .app-brand-login-logo {
+  filter: brightness(1.04) contrast(1.07) saturate(1.05) drop-shadow(0 4px 18px rgba(142,203,255,0.14));
+}
+
+
+/* Brand micro-refinement 0.8.6 */
+/* Obiettivo: eliminare l'effetto di bordino chiaro/pixellato in Dark Mode mantenendo il logo invariato nella sostanza. */
+
+/* Cornice più pulita e meno invadente nei contesti dark */
+html[data-theme="dark"] .app-sidebar-brand picture,
+html[data-theme="dark"] #login-container picture,
+html[data-theme="dark"] .app-home-brand-card picture,
+html[data-theme="dark"] #version-info picture {
+  padding: 0.18rem;
+  border-radius: 0.9rem;
+  background: radial-gradient(circle at 50% 40%, rgba(255,255,255,0.05), rgba(255,255,255,0.015) 62%, rgba(255,255,255,0) 75%);
+  border: 0;
+  box-shadow: none;
+}
+
+/* Il logo resta lo stesso ma senza piastra bianca evidente */
+html[data-theme="dark"] .app-sidebar-brand-logo,
+html[data-theme="dark"] .app-brand-login-logo,
+html[data-theme="dark"] .app-home-brand-logo,
+html[data-theme="dark"] .version-brand-logo,
+html[data-theme="dark"] .brand-auto-dark {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0.75rem;
+  filter: brightness(1.035) contrast(1.06) saturate(1.04) drop-shadow(0 4px 12px rgba(52,152,219,0.18));
+}
+
+/* Sidebar brand block leggermente più elegante e compatto */
+.app-sidebar-brand { gap: 0.65rem; }
+html[data-theme="dark"] .app-sidebar-brand {
+  padding: 0.15rem 0.4rem;
+  border-radius: 1rem;
+}
+html[data-theme="dark"] .app-sidebar-brand-title {
+  letter-spacing: 0.02em;
+}
+html[data-theme="dark"] .app-sidebar-brand-subtitle {
+  color: rgba(216, 227, 238, 0.76);
+}
+
+/* Login: resa un filo più pulita */
+#login-container .app-brand-login { margin-bottom: 1.35rem !important; }
+#login-container .app-brand-login .text-secondary { opacity: 0.88; }
+html[data-theme="dark"] #login-container .app-brand-login {
+  padding-bottom: 0.1rem;
+}

@@ -62,7 +62,7 @@ async function loadAllDataFromCloud() {
         }
 
         // 2) Altre collezioni: products, customers, invoices, notes
-        const collections = window.CDSDM_DATA_COLLECTIONS || ['products', 'customers', 'suppliers', 'purchases', 'invoices', 'notes', 'commesse', 'projects', 'worklogs', 'vatRates', 'paymentMethods', 'companyBanks', 'warehouseMovements', 'quotes', 'customerOrders', 'supplierOrders', 'supplierDDTs', 'customerDDTs', 'warehousePhysicalCounts', 'warehouseLots', 'paymentEvents', 'cashbookMovements', 'reminderEvents', 'bankReconciliationEvents', 'businessBudgets', 'workflowEvents', 'auditEvents', 'teachingScenarios', 'simulationEvents', 'migrationReports', 'permissionProfiles', 'permissionMatrices', 'securityAccessReports'];
+        const collections = (typeof window.getCDSDMDataCollections === 'function') ? window.getCDSDMDataCollections() : (window.CDSDM_DATA_COLLECTIONS || []);
         for (const col of collections) {
             const snapshot = await dataRootRef.collection(col).get();
             globalData[col] = snapshot.docs.map(doc => ({

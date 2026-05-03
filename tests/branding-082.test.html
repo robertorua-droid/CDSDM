@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>CDSDM 0.8.2 - Pulizia estetica</title></head>
+<body><pre id="output"></pre><script>
+async function read(p){ return fetch(p).then(r=>r.text()); }
+async function run(){
+  const out=document.getElementById('output');
+  const index=await read('../index.html');
+  const css=await read('../css/style.css');
+  const readme=await read('../README.md');
+  const doc=await read('../DOCUMENTAZIONE/59_PULIZIA_ESTETICA_082.md');
+  const checks=[];
+  function ok(msg, pass){ checks.push((pass?'✓ ':'✗ ')+msg); if(!pass) throw new Error(msg); }
+  ok('versione UI aggiornata a 0.8.2', index.includes('CDSDM Versione 0.8.2'));
+  ok('login badge presenti', index.includes('app-login-badges'));
+  ok('home hero aggiornata', index.includes('app-home-pill-row'));
+  ok('CSS branding 0.8.2 presente', css.includes('Branding 0.8.2'));
+  ok('README aggiornato', readme.includes('CDSDM Versione 0.8.2'));
+  ok('documentazione 0.8.2 presente', doc.includes('Pulizia estetica'));
+  out.textContent=checks.join('\n');
+}
+run().catch(err=>{ document.getElementById('output').textContent = 'ERRORE: '+err.message; });
+</script></body></html>

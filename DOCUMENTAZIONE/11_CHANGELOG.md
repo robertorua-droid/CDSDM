@@ -1,3 +1,263 @@
+## 0.12.11 — Workflow approvativo operativo e coerenza bozze/documenti
+
+- Allineato il comportamento del workflow approvativo al ciclo aziendale: l’approvazione non registra solo un evento, ma rende operativo il documento quando opportuno.
+- Ordini cliente e fornitore in `draft` passano a `confirmed` dopo **Approva** nel Workflow approvativo.
+- DDT cliente/fornitore selezionano solo ordini confermati/parzialmente lavorati, escludendo bozze, annullati, chiusi o ricevuti/evasI completamente.
+- Aggiunta documentazione sul confine corretto tra Workflow approvativi e Segnalazioni operative.
+
+## 0.12.10 — Collegamenti guidati segnalazioni e quarantena
+
+- Rafforzato **Workflow → Segnalazioni operative** con una sezione di collegamento guidato a documenti operativi.
+- Per gli ordini fornitore vengono mostrati solo documenti in stato lavorabile/approvato: `approved`, `confirmed`, `partially_received`, `open`, `in_progress`.
+- Sono esclusi bozze, eliminati, annullati, non approvati, ricevuti, chiusi e archiviati.
+- Aggiunto pulsante contestuale **Segnala quarantena** nel dettaglio DDT fornitore quando sono presenti quantità in quarantena.
+- La segnalazione generata da DDT fornitore resta in **Bozza** finché l'utente non preme **Invia segnalazione**, così il passaggio a documento effettivo resta esplicito e didattico.
+- Nessuna nuova collezione: resta `operationalReports`.
+
+## 0.12.9 — Hotfix operativo segnalazioni: invio, comunicazioni interne e transizioni stato
+
+- Aggiunti pulsanti **Salva bozza** e **Invia segnalazione** per distinguere preparazione e invio operativo.
+- L'invio crea una prima comunicazione interna al reparto destinatario, utile per casi come merce ricevuta e messa in quarantena.
+- Rinominato il pulsante del dettaglio in **Invia comunicazione** e aggiunto selettore reparto destinatario.
+- Aggiunti pulsanti workflow guidati: prendi in carico, avvia lavorazione, richiedi info, risolvi, chiudi e annulla.
+- Corretto il conflitto tra il contenitore dei messaggi pagina e il campo stato del form.
+- Aggiornati test browser-based e documentazione.
+
+---
+
+## 0.12.8 — Segnalazioni operative: QA, permessi e pacchetto stabile
+
+- Completato il ramo 0.12.x **Workflow → Segnalazioni operative**.
+- Introdotta la collezione `operationalReports` per anomalie operative, richieste di verifica e comunicazioni interne simulate.
+- Aggiornati `CDSDM_DATA_COLLECTIONS`, AppStore/globalData, permessi UI, matrice permessi, profili, regole Firestore, test e documentazione.
+- Aggiunta scheda stampabile HTML/print e creazione da alert Mini B.I.
+- Nessun backend custom e nessuna Cloud Function obbligatoria.
+
+## 0.11.6 — Stabilizzazione Mini B.I. e QA regressione ruoli
+
+## 0.11.6 — QA performance, dataset grande e pacchetto stabile B.I. operativa
+
+- Stabilizzato il ramo 0.11.x della Mini B.I. operativa.
+- Aggiunti drill-down KPI, filtri dettaglio, export CSV, report stampabile HTML/print, alert operativi e cruscotto operativo per area.
+- Mantenuta logica client-side senza nuove collezioni Firestore, backend custom o Cloud Functions.
+- Rafforzati test browser-based e smoke test su export, permessi, dataset vuoto/demo/grande e anti-leakage UI.
+
+## 0.11.5 — Cruscotto operativo per area
+
+- Le viste Vendite, Acquisti, Contabilità, Magazzino, Direzione e Didattica aggregano KPI, dettagli e alert coerenti con le aree autorizzate.
+
+## 0.11.4 — Alert operativi B.I.
+
+- Aggiunti alert non persistenti per DDT da fatturare, ordini aperti, crediti/debiti aperti, sotto-scorta e lotti in scadenza.
+
+## 0.11.3 — Report B.I. stampabile HTML/print
+
+- Aggiunta vista report generata nel browser e stampabile/salvabile come PDF dal browser.
+
+## 0.11.2 — Export CSV Mini B.I.
+
+- Aggiunto export CSV dei dettagli KPI e nomenclatura file didattica.
+
+## 0.11.1 — Tabelle dettaglio e filtri avanzati
+
+- Aggiunti filtro testo, filtro stato/severità, ordinamento e limite righe sul drill-down KPI.
+
+## 0.11.0 — Drill-down KPI Mini B.I.
+
+- Le card KPI aprono un pannello dettaglio con i documenti/righe che alimentano l'indicatore.
+
+
+- Aggiunta suite regressiva per i profili Mini B.I.: admin, docente, vendite, acquisti, contabilità, magazzino e profilo limitato.
+- Aggiunto pannello QA didattico nella pagina Mini B.I. per evidenziare la coerenza delle aree visibili per ruolo.
+- Rafforzato `MiniBIService` con valutazione permessi testabile tramite policy simulata, senza alterare Firestore o dati reali.
+- Aggiunto test browser-based `tests/mini-bi-0107.test.html`.
+
+## 0.10.6 — Hotfix tab Mini B.I. e rendering aree
+
+- Corretto il binding del modulo Mini B.I. nell'inizializzazione generale.
+- Reso `render()` autosufficiente: la pagina registra i click delle tab anche se il bind centrale non è ancora passato.
+- Garantita una sola tab attiva alla volta e rendering sempre coerente dell'area selezionata.
+- Aggiunto test browser-based `mini-bi-0106.test.html`.
+
+## 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+- Mini B.I. integrata con permessi granulari per area, riusando i moduli esistenti.
+- Nessuna nuova collezione Firestore, nessun backend custom e nessuna Cloud Function obbligatoria.
+- Test browser-based dedicato: `tests/mini-bi-0105.test.html`.
+
+## 0.10.4 — Audit consultazione B.I. sensibile opzionale
+
+- Mini B.I. integrata con permessi granulari per area, riusando i moduli esistenti.
+- Nessuna nuova collezione Firestore, nessun backend custom e nessuna Cloud Function obbligatoria.
+- Test browser-based dedicato: `tests/mini-bi-0104.test.html`.
+
+## 0.10.3 — Permessi avanzati docente/simulazione
+
+- Mini B.I. integrata con permessi granulari per area, riusando i moduli esistenti.
+- Nessuna nuova collezione Firestore, nessun backend custom e nessuna Cloud Function obbligatoria.
+- Test browser-based dedicato: `tests/mini-bi-0103.test.html`.
+
+## 0.10.2 — Panoramica B.I. adattiva e anti-leakage
+
+- Mini B.I. integrata con permessi granulari per area, riusando i moduli esistenti.
+- Nessuna nuova collezione Firestore, nessun backend custom e nessuna Cloud Function obbligatoria.
+- Test browser-based dedicato: `tests/mini-bi-0102.test.html`.
+
+## 0.10.1 — Visibilità sezioni B.I. per ruolo
+
+- Mini B.I. integrata con permessi granulari per area, riusando i moduli esistenti.
+- Nessuna nuova collezione Firestore, nessun backend custom e nessuna Cloud Function obbligatoria.
+- Test browser-based dedicato: `tests/mini-bi-0101.test.html`.
+
+## 0.10.0 — Matrice permessi B.I. basata sui moduli esistenti
+
+- Mini B.I. integrata con permessi granulari per area, riusando i moduli esistenti.
+- Nessuna nuova collezione Firestore, nessun backend custom e nessuna Cloud Function obbligatoria.
+- Test browser-based dedicato: `tests/mini-bi-0100.test.html`.
+
+## 0.9.8 — QA, performance browser e pacchetto stabile mini B.I.
+
+- QA, performance browser e pacchetto stabile mini B.I..
+- Mini B.I. didattica basata su dati già presenti in Firestore/AppStore/globalData.
+- Nessuna nuova collezione Firestore obbligatoria, nessun backend custom, nessuna Cloud Function richiesta.
+
+## 0.9.7 — Vista Didattica / Docente e scenari B.I.
+
+- Vista Didattica / Docente e scenari B.I..
+- Mini B.I. didattica basata su dati già presenti in Firestore/AppStore/globalData.
+- Nessuna nuova collezione Firestore obbligatoria, nessun backend custom, nessuna Cloud Function richiesta.
+
+## 0.9.6 — Vista Direzione / Amministrazione
+
+- Vista Direzione / Amministrazione.
+- Mini B.I. didattica basata su dati già presenti in Firestore/AppStore/globalData.
+- Nessuna nuova collezione Firestore obbligatoria, nessun backend custom, nessuna Cloud Function richiesta.
+
+## 0.9.5 — Vista B.I. Magazzino
+
+- Vista B.I. Magazzino.
+- Mini B.I. didattica basata su dati già presenti in Firestore/AppStore/globalData.
+- Nessuna nuova collezione Firestore obbligatoria, nessun backend custom, nessuna Cloud Function richiesta.
+
+## 0.9.4 — Vista B.I. Contabilità operativa
+
+- Vista B.I. Contabilità operativa.
+- Mini B.I. didattica basata su dati già presenti in Firestore/AppStore/globalData.
+- Nessuna nuova collezione Firestore obbligatoria, nessun backend custom, nessuna Cloud Function richiesta.
+
+## 0.9.3 — Vista B.I. Acquisti
+
+- Vista B.I. Acquisti.
+- Mini B.I. didattica basata su dati già presenti in Firestore/AppStore/globalData.
+- Nessuna nuova collezione Firestore obbligatoria, nessun backend custom, nessuna Cloud Function richiesta.
+
+## 0.9.2 — Vista B.I. Vendite
+
+- Vista B.I. Vendite.
+- Mini B.I. didattica basata su dati già presenti in Firestore/AppStore/globalData.
+- Nessuna nuova collezione Firestore obbligatoria, nessun backend custom, nessuna Cloud Function richiesta.
+
+## 0.9.1 — Filtri periodo e servizio aggregazioni B.I.
+
+- Filtri periodo e servizio aggregazioni B.I..
+- Mini B.I. didattica basata su dati già presenti in Firestore/AppStore/globalData.
+- Nessuna nuova collezione Firestore obbligatoria, nessun backend custom, nessuna Cloud Function richiesta.
+
+## 0.9.0 — Fondazione mini B.I.: architettura, catalogo KPI e pagina introduttiva
+
+- Fondazione mini B.I.: architettura, catalogo KPI e pagina introduttiva.
+- Mini B.I. didattica basata su dati già presenti in Firestore/AppStore/globalData.
+- Nessuna nuova collezione Firestore obbligatoria, nessun backend custom, nessuna Cloud Function richiesta.
+
+## 0.8.12 — Consolidamento dati, test e report prima della mini B.I.
+
+- Corretto l'indice test browser-based: titolo e badge ora indicano 0.8.12.
+- Aggiunta funzione `getCDSDMDataCollections()` come accesso prudente alla fonte ufficiale `DomainConstants.DATA_COLLECTIONS`.
+- Allineata l'inizializzazione di `AppStore/globalData` alla lista ufficiale delle collezioni dati.
+- Sostituiti fallback lunghi duplicati in `firebase-cloud.js` e `migration-module.js` con accesso alla fonte condivisa.
+- Aggiornata la versione dei backup a `0.8.12`.
+- Documentato il ruolo trasversale, ma storico, di `Report gestionali` in vista della futura mini B.I.
+- Aggiunti `DOCUMENTAZIONE/69_CONSOLIDAMENTO_DATI_0812.md` e `tests/consolidamento-0812.test.html`.
+
+## 0.8.11 — Test finale riorganizzazione menu
+
+- Test finale riorganizzazione menu.
+- Aggiornati README, indice documentazione, documentazione in-app e test dove previsto.
+
+## 0.8.10 — Documentazione della nuova struttura menu
+
+- Documentazione della nuova struttura menu.
+- Aggiornati README, indice documentazione, documentazione in-app e test dove previsto.
+
+## 0.8.9 — Aiuto contestuale riallineato alla nuova struttura menu
+
+- Aiuto contestuale riallineato alla nuova struttura menu.
+- Aggiornati README, indice documentazione, documentazione in-app e test dove previsto.
+
+## 0.8.8 — Guida menu aggiornata alla nuova organizzazione
+
+- Guida menu aggiornata alla nuova organizzazione.
+- Aggiornati README, indice documentazione, documentazione in-app e test dove previsto.
+
+## 0.8.7 — Riorganizzazione menu: impostazioni, organizzazione, didattica e amministrazione
+
+- Riorganizzazione menu: impostazioni, organizzazione, didattica e amministrazione.
+- Aggiornati README, indice documentazione, documentazione in-app e test dove previsto.
+
+## 0.8.6 — Micro rifinitura brand e Dark Mode più pulita
+
+- Rimossa la piastra chiara troppo evidente attorno al logo nei contesti Dark Mode.
+- Mantenuto il logo standard con rifinitura CSS più discreta per login, sidebar, home e pagina versione.
+- Aggiornati `README`, documentazione e test di regressione UI.
+
+## 0.8.5 — Toggle Dark Mode su una riga e logo più leggibile al buio
+
+- Allineato il controllo `Dark mode` della sidebar su una sola riga.
+- Migliorata la resa del logo in Dark Mode senza modificarne la sostanza grafica.
+- Aggiornati `README`, documentazione e test di regressione UI.
+
+## 0.8.4 — Sidebar più chiara, compatta e coerente col tema
+
+- Sidebar resa visivamente coerente con Light Mode e Dark Mode.
+- Separatore interno delle sezioni ridisegnato come etichetta non cliccabile.
+- Menu laterale compattato in modo prudente per ridurre lo scroll verticale.
+- Aggiornati `README`, documentazione e test di regressione UI.
+
+## 0.8.3 — Ripristino icona classica e visibilità Dark Mode
+
+- Ripristinata l’icona classica del progetto come base del branding applicativo.
+- Rigenerati gli asset favicon/logo a partire dall’icona preferita.
+- Aggiunta variante `brand-mark-darkmode.png` per migliorare la leggibilità su sfondi scuri.
+- Aggiornate le aree login, sidebar, home e versione senza toccare la logica gestionale.
+
+## 0.8.2 — Pulizia estetica login, home e sidebar
+
+- Migliorata la schermata di login con card più pulita, badge informativi e valorizzazione del logo CDSDM.
+- Migliorata la home con hero card didattica, pillole di orientamento e presentazione più elegante del nome esteso.
+- Rifinita la sidebar con brand più ordinato e separatore grafico.
+- Aggiunta documentazione `59_PULIZIA_ESTETICA_082.md` e test `branding-082.test.html`.
+
+## 0.8.1 — Rifinitura branding, naming uniforme e favicon ottimizzata
+
+- Sostituiti i riferimenti residui al nome storico **Gestionale Cloud - Professionisti** con **CDSDM** o **Cloud Data Suite for Digital Management** nei punti applicativi principali.
+- Aggiornati fallback `appName` e stampa per coerenza di naming.
+- Sostituito e rifinito il set `assets/branding/` con una favicon/logo più puliti e leggibili.
+- Aggiornati `README`, documentazione, test e versione esportata.
+
+## 0.8.0 — Branding applicativo, nome esteso e favicon
+
+- Integrata l’identità del progetto **CDSDM — Cloud Data Suite for Digital Management** nell’interfaccia.
+- Aggiunti favicon e asset grafici in `assets/branding/`.
+- Aggiornati `index.html`, pagina versione, login, home, sidebar e top navbar con il nome esteso del progetto.
+- Aggiunta documentazione `57_IDENTITA_VISIVA_080.md` e test `branding-080.test.html`.
+
+## 0.7.9 — Correzione apertura guida contestuale ?
+
+- Corretto il click del pulsante contestuale **?** nella top bar.
+- Il pulsante ora apre la sezione **Manuale Utente / Guida menu** e scorre al capitolo collegato alla pagina attiva.
+- La causa era il binding diretto dell'evento su un bottone creato dinamicamente: sostituito con binding delegato.
+- Aggiunto test `tests/menu-help-click-079.test.html`.
+
 ## 0.7.8 — Guida completa alle voci di menu e aiuto contestuale
 
 - Aggiunto `DOCUMENTAZIONE/55_GUIDA_MENU_COMPLETA_078.md` con descrizione ordinata delle principali voci di menu.

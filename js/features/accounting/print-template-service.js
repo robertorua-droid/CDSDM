@@ -24,7 +24,7 @@
     const raw = getData('companyInfo') || {};
     return (win.DomainNormalizers && typeof win.DomainNormalizers.normalizeCompanyInfo === 'function') ? win.DomainNormalizers.normalizeCompanyInfo(raw) : raw;
   }
-  function companyName(c) { return str(c.name || c.ragioneSociale || c.denominazione || c.nomeStudio || 'Gestionale Cloud - Professionisti'); }
+  function companyName(c) { return str(c.name || c.ragioneSociale || c.denominazione || c.nomeStudio || 'CDSDM'); }
   function companyLine(c) {
     return [c.address || c.indirizzo, c.cap, c.city || c.comune, c.province || c.provincia, c.country || c.nazione].map(str).filter(Boolean).join(' ');
   }

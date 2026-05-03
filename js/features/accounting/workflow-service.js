@@ -1,5 +1,5 @@
 // js/features/accounting/workflow-service.js
-// CDSDM 0.4.2 - Workflow approvativi leggeri
+// CDSDM 0.12.11 - Workflow approvativi con stato operativo documenti
 (function () {
   'use strict';
   const win = window;
@@ -53,8 +53,51 @@
     tasks = applyFilters(tasks, opts.filters || {}); tasks.sort((a,b) => ({danger:3,warning:2,info:1}[b.priority]||0)-({danger:3,warning:2,info:1}[a.priority]||0) || str(b.date).localeCompare(str(a.date))); return { tasks, summary: summarize(tasks, d.workflowEvents), events: d.workflowEvents }; }
   function applyFilters(tasks, filters) { const status = str(filters.status || 'open'); const type = str(filters.type || 'all'); const search = lower(filters.search || ''); return arr(tasks).filter(t => { if (status === 'open' && t.workflowStatus === 'approved') return false; if (status !== 'all' && status !== 'open' && t.workflowStatus !== status) return false; if (type !== 'all' && t.sourceType !== type) return false; if (search && lower([t.title,t.subjectName,t.number,t.statusLabel,t.suggestedAction].join(' ')).indexOf(search) < 0) return false; return true; }); }
   function summarize(tasks, events) { const s = { total: tasks.length, pending_review: 0, draft: 0, blocked: 0, rejected: 0, approved: 0, byType: {}, events: arr(events).length }; tasks.forEach(t => { s[t.workflowStatus] = (s[t.workflowStatus] || 0) + 1; s.byType[t.sourceType] = (s.byType[t.sourceType] || 0) + 1; }); return s; }
-  function createWorkflowEvent(task, action, note, user) { const targetStatus = ({ approve:'approved', reject:'rejected', block:'blocked', review:'pending_review', draft:'draft' })[action] || 'pending_review'; return { id: 'wf_' + Date.now() + '_' + Math.random().toString(36).slice(2,8), sourceType: task.sourceType, sourceCollection: task.sourceCollection || SOURCE_COLLECTION[task.sourceType] || '', sourceId: task.sourceId, sourceNumber: task.number || '', subjectName: task.subjectName || '', action, statusFrom: task.workflowStatus || 'pending_review', statusTo: targetStatus, note: str(note), createdAt: nowIso(), createdBy: str(user || (win.currentUser && (win.currentUser.email || win.currentUser.uid)) || 'utente'), version: '0.4.2' }; }
-  async function applyAction(task, action, note) { if (!task || !task.sourceId || !task.sourceCollection) throw new Error('Attività workflow non valida.'); const event = createWorkflowEvent(task, action, note); if (typeof win.saveDataToCloud === 'function') { await win.saveDataToCloud('workflowEvents', event, event.id); await win.saveDataToCloud(task.sourceCollection, { workflowStatus: event.statusTo, approvalStatus: event.statusTo, approvalNotes: event.note, approvedAt: event.statusTo === 'approved' ? event.createdAt : (task.doc && task.doc.approvedAt) || '', approvedBy: event.statusTo === 'approved' ? event.createdBy : (task.doc && task.doc.approvedBy) || '', updatedAt: event.createdAt }, task.sourceId); } else { win.globalData = win.globalData || {}; win.globalData.workflowEvents = arr(win.globalData.workflowEvents); win.globalData.workflowEvents.push(event); } return event; }
+
+  function isDraftLike(status) { return ['','draft','bozza','pending_review','da verificare','review'].indexOf(lower(status)) >= 0; }
+  function isOperativeLike(status) { return ['confirmed','open','aperto','partially_received','partially_fulfilled','received','fulfilled','delivered','issued','emesso','posted','registrato','paid','closed'].indexOf(lower(status)) >= 0; }
+  function operationalStatusForApproval(task) {
+    const type = str(task && task.sourceType);
+    const doc = (task && task.doc) || {};
+    const current = lower(doc.status || doc.stato || '');
+    if (current === 'cancelled' || current === 'canceled' || current === 'annullato' || current === 'deleted' || current === 'eliminato') return null;
+    if (type === 'supplier_order') return isDraftLike(current) ? 'confirmed' : null;
+    if (type === 'customer_order') return isDraftLike(current) ? 'confirmed' : null;
+    if (type === 'quote') return isDraftLike(current) ? 'approved' : null;
+    if (type === 'supplier_ddt') return isDraftLike(current) ? 'received' : null;
+    if (type === 'customer_ddt') return isDraftLike(current) ? 'delivered' : null;
+    if (type === 'purchase') return isDraftLike(current) ? 'registered' : null;
+    if (type === 'invoice') return isDraftLike(current) ? 'issued' : null;
+    if (type === 'credit_note') return isDraftLike(current) ? 'issued' : null;
+    if (type === 'payment_event') return isDraftLike(current) ? 'registered' : null;
+    if (type === 'bank_reconciliation') return isDraftLike(current) ? 'reconciled' : null;
+    return null;
+  }
+  function operationalPatchForAction(task, event) {
+    const patch = {
+      workflowStatus: event.statusTo,
+      approvalStatus: event.statusTo,
+      approvalNotes: event.note,
+      approvedAt: event.statusTo === 'approved' ? event.createdAt : (task.doc && task.doc.approvedAt) || '',
+      approvedBy: event.statusTo === 'approved' ? event.createdBy : (task.doc && task.doc.approvedBy) || '',
+      updatedAt: event.createdAt
+    };
+    if (event.statusTo === 'approved') {
+      const operationalStatus = operationalStatusForApproval(task);
+      if (operationalStatus) {
+        patch.status = operationalStatus;
+        patch.stato = operationalStatus;
+        patch.operationalStatus = operationalStatus;
+        patch.confirmedAt = operationalStatus === 'confirmed' ? event.createdAt : (task.doc && task.doc.confirmedAt) || '';
+        patch.confirmedBy = operationalStatus === 'confirmed' ? event.createdBy : (task.doc && task.doc.confirmedBy) || '';
+      }
+    }
+    if (event.statusTo === 'rejected') { patch.status = isOperativeLike(task.doc && task.doc.status) ? task.doc.status : 'rejected'; patch.stato = patch.status; }
+    if (event.statusTo === 'blocked') { patch.operationalStatus = 'blocked'; }
+    return patch;
+  }
+  function createWorkflowEvent(task, action, note, user) { const targetStatus = ({ approve:'approved', reject:'rejected', block:'blocked', review:'pending_review', draft:'draft' })[action] || 'pending_review'; return { id: 'wf_' + Date.now() + '_' + Math.random().toString(36).slice(2,8), sourceType: task.sourceType, sourceCollection: task.sourceCollection || SOURCE_COLLECTION[task.sourceType] || '', sourceId: task.sourceId, sourceNumber: task.number || '', subjectName: task.subjectName || '', action, statusFrom: task.workflowStatus || 'pending_review', statusTo: targetStatus, note: str(note), createdAt: nowIso(), createdBy: str(user || (win.currentUser && (win.currentUser.email || win.currentUser.uid)) || 'utente'), version: '0.12.11' }; }
+  async function applyAction(task, action, note) { if (!task || !task.sourceId || !task.sourceCollection) throw new Error('Attività workflow non valida.'); const event = createWorkflowEvent(task, action, note); const patch = operationalPatchForAction(task, event); if (typeof win.saveDataToCloud === 'function') { await win.saveDataToCloud('workflowEvents', event, event.id); await win.saveDataToCloud(task.sourceCollection, patch, task.sourceId); } else { win.globalData = win.globalData || {}; win.globalData.workflowEvents = arr(win.globalData.workflowEvents); win.globalData.workflowEvents.push(event); const col = task.sourceCollection; win.globalData[col] = arr(win.globalData[col]); const idx = win.globalData[col].findIndex(x => str(x.id) === str(task.sourceId)); if (idx >= 0) win.globalData[col][idx] = Object.assign({}, win.globalData[col][idx], patch); } return event; }
   function exportRows(tasks) { return arr(tasks).map(t => ({ tipo: t.label, numero: t.number, data: t.date, soggetto: t.subjectName, importo: t.amount, stato: t.statusLabel, azione: t.suggestedAction, sezione: t.targetLabel })); }
-  win.WorkflowService = { statuses: STATUS_LABELS, sourceCollection: SOURCE_COLLECTION, buildTasks, applyAction, createWorkflowEvent, exportRows };
+  win.WorkflowService = { statuses: STATUS_LABELS, sourceCollection: SOURCE_COLLECTION, buildTasks, applyAction, createWorkflowEvent, exportRows, operationalStatusForApproval, operationalPatchForAction };
 })();

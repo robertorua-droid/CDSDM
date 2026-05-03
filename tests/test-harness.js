@@ -103,6 +103,17 @@
     renderResults(targetId || (document.getElementById('test-results') ? 'test-results' : 'test-output'));
   }
 
+  // Esporta anche alias globali per mantenere compatibili i test storici.
+  window.test = test;
+  window.assertEqual = assertEqual;
+  window.assertDeepEqual = assertDeepEqual;
+  window.assertTrue = assertTrue;
+  window.assertFalse = assertFalse;
+  window.assertApprox = assertApprox;
+  window.assertIncludes = assertIncludes;
+  window.assertMatch = assertMatch;
+  window.runTests = run;
+
   window.TestHarness = {
     test,
     assertEqual,

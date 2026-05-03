@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>CDSDM 0.7.8 - Test guida menu contestuale</title></head>
+<body>
+<h1>Test guida menu contestuale 0.7.8</h1>
+<pre id="out"></pre>
+<script>
+(async function(){
+  const out = document.getElementById('out');
+  function ok(label, cond){ out.textContent += (cond ? 'OK ' : 'KO ') + label + '\n'; if(!cond) throw new Error(label); }
+  const nav = await fetch('../js/features/navigation/navigation-module.js').then(r => r.text());
+  const doc = await fetch('../DOCUMENTAZIONE/55_GUIDA_MENU_COMPLETA_078.md').then(r => r.text());
+  const index = await fetch('../index.html').then(r => r.text());
+  ok('pulsante contestuale definito', nav.includes('context-help-btn'));
+  ok('documento guida menu configurato', nav.includes('55_GUIDA_MENU_COMPLETA_078'));
+  ok('ancora Superadmin presente', doc.includes('help-target-superadmin'));
+  ok('ancora Gruppi aziendali presente', doc.includes('help-target-gruppi-aziendali'));
+  ok('ancora DDT cliente presente', doc.includes('help-target-ddt-cliente'));
+  ok('versione UI aggiornata a 0.7.8', index.includes('CDSDM Versione 0.7.8'));
+  out.textContent += '\nTest completato.';
+})();
+</script>
+</body>
+</html>

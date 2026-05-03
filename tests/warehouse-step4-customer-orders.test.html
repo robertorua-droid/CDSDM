@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><title>Step 4 Customer Orders Test</title></head>
+<body><pre id="out"></pre>
+<script src="../js/core/domain-normalizers.js"></script>
+<script>
+(function(){
+  const out = document.getElementById('out');
+  function ok(cond,msg){ if(!cond) throw new Error(msg); }
+  const order = window.normalizeCustomerOrder({ number:'OC-2026-0001', customerName:'Cliente Demo', status:'confermato', lines:[{ productId:'P1', productCode:'A1', productDescription:'Articolo', qty:'3', fulfilledQty:'1', price:'10.50' }] });
+  ok(order.status === 'confirmed', 'stato normalizzato');
+  ok(order.lines[0].remainingQty === 2, 'residuo calcolato');
+  ok(order.total === 31.5, 'totale calcolato');
+  out.textContent = 'OK - customer order normalizer';
+})();
+</script></body></html>

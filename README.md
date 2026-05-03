@@ -1,4 +1,264 @@
-## CDSDM Versione 0.7.8 — Guida completa alle voci di menu e aiuto contestuale
+## CDSDM Versione 0.12.11 — Workflow approvativo operativo e coerenza bozze/documenti
+
+Questa release introduce e stabilizza il ramo 0.12.x dedicato alle **Segnalazioni operative**: anomalie, richieste di verifica, comunicazioni interne simulate, scheda stampabile e integrazione prudente con gli alert Mini B.I.
+
+- Nuova collezione Firestore: `operationalReports`.
+- Nuova voce menu: `Workflow → Segnalazioni operative`.
+- Persistenza principale su Firestore, compatibile con `users/{uid}` e `businessGroups/{groupId}`.
+- Nessun backend custom e nessuna Cloud Function obbligatoria.
+- Aggiornati permessi UI, matrice permessi, Firestore rules, documentazione e test browser-based.
+
+## CDSDM Versione 0.11.6 — Mini B.I. operativa: drill-down, export e QA performance
+
+Questa release conclude il ramo 0.11.x dedicato all'analisi operativa della Mini B.I. didattica.
+
+Funzioni principali:
+
+- drill-down sulle card KPI;
+- dettaglio filtrabile, ordinabile e limitato per performance browser;
+- export CSV generato nel browser;
+- report HTML stampabile/salvabile come PDF dal browser;
+- alert operativi non persistenti;
+- cruscotto operativo per area;
+- QA browser-based su dataset vuoto/demo/grande, export e permessi.
+
+Restano invariati Firestore rules, collezioni, backend e Cloud Functions. Gli indicatori sono didattici e non certificativi.
+
+## CDSDM Versione 0.10.6 — Hotfix tab Mini B.I.
+
+Questa patch corregge il rendering delle tab operative nella pagina **Analisi → Mini B.I. didattica**. Il click su Direzione, Vendite, Acquisti, Contabilità, Magazzino e Didattica aggiorna ora sempre il contenuto dell'area selezionata, con una sola tab attiva alla volta.
+
+Nessuna modifica a Firestore, regole, backend, Cloud Functions o collezioni dati.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+Release del ramo mini B.I. didattica. Mantiene Firebase Auth + Firestore, non introduce backend custom e non rende obbligatorie Cloud Functions.
+
+### Novità 0.10.x
+
+- Mini B.I. mappata sui permessi dei moduli esistenti.
+- Viste B.I. visibili per ruolo/area: Direzione, Vendite, Acquisti, Contabilità, Magazzino, Didattica.
+- Panoramica adattiva anti-leakage: gli aggregati trasversali non vengono mostrati a profili non autorizzati.
+- Audit consultazione predisposto ma disattivato di default.
+- Nessuna nuova collezione Firestore e nessuna Cloud Function.
+
+### Novità 0.9.8
+
+- QA, performance browser e pacchetto stabile mini B.I..
+- Test browser-based aggiornati nella cartella `tests`.
+- Documentazione aggiornata in `DOCUMENTAZIONE`.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+Release del ramo mini B.I. didattica. Mantiene Firebase Auth + Firestore, non introduce backend custom e non rende obbligatorie Cloud Functions.
+
+### Novità 0.9.7
+
+- Vista Didattica / Docente e scenari B.I..
+- Test browser-based aggiornati nella cartella `tests`.
+- Documentazione aggiornata in `DOCUMENTAZIONE`.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+Release del ramo mini B.I. didattica. Mantiene Firebase Auth + Firestore, non introduce backend custom e non rende obbligatorie Cloud Functions.
+
+### Novità 0.9.6
+
+- Vista Direzione / Amministrazione.
+- Test browser-based aggiornati nella cartella `tests`.
+- Documentazione aggiornata in `DOCUMENTAZIONE`.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+Release del ramo mini B.I. didattica. Mantiene Firebase Auth + Firestore, non introduce backend custom e non rende obbligatorie Cloud Functions.
+
+### Novità 0.9.5
+
+- Vista B.I. Magazzino.
+- Test browser-based aggiornati nella cartella `tests`.
+- Documentazione aggiornata in `DOCUMENTAZIONE`.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+Release del ramo mini B.I. didattica. Mantiene Firebase Auth + Firestore, non introduce backend custom e non rende obbligatorie Cloud Functions.
+
+### Novità 0.9.4
+
+- Vista B.I. Contabilità operativa.
+- Test browser-based aggiornati nella cartella `tests`.
+- Documentazione aggiornata in `DOCUMENTAZIONE`.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+Release del ramo mini B.I. didattica. Mantiene Firebase Auth + Firestore, non introduce backend custom e non rende obbligatorie Cloud Functions.
+
+### Novità 0.9.3
+
+- Vista B.I. Acquisti.
+- Test browser-based aggiornati nella cartella `tests`.
+- Documentazione aggiornata in `DOCUMENTAZIONE`.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+Release del ramo mini B.I. didattica. Mantiene Firebase Auth + Firestore, non introduce backend custom e non rende obbligatorie Cloud Functions.
+
+### Novità 0.9.2
+
+- Vista B.I. Vendite.
+- Test browser-based aggiornati nella cartella `tests`.
+- Documentazione aggiornata in `DOCUMENTAZIONE`.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+Release del ramo mini B.I. didattica. Mantiene Firebase Auth + Firestore, non introduce backend custom e non rende obbligatorie Cloud Functions.
+
+### Novità 0.9.1
+
+- Filtri periodo e servizio aggregazioni B.I..
+- Test browser-based aggiornati nella cartella `tests`.
+- Documentazione aggiornata in `DOCUMENTAZIONE`.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+Release del ramo mini B.I. didattica. Mantiene Firebase Auth + Firestore, non introduce backend custom e non rende obbligatorie Cloud Functions.
+
+### Novità 0.9.0
+
+- Fondazione mini B.I.: architettura, catalogo KPI e pagina introduttiva.
+- Test browser-based aggiornati nella cartella `tests`.
+- Documentazione aggiornata in `DOCUMENTAZIONE`.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+La versione **0.8.12** consolida la base tecnica prima del ramo mini B.I. 0.9.x. Non introduce nuove collezioni Firestore, non modifica le regole e non richiede backend custom.
+
+### Novità 0.8.12
+
+- corretta l'incoerenza dell'indice test browser-based, ora allineato a 0.8.12;
+- centralizzata la lettura delle collezioni dati tramite `DomainConstants.DATA_COLLECTIONS`, `CDSDM_DATA_COLLECTIONS` e `getCDSDMDataCollections()`;
+- allineata l'inizializzazione `AppStore/globalData` alla fonte ufficiale delle collezioni;
+- rimossi fallback lunghi duplicati nei moduli principali di caricamento/reset dati;
+- aggiornato `appVersion` dei backup a 0.8.12;
+- chiarito il ruolo di `Report gestionali` come vista trasversale operativa, distinta dalla futura mini B.I.;
+- aggiunti documentazione e test browser-based di consolidamento.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+La versione **0.8.11** aggiunge il test browser-based finale della riorganizzazione menu.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+La versione **0.8.10** aggiorna la documentazione generale per spiegare la nuova struttura del menu introdotta nel ramo 0.8.7–0.8.9.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+La versione **0.8.9** riallinea il pulsante `?` alla nuova struttura del menu.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+La versione **0.8.8** aggiorna la guida completa alle voci di menu per riflettere la nuova organizzazione introdotta nella 0.8.7.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+La versione **0.8.7** avvia la riorganizzazione del menu laterale separando le funzioni operative da quelle di utenti, didattica e amministrazione tecnica.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+La versione **0.8.6** effettua una micro-rifinitura estetica del blocco brand, soprattutto nella schermata di login e nella sidebar. L’obiettivo è eliminare l’effetto di bordino chiaro/pixellato percepito in Dark Mode, mantenendo invariata l’identità del logo.
+
+### Novità 0.8.6
+
+- rimosso l’uso del logo con piastra chiara nei contesti dark;
+- resa Dark Mode più pulita con solo interventi CSS su contrasto, glow e sfondo del contenitore;
+- lieve rifinitura del blocco brand in login/sidebar;
+- aggiornati changelog, documentazione e test.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+La versione **0.8.5** rifinisce ulteriormente la sidebar: il controllo **Dark mode** rimane su una sola riga e il logo mantiene la stessa identità grafica, ma viene reso più leggibile in **Dark Mode** con un trattamento visivo più adatto agli sfondi scuri.
+
+### Novità 0.8.5
+
+- toggle **Dark mode** e testo allineati su una sola riga nella sidebar;
+- migliorata la resa del logo in Dark Mode con contrasto, glow e cornice leggera;
+- nessuna modifica al disegno sostanziale del logo;
+- aggiornati documentazione, changelog e test.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+La versione **0.8.4** migliora la leggibilità del menu laterale. I separatori interni risultano ora chiaramente distinti dalle vere voci di menu, la sidebar segue in modo più evidente il tema chiaro/scuro e la densità verticale è stata leggermente ridotta per limitare lo scroll.
+
+### Novità 0.8.4
+
+- sidebar chiara in Light Mode e più coerente col resto dell’interfaccia;
+- sidebar più profonda e leggibile in Dark Mode;
+- separatori (`Documenti commerciali`, `Fatturazione`, ecc.) ridisegnati come etichette e non come pseudo-pulsanti;
+- voci di menu più visibili rispetto ai separatori;
+- compattazione prudente di padding/spaziature della sidebar;
+- aggiornati documentazione e test.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+La versione **0.8.3** ripristina come icona principale la variante grafica precedente, preferita per riconoscibilità, e migliora la leggibilità nei contesti a sfondo scuro con un trattamento grafico più adatto alla **Dark Mode**.
+
+### Novità 0.8.3
+
+- ripristinata l’icona classica come base del brand;
+- rigenerati `brand-mark.png`, favicons e asset collegati a partire dall’icona classica;
+- aggiunta variante `brand-mark-darkmode.png` con supporto visivo migliore su sfondi scuri;
+- aggiornati login, sidebar, home e pagina versione per usare l’icona ripristinata;
+- aggiornata documentazione e test.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+La versione **0.8.2** migliora la presentazione visiva dell’app nei punti più esposti all’utente: login, sidebar e home. È una rifinitura grafica: non modifica dati, Firestore, backup/import/reset, permessi o flussi gestionali.
+
+### Novità 0.8.2
+
+- login più ordinato con logo CDSDM, badge informativi e card più leggibile;
+- home con hero card più chiara e orientata al contesto didattico;
+- sidebar con brand più pulito e separatore grafico;
+- CSS dedicato a tema chiaro/scuro e mobile;
+- documentazione e test aggiornati.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+La versione **0.8.1** completa il lavoro iniziato nella 0.8.0: sostituisce i riferimenti residui al nome storico **Gestionale Cloud - Professionisti** nei punti applicativi più rilevanti e integra un set grafico più pulito per **logo/favicons**.
+
+### Novità 0.8.1
+
+- sostituiti i riferimenti residui al vecchio naming con **CDSDM** o **Cloud Data Suite for Digital Management** dove più opportuno;
+- aggiornato il fallback `appName` del bootstrap superadmin;
+- aggiornato il fallback del servizio stampe;
+- rifinito il set grafico in `assets/branding/` con nuova icona sorgente e favicon più leggibili;
+- aggiornati versione, changelog, documentazione e test.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+La versione **0.8.0** integra l’identità del progetto **CDSDM — Cloud Data Suite for Digital Management** nell’interfaccia. Il rilascio aggiunge favicon, asset di branding e rende visibile il nome esteso nei punti più utili per gli utenti: login, sidebar, top bar, home e pagina versione.
+
+### Novità 0.8.0
+
+- aggiunta favicon (`favicon.ico`, `favicon-16.png`, `favicon-32.png`, `apple-touch-icon.png`);
+- nuovo asset `assets/branding/brand-mark.png`;
+- titolo pagina aggiornato a **CDSDM — Cloud Data Suite for Digital Management**;
+- nome esteso visibile in login, sidebar, top navbar, home e schermata versione;
+- documentazione aggiornata con nota di branding e identità visiva;
+- nuovo test browser-based di presenza branding e favicon.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
+
+La versione **0.7.9** corregge il pulsante contestuale **?** introdotto nella 0.7.8: il tooltip era visibile, ma in alcuni caricamenti il click non apriva la guida perché il bottone veniva creato dinamicamente dopo il binding diretto dell'evento. Ora il click è gestito con binding delegato e apre la sezione **Manuale Utente** sulla guida menu corrispondente alla pagina attiva.
+
+### Correzioni 0.7.9
+
+- Click del pulsante **?** reso operativo con binding delegato `click.cdsdmContextHelp`.
+- Apertura esplicita della sezione **Manuale Utente / Guida menu**.
+- Scroll automatico al capitolo collegato alla pagina visualizzata.
+- Aggiunta documentazione `DOCUMENTAZIONE/56_CORREZIONE_AIUTO_CONTESTUALE_079.md`.
+- Aggiunto test browser-based `tests/menu-help-click-079.test.html`.
+
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
 
 La versione **0.7.8** aggiunge una guida ordinata per ogni voce di menu e un pulsante contestuale **?** nella barra superiore. Il pulsante apre il manuale sul capitolo collegato alla pagina visualizzata, migliorando uso didattico e onboarding senza introdurre nuove funzioni gestionali.
 
@@ -9,7 +269,7 @@ La versione **0.7.8** aggiunge una guida ordinata per ogni voce di menu e un pul
 - aggiornamento documentazione in-app e indice;
 - test browser-based dedicato alla guida menu.
 
-## CDSDM Versione 0.7.7 — Correzione bootstrap Superadmin e guida regole Firestore
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
 
 - Corretto il flusso di bootstrap Superadmin quando la lettura preventiva di `appSettings/system` è bloccata da regole Firestore non allineate.
 - Aggiunto messaggio operativo per pubblicare `firestore.rules` o creare manualmente `appSettings/system`.
@@ -17,42 +277,42 @@ La versione **0.7.8** aggiunge una guida ordinata per ogni voce di menu e un pul
 
 ---
 
-## CDSDM Versione 0.7.6 — Pacchetto stabile per uso in classe, collaudo finale e checklist docente
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
 
 - Chiuso ramo 0.7.x come pacchetto stabile.
 - Aggiunta checklist docente e test finale.
 
 ---
 
-## CDSDM Versione 0.7.5 — Dataset demo, scenari didattici e casi d’uso guidati
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
 
 - Aggiunto dataset demo statico.
 - Aggiunto validatore dataset non distruttivo.
 
 ---
 
-## CDSDM Versione 0.7.5 — Miglioramento UX, testi di aiuto, onboarding e messaggi di errore
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
 
 - Aggiunto OnboardingHelpService.
 - Aggiunti testi di aiuto e CSS dedicato.
 
 ---
 
-## CDSDM Versione 0.7.5 — Manuale d’uso completo e guida didattica docente/studente
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
 
 - Consolidato manuale d’uso.
 - Aggiunta guida didattica docente/studente.
 
 ---
 
-## CDSDM Versione 0.7.5 — QA funzionale end-to-end e correzione regressioni operative
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
 
 - Aggiunto servizio E2EQaService.
 - Aggiunto test browser-based QA end-to-end.
 
 ---
 
-## CDSDM Versione 0.7.5 — Consolidamento tecnico generale e pulizia regressioni
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
 
 La versione **0.7.0** apre il ramo 0.7.x dedicato alla stabilizzazione didattica. Non introduce nuove funzioni gestionali importanti: consolida struttura, versioni, backup/import/reset, documentazione, test e coerenza tra moduli, Firestore e permessi.
 
@@ -79,7 +339,7 @@ La versione **0.7.0** apre il ramo 0.7.x dedicato alla stabilizzazione didattica
 
 ---
 
-## CDSDM Versione 0.6.6 — Audit sicurezza, report utenti e QA accessi
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
 
 La versione **0.6.6** chiude il ramo 0.6.x della gestione utenti introducendo una sezione di audit per verificare membri, inviti, profili, override, permessi effettivi e checklist QA accessi del Gruppo aziendale attivo.
 
@@ -110,7 +370,7 @@ La versione **0.6.6** chiude il ramo 0.6.x della gestione utenti introducendo un
 
 ---
 
-## CDSDM Versione 0.6.5 — Regole Firestore rafforzate su ruoli, profili e operazioni sensibili
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
 
 La versione **0.6.5** rafforza la sicurezza dei Gruppi aziendali portando nelle regole Firestore la matrice effettiva dei permessi introdotta in 0.6.2-0.6.4.
 
@@ -145,7 +405,7 @@ firebase deploy --only firestore:rules
 
 ---
 
-## CDSDM Versione 0.6.4 — Override permessi per singolo utente
+## CDSDM Versione 0.10.5 — QA sicurezza B.I. e pacchetto stabile permessi
 
 La versione **0.6.4** completa il livello applicativo dei permessi introducendo override individuali sui membri dei Gruppi aziendali. Un admin/teacher può personalizzare l'accesso di un singolo collaboratore senza modificare il profilo permesso assegnato al ruolo o agli altri utenti.
 
@@ -193,3 +453,26 @@ Gli override 0.6.4 restano una granularità applicativa/front-end didattica. Le 
 - Reso il bootstrap Superadmin più tollerante quando la lettura preventiva di `appSettings/system` è negata da regole Firestore non ancora allineate.
 - Migliorato il messaggio di errore: se Firestore nega anche la scrittura, occorre pubblicare `firestore.rules` del pacchetto o creare manualmente `appSettings/system` in Firebase Console.
 - Chiarito che gli inviti studenti si creano da **Gruppi aziendali**, non dal pannello Superadmin.
+
+### 0.12.11 — Workflow approvativo operativo e coerenza bozze/documenti
+
+- Chiarito che gli ordini cliente/fornitore in Bozza diventano operativi tramite **Analisi → Workflow approvativi → Approva**.
+- L’approvazione workflow aggiorna anche lo stato operativo del documento: ordini cliente/fornitore da `draft` a `confirmed`; DDT/fatture/acquisti bozze assumono uno stato operativo coerente quando approvati.
+- I DDT cliente/fornitore continuano a proporre solo ordini lavorabili, quindi confermati o parzialmente evasi/ricevuti.
+- Le segnalazioni operative restano dedicate ad anomalie e comunicazioni interne, non sostituiscono il ciclo Ordine → DDT/Ricevimento.
+
+### 0.12.10 — Collegamenti guidati segnalazioni e quarantena
+
+- Aggiunto collegamento guidato a documenti operativi nelle Segnalazioni operative.
+- Gli ordini fornitore selezionabili sono filtrati su stati lavorabili/approvati, escludendo bozze, eliminati, annullati, non approvati, ricevuti o chiusi.
+- Aggiunto pulsante contestuale `Segnala quarantena` nel dettaglio DDT fornitore con quantità in quarantena.
+- Chiarito il flusso Bozza → Invia segnalazione → Segnalata.
+
+### 0.12.9 — Hotfix operativo segnalazioni
+
+- Distinti **Salva bozza** e **Invia segnalazione** nella creazione delle segnalazioni operative.
+- Aggiunta comunicazione interna iniziale verso il reparto destinatario quando la segnalazione diventa effettiva.
+- Rinominato il pulsante del dettaglio in **Invia comunicazione**.
+- Aggiunti pulsanti workflow guidati: invia, prendi in carico, avvia lavorazione, richiedi info, risolvi, chiudi/annulla.
+- Corretto il conflitto DOM tra messaggio di stato pagina e campo stato del form.
+

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>CDSDM 0.7.5 - Consolidamento tecnico</title>
+</head>
+<body>
+  <h1>Test 0.7.0 - Consolidamento tecnico</h1>
+  <pre id="output"></pre>
+
+  <script src="../js/core/utils.js"></script>
+  <script src="../js/core/domain-constants.js"></script>
+  <script src="../js/core/app-store.js"></script>
+  <script src="../js/core/permissions-policy.js"></script>
+
+  <script>
+    const out = document.getElementById('output');
+    function assert(condition, message) {
+      if (!condition) throw new Error(message);
+      out.textContent += '✓ ' + message + '\n';
+    }
+    async function text(path) {
+      return fetch(path).then(r => {
+        if (!r.ok) throw new Error('Impossibile leggere ' + path);
+        return r.text();
+      });
+    }
+    async function run() {
+      const required = ['migrationReports', 'permissionProfiles', 'permissionMatrices', 'securityAccessReports'];
+      required.forEach(col => assert(window.CDSDM_DATA_COLLECTIONS.includes(col), 'CDSDM_DATA_COLLECTIONS include ' + col));
+      required.forEach(col => assert(Object.prototype.hasOwnProperty.call(window.globalData, col), 'globalData inizializza ' + col));
+      required.forEach(col => assert(Array.isArray(window.AppStore.get(col)), 'AppStore inizializza ' + col));
+      assert(!window.CDSDM_DATA_COLLECTIONS.includes('customerQuotes'), 'customerQuotes non è una collezione dati ufficiale');
+      assert(window.PermissionsPolicy.VERSION === '0.7.0', 'PermissionsPolicy espone versione 0.7.0');
+
+      const index = await text('../index.html');
+      assert(index.includes('CDSDM Versione 0.7.5'), 'index.html mostra versione 0.7.0');
+      assert(index.includes('js/features/warehouse/quotes-module.js'), 'index.html carica il modulo preventivi ufficiale');
+      assert(!index.includes('customer-quotes-module.js'), 'index.html non carica moduli preventivi legacy');
+
+      const migration = await text('../js/features/migration/migration-module.js');
+      assert(migration.includes("appVersion: '0.7.5'"), 'backup JSON usa appVersion 0.7.0');
+      required.forEach(col => assert(migration.includes(col), 'migration-module include ' + col));
+
+      const rules = await text('../firestore.rules');
+      required.slice(1).forEach(col => assert(rules.includes(col), 'firestore.rules documenta/protegge ' + col));
+      assert(rules.includes('effectiveProfilePermissions'), 'firestore.rules usa effectiveProfilePermissions');
+
+      const readme = await text('../README.md');
+      assert(readme.includes('CDSDM Versione 0.7.5'), 'README aggiornato a 0.7.0');
+      const changelog = await text('../DOCUMENTAZIONE/11_CHANGELOG.md');
+      assert(changelog.includes('Versione 0.7.0'), 'CHANGELOG contiene 0.7.0');
+      const docsContent = await text('../js/features/navigation/docs-content.js');
+      assert(docsContent.includes('47_CONSOLIDAMENTO_TECNICO_070'), 'documentazione in-app contiene capitolo 47');
+
+      out.textContent += '\nTutti i controlli 0.7.0 superati.';
+    }
+    run().catch(err => { out.textContent += '\nERRORE: ' + err.message; throw err; });
+  </script>
+</body>
+</html>

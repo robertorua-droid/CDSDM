@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>CDSDM 0.8.3 - Icona classica e Dark Mode</title></head>
+<body><pre id="output"></pre><script>
+async function read(p){ return fetch(p).then(r=>r.text()); }
+async function run(){
+ const out=document.getElementById('output');
+ const index=await read('../index.html');
+ const css=await read('../css/style.css');
+ const doc=await read('../DOCUMENTAZIONE/60_ICONA_CLASSICA_DARKMODE_083.md');
+ const checks=[];
+ function ok(m,p){ checks.push((p?'✓ ':'✗ ')+m); if(!p) throw new Error(m); }
+ ok('versione UI aggiornata a 0.8.3', index.includes('CDSDM Versione 0.8.3'));
+ ok('brand-mark-darkmode referenziato', index.includes('brand-mark-darkmode.png'));
+ ok('CSS branding 0.8.3 presente', css.includes('Branding 0.8.3'));
+ ok('documentazione 0.8.3 presente', doc.includes('Ripristino icona classica'));
+ out.textContent=checks.join('\n');
+}
+run().catch(e=>{ document.getElementById('output').textContent='ERRORE: '+e.message; });
+</script></body></html>

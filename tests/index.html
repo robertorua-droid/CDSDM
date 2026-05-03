@@ -3,47 +3,72 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Suite test dominio - CDSDM Versione 0.0.1</title>
+  <title>Suite test dominio - CDSDM Versione 0.12.11</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
-  <div class="container py-4">
-    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+  <main class="container py-4">
+    <div class="d-flex align-items-center justify-content-between mb-4">
       <div>
-        <h1 class="h3 mb-1">Suite test dominio</h1>
-        <p class="text-muted mb-0">Raccolta delle suite browser-based introdotte nella Fase 5 e dei controlli di hardening dati post-refactor.</p>
+        <h1 class="h3 mb-1">Suite test browser-based</h1>
+        <p class="text-muted mb-0">Test funzionali e di consolidamento del progetto CDSDM.</p>
       </div>
-      <span class="badge text-bg-dark fs-6">CDSDM 0.0.1</span>
+      <span class="badge text-bg-dark fs-6">CDSDM 0.12.11</span>
     </div>
-
-    <div class="alert alert-success">
-      <strong>Stato:</strong> suite di dominio, hardening dati e simulatori fiscali disponibili da un indice unico, utili per verificare rapidamente regressioni su regime, calcoli, XML e simulazioni.
-    </div>
-
     <div class="row g-3">
-      <div class="col-md-6">
-        <div class="card h-100 shadow-sm"><div class="card-body"><h2 class="h5">TaxRegimePolicy</h2><p class="mb-3">Verifica risoluzione regime, capability, visibilità UI e default fattura.</p><a class="btn btn-primary" href="tax-regime-policy.test.html">Apri suite</a></div></div>
-      </div>
-      <div class="col-md-6">
-        <div class="card h-100 shadow-sm"><div class="card-body"><h2 class="h5">InvoiceCalculator</h2><p class="mb-3">Verifica calcoli documento, bollo, IVA, rivalsa, ritenuta e scorporo.</p><a class="btn btn-primary" href="invoice-calculator.test.html">Apri suite</a></div></div>
-      </div>
-      <div class="col-md-6">
-        <div class="card h-100 shadow-sm"><div class="card-body"><h2 class="h5">InvoiceXMLValidator</h2><p class="mb-3">Verifica esportabilità XML, dati obbligatori e casi delicati di pagamento e note di credito.</p><a class="btn btn-primary" href="invoice-xml-validator.test.html">Apri suite</a></div></div>
-      </div>
-      <div class="col-md-6">
-        <div class="card h-100 shadow-sm"><div class="card-body"><h2 class="h5">InvoiceXMLMapper</h2><p class="mb-3">Verifica frammenti chiave del tracciato FatturaPA: ordinario, forfettario, TD04, bollo e rivalsa.</p><a class="btn btn-primary" href="invoice-xml-mapper.test.html">Apri suite</a></div></div>
-      </div>
-      <div class="col-md-6">
-        <div class="card h-100 shadow-sm"><div class="card-body"><h2 class="h5">DomainNormalizers</h2><p class="mb-3">Verifica l'allineamento dei campi legacy/canonici dei dati azienda, per banca, IBAN, anagrafiche cliente e indirizzi legacy.</p><a class="btn btn-primary" href="domain-normalizers.test.html">Apri suite</a></div></div>
-      </div>
-      <div class="col-md-6">
-        <div class="card h-100 shadow-sm"><div class="card-body"><h2 class="h5">ForfettarioCalc</h2><p class="mb-3">Verifica aggregazioni annuali, coefficienti, contributi, imposta sostitutiva e versamenti stimati del simulatore forfettario.</p><a class="btn btn-primary" href="forfettario-calc.test.html">Apri suite</a></div></div>
-      </div>
-      <div class="col-md-6">
-        <div class="card h-100 shadow-sm"><div class="card-body"><h2 class="h5">OrdinarioCalc</h2><p class="mb-3">Verifica compensi, spese, INPS, IRPEF e acconti del simulatore ordinario con casi base e soglie acconti.</p><a class="btn btn-primary" href="ordinario-calc.test.html">Apri suite</a></div></div>
-      </div>
 
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-info"><div class="card-body"><h2 class="h5">Mini B.I. 0.9.0</h2><p>Fondazione mini B.I.: architettura, catalogo KPI e pagina introduttiva</p><a class="btn btn-info" href="mini-bi-090.test.html">Apri suite</a></div></div></div>
+
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-info"><div class="card-body"><h2 class="h5">Mini B.I. 0.9.1</h2><p>Filtri periodo e servizio aggregazioni B.I.</p><a class="btn btn-info" href="mini-bi-091.test.html">Apri suite</a></div></div></div>
+
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-info"><div class="card-body"><h2 class="h5">Mini B.I. 0.9.2</h2><p>Vista B.I. Vendite</p><a class="btn btn-info" href="mini-bi-092.test.html">Apri suite</a></div></div></div>
+
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-info"><div class="card-body"><h2 class="h5">Mini B.I. 0.9.3</h2><p>Vista B.I. Acquisti</p><a class="btn btn-info" href="mini-bi-093.test.html">Apri suite</a></div></div></div>
+
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-info"><div class="card-body"><h2 class="h5">Mini B.I. 0.9.4</h2><p>Vista B.I. Contabilità operativa</p><a class="btn btn-info" href="mini-bi-094.test.html">Apri suite</a></div></div></div>
+
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-info"><div class="card-body"><h2 class="h5">Mini B.I. 0.9.5</h2><p>Vista B.I. Magazzino</p><a class="btn btn-info" href="mini-bi-095.test.html">Apri suite</a></div></div></div>
+
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-info"><div class="card-body"><h2 class="h5">Mini B.I. 0.9.6</h2><p>Vista Direzione / Amministrazione</p><a class="btn btn-info" href="mini-bi-096.test.html">Apri suite</a></div></div></div>
+
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-info"><div class="card-body"><h2 class="h5">Mini B.I. 0.9.7</h2><p>Vista Didattica / Docente e scenari B.I.</p><a class="btn btn-info" href="mini-bi-097.test.html">Apri suite</a></div></div></div>
+
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-info"><div class="card-body"><h2 class="h5">Mini B.I. 0.9.8</h2><p>QA, performance browser e pacchetto stabile mini B.I.</p><a class="btn btn-info" href="mini-bi-098.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-success"><div class="card-body"><h2 class="h5">Consolidamento dati 0.8.12</h2><p>Fonte unica collezioni dati, AppStore/globalData e versioni test.</p><a class="btn btn-success" href="consolidamento-0812.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-primary"><div class="card-body"><h2 class="h5">Pacchetto classe 0.7.5</h2><p>Checklist docente e collaudo finale.</p><a class="btn btn-primary" href="classroom-release-075.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-primary"><div class="card-body"><h2 class="h5">Dataset demo 0.7.4</h2><p>Dataset statico e scenari didattici.</p><a class="btn btn-primary" href="dataset-demo-074.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-primary"><div class="card-body"><h2 class="h5">UX onboarding 0.7.3</h2><p>Aiuti rapidi contestuali e onboarding in-app.</p><a class="btn btn-primary" href="ux-onboarding-073.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-primary"><div class="card-body"><h2 class="h5">Manuale didattico 0.7.2</h2><p>Manuale d’uso e guida docente/studente.</p><a class="btn btn-primary" href="manuale-didattico-072.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-primary"><div class="card-body"><h2 class="h5">QA end-to-end 0.7.1</h2><p>Flussi vendite, acquisti, magazzino, timesheet, permessi e backup/import/reset.</p><a class="btn btn-primary" href="qa-end-to-end-071.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-primary"><div class="card-body"><h2 class="h5">Consolidamento tecnico 0.7.0</h2><p>Coerenza script, versioni, collezioni, backup/import, rules e documentazione in-app.</p><a class="btn btn-primary" href="consolidamento-070.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body"><h2 class="h5">Audit sicurezza 0.6.6</h2><p>Report utenti, inviti, profili, override e checklist QA accessi.</p><a class="btn btn-primary" href="security-audit-066.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body"><h2 class="h5">Regole Firestore 0.6.5</h2><p>Rules rafforzate su ruoli, profili effettivi e operazioni sensibili.</p><a class="btn btn-primary" href="firestore-rules-065.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body"><h2 class="h5">Override permessi 0.6.4</h2><p>Eccezioni individuali per membro su profili e matrice permessi.</p><a class="btn btn-primary" href="permission-overrides-064.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body"><h2 class="h5">Matrice permessi 0.6.3</h2><p>Catalogo moduli e azioni associate ai livelli none/read/write/admin.</p><a class="btn btn-primary" href="permission-matrix-063.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body"><h2 class="h5">Profili permesso 0.6.2</h2><p>Profili configurabili assegnabili ai membri del gruppo.</p><a class="btn btn-primary" href="permission-profiles-062.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body"><h2 class="h5">Inviti onboarding 0.6.1</h2><p>Stati, scadenza, revoca e registrazione con invito.</p><a class="btn btn-primary" href="invites-onboarding-061.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body"><h2 class="h5">Superadmin 0.6.0</h2><p>Bootstrap superadmin e registrazione con invito.</p><a class="btn btn-primary" href="superadmin-registration-060.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body"><h2 class="h5">Migrazione e QA 0.5.6</h2><p>Migrazione guidata e QA multiutente.</p><a class="btn btn-primary" href="migration-qa-056.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body"><h2 class="h5">Console docente 0.5.5</h2><p>Scenari didattici e simulazioni di gruppo.</p><a class="btn btn-primary" href="teacher-console-055.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body"><h2 class="h5">Concorrenza 0.5.4</h2><p>Versionamento documenti, transazioni, lock leggero e metadata scritture.</p><a class="btn btn-primary" href="concurrency-054.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body"><h2 class="h5">Regole Firestore 0.5.3</h2><p>Controllo statico del file firestore.rules per gruppi, membership e ruoli.</p><a class="btn btn-primary" href="firestore-rules-053.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body"><h2 class="h5">Permessi UI 0.5.2+</h2><p>Visibilità menu, ruoli gruppo e blocchi operativi lato interfaccia.</p><a class="btn btn-primary" href="permissions-052-ui.test.html">Apri suite</a></div></div></div>
+    
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-primary"><div class="card-body"><h2 class="h5">Mini B.I. 0.10.0</h2><p>Matrice permessi B.I. basata sui moduli esistenti</p><a class="btn btn-primary" href="mini-bi-0100.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-primary"><div class="card-body"><h2 class="h5">Mini B.I. 0.10.1</h2><p>Visibilità sezioni B.I. per ruolo</p><a class="btn btn-primary" href="mini-bi-0101.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-primary"><div class="card-body"><h2 class="h5">Mini B.I. 0.10.2</h2><p>Panoramica B.I. adattiva e anti-leakage</p><a class="btn btn-primary" href="mini-bi-0102.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-primary"><div class="card-body"><h2 class="h5">Mini B.I. 0.10.3</h2><p>Permessi avanzati docente/simulazione</p><a class="btn btn-primary" href="mini-bi-0103.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-primary"><div class="card-body"><h2 class="h5">Mini B.I. 0.10.4</h2><p>Audit consultazione B.I. sensibile opzionale</p><a class="btn btn-primary" href="mini-bi-0104.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-primary"><div class="card-body"><h2 class="h5">Mini B.I. 0.10.5</h2><p>QA sicurezza B.I. e pacchetto stabile permessi</p><a class="btn btn-primary" href="mini-bi-0105.test.html">Apri suite</a></div></div></div>
+
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-danger"><div class="card-body"><h2 class="h5">Mini B.I. 0.10.6</h2><p>Hotfix tab e rendering aree Mini B.I.</p><a class="btn btn-danger" href="mini-bi-0106.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-success"><div class="card-body"><h2 class="h5">Mini B.I. 0.11.6</h2><p>Stabilizzazione Mini B.I. e QA regressione ruoli</p><a class="btn btn-success" href="mini-bi-0107.test.html">Apri suite</a></div></div></div>
+
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-warning"><div class="card-body"><h2 class="h5">Segnalazioni operative 0.12.8</h2><p>Workflow → Segnalazioni operative, collezione operationalReports, permessi, CSV e stampa.</p><a class="btn btn-warning" href="operational-reports-0128.test.html">Apri suite</a></div></div></div>
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-danger"><div class="card-body"><h2 class="h5">Segnalazioni operative 0.12.9</h2><p>Hotfix operativo: Salva bozza, Invia segnalazione, Invia comunicazione e transizioni guidate.</p><a class="btn btn-danger" href="operational-reports-0129.test.html">Apri suite</a></div></div></div>
+
+      <div class="col-md-6"><div class="card h-100 shadow-sm border-primary"><div class="card-body"><h2 class="h5">Workflow operativo 0.12.11</h2><p>Approva da Workflow: ordini in bozza diventano confermati e lavorabili nei DDT.</p><a class="btn btn-primary" href="workflow-01211.test.html">Apri suite</a></div></div></div>
     </div>
-  </div>
+  </main>
 </body>
 </html>

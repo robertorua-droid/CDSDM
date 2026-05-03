@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><title>CDSDM 0.7.7 - Test Bootstrap Superadmin</title></head>
+<body><h1>Test Bootstrap Superadmin 0.7.7</h1><pre id="out"></pre><script>
+(async function(){
+  const out = document.getElementById('out');
+  const checks = [];
+  function ok(name, cond){ checks.push({name, ok: !!cond}); }
+  const serviceText = await fetch('../js/features/business-groups/superadmin-service.js').then(r=>r.text());
+  const docText = await fetch('../DOCUMENTAZIONE/54_CORREZIONE_BOOTSTRAP_SUPERADMIN_077.md').then(r=>r.text());
+  ok('Versione servizio 0.7.7', serviceText.includes("const VERSION = '0.7.7'"));
+  ok('Bootstrap tollera lettura negata', serviceText.includes('provo comunque il bootstrap create-only'));
+  ok('Errore operativo su regole Firestore', serviceText.includes('Pubblica le regole firestore.rules'));
+  ok('Documento guida 0.7.7 presente', docText.includes('Correzione bootstrap Superadmin 0.7.7'));
+  out.textContent = checks.map(c => (c.ok ? '✅ ' : '❌ ') + c.name).join('\n');
+  if (checks.some(c=>!c.ok)) document.body.style.background = '#fee';
+})();
+</script></body></html>

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>CDSDM 0.8.12 - Consolidamento dati</title>
+</head>
+<body>
+  <h1>Test 0.8.12 - Consolidamento dati, store e versioni</h1>
+  <pre id="output"></pre>
+  <script src="../js/core/domain-constants.js"></script>
+  <script src="../js/core/app-store.js"></script>
+  <script src="../js/core/utils.js"></script>
+  <script>
+    const out = document.getElementById('output');
+    function ok(label, condition) {
+      if (!condition) throw new Error(label);
+      out.textContent += '✓ ' + label + '\n';
+    }
+    async function read(path) { return fetch(path).then(r => r.text()); }
+    async function run() {
+      const collections = window.getCDSDMDataCollections();
+      ok('getCDSDMDataCollections espone una copia della fonte ufficiale', Array.isArray(collections) && collections.length >= 30);
+      ok('CDSDM_DATA_COLLECTIONS allineata a DomainConstants.DATA_COLLECTIONS', JSON.stringify(collections) === JSON.stringify(window.DomainConstants.DATA_COLLECTIONS));
+
+      collections.forEach(col => {
+        ok('AppStore/globalData inizializza ' + col, Array.isArray(window.AppStore.get(col)) && Array.isArray(window.globalData[col]));
+      });
+      ok('companyInfo resta oggetto separato dalle collezioni', window.AppStore.get('companyInfo') && !Array.isArray(window.AppStore.get('companyInfo')));
+
+      const firebaseCloud = await read('../js/services/firebase-cloud.js');
+      const migration = await read('../js/features/migration/migration-module.js');
+      const testsIndex = await read('index.html');
+      const index = await read('../index.html');
+      const readme = await read('../README.md');
+      const changelog = await read('../DOCUMENTAZIONE/11_CHANGELOG.md');
+      ok('firebase-cloud usa getCDSDMDataCollections o CDSDM_DATA_COLLECTIONS senza lista lunga duplicata', firebaseCloud.includes('getCDSDMDataCollections') && !firebaseCloud.includes("['products', 'customers', 'suppliers'"));
+      ok('migration-module usa getCDSDMDataCollections o CDSDM_DATA_COLLECTIONS senza lista lunga duplicata', migration.includes('getCDSDMDataCollections') && !migration.includes("['products', 'customers', 'suppliers'"));
+      ok('backup esporta appVersion 0.8.12', migration.includes("appVersion: '0.8.12'"));
+      ok('indice test mostra badge 0.8.12', testsIndex.includes('CDSDM 0.8.12'));
+      ok('index.html mostra versione 0.8.12', index.includes('CDSDM Versione 0.8.12'));
+      ok('README aggiornato a 0.8.12', readme.includes('CDSDM Versione 0.8.12'));
+      ok('Changelog contiene 0.8.12', changelog.includes('0.8.12'));
+      out.textContent += '\nOK consolidamento 0.8.12';
+    }
+    run().catch(err => { out.textContent += '\nERRORE: ' + err.message; throw err; });
+  </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>CDSDM 0.6.6 - Audit sicurezza e QA accessi</title>
+  <style>body{font-family:system-ui,Arial,sans-serif;margin:2rem;} .ok{color:#198754}.ko{color:#dc3545}</style>
+</head>
+<body>
+  <h1>Test 0.6.6 - Audit sicurezza e QA accessi</h1>
+  <pre id="out"></pre>
+  <script src="../js/features/business-groups/security-audit-service.js"></script>
+  <script>
+    const out = document.getElementById('out');
+    function assert(name, cond) {
+      out.textContent += (cond ? '✓ ' : '✗ ') + name + '\n';
+      if (!cond) throw new Error(name);
+    }
+    assert('SecurityAuditService esposto', !!window.SecurityAuditService);
+    assert('versione 0.6.6', window.SecurityAuditService.VERSION === '0.6.6');
+    assert('checklist QA disponibile', Array.isArray(window.SecurityAuditService.QA_CHECKS) && window.SecurityAuditService.QA_CHECKS.length >= 6);
+    const normalized = window.SecurityAuditService.normalizeMember({
+      uid: 'u1', email: 'readonly@example.test', role: 'readonly', status: 'active',
+      effectiveProfilePermissions: { customers: 'read', invoices: 'write', warehouse: 'admin' },
+      permissionOverrides: { invoices: 'write' }
+    });
+    assert('normalizzazione membro calcola writeScopes', normalized.writeScopes.indexOf('invoices') >= 0);
+    assert('normalizzazione membro calcola adminScopes', normalized.adminScopes.indexOf('warehouse') >= 0);
+    assert('overrideCount calcolato', normalized.overrideCount === 1);
+    out.textContent += '\nOK - Test statico 0.6.6 completato.\n';
+  </script>
+</body>
+</html>

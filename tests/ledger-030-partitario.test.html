@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Partitario 0.3.0 - Test</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="p-4">
+  <h1 class="h4">Partitario clienti e fornitori 0.3.0</h1>
+  <div id="results" class="mt-3"></div>
+
+  <script>
+    window.globalData = {
+      customers: [{ id: 'c1', name: 'Cliente Demo' }],
+      suppliers: [{ id: 's1', name: 'Fornitore Demo' }],
+      invoices: [
+        { id: 'i1', customerId: 'c1', number: '1', date: '2026-01-10', nettoDaPagare: 100, payments: [{ id: 'p1', date: '2026-01-20', amount: 40 }] },
+        { id: 'n1', customerId: 'c1', number: 'NC1', date: '2026-01-25', type: 'Nota di Credito', nettoDaPagare: 10 }
+      ],
+      purchases: [
+        { id: 'a1', supplierId: 's1', number: 'A1', date: '2026-01-05', totaleDocumento: 80, payments: [{ id: 'ps1', date: '2026-01-28', amount: 30 }] }
+      ]
+    };
+    window.getData = function (key) { return window.globalData[key] || []; };
+  </script>
+  <script src="../js/features/accounting/ledger-service.js"></script>
+  <script>
+    const results = document.getElementById('results');
+    function assertTrue(condition, message) {
+      const div = document.createElement('div');
+      div.className = 'alert ' + (condition ? 'alert-success' : 'alert-danger');
+      div.textContent = (condition ? 'OK - ' : 'ERRORE - ') + message;
+      results.appendChild(div);
+      if (!condition) throw new Error(message);
+    }
+
+    const customerEntries = window.LedgerService.buildEntries(window.globalData, { subjectType: 'customer', subjectId: 'c1' });
+    assertTrue(customerEntries.length === 3, 'partitario cliente include fattura, incasso e nota di credito');
+    const customerSummary = window.LedgerService.summarize(customerEntries, 'customer');
+    assertTrue(customerSummary.debit === 100, 'fattura cliente in Dare');
+    assertTrue(customerSummary.credit === 50, 'incasso più nota di credito in Avere');
+    assertTrue(customerSummary.balance === 50, 'saldo cliente residuo corretto');
+
+    const supplierEntries = window.LedgerService.buildEntries(window.globalData, { subjectType: 'supplier', subjectId: 's1' });
+    assertTrue(supplierEntries.length === 2, 'partitario fornitore include acquisto e pagamento');
+    const supplierSummary = window.LedgerService.summarize(supplierEntries, 'supplier');
+    assertTrue(supplierSummary.debit === 30, 'pagamento fornitore in Dare');
+    assertTrue(supplierSummary.credit === 80, 'acquisto fornitore in Avere');
+    assertTrue(supplierSummary.balance === 50, 'saldo fornitore residuo corretto');
+
+    const filtered = window.LedgerService.buildEntries(window.globalData, { subjectType: 'customer', subjectId: 'c1', from: '2026-01-15', to: '2026-01-31' });
+    assertTrue(filtered.length === 2, 'filtro periodo applicato ai movimenti');
+  </script>
+</body>
+</html>

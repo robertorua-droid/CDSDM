@@ -1,0 +1,25 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Warehouse Step 22 QA</title></head><body>
+<div id="fixture-ok">
+  <div class="sidebar"><a data-target="home" href="#">Home</a></div>
+  <div id="home" class="content-section"></div>
+</div>
+<script src="test-harness.js"></script><script src="../js/features/warehouse/warehouse-qa-service.js"></script><script>
+window.globalData={
+  products:[{id:'p1',type:'product',stockQty:8,quarantineQty:1}],
+  warehouseMovements:[{productId:'p1',movementType:'CARICO',quantity:10},{productId:'p1',movementType:'SCARICO',quantity:2},{productId:'p1',movementType:'QUARANTENA_IN',quantity:1}],
+  customerDDTs:[], invoices:[], customerOrders:[], supplierOrders:[], supplierDDTs:[], worklogs:[]
+};
+test('QA inventario coerente', function(){ assertEqual(WarehouseQAService.auditInventory().length,0); });
+window.globalData.products[0].stockQty=9;
+test('QA intercetta scostamento stock', function(){ assertEqual(WarehouseQAService.auditInventory()[0].stockDelta,1); });
+window.globalData.products[0].stockQty=8;
+window.globalData.customerOrders=[{id:'o1',lines:[{quantity:5,deliveredQty:6}]}];
+test('QA intercetta residui ordine cliente incoerenti', function(){ assertEqual(WarehouseQAService.auditOrderResiduals().length,1); });
+test('QA navigazione intercetta target mancante', function(){
+  var root=document.createElement('div');
+  root.innerHTML='<div class="sidebar"><a data-target="x" href="#">Rotto</a><div class="content-section" id="bad"></div></div>';
+  assertEqual(WarehouseQAService.auditNavigation(root).length,2);
+});
+test('QA complessivo espone versione 0.1.6', function(){ assertEqual(WarehouseQAService.runFullAudit({includeDom:false}).version,'0.1.6'); });
+runTests();
+</script></body></html>

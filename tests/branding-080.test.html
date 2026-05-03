@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>CDSDM 0.8.0 - Branding e favicon</title></head>
+<body><pre id="output"></pre><script>
+async function read(p){ return fetch(p).then(r=>r.text()); }
+async function run(){
+  const out=document.getElementById('output');
+  const index=await read('../index.html');
+  const readme=await read('../README.md');
+  const doc=await read('../DOCUMENTAZIONE/57_IDENTITA_VISIVA_080.md');
+  const checks=[];
+  function ok(msg, pass){ checks.push((pass?'✓ ':'✗ ')+msg); if(!pass) throw new Error(msg); }
+  ok('title usa Cloud Data Suite for Digital Management', index.includes('Cloud Data Suite for Digital Management'));
+  ok('favicon.ico referenziata', index.includes('assets/branding/favicon.ico'));
+  ok('favicon-32 referenziata', index.includes('assets/branding/favicon-32.png'));
+  ok('sidebar mostra il nome esteso', index.includes('Cloud Data Suite for Digital Management'));
+  ok('README aggiornato alla 0.8.0', readme.includes('CDSDM Versione 0.8.0'));
+  ok('documento branding 0.8.0 presente', doc.includes('Identità visiva'));
+  out.textContent=checks.join('\n');
+}
+run().catch(err=>{ document.getElementById('output').textContent = 'ERRORE: '+err.message; });
+</script></body></html>

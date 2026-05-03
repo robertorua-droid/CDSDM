@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><title>CDSDM 0.8.11/0.8.12 - Test riorganizzazione menu completa</title></head>
+<body><pre id="output"></pre><script>
+async function read(p){return fetch(p).then(r=>r.text());}
+function extract(re, text){ const out=[]; let m; while((m=re.exec(text))) out.push(m[1]); return out; }
+async function run(){
+ const index=await read('../index.html');
+ const nav=await read('../js/features/navigation/navigation-module.js');
+ const out=[];
+ function ok(msg, pass){ out.push((pass?'✓ ':'✗ ')+msg); if(!pass) throw new Error(msg); }
+ ok('versione UI aggiornata 0.8.12', index.includes('CDSDM Versione 0.8.12'));
+ ['section-settings','section-organizzazione','section-didattica','section-amministrazione'].forEach(id=>ok('sezione presente '+id,index.includes('id="'+id+'"')));
+ const targets=[...new Set(extract(/data-target="([^"]+)"/g,index))].filter(t=>!t.startsWith('#'));
+ const sections=[...new Set(extract(/<div class="content-section[^"]*" id="([^"]+)"/g,index))];
+ const externalOnly=['manuale','versione'];
+ const missing=targets.filter(t=>!sections.includes(t) && !externalOnly.includes(t));
+ ok('nessun data-target perso verso content-section', missing.length===0);
+ ['gruppi-aziendali','ruoli-permessi','profili-permesso','matrice-permessi','override-permessi','console-docente','migrazione-qa','superadmin','audit-sicurezza','avanzate'].forEach(t=>ok('target chiave presente '+t,targets.includes(t)));
+ ok('help contestuale aggiornato per organizzazione', nav.includes('Organizzazione → Gruppi aziendali'));
+ ok('help contestuale aggiornato per didattica', nav.includes('Didattica → Console docente'));
+ ok('help contestuale aggiornato per amministrazione', nav.includes('Amministrazione → Superadmin'));
+ document.getElementById('output').textContent=out.join('\n');
+}
+run().catch(e=>{document.getElementById('output').textContent='ERRORE: '+e.message;});
+</script></body></html>

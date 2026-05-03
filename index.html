@@ -5,7 +5,13 @@
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Gestionale Cloud - Professionisti</title>
+  <title>CDSDM — Cloud Data Suite for Digital Management</title>
+  <meta name="description" content="CDSDM — Cloud Data Suite for Digital Management, gestionale didattico cloud per documenti, magazzino, contabilità e gruppi aziendali." />
+  <link rel="icon" type="image/x-icon" href="assets/branding/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/branding/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/branding/favicon-16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/branding/apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <!-- Font Awesome CSS -->
@@ -21,7 +27,19 @@
       <div class="col-md-4">
         <div class="card">
           <div class="card-body">
-            <h3 class="card-title text-center mb-4">Accesso Cloud</h3>
+            <div class="text-center mb-4 app-brand-login">
+              <picture>
+                                <img src="assets/branding/brand-mark.png" alt="Logo CDSDM" class="app-brand-login-logo mb-3 brand-auto-dark" />
+              </picture>
+              <h3 class="card-title mb-1">CDSDM</h3>
+              <div class="small text-secondary">Gestionale didattico cloud</div>
+              <p class="text-muted small mb-2">Cloud Data Suite for Digital Management</p>
+              <div class="app-login-badges" aria-label="Caratteristiche principali">
+                <span><i class="fas fa-cloud me-1"></i>Firestore</span>
+                <span><i class="fas fa-users me-1"></i>Gruppi</span>
+                <span><i class="fas fa-graduation-cap me-1"></i>Didattica</span>
+              </div>
+            </div>
             <form id="login-form">
               <div class="mb-3">
                 <label class="form-label" for="email">Email</label>
@@ -89,13 +107,23 @@
     style="position:fixed; top:0; left:0; width:100%; z-index:2000;">
     <div class="text-center">
       <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
-      <p class="mt-3 lead">Sincronizzazione Cloud...</p>
+      <p class="mt-3 lead">Sincronizzazione CDSDM Cloud...</p>
     </div>
   </div>
   <!-- Applicazione Principale -->
   <div class="d-none" id="main-app">
     <div class="sidebar">
       <div class="sidebar-header text-center">
+        <div class="app-sidebar-brand mb-2">
+          <picture>
+                    <img src="assets/branding/brand-mark.png" alt="CDSDM" class="app-sidebar-brand-logo brand-auto-dark" />
+        </picture>
+          <div class="app-sidebar-brand-text">
+            <div class="app-sidebar-brand-title">CDSDM</div>
+            <div class="app-sidebar-brand-subtitle">Cloud Data Suite for Digital Management</div>
+          </div>
+        </div>
+        <div class="app-sidebar-brand-line" aria-hidden="true"></div>
         <h4 id="company-name-sidebar">MIO STUDIO</h4>
         <p class="text-white-50 small mb-0" id="user-name-sidebar"></p>
         <div class="sidebar-business-group small mt-2 p-2 rounded" id="business-group-sidebar">
@@ -189,8 +217,10 @@
           <div class="nav-section-content">
             <li class="nav-item"><a class="nav-link" data-target="dashboard" href="#"><i class="fas fa-gauge-high"></i>
                 Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="mini-bi" href="#"><i class="fas fa-chart-line"></i> Mini B.I. didattica</a></li>
             <li class="nav-item"><a class="nav-link" data-target="centro-notifiche" href="#"><i class="fas fa-bell"></i> Centro notifiche</a></li>
             <li class="nav-item"><a class="nav-link" data-target="workflow-approvativi" href="#"><i class="fas fa-list-check"></i> Workflow approvativi</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="operational-reports" href="#"><i class="fas fa-triangle-exclamation"></i> Segnalazioni operative</a></li>
             <li class="nav-item"><a class="nav-link" data-target="audit-trail" href="#"><i class="fas fa-clock-rotate-left"></i> Registro attività</a></li>
             <li class="nav-item"><a class="nav-link" data-target="ux-accessibilita" href="#"><i class="fas fa-universal-access"></i> UX / accessibilità</a></li>
             <li class="nav-item"><a class="nav-link" data-target="budget-marginalita" href="#"><i class="fas fa-chart-column"></i> Budget e marginalità</a></li>
@@ -303,7 +333,6 @@
           class="fas fa-recycle"></i> Prodotti macerati</a></li>
   </div>
 </div>
-
         <!-- IMPOSTAZIONI -->
         <div class="nav-section-container collapsed" id="section-settings">
           <div class="nav-section-header">
@@ -311,38 +340,52 @@
             <i class="fas fa-chevron-down chevron"></i>
           </div>
           <div class="nav-section-content">
-            <li class="nav-item"><a class="nav-link" data-target="anagrafica-azienda" href="#"><i
-                  class="fas fa-building"></i> Azienda</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="tabella-iva" href="#"><i
-                  class="fas fa-percent"></i> Tabella IVA</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="tabella-pagamenti" href="#"><i
-                  class="fas fa-money-check-alt"></i> Codici pagamento</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="banche-aziendali" href="#"><i
-                  class="fas fa-university"></i> Banche aziendali</a></li>
-            <li class="nav-item"><a class="nav-link" id="menu-uso-dati" data-target="uso-dati" href="#"><i
-                  class="fas fa-database"></i> Uso dati</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="import-massivi" href="#"><i
-                  class="fas fa-file-csv"></i> Import massivi CSV</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="ruoli-permessi" href="#"><i
-                  class="fas fa-user-shield"></i> Ruoli e permessi</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="superadmin" href="#"><i
-                  class="fas fa-user-tie"></i> Superadmin</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="profili-permesso" href="#"><i
-                  class="fas fa-layer-group"></i> Profili permesso</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="matrice-permessi" href="#"><i
-                  class="fas fa-table-cells"></i> Matrice permessi</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="override-permessi" href="#"><i
-                  class="fas fa-user-gear"></i> Override permessi</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="audit-sicurezza" href="#"><i
-                  class="fas fa-shield-check"></i> Audit sicurezza</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="gruppi-aziendali" href="#"><i
-                  class="fas fa-building-user"></i> Gruppi aziendali</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="console-docente" href="#"><i
-                  class="fas fa-chalkboard-user"></i> Console docente</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="migrazione-qa" href="#"><i
-                  class="fas fa-people-arrows"></i> Migrazione e QA 0.5.6</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="avanzate" href="#"><i
-                  class="fas fa-cloud-upload-alt"></i> Gestione Dati</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="anagrafica-azienda" href="#"><i class="fas fa-building"></i> Azienda</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="tabella-iva" href="#"><i class="fas fa-percent"></i> Tabella IVA</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="tabella-pagamenti" href="#"><i class="fas fa-money-check-alt"></i> Codici pagamento</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="banche-aziendali" href="#"><i class="fas fa-university"></i> Banche aziendali</a></li>
+            <li class="nav-item"><a class="nav-link" id="menu-uso-dati" data-target="uso-dati" href="#"><i class="fas fa-database"></i> Uso dati</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="import-massivi" href="#"><i class="fas fa-file-csv"></i> Import massivi CSV</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="avanzate" href="#"><i class="fas fa-cloud-upload-alt"></i> Gestione Dati</a></li>
+          </div>
+        </div>
+
+        <!-- ORGANIZZAZIONE -->
+        <div class="nav-section-container collapsed" id="section-organizzazione">
+          <div class="nav-section-header">
+            <span><i class="fas fa-users-gear me-2"></i>Organizzazione</span>
+            <i class="fas fa-chevron-down chevron"></i>
+          </div>
+          <div class="nav-section-content">
+            <li class="nav-item"><a class="nav-link" data-target="gruppi-aziendali" href="#"><i class="fas fa-building-user"></i> Gruppi aziendali</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="ruoli-permessi" href="#"><i class="fas fa-user-shield"></i> Ruoli e permessi</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="profili-permesso" href="#"><i class="fas fa-layer-group"></i> Profili permesso</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="matrice-permessi" href="#"><i class="fas fa-table-cells"></i> Matrice permessi</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="override-permessi" href="#"><i class="fas fa-user-gear"></i> Override permessi</a></li>
+          </div>
+        </div>
+
+        <!-- DIDATTICA -->
+        <div class="nav-section-container collapsed" id="section-didattica">
+          <div class="nav-section-header">
+            <span><i class="fas fa-chalkboard-user me-2"></i>Didattica</span>
+            <i class="fas fa-chevron-down chevron"></i>
+          </div>
+          <div class="nav-section-content">
+            <li class="nav-item"><a class="nav-link" data-target="console-docente" href="#"><i class="fas fa-chalkboard-user"></i> Console docente</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="migrazione-qa" href="#"><i class="fas fa-people-arrows"></i> Migrazione e QA</a></li>
+          </div>
+        </div>
+
+        <!-- AMMINISTRAZIONE -->
+        <div class="nav-section-container collapsed" id="section-amministrazione">
+          <div class="nav-section-header">
+            <span><i class="fas fa-shield-halved me-2"></i>Amministrazione</span>
+            <i class="fas fa-chevron-down chevron"></i>
+          </div>
+          <div class="nav-section-content">
+            <li class="nav-item"><a class="nav-link" data-target="superadmin" href="#"><i class="fas fa-user-tie"></i> Superadmin</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="audit-sicurezza" href="#"><i class="fas fa-shield-check"></i> Audit sicurezza</a></li>
           </div>
         </div>
 
@@ -370,6 +413,13 @@
         <button id="sidebar-toggle-btn" title="Toggle Sidebar">
           <i class="fas fa-bars"></i>
         </button>
+        <div class="top-navbar-brand d-none d-md-flex" title="Cloud Data Suite for Digital Management">
+          <img src="assets/branding/favicon-32.png" alt="CDSDM" class="top-navbar-brand-logo" />
+          <div>
+            <div class="top-navbar-brand-title">CDSDM</div>
+            <div class="top-navbar-brand-subtitle">Cloud Data Suite for Digital Management</div>
+          </div>
+        </div>
         <div id="breadcrumb" class="text-muted small">Home</div>
       </div>
       <div class="content-wrapper">
@@ -388,16 +438,20 @@
 
         <div class="content-section d-none" id="versione">
           <h2>Informazioni Versione</h2>
+          <p class="text-muted mb-3">CDSDM è l’acronimo di <strong>Cloud Data Suite for Digital Management</strong>.</p>
           <div class="card shadow-sm border-0 bg-light p-4 mb-3">
             <div class="row align-items-center">
               <div class="col-md-2 text-center text-primary">
-                <i class="fas fa-rocket fa-4x"></i>
+                <picture>
+                                    <img src="assets/branding/brand-mark.png" alt="CDSDM" class="version-brand-logo brand-auto-dark" />
+                </picture>
               </div>
               <div class="col-md-10">
-                <h3 class="mb-1">CDSDM Versione 0.7.8</h3>
-                <p class="text-muted">Guida completa alle voci di menu e aiuto contestuale.</p>
-                <p class="small text-muted mb-0"><i class="fas fa-check-circle text-success"></i> Sincronizzazione Cloud
-                  Attiva</p>
+                <h3 class="mb-1">CDSDM Versione 0.12.11</h3>
+                <p class="mb-1"><strong>Cloud Data Suite for Digital Management</strong></p>
+                <p class="text-muted">Riorganizzazione menu: impostazioni, organizzazione, didattica e amministrazione.</p>
+                <p class="small text-muted mb-0"><i class="fas fa-check-circle text-success"></i> Sincronizzazione CDSDM Cloud
+                  attiva</p>
                 <p class="small text-muted"><i class="fas fa-shield-halved text-info"></i> Protezione Dati Crittografata
                 </p>
                 <div class="mt-3">
@@ -550,6 +604,26 @@
         <div class="content-section" id="home">
           <h2 id="welcome-message">Benvenuto</h2>
           <p class="lead" id="current-datetime"></p>
+          <div class="card border-0 shadow-sm mb-3 app-home-brand-card">
+            <div class="card-body d-flex flex-column flex-lg-row align-items-lg-center gap-3">
+              <div class="app-home-logo-shell">
+                <picture>
+                                    <img src="assets/branding/brand-mark.png" alt="CDSDM" class="app-home-brand-logo brand-auto-dark" />
+                </picture>
+              </div>
+              <div class="flex-grow-1">
+                <div class="app-home-kicker mb-1">Gestionale cloud didattico</div>
+                <h4 class="mb-1">Cloud Data Suite for Digital Management</h4>
+                <p class="mb-3 text-muted">Un ambiente unico per simulare documenti, magazzino, contabilità, gruppi aziendali e scenari didattici con Firebase Auth e Firestore.</p>
+                <div class="app-home-pill-row">
+                  <span><i class="fas fa-file-invoice me-1"></i>Documenti</span>
+                  <span><i class="fas fa-boxes-stacked me-1"></i>Magazzino</span>
+                  <span><i class="fas fa-user-shield me-1"></i>Permessi</span>
+                  <span><i class="fas fa-chalkboard-user me-1"></i>Classe</span>
+                </div>
+              </div>
+            </div>
+          </div>
           <hr />
           <div class="row mt-4">
             <div class="col-md-6 col-lg-5 mb-4">
@@ -558,7 +632,7 @@
             <div class="col-md-6 col-lg-5 mb-4">
               <div class="card" id="notes-widget">
                 <div class="card-body">
-                  <h5><i class="fas fa-clipboard"></i> Block-notes Cloud</h5>
+                  <h5><i class="fas fa-clipboard"></i> Block-notes CDSDM</h5>
                   <textarea class="form-control" id="notes-textarea" placeholder="Scrivi qui i tuoi appunti..."
                     rows="8"></textarea>
                   <button class="btn btn-primary btn-sm mt-2" id="save-notes-btn">Salva note</button>
@@ -602,6 +676,48 @@
           </div>
 
           <div id="dashboard-container"></div>
+        </div>
+
+
+        <!-- MINI B.I. DIDATTICA -->
+        <div class="content-section d-none" id="mini-bi">
+          <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
+            <div>
+              <h2>Mini B.I. didattica</h2>
+              <p class="text-muted mb-0">Business Intelligence semplificata per leggere i dati già presenti nel gestionale. Indicatori didattici, non fiscali e non certificativi.</p>
+            </div>
+            <button class="btn btn-primary btn-sm" id="mini-bi-refresh-btn" type="button"><i class="fas fa-rotate me-1"></i>Aggiorna</button>
+          </div>
+          <div class="card shadow-sm mb-3">
+            <div class="card-body">
+              <div class="row g-2 align-items-end">
+                <div class="col-6 col-md-2"><label class="form-label">Anno</label><select class="form-select" id="mini-bi-year"></select></div>
+                <div class="col-6 col-md-2"><label class="form-label">Mese</label><select class="form-select" id="mini-bi-month"></select></div>
+                <div class="col-md-8 small text-muted">La mini B.I. usa solo dati già caricati da Firestore/AppStore/globalData e non salva aggregazioni. Per dataset grandi usare filtri periodo.</div>
+              </div>
+            </div>
+          </div>
+          <div id="mini-bi-overview"></div>
+          <div class="card shadow-sm mt-3">
+            <div class="card-header fw-semibold">Aree operative</div>
+            <div class="card-body">
+              <div class="btn-group flex-wrap mb-3" role="group" aria-label="Aree Mini B.I.">
+                <button class="btn btn-outline-primary mini-bi-area-tab active" data-area="direzione" type="button">Direzione</button>
+                <button class="btn btn-outline-primary mini-bi-area-tab" data-area="vendite" type="button">Vendite</button>
+                <button class="btn btn-outline-primary mini-bi-area-tab" data-area="acquisti" type="button">Acquisti</button>
+                <button class="btn btn-outline-primary mini-bi-area-tab" data-area="contabilita" type="button">Contabilità</button>
+                <button class="btn btn-outline-primary mini-bi-area-tab" data-area="magazzino" type="button">Magazzino</button>
+                <button class="btn btn-outline-primary mini-bi-area-tab" data-area="didattica" type="button">Didattica</button>
+              </div>
+              <h3 class="h5" id="mini-bi-area-title">Direzione / Amministrazione</h3>
+              <div id="mini-bi-area-cards"></div>
+              <div id="mini-bi-area-details"></div>
+            </div>
+          </div>
+          <div class="row g-3 mt-1">
+            <div class="col-lg-7"><div class="card h-100 shadow-sm"><div class="card-header fw-semibold">Catalogo KPI</div><div class="card-body" id="mini-bi-kpi-catalog"></div></div></div>
+            <div class="col-lg-5"><div class="card h-100 shadow-sm"><div class="card-header fw-semibold">Fonti dati, limiti e QA ruoli</div><div class="card-body"><div id="mini-bi-sources" class="mb-3"></div><div id="mini-bi-warnings"></div><div id="mini-bi-role-qa" class="mt-3"></div></div></div></div>
+          </div>
         </div>
 
         <!-- STATISTICHE -->
@@ -1788,6 +1904,65 @@
               <div class="table-responsive"><table class="table table-hover align-middle"><thead><tr><th>Priorità</th><th>Documento</th><th>Data</th><th>Soggetto</th><th class="text-end">Importo</th><th>Stato</th><th>Azione suggerita</th><th>Apri</th><th>Azioni</th></tr></thead><tbody id="workflow-table-body"></tbody></table></div>
             </div>
             <div class="col-xl-3"><div class="card h-100"><div class="card-body"><h5 class="card-title">Storico recente</h5><div id="workflow-history" class="small"></div><div class="alert alert-warning small mt-3 mb-0">I controlli workflow sono applicativi/front-end. Per sicurezza multiutente reale servono regole Firestore coerenti.</div></div></div></div>
+          </div>
+        </div>
+
+        <div class="content-section d-none" id="operational-reports">
+          <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
+            <div>
+              <h2>Segnalazioni operative</h2>
+              <p class="text-muted mb-0">Workflow operativo 0.12.11 per registrare anomalie e comunicazioni interne. I documenti gestionali in Bozza diventano operativi tramite Analisi → Workflow approvativi: ad esempio gli ordini cliente/fornitore approvati passano a Confermato e diventano selezionabili nei DDT. I dati sono salvati nella collezione <code>operationalReports</code> e restano coerenti con gruppi aziendali, backup/import/reset e permessi UI.</p>
+            </div>
+            <div class="btn-group btn-group-sm">
+              <button class="btn btn-outline-secondary" id="operational-report-refresh" type="button"><i class="fas fa-rotate"></i> Aggiorna</button>
+              <button class="btn btn-outline-secondary" id="operational-report-export-csv" type="button"><i class="fas fa-file-csv"></i> Esporta CSV</button>
+            </div>
+          </div>
+          <div id="operational-report-feedback" class="mb-2"></div>
+          <div class="row g-3 mb-3" id="operational-report-summary"></div>
+          <div class="card mb-3"><div class="card-body">
+            <div class="row g-2 align-items-end">
+              <div class="col-md-2"><label class="form-label" for="operational-report-filter-status">Stato</label><select class="form-select" id="operational-report-filter-status"></select></div>
+              <div class="col-md-2"><label class="form-label" for="operational-report-filter-area">Area</label><select class="form-select" id="operational-report-filter-area"></select></div>
+              <div class="col-md-2"><label class="form-label" for="operational-report-filter-severity">Gravità</label><select class="form-select" id="operational-report-filter-severity"></select></div>
+              <div class="col-md-6"><label class="form-label" for="operational-report-search">Ricerca</label><input class="form-control" id="operational-report-search" type="search" placeholder="codice, titolo, referente, documento, prodotto..."></div>
+            </div>
+          </div></div>
+          <div class="row g-3">
+            <div class="col-xl-8">
+              <div class="card mb-3"><div class="card-body p-0"><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead class="table-light"><tr><th>Codice</th><th>Stato</th><th>Gravità</th><th>Segnalazione</th><th>Origine</th><th>Destinatario</th><th>Referente</th><th>Collegamento</th><th>Azioni</th></tr></thead><tbody id="operational-report-table-body"></tbody></table></div></div></div>
+              <div id="operational-report-detail"></div>
+            </div>
+            <div class="col-xl-4">
+              <div class="card" id="operational-report-form"><div class="card-body">
+                <h5 class="card-title">Nuova segnalazione</h5>
+                <p class="text-muted small">Compila una segnalazione operativa da assegnare a un reparto. La scheda può essere stampata come modulistica didattica/operativa.</p>
+                <label class="form-label" for="operational-report-type">Tipo</label><select class="form-select mb-2" id="operational-report-type"></select>
+                <div class="row g-2"><div class="col-md-6"><label class="form-label" for="operational-report-origin">Origine</label><select class="form-select mb-2" id="operational-report-origin"></select></div><div class="col-md-6"><label class="form-label" for="operational-report-target">Destinatario</label><select class="form-select mb-2" id="operational-report-target"></select></div></div>
+                <div class="row g-2"><div class="col-md-6"><label class="form-label" for="operational-report-severity">Gravità</label><select class="form-select mb-2" id="operational-report-severity"></select></div><div class="col-md-6"><label class="form-label" for="operational-report-status">Stato iniziale</label><select class="form-select mb-2" id="operational-report-status"></select><div class="form-text">Le nuove segnalazioni partono come bozza finché non vengono inviate.</div></div></div>
+                <label class="form-label" for="operational-report-title">Titolo</label><input class="form-control mb-2" id="operational-report-title" placeholder="Es. Prodotto non trovato in ubicazione">
+                <label class="form-label" for="operational-report-description">Descrizione</label><textarea class="form-control mb-2" id="operational-report-description" rows="3"></textarea>
+                <label class="form-label" for="operational-report-action">Azione richiesta</label><input class="form-control mb-2" id="operational-report-action" placeholder="Verificare, autorizzare, correggere...">
+                <label class="form-label" for="operational-report-assignee">Referente</label><input class="form-control mb-2" id="operational-report-assignee" placeholder="Nome referente o reparto">
+                <div class="alert alert-light border small mb-2">
+                  <strong>Bozza o documento effettivo?</strong> Con <em>Salva bozza</em> prepari la segnalazione senza comunicarla. Con <em>Invia segnalazione</em> diventa effettiva, passa a stato <strong>Segnalata</strong> e genera la prima comunicazione interna. Le bozze già salvate si trasformano dal dettaglio con il pulsante <strong>Invia segnalazione</strong>.
+                </div>
+                <div class="card border-info-subtle mb-2"><div class="card-body py-2">
+                  <div class="fw-semibold mb-2">Collegamento guidato a documenti operativi</div>
+                  <div class="row g-2 align-items-end">
+                    <div class="col-md-4"><label class="form-label" for="operational-report-link-supplier">Fornitore</label><select class="form-select" id="operational-report-link-supplier"><option value="">Seleziona fornitore...</option></select></div>
+                    <div class="col-md-3"><label class="form-label" for="operational-report-related-doc-type">Tipo documento</label><select class="form-select" id="operational-report-related-doc-type"></select></div>
+                    <div class="col-md-5"><label class="form-label" for="operational-report-link-document">Documento lavorabile</label><select class="form-select" id="operational-report-link-document"><option value="">Seleziona documento...</option></select></div>
+                  </div>
+                  <div class="form-text">Per gli ordini fornitore vengono proposti solo stati lavorabili/approvati, escludendo bozze, eliminati, annullati, non approvati, ricevuti o chiusi.</div>
+                </div></div>
+                <input type="hidden" id="operational-report-related-doc-id">
+                <div class="row g-2"><div class="col-md-6"><label class="form-label" for="operational-report-related-product">Prodotto</label><input class="form-control mb-2" id="operational-report-related-product"></div><div class="col-md-6"><label class="form-label" for="operational-report-related-doc-number">Numero documento</label><input class="form-control mb-2" id="operational-report-related-doc-number"></div></div>
+                <div class="row g-2"><div class="col-md-6"><label class="form-label" for="operational-report-related-customer">Cliente</label><input class="form-control mb-2" id="operational-report-related-customer"></div><div class="col-md-6"><label class="form-label" for="operational-report-related-supplier">Fornitore</label><input class="form-control mb-2" id="operational-report-related-supplier"></div></div>
+                <label class="form-label" for="operational-report-initial-message">Comunicazione interna iniziale</label><textarea class="form-control mb-3" id="operational-report-initial-message" rows="2" placeholder="Messaggio da inviare al reparto destinatario quando la segnalazione diventa effettiva"></textarea>
+                <div class="d-grid gap-2"><button class="btn btn-outline-secondary" id="operational-report-save-draft" type="button"><i class="fas fa-save"></i> Salva bozza</button><button class="btn btn-primary" id="operational-report-send" type="button"><i class="fas fa-paper-plane"></i> Invia segnalazione</button></div>
+              </div></div>
+            </div>
           </div>
         </div>
 
@@ -3439,7 +3614,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-            <button type="button" class="btn btn-primary" id="saveCustomerOrderBtn">Salva ordine</button>
+            <button type="button" class="btn btn-primary" id="saveCustomerOrderBtn">Salva ordine</button><div class="form-text text-end mt-2">Per renderlo operativo usa <strong>Analisi → Workflow approvativi → Approva</strong>: lo stato passerà da Bozza a Confermato.</div>
           </div>
         </div>
       </div>
@@ -3505,7 +3680,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-            <button type="button" class="btn btn-primary" id="saveSupplierOrderBtn">Salva ordine</button>
+            <button type="button" class="btn btn-primary" id="saveSupplierOrderBtn">Salva ordine</button><div class="form-text text-end mt-2">Per renderlo operativo usa <strong>Analisi → Workflow approvativi → Approva</strong>: lo stato passerà da Bozza a Confermato.</div>
           </div>
         </div>
       </div>
@@ -3572,6 +3747,8 @@
     <script src="js/features/scadenziario/scadenziario-service.js"></script>
     <script src="js/features/accounting/workflow-service.js"></script>
     <script src="js/features/accounting/workflow-module.js"></script>
+    <script src="js/features/operations/operational-reports-service.js"></script>
+    <script src="js/features/operations/operational-reports-module.js"></script>
     <script src="js/features/accounting/audit-trail-service.js"></script>
     <script src="js/features/accounting/audit-trail-module.js"></script>
     <script src="js/features/accounting/notification-center-service.js"></script>
@@ -3580,6 +3757,7 @@
     <script src="js/ui/accessibility-ux-module.js"></script>
     <script src="js/ui/scadenziario-render.js"></script>
     <script src="js/features/dashboard/executive-dashboard-service.js"></script>
+    <script src="js/features/bi/mini-bi-service.js"></script>
     <script src="js/ui/dashboard-render.js"></script>
     <script src="js/ui/analysis-render.js"></script>
     <script src="js/ui/tax-render.js"></script>
@@ -3600,6 +3778,7 @@
     <script src="js/features/navigation/navigation-module.js"></script>
     <script src="js/features/theme/theme-module.js"></script>
     <script src="js/features/dashboard/dashboard-module.js"></script>
+    <script src="js/features/bi/mini-bi-module.js"></script>
     <script src="js/features/commesse/commesse-module.js"></script>
     <script src="js/features/commesse/projects-module.js"></script>
     <script src="js/features/commesse/timesheet-module.js"></script>

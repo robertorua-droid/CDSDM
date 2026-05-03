@@ -85,6 +85,21 @@
     h.assertEqual(out.comune, 'Torino');
   });
 
+
+  h.test('normalizeProductInfo conserva prezzi acquisto/vendita per prodotti fisici e alias legacy', function () {
+    const out = window.normalizeProductInfo({
+      descrizione: 'Articolo test',
+      tipoVoce: 'Prodotto',
+      prezzoAcquisto: '12,50',
+      prezzoVendita: '25.00',
+      vatRateId: 'iva_22'
+    });
+    h.assertEqual(out.itemType, 'product');
+    h.assertEqual(out.isInventoryItem, true);
+    h.assertApprox(out.purchasePrice, 12.5, 0.001, 'prezzo acquisto');
+    h.assertApprox(out.salePrice, 25, 0.001, 'prezzo vendita');
+  });
+
   h.test('normalizeInvoicePaymentInfo mantiene bankChoice richiesto ma fa fallback coerente al conto 1 se il conto 2 non e configurato', function () {
     const invoice = { modalitaPagamento: 'Bonifico Bancario', bankChoice: '2' };
     const company = { banca1: 'Banca Uno', iban1: 'IT11A0000000000000000000001' };
@@ -241,3 +256,34 @@ window.TestHarness.test('normalizeInvoiceStatusInfo canonicalizza bozza, pagata 
   TestHarness.assertTrue(nSent.sentToAgenzia);
   TestHarness.assertEqual(nSent.exportStatus, 'Inviata');
 });
+
+(function () {
+  const h = window.TestHarness;
+  if (!h) return;
+
+  h.test('normalizeProductInfo introduce itemType prodotto mantenendo compatibilità legacy', function () {
+    const out = window.normalizeProductInfo({
+      description: 'Licenza software',
+      code: 'LIC-001',
+      itemType: 'product',
+      vatRateId: 'iva_22'
+    });
+    h.assertEqual(out.itemType, 'product');
+    h.assertEqual(out.tipoVoce, 'Prodotto');
+    h.assertEqual(out.isInventoryItem, true);
+    h.assertEqual(out.isCosto, false);
+    h.assertEqual(out.isLavoro, true);
+    h.assertEqual(out.iva, '22');
+  });
+
+  h.test('normalizeProductInfo risolve Natura FE da vatRateId e compila campi legacy IVA', function () {
+    const out = window.normalizeProductInfo({
+      description: 'Consulenza forfettario',
+      itemType: 'service',
+      vatRateId: 'n2_2_forfettario'
+    });
+    h.assertEqual(out.iva, '0');
+    h.assertEqual(out.esenzioneIva, 'N2.2');
+    h.assertEqual(out.natureCode, 'N2.2');
+  });
+})();

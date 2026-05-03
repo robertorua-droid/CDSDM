@@ -53,13 +53,14 @@
       return acc;
     }, {});
     const cards = [
-      { label: 'Aperti', value: (counts.draft || 0) + (counts.confirmed || 0), hint: 'bozze + confermati' },
+      { label: 'Bozze', value: counts.draft || 0, hint: 'da approvare nel Workflow' },
+      { label: 'Confermati', value: counts.confirmed || 0, hint: 'lavorabili in DDT' },
       { label: 'Parzialmente evasi', value: counts.partially_fulfilled || 0, hint: 'DDT già parziale' },
       { label: 'Evasi', value: counts.fulfilled || 0, hint: 'completati' },
       { label: 'Annullati', value: counts.cancelled || 0, hint: 'non operativi' }
     ];
     $summary.html(cards.map(function (c) {
-      return '<div class="col-6 col-lg-3"><div class="card h-100 shadow-sm border-0"><div class="card-body py-2"><div class="small text-muted">'+esc(c.label)+'</div><div class="h4 mb-0">'+esc(c.value)+'</div><div class="small text-muted">'+esc(c.hint)+'</div></div></div></div>';
+      return '<div class="col-6 col-lg-2"><div class="card h-100 shadow-sm border-0"><div class="card-body py-2"><div class="small text-muted">'+esc(c.label)+'</div><div class="h4 mb-0">'+esc(c.value)+'</div><div class="small text-muted">'+esc(c.hint)+'</div></div></div></div>';
     }).join(''));
   }
 

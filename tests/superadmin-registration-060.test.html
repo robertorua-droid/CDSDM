@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>CDSDM 0.6.0 - Superadmin e registrazione con invito</title></head>
+<body>
+  <h1>Test 0.6.0 - Superadmin e registrazione con invito</h1>
+  <pre id="results"></pre>
+  <script src="../js/features/business-groups/business-groups-service.js"></script>
+  <script src="../js/features/business-groups/superadmin-service.js"></script>
+  <script>
+    const out = [];
+    function ok(label, value) { if (!value) throw new Error(label); out.push('✓ ' + label); }
+    function eq(label, actual, expected) { if (actual !== expected) throw new Error(label + ': atteso ' + expected + ', ottenuto ' + actual); out.push('✓ ' + label); }
+
+    try {
+      ok('BusinessGroupsService esposto', !!window.BusinessGroupsService);
+      ok('BusinessGroupsService versione 0.6.x', /^0\.6\./.test(window.BusinessGroupsService.VERSION));
+      ok('acceptInvite disponibile', typeof window.BusinessGroupsService.acceptInvite === 'function');
+      ok('SuperadminService esposto', !!window.SuperadminService);
+      eq('SuperadminService versione', window.SuperadminService.VERSION, '0.6.0');
+      ok('claimFirstSuperadmin disponibile', typeof window.SuperadminService.claimFirstSuperadmin === 'function');
+      ok('buildSnapshot disponibile', typeof window.SuperadminService.buildSnapshot === 'function');
+      ok('isUserSuperadmin riconosce UID', window.SuperadminService.isUserSuperadmin({ superadminUid: 'u1', superadminEmails: [] }, { uid: 'u1', email: 'a@example.test' }) === true);
+      ok('isUserSuperadmin riconosce email', window.SuperadminService.isUserSuperadmin({ superadminUid: 'u0', superadminEmails: ['admin@example.test'] }, { uid: 'u2', email: 'ADMIN@example.test' }) === true);
+      document.getElementById('results').textContent = out.join('\n') + '\n\nTutti i controlli statici 0.6.0 superati.';
+    } catch (e) {
+      document.getElementById('results').textContent = out.join('\n') + '\n✗ ' + e.message;
+      throw e;
+    }
+  </script>
+</body>
+</html>

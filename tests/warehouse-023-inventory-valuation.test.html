@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Valorizzazione magazzino 0.2.3</title>
+</head>
+<body>
+  <h1>Valorizzazione magazzino 0.2.3</h1>
+  <div id="test-output"></div>
+
+  <script src="test-harness.js"></script>
+  <script>
+    window.DomainNormalizers = {
+      normalizeProductInfo: function(p){ return Object.assign({ itemType:'product' }, p || {}); },
+      normalizeSupplierDDT: function(d){ return d || {}; }
+    };
+  </script>
+  <script src="../js/features/warehouse/inventory-valuation-service.js"></script>
+  <script>
+    test('calcola costo standard da prezzo anagrafico', function(){
+      var rows = window.InventoryValuationService.buildRows([
+        { id:'p1', itemType:'product', code:'A', description:'Prodotto A', stockQty:10, reservedQty:2, quarantineQty:1, purchasePrice:5 }
+      ], { method:'standard', supplierDDTs:[] });
+      assertEqual(rows.length, 1, 'Deve produrre una riga');
+      assertEqual(rows[0].unitCost, 5, 'Costo unitario standard non corretto');
+      assertEqual(rows[0].stockValue, 50, 'Valore disponibile lordo non corretto');
+      assertEqual(rows[0].quarantineValue, 5, 'Valore quarantena non corretto');
+      assertEqual(rows[0].totalValue, 55, 'Valore totale non corretto');
+    });
+
+    test('usa ultimo costo DDT fornitore quando disponibile', function(){
+      var ddts = [
+        { id:'d1', number:'DDF-1', date:'2026-01-10', ddtDirection:'received_supplier', lines:[{ productId:'p1', acceptedQty:4, quarantineQty:0, price:7 }] },
+        { id:'d2', number:'DDF-2', date:'2026-02-10', ddtDirection:'received_supplier', lines:[{ productId:'p1', acceptedQty:3, quarantineQty:1, price:9 }] }
+      ];
+      var rows = window.InventoryValuationService.buildRows([
+        { id:'p1', itemType:'product', code:'A', description:'Prodotto A', stockQty:5, quarantineQty:1, purchasePrice:5 }
+      ], { method:'last', supplierDDTs:ddts });
+      assertEqual(rows[0].unitCost, 9, 'Ultimo costo non selezionato');
+      assertEqual(rows[0].costSource, 'Ultimo costo DDT fornitore', 'Origine costo non corretta');
+      assertEqual(rows[0].lastSourceNumber, 'DDF-2', 'Numero DDT sorgente non corretto');
+    });
+
+    test('calcola costo medio ponderato semplificato da DDT fornitore', function(){
+      var ddts = [
+        { id:'d1', date:'2026-01-10', ddtDirection:'received_supplier', lines:[{ productId:'p1', acceptedQty:10, price:4 }] },
+        { id:'d2', date:'2026-01-20', ddtDirection:'received_supplier', lines:[{ productId:'p1', acceptedQty:5, quarantineQty:5, price:8 }] }
+      ];
+      var rows = window.InventoryValuationService.buildRows([
+        { id:'p1', itemType:'product', stockQty:2, quarantineQty:1, purchasePrice:3 }
+      ], { method:'average', supplierDDTs:ddts });
+      assertApprox(rows[0].unitCost, 6, 0.0001, 'Costo medio ponderato non corretto');
+      assertEqual(rows[0].totalValue, 18, 'Valore totale medio non corretto');
+      var summary = window.InventoryValuationService.summarize([{ id:'p1', itemType:'product', stockQty:2, quarantineQty:1, purchasePrice:3 }], { method:'average', supplierDDTs:ddts });
+      assertApprox(summary.totalValue, 18, 0.0001, 'Summary valore totale non corretto');
+      assertEqual(summary.supplierCostCount, 1, 'Conteggio prodotti con costo da DDT non corretto');
+    });
+
+    test('usa fallback anagrafico se mancano DDT per ultimo costo', function(){
+      var rows = window.InventoryValuationService.buildRows([
+        { id:'p2', itemType:'product', stockQty:3, quarantineQty:0, purchasePrice:11 }
+      ], { method:'last', supplierDDTs:[] });
+      assertEqual(rows[0].unitCost, 11, 'Fallback prezzo anagrafico non applicato');
+      assertTrue(rows[0].costFallback, 'Fallback non marcato');
+    });
+
+    runTests('test-output');
+  </script>
+</body>
+</html>

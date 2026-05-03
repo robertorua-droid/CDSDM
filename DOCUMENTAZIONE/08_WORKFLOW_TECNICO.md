@@ -1,3 +1,13 @@
+## Aggiornamento 0.8.12 - Consolidamento dati prima della mini B.I.
+
+La 0.8.12 conferma `DomainConstants.DATA_COLLECTIONS` come fonte ufficiale delle collezioni dati operative. I moduli di caricamento, backup, import e reset devono accedere alla lista tramite `window.getCDSDMDataCollections()` o `window.CDSDM_DATA_COLLECTIONS`, evitando nuove copie locali.
+
+`AppStore.ensureGlobalData()` inizializza le collezioni partendo dalla stessa fonte, così `globalData` resta coerente con Firestore e con i flussi backup/import/reset.
+
+`Report gestionali` resta una vista operativa trasversale: il nome tecnico storico del modulo non viene cambiato per non introdurre regressioni. La futura mini B.I. dovrà riusare e razionalizzare queste viste senza duplicarle.
+
+---
+
 ## Aggiornamento 0.7.5 - Pacchetto stabile per uso in classe, collaudo finale e checklist docente
 
 Chiusura ramo 0.7.x e checklist finale.
@@ -520,3 +530,13 @@ La policy applica visibilità menu e disabilitazioni UI, ma non sostituisce le r
 ## Aggiornamento 0.5.3 — Regole Firestore deployabili
 
 La release aggiunge `firestore.rules` e `firebase.json`. Le regole preservano il path legacy `users/{uid}` e proteggono `businessGroups/{groupId}` tramite membership attiva. Per attivarle usare Firebase Console oppure `firebase deploy --only firestore:rules`. La 0.5.4 dovrà occuparsi di concorrenza, versionamento e scritture critiche.
+
+
+### Riorganizzazione menu 0.8.x
+
+Le release 0.8.7-0.8.10 riorganizzano solo la navigazione laterale. Gli ID delle content-section, i data-target e i moduli restano invariati.
+
+
+## Mini B.I. 0.9.x
+
+`MiniBIService` è un servizio client-side puro che legge `AppStore/globalData` e produce KPI didattici senza salvare aggregazioni e senza nuove collezioni Firestore obbligatorie.

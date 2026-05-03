@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>CDSDM 0.8.6 - Brand micro refine</title></head>
+<body><pre id="output"></pre><script>
+async function read(p){ return fetch(p).then(r=>r.text()); }
+async function run(){
+ const out=document.getElementById('output');
+ const index=await read('../index.html');
+ const css=await read('../css/style.css');
+ const doc=await read('../DOCUMENTAZIONE/63_BRAND_MICRO_REFINE_086.md');
+ const checks=[];
+ function ok(m,p){ checks.push((p?'✓ ':'✗ ')+m); if(!p) throw new Error(m); }
+ ok('versione UI aggiornata a 0.8.6', index.includes('CDSDM Versione 0.8.6'));
+ ok('source brand darkmode rimosso dall index', !index.includes('brand-mark-darkmode.png'));
+ ok('css 0.8.6 presente', css.includes('Brand micro-refinement 0.8.6'));
+ ok('documentazione 0.8.6 presente', doc.includes('Micro rifinitura brand'));
+ out.textContent=checks.join('\n');
+}
+run().catch(e=>{ document.getElementById('output').textContent='ERRORE: '+e.message; });
+</script></body></html>

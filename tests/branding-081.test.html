@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>CDSDM 0.8.1 - Naming e branding</title></head>
+<body><pre id="output"></pre><script>
+async function read(p){ return fetch(p).then(r=>r.text()); }
+async function run(){
+  const out=document.getElementById('output');
+  const index=await read('../index.html');
+  const svc=await read('../js/features/business-groups/superadmin-service.js');
+  const printSvc=await read('../js/features/accounting/print-template-service.js');
+  const doc=await read('../DOCUMENTAZIONE/58_RIFINITURA_BRANDING_081.md');
+  const checks=[];
+  function ok(msg, pass){ checks.push((pass?'✓ ':'✗ ')+msg); if(!pass) throw new Error(msg); }
+  ok('index mostra versione 0.8.1', index.includes('CDSDM Versione 0.8.1'));
+  ok('superadmin-service non usa vecchio nome', !svc.includes('Gestionale Cloud - Professionisti'));
+  ok('print-template-service non usa vecchio nome', !printSvc.includes('Gestionale Cloud - Professionisti'));
+  ok('nuova documentazione 0.8.1 presente', doc.includes('uniformazione naming'));
+  ok('favicon 32 referenziata', index.includes('assets/branding/favicon-32.png'));
+  out.textContent = checks.join('\n');
+}
+run().catch(err=>{ document.getElementById('output').textContent = 'ERRORE: '+err.message; });
+</script></body></html>

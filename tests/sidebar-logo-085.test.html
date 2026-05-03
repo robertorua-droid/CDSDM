@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>CDSDM 0.8.5 - Toggle e logo dark mode</title></head>
+<body><pre id="output"></pre><script>
+async function read(p){ return fetch(p).then(r=>r.text()); }
+async function run(){
+ const out=document.getElementById('output');
+ const index=await read('../index.html');
+ const css=await read('../css/style.css');
+ const doc=await read('../DOCUMENTAZIONE/62_TOGGLE_LOGO_DARKMODE_085.md');
+ const checks=[];
+ function ok(m,p){ checks.push((p?'✓ ':'✗ ')+m); if(!p) throw new Error(m); }
+ ok('versione UI aggiornata a 0.8.5', index.includes('CDSDM Versione 0.8.5'));
+ ok('toggle dark mode nowrap', css.includes('white-space: nowrap'));
+ ok('tuning brand dark mode 0.8.5 presente', css.includes('Sidebar / Branding fine tuning 0.8.5'));
+ ok('logo dark mode migliorato', css.includes('brightness(1.05) contrast(1.08)'));
+ ok('documentazione 0.8.5 presente', doc.includes('Toggle Dark Mode'));
+ out.textContent=checks.join('\n');
+}
+run().catch(e=>{ document.getElementById('output').textContent='ERRORE: '+e.message; });
+</script></body></html>

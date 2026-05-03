@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>CDSDM 0.6.5 - Regole Firestore rafforzate</title>
+</head>
+<body>
+  <h1>Test 0.6.5 - Regole Firestore rafforzate</h1>
+  <pre id="output"></pre>
+  <script src="../js/core/permissions-policy.js"></script>
+  <script>
+    const out = document.getElementById('output');
+    function assert(condition, message) {
+      if (!condition) throw new Error(message);
+      out.textContent += '✓ ' + message + '\n';
+    }
+    async function run() {
+      const rules = await fetch('../firestore.rules').then(r => r.text());
+      assert(['0.6.5','0.6.6','0.7.0'].indexOf(window.PermissionsPolicy.VERSION) >= 0, 'PermissionsPolicy aggiornata a 0.6.5');
+      assert(rules.includes('collectionScope(collectionId)'), 'rules: mappatura collection -> scope presente');
+      assert(rules.includes('effectiveProfilePermissions'), 'rules: lettura effectiveProfilePermissions presente');
+      assert(rules.includes('canReadDataCollection(groupId, collectionId)'), 'rules: funzione lettura dati presente');
+      assert(rules.includes('canCreateOrUpdateDataCollection(groupId, collectionId)'), 'rules: funzione creazione/modifica dati presente');
+      assert(rules.includes('canDeleteDataCollection(groupId, collectionId)'), 'rules: funzione eliminazione prudente presente');
+      assert(rules.includes('isProtectedSubcollection(collectionId)'), 'rules: generic match non apre collezioni sensibili');
+      assert(rules.includes('permissionRank(effectivePermissionLevel(groupId, scope)) >= 3'), 'rules: delete richiede livello admin sullo scope');
+      assert(rules.includes("collectionId in ['customers'] ? 'customers'"), 'rules: customers mappato a scope customers');
+      assert(rules.includes("collectionId in ['invoices', 'notes'] ? 'invoices'"), 'rules: invoices/notes mappati a scope invoices');
+      assert(rules.includes('allow create, update: if canCreateOrUpdateDataCollection(groupId, collectionId);'), 'rules: match generico usa canCreateOrUpdateDataCollection');
+      assert(rules.includes('allow delete: if canDeleteDataCollection(groupId, collectionId);'), 'rules: match generico usa canDeleteDataCollection');
+      out.textContent += '\nTutti i controlli 0.6.5 superati.';
+    }
+    run().catch(err => { out.textContent += '\nERRORE: ' + err.message; throw err; });
+  </script>
+</body>
+</html>

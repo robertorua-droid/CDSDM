@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>CDSDM 0.5.6 - Migrazione guidata e QA</title>
+  <script src="test-harness.js"></script>
+</head>
+<body>
+  <h1>Test 0.5.6 - Migrazione guidata e QA multiutente</h1>
+  <div id="results"></div>
+
+  <script src="../js/core/domain-constants.js"></script>
+  <script src="../js/features/business-groups/migration-qa-service.js"></script>
+  <script>
+    test('DomainConstants espone le collezioni 0.5.x', function () {
+      ok('DATA_COLLECTIONS esiste', Array.isArray(window.CDSDM_DATA_COLLECTIONS));
+      ok('include teachingScenarios', window.CDSDM_DATA_COLLECTIONS.indexOf('teachingScenarios') >= 0);
+      ok('include simulationEvents', window.CDSDM_DATA_COLLECTIONS.indexOf('simulationEvents') >= 0);
+      ok('include migrationReports', window.CDSDM_DATA_COLLECTIONS.indexOf('migrationReports') >= 0);
+    });
+
+    test('MigrationQaService espone API 0.5.6', function () {
+      ok('servizio disponibile', !!window.MigrationQaService);
+      eq('versione servizio', window.MigrationQaService.VERSION, '0.5.6');
+      ok('piano QA presente', Array.isArray(window.MigrationQaService.QA_STEPS) && window.MigrationQaService.QA_STEPS.length >= 6);
+      const plan = window.MigrationQaService.buildQaPlan();
+      eq('versione piano QA', plan.version, '0.5.6');
+      ok('piano contiene step', Array.isArray(plan.steps) && plan.steps.length === window.MigrationQaService.QA_STEPS.length);
+    });
+  </script>
+</body>
+</html>

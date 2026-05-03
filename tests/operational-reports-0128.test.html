@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Test Segnalazioni operative 0.12.8</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<main class="container py-4">
+  <h1 class="h3">Segnalazioni operative 0.12.8</h1>
+  <p class="text-muted">Verifica servizio, collezione, CSV, stampa, creazione da alert B.I. e QA locale.</p>
+  <div id="results" class="list-group"></div>
+</main>
+<script>
+window.globalData = { operationalReports: [] };
+window.AppStore = { get: function(k){ return window.globalData[k]; }, set: function(k,v){ window.globalData[k]=v; } };
+window.currentUser = { uid: 'u1', email: 'tester@example.com' };
+window.PermissionsPolicy = { canWrite: function(){ return true; }, canAdmin: function(){ return true; }, isAdmin: function(){ return true; } };
+</script>
+<script src="../js/features/operations/operational-reports-service.js"></script>
+<script>
+(function(){
+  const out = document.getElementById('results');
+  function row(ok, label, detail){ const item=document.createElement('div'); item.className='list-group-item '+(ok?'list-group-item-success':'list-group-item-danger'); item.innerHTML='<strong>'+(ok?'OK':'KO')+'</strong> '+label+(detail?'<div class="small text-muted">'+detail+'</div>':''); out.appendChild(item); }
+  try {
+    const svc = window.OperationalReportsService;
+    row(!!svc, 'OperationalReportsService disponibile');
+    const r = svc.normalizeReport({ type:'missing_location_product', title:'Prodotto non trovato', originArea:'warehouse', targetArea:'purchases', severity:'high' }, []);
+    row(r.code.indexOf('SO-')===0 && r.status==='draft', 'Normalizzazione codice/stato bozza', r.code);
+    const qa = svc.runQa();
+    row(qa.passed, 'QA locale servizio', JSON.stringify(qa));
+    const csv = svc.toCsv([r]);
+    row(csv.indexOf('Prodotto non trovato')>=0 && csv.indexOf(';')>=0, 'Export CSV');
+    const html = svc.printableHtml(r);
+    row(html.indexOf('Segnalazione operativa')>=0, 'HTML/print');
+    const alertReport = svc.buildFromAlert({ severity:'warning', area:'magazzino', message:'Sotto-scorta', action:'Verificare riordino' });
+    row(alertReport.source==='mini-bi-alert' && alertReport.originArea==='warehouse', 'Creazione da alert Mini B.I.');
+  } catch(e) { row(false, 'Eccezione test', e.message || e); }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>CDSDM Mini B.I. 0113</title><style>body{font-family:Arial,sans-serif;margin:2rem}.ok{color:#198754}.ko{color:#dc3545}pre{background:#f8f9fa;padding:1rem}</style></head>
+<body>
+<h1>Mini B.I. 0113</h1>
+<ul id="results"></ul>
+<script src="../js/features/bi/mini-bi-service.js"></script>
+<script>
+(function(){
+  const data={
+    invoices:[{id:'i1',date:'2026-01-10',customerName:'Cliente A',total:100,status:'open',lines:[{description:'Prodotto A',qty:2,price:50}]}],
+    notes:[{id:'n1',date:'2026-01-11',customerName:'Cliente A',total:10}],
+    purchases:[{id:'p1',date:'2026-01-12',supplierName:'Fornitore A',total:40,status:'open'}],
+    products:[{id:'pr1',name:'Prodotto A',stockQty:3,purchasePrice:5,minStock:5}],
+    customerDDTs:[{id:'d1',date:'2026-01-13',customerName:'Cliente A',status:'open'}],
+    customerOrders:[{id:'oc1',date:'2026-01-14',customerName:'Cliente A',status:'open'}],
+    supplierOrders:[{id:'of1',date:'2026-01-15',supplierName:'Fornitore A',status:'open'}],
+    paymentEvents:[{id:'pay1',date:'2026-01-16',type:'in',amount:20}]
+  };
+  const checks=[];
+  function check(label, ok){ checks.push({label, ok:!!ok}); }
+  const svc=window.MiniBIService;
+  const detail=svc.buildDrilldown('revenue-net',data,{ignorePermissions:true,detail:{limit:50}});
+  const filtered=svc.buildDrilldown('revenue-net',data,{ignorePermissions:true,detail:{query:'Cliente A',limit:50}});
+  const csv=svc.toCsv(detail,{allRows:true});
+  const report=svc.buildPrintableReport('vendite',data,{ignorePermissions:true});
+  const alerts=svc.buildOperationalAlerts(data,{ignorePermissions:true});
+  const dash=svc.buildOperationalDashboard('vendite',data,{ignorePermissions:true});
+  const qa=svc.runOperationalQa(data);
+  check('servizio disponibile', !!svc);
+  check('drill-down genera righe', detail.totalRows>=2);
+  check('filtro dettaglio mantiene risultati attesi', filtered.totalRows>=1);
+  check('CSV contiene separatore e disclaimer', csv.indexOf(';')>0 && csv.indexOf('Export Mini B.I.')>0);
+  check('report stampabile contiene titolo', report.title.indexOf('Report Mini B.I.')>=0);
+  check('alert operativi calcolati', alerts.length>=1);
+  check('cruscotto operativo area calcolato', dash.cards.length>=1);
+  check('QA operativa superata', qa.passed===true);
+  document.getElementById('results').innerHTML=checks.map(c=>'<li class="'+(c.ok?'ok':'ko')+'">'+(c.ok?'✅':'❌')+' '+c.label+'</li>').join('');
+  window.__CDSDM_TEST_RESULT__=checks.every(c=>c.ok);
+})();
+</script>
+</body>
+</html>

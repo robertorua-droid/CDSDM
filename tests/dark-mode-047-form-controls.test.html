@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="it" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <title>CDSDM 0.4.8 - Dark Mode form e combo</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>body{font-family:Arial,sans-serif;padding:2rem}.ok{color:green}.fail{color:red}</style>
+</head>
+<body>
+  <h1>Test Dark Mode form e combo 0.4.7</h1>
+  <select id="select-test" class="form-select">
+    <option>Prezzo anagrafico</option>
+    <option disabled>Ultimo costo DDT fornitore</option>
+  </select>
+  <input id="date-test" class="form-control" type="date" value="2026-05-01">
+  <pre id="result"></pre>
+  <script src="../js/ui/accessibility-ux-service.js"></script>
+  <script>
+    const out = [];
+    function assertTrue(value, label) { out.push((value ? 'OK ' : 'FAIL ') + label); if (!value) throw new Error(label); }
+    function cssTextIncludes(fragment) {
+      return Array.from(document.styleSheets).some(function(sheet) {
+        try { return Array.from(sheet.cssRules || []).some(function(rule) { return (rule.cssText || '').indexOf(fragment) >= 0; }); }
+        catch(e) { return false; }
+      });
+    }
+    assertTrue(cssTextIncludes('color-scheme'), 'color-scheme dark presente sui controlli form');
+    assertTrue(cssTextIncludes('option:disabled'), 'stile option:disabled presente');
+    const audit = window.AccessibilityUXService.buildAudit(document);
+    assertTrue(audit.version === '0.4.8', 'versione audit 0.4.8');
+    assertTrue(audit.checks.some(c => c.id === 'dark-mode-select-contrast'), 'controllo contrasto select presente');
+    document.getElementById('result').textContent = out.join('\n');
+  </script>
+</body>
+</html>

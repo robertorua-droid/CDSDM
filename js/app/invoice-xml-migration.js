@@ -166,6 +166,9 @@ function bindEventListeners() {
     if (window.AppModules && window.AppModules.workflow && typeof window.AppModules.workflow.bind === 'function') {
       window.AppModules.workflow.bind();
     }
+    if (window.AppModules && window.AppModules.operationalReports && typeof window.AppModules.operationalReports.bind === 'function') {
+      window.AppModules.operationalReports.bind();
+    }
     if (window.AppModules && window.AppModules.notificationCenter && typeof window.AppModules.notificationCenter.bind === 'function') {
       window.AppModules.notificationCenter.bind();
     }
@@ -174,6 +177,9 @@ function bindEventListeners() {
     }
     if (window.AppModules && window.AppModules.accessibilityUx && typeof window.AppModules.accessibilityUx.bind === 'function') {
       window.AppModules.accessibilityUx.bind();
+    }
+    if (window.AppModules && window.AppModules.miniBI && typeof window.AppModules.miniBI.bind === 'function') {
+      window.AppModules.miniBI.bind();
     }
 
     if (window.AppModules && window.AppModules.warehouseReports && typeof window.AppModules.warehouseReports.bind === 'function') {

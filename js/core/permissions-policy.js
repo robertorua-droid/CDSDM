@@ -51,11 +51,13 @@
 
     'centro-notifiche': 'workflow',
     'workflow-approvativi': 'workflow',
+    'operational-reports': 'operationalReports',
     'audit-trail': 'audit',
     'ux-accessibilita': 'settings',
     'centro-stampe': 'print',
     'statistiche': 'reports',
     'report-gestionali': 'reports',
+    'mini-bi': 'reports',
     'simulazione-ordinario': 'reports',
     'simulazione-lm': 'reports',
 
@@ -84,27 +86,27 @@
     },
     accounting: {
       id: 'accounting', label: 'Contabilità', description: 'Fatture, acquisti, incassi/pagamenti, scadenziario, registri IVA, partitario e bilancino.', readOnly: false,
-      targets: PUBLIC_TARGETS.concat(['elenco-fatture','nuova-fattura-accompagnatoria','nuovo-acquisto','elenco-acquisti','partitario','incassi-pagamenti','prima-nota','estratto-conto','solleciti','riconciliazione-banca','bilancino','scadenziario','registri-iva','tabella-iva','tabella-pagamenti','banche-aziendali','budget-marginalita','centro-stampe','statistiche','report-gestionali','anagrafica-clienti','anagrafica-fornitori','anagrafica-prodotti','centro-notifiche','workflow-approvativi','audit-trail']),
-      writeScopes: ['accounting','invoices','purchases','customers','suppliers','products','workflow']
+      targets: PUBLIC_TARGETS.concat(['elenco-fatture','nuova-fattura-accompagnatoria','nuovo-acquisto','elenco-acquisti','partitario','incassi-pagamenti','prima-nota','estratto-conto','solleciti','riconciliazione-banca','bilancino','scadenziario','registri-iva','tabella-iva','tabella-pagamenti','banche-aziendali','budget-marginalita','centro-stampe','mini-bi','statistiche','report-gestionali','anagrafica-clienti','anagrafica-fornitori','anagrafica-prodotti','centro-notifiche','workflow-approvativi','operational-reports','audit-trail']),
+      writeScopes: ['accounting','invoices','purchases','customers','suppliers','products','workflow','operationalReports']
     },
     sales: {
       id: 'sales', label: 'Vendite', description: 'Clienti, preventivi, ordini cliente, DDT cliente, fatture cliente e consultazione commerciale.', readOnly: false,
-      targets: PUBLIC_TARGETS.concat(['preventivi','ordini-cliente','ddt-cliente','fatturazione-ddt-cliente','nuova-fattura-accompagnatoria','elenco-fatture','anagrafica-clienti','anagrafica-prodotti','partitario','incassi-pagamenti','scadenziario','centro-stampe','statistiche','report-gestionali','centro-notifiche','workflow-approvativi','audit-trail','commesse','progetti','timesheet','export-timesheet']),
-      writeScopes: ['sales','invoices','customers','products','projects','workflow']
+      targets: PUBLIC_TARGETS.concat(['preventivi','ordini-cliente','ddt-cliente','fatturazione-ddt-cliente','nuova-fattura-accompagnatoria','elenco-fatture','anagrafica-clienti','anagrafica-prodotti','partitario','incassi-pagamenti','scadenziario','centro-stampe','mini-bi','statistiche','report-gestionali','centro-notifiche','workflow-approvativi','operational-reports','audit-trail','commesse','progetti','timesheet','export-timesheet']),
+      writeScopes: ['sales','invoices','customers','products','projects','workflow','operationalReports']
     },
     purchases: {
       id: 'purchases', label: 'Acquisti', description: 'Fornitori, ordini fornitore, DDT fornitore, acquisti e anagrafiche correlate.', readOnly: false,
-      targets: PUBLIC_TARGETS.concat(['ordini-fornitore','ddt-fornitore','nuovo-acquisto','elenco-acquisti','anagrafica-fornitori','anagrafica-prodotti','scadenziario','partitario','centro-stampe','statistiche','report-gestionali','centro-notifiche','workflow-approvativi','audit-trail']),
-      writeScopes: ['purchases','suppliers','products','accounting','workflow']
+      targets: PUBLIC_TARGETS.concat(['ordini-fornitore','ddt-fornitore','nuovo-acquisto','elenco-acquisti','anagrafica-fornitori','anagrafica-prodotti','scadenziario','partitario','centro-stampe','mini-bi','statistiche','report-gestionali','centro-notifiche','workflow-approvativi','operational-reports','audit-trail']),
+      writeScopes: ['purchases','suppliers','products','accounting','workflow','operationalReports']
     },
     warehouse: {
       id: 'warehouse', label: 'Magazzino', description: 'Prodotti, giacenze, inventario, lotti, movimenti, quarantena e documenti di magazzino.', readOnly: false,
-      targets: PUBLIC_TARGETS.concat(['anagrafica-prodotti','ordini-cliente','ddt-cliente','ordini-fornitore','ddt-fornitore','magazzino-giacenza-prodotto','magazzino-giacenze','magazzino-inventario-fisico','magazzino-inventario','magazzino-lotti','magazzino-movimenti','magazzino-quarantena','magazzino-macerati','centro-stampe','statistiche','report-gestionali','centro-notifiche','workflow-approvativi','audit-trail']),
-      writeScopes: ['warehouse','products','sales','purchases','workflow']
+      targets: PUBLIC_TARGETS.concat(['anagrafica-prodotti','ordini-cliente','ddt-cliente','ordini-fornitore','ddt-fornitore','magazzino-giacenza-prodotto','magazzino-giacenze','magazzino-inventario-fisico','magazzino-inventario','magazzino-lotti','magazzino-movimenti','magazzino-quarantena','magazzino-macerati','centro-stampe','mini-bi','statistiche','report-gestionali','centro-notifiche','workflow-approvativi','operational-reports','audit-trail']),
+      writeScopes: ['warehouse','products','sales','purchases','workflow','operationalReports']
     },
     readonly: {
       id: 'readonly', label: 'Sola lettura', description: 'Consultazione estesa senza creazione, modifica, import o reset.', readOnly: true,
-      targets: ['home','dashboard','centro-notifiche','workflow-approvativi','audit-trail','ux-accessibilita','budget-marginalita','bilancino','centro-stampe','statistiche','report-gestionali','preventivi','ordini-cliente','ddt-cliente','fatturazione-ddt-cliente','elenco-fatture','ordini-fornitore','ddt-fornitore','elenco-acquisti','partitario','incassi-pagamenti','prima-nota','estratto-conto','solleciti','riconciliazione-banca','scadenziario','registri-iva','commesse','progetti','timesheet','export-timesheet','simulazione-ordinario','simulazione-lm','anagrafica-clienti','anagrafica-fornitori','anagrafica-prodotti','magazzino-giacenza-prodotto','magazzino-giacenze','magazzino-inventario-fisico','magazzino-inventario','magazzino-lotti','magazzino-movimenti','magazzino-quarantena','magazzino-macerati','uso-dati','gruppi-aziendali','manuale','versione'],
+      targets: ['home','dashboard','mini-bi','centro-notifiche','workflow-approvativi','operational-reports','audit-trail','ux-accessibilita','budget-marginalita','bilancino','centro-stampe','mini-bi','statistiche','report-gestionali','preventivi','ordini-cliente','ddt-cliente','fatturazione-ddt-cliente','elenco-fatture','ordini-fornitore','ddt-fornitore','elenco-acquisti','partitario','incassi-pagamenti','prima-nota','estratto-conto','solleciti','riconciliazione-banca','scadenziario','registri-iva','commesse','progetti','timesheet','export-timesheet','simulazione-ordinario','simulazione-lm','anagrafica-clienti','anagrafica-fornitori','anagrafica-prodotti','magazzino-giacenza-prodotto','magazzino-giacenze','magazzino-inventario-fisico','magazzino-inventario','magazzino-lotti','magazzino-movimenti','magazzino-quarantena','magazzino-macerati','uso-dati','gruppi-aziendali','manuale','versione'],
       writeScopes: []
     }
   };
@@ -356,7 +358,7 @@
       $('[data-target="ruoli-permessi"]').closest('li').toggleClass('d-none permission-hidden', mode);
       $('[data-target="console-docente"],[data-target="migrazione-qa"]').closest('li').addClass('d-none permission-hidden');
     }
-    $('#section-settings').removeClass('d-none permission-hidden');
+    $('#section-settings,#section-organizzazione,#section-didattica,#section-amministrazione').removeClass('d-none permission-hidden');
 
     $('[data-permission-target]').each(function () {
       const allowed = canAccessTarget($(this).attr('data-permission-target'));

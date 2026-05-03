@@ -26,6 +26,7 @@
     { id: 'projects', label: 'Commesse, progetti e timesheet', scope: 'projects' },
     { id: 'reports', label: 'Report e statistiche', scope: 'reports' },
     { id: 'workflow', label: 'Workflow e notifiche', scope: 'workflow' },
+    { id: 'operationalReports', label: 'Segnalazioni operative', scope: 'operationalReports' },
     { id: 'audit', label: 'Audit trail', scope: 'audit' },
     { id: 'print', label: 'Centro stampe', scope: 'print' },
     { id: 'import', label: 'Import massivi', scope: 'import' },
@@ -44,23 +45,23 @@
     },
     teacher: {
       name: 'Docente / revisore', roleBase: 'teacher', description: 'Supervisione didattica completa, inclusi scenari e QA.',
-      permissions: fillAll('read', { permissions: 'admin', securityAudit: 'admin', teacherConsole: 'admin', migrationQa: 'admin', audit: 'read', reports: 'read', workflow: 'write' })
+      permissions: fillAll('read', { permissions: 'admin', securityAudit: 'admin', teacherConsole: 'admin', migrationQa: 'admin', audit: 'read', reports: 'read', workflow: 'write', operationalReports: 'write' })
     },
     accounting: {
       name: 'Contabilità standard', roleBase: 'accounting', description: 'Gestione documenti contabili, incassi/pagamenti e consultazione anagrafiche.',
-      permissions: fillAll('none', { customers: 'read', suppliers: 'read', products: 'read', invoices: 'write', purchases: 'write', accounting: 'write', reports: 'read', workflow: 'write', audit: 'read', print: 'write' })
+      permissions: fillAll('none', { customers: 'read', suppliers: 'read', products: 'read', invoices: 'write', purchases: 'write', accounting: 'write', reports: 'read', workflow: 'write', operationalReports: 'write', audit: 'read', print: 'write' })
     },
     sales: {
       name: 'Vendite standard', roleBase: 'sales', description: 'Gestione clienti, preventivi, ordini cliente e consultazione fatture.',
-      permissions: fillAll('none', { customers: 'write', products: 'read', sales: 'write', invoices: 'read', warehouse: 'read', accounting: 'read', projects: 'write', reports: 'read', workflow: 'write', audit: 'read', print: 'write' })
+      permissions: fillAll('none', { customers: 'write', products: 'read', sales: 'write', invoices: 'read', warehouse: 'read', accounting: 'read', projects: 'write', reports: 'read', workflow: 'write', operationalReports: 'write', audit: 'read', print: 'write' })
     },
     purchases: {
       name: 'Acquisti standard', roleBase: 'purchases', description: 'Gestione fornitori, ordini fornitore, DDT fornitore e acquisti.',
-      permissions: fillAll('none', { suppliers: 'write', products: 'read', purchases: 'write', warehouse: 'read', accounting: 'read', reports: 'read', workflow: 'write', audit: 'read', print: 'write' })
+      permissions: fillAll('none', { suppliers: 'write', products: 'read', purchases: 'write', warehouse: 'read', accounting: 'read', reports: 'read', workflow: 'write', operationalReports: 'write', audit: 'read', print: 'write' })
     },
     warehouse: {
       name: 'Magazzino standard', roleBase: 'warehouse', description: 'Gestione prodotti, giacenze, lotti, movimenti e DDT logistici.',
-      permissions: fillAll('none', { products: 'write', warehouse: 'write', sales: 'read', purchases: 'read', customers: 'read', suppliers: 'read', reports: 'read', workflow: 'write', audit: 'read', print: 'write' })
+      permissions: fillAll('none', { products: 'write', warehouse: 'write', sales: 'read', purchases: 'read', customers: 'read', suppliers: 'read', reports: 'read', workflow: 'write', operationalReports: 'write', audit: 'read', print: 'write' })
     },
     readonly: {
       name: 'Sola lettura', roleBase: 'readonly', description: 'Consultazione generale senza scritture operative.',

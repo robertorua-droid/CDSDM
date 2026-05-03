@@ -88,6 +88,20 @@ Per l'utente finale la versione 0.2.0 non cambia i flussi operativi principali: 
 
 # 2. Manuale utente
 
+> **CDSDM** significa **Cloud Data Suite for Digital Management**. Questo nome può comparire in login, barra superiore, schermata Home e pagina Informazioni Versione.
+
+## Organizzazione del menu laterale
+
+Dalla versione **0.8.7** il menu separa meglio le aree operative:
+
+- **Impostazioni**: configurazioni aziendali, IVA, pagamenti, banche, uso dati, import CSV e backup/import/reset;
+- **Organizzazione**: gruppi aziendali, ruoli, profili, matrice e override permessi;
+- **Didattica**: console docente, scenari e QA/migrazione multiutente;
+- **Amministrazione**: funzioni sensibili come Superadmin e Audit sicurezza.
+
+Questa divisione non cambia i dati né i permessi, ma rende più chiaro dove cercare le funzioni.
+
+
 Questo manuale descrive l’uso quotidiano del gestionale, con particolare attenzione a:
 - configurazione iniziale dell’**anagrafica azienda**
 - differenze operative tra **Ordinario** e **Forfettario**
@@ -1070,3 +1084,8 @@ Nel pannello **Gruppi aziendali** gli inviti ora includono validità, note, stat
 ## Percorso didattico consolidato 0.7.2
 
 Docente: prepara gruppo, profili, inviti e dataset. Studente: completa flussi guidati. Verifica: usa test 0.7.x, audit e backup finale.
+
+
+## Mini B.I. didattica
+
+La sezione **Analisi → Mini B.I. didattica** aiuta a leggere i dati già presenti con KPI semplici, spiegabili e non certificativi.

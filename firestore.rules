@@ -69,21 +69,21 @@ service cloud.firestore {
       return collectionId in [
         'invoices', 'notes', 'purchases', 'paymentEvents', 'cashbookMovements',
         'reminderEvents', 'bankReconciliationEvents', 'businessBudgets',
-        'workflowEvents', 'auditEvents', 'vatRates', 'paymentMethods', 'companyBanks'
+        'workflowEvents', 'auditEvents', 'operationalReports', 'vatRates', 'paymentMethods', 'companyBanks'
       ];
     }
 
     function isSalesCollection(collectionId) {
       return collectionId in [
         'customers', 'quotes', 'customerOrders', 'customerDDTs', 'invoices',
-        'notes', 'commesse', 'projects', 'worklogs', 'workflowEvents', 'auditEvents'
+        'notes', 'commesse', 'projects', 'worklogs', 'workflowEvents', 'auditEvents', 'operationalReports'
       ];
     }
 
     function isPurchasesCollection(collectionId) {
       return collectionId in [
         'suppliers', 'supplierOrders', 'supplierDDTs', 'purchases',
-        'products', 'warehouseMovements', 'warehouseLots', 'workflowEvents', 'auditEvents'
+        'products', 'warehouseMovements', 'warehouseLots', 'workflowEvents', 'auditEvents', 'operationalReports'
       ];
     }
 
@@ -91,7 +91,7 @@ service cloud.firestore {
       return collectionId in [
         'products', 'warehouseMovements', 'warehousePhysicalCounts', 'warehouseLots',
         'supplierDDTs', 'customerDDTs', 'supplierOrders', 'customerOrders',
-        'workflowEvents', 'auditEvents'
+        'workflowEvents', 'auditEvents', 'operationalReports'
       ];
     }
 
@@ -117,6 +117,7 @@ service cloud.firestore {
         : collectionId in ['paymentEvents', 'cashbookMovements', 'reminderEvents', 'bankReconciliationEvents', 'businessBudgets', 'companyBanks', 'vatRates', 'paymentMethods'] ? 'accounting'
         : collectionId in ['commesse', 'projects', 'worklogs'] ? 'projects'
         : collectionId in ['workflowEvents'] ? 'workflow'
+        : collectionId in ['operationalReports'] ? 'operationalReports'
         : collectionId in ['auditEvents'] ? 'audit'
         : collectionId in ['settings'] ? 'settings'
         : collectionId in ['teachingScenarios', 'simulationEvents'] ? 'teacherConsole'

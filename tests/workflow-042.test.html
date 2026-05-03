@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><title>CDSDM 0.4.2 - Workflow approvativi</title></head>
+<body><h1>Test Workflow approvativi 0.4.2</h1><pre id="out"></pre>
+<script src="../js/features/accounting/workflow-service.js"></script>
+<script>
+(function(){
+  const out = document.getElementById('out');
+  function ok(cond,msg){ if(!cond) throw new Error(msg); out.textContent += 'OK - '+msg+'\n'; }
+  const data = {
+    customers:[{id:'c1',name:'Cliente Demo'}], suppliers:[{id:'s1',name:'Fornitore Demo'}],
+    quotes:[{id:'q1',number:'PREV-1',customerId:'c1',total:100,status:'draft'}],
+    invoices:[{id:'i1',number:'FT-1',customerId:'c1',total:200,workflowStatus:'pending_review'}],
+    paymentEvents:[{id:'p1',subjectType:'customer',subjectId:'c1',amount:50}], workflowEvents:[]
+  };
+  const res = window.WorkflowService.buildTasks(data,{filters:{status:'open',type:'all',search:''}});
+  ok(res.tasks.length >= 3, 'genera attività da documenti e pagamenti');
+  ok(res.summary.pending_review >= 1, 'riepiloga attività da verificare');
+  const ev = window.WorkflowService.createWorkflowEvent(res.tasks[0], 'approve', 'verificato', 'tester');
+  ok(ev.statusTo === 'approved', 'crea evento approvazione');
+  ok(ev.sourceId === res.tasks[0].sourceId, 'mantiene riferimento sorgente');
+})();
+</script></body></html>

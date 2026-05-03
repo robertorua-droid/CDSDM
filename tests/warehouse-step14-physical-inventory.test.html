@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>Warehouse Step 14 - Inventario fisico</title></head>
+<body>
+  <a data-target="magazzino-giacenza-prodotto"></a>
+  <a data-target="magazzino-inventario-fisico"></a>
+  <select id="warehouseStockQueryProduct"></select>
+  <tbody id="warehouse-physical-inventory-table-body"></tbody>
+  <button id="warehousePhysicalApplyBtn"></button>
+  <script src="warehouse-step14-physical-inventory.test.js"></script>
+  <script>
+    const failed = window.__warehouseStep14PhysicalInventoryResults.filter(r => !r.ok);
+    document.body.innerHTML = failed.length ? failed.map(f => f.name + ': ' + f.error).join('<br>') : 'OK';
+    if (failed.length) throw new Error(failed.length + ' test falliti');
+  </script>
+</body>
+</html>

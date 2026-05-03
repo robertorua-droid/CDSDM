@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>CDSDM 0.4.8 - Accessibilità form e pulsanti</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="sidebar">
+    <div class="nav-section-container collapsed">
+      <div class="nav-section-header">Analisi</div>
+      <div class="nav-section-content"><a class="nav-link" data-target="ux-accessibilita" href="#">UX / accessibilità</a></div>
+    </div>
+  </div>
+  <div class="main-content">
+    <div class="content-section" id="ux-accessibilita">
+      <input id="customer-name" placeholder="Cliente">
+      <select id="payment-method"><option>Bonifico</option></select>
+      <textarea name="internalNote"></textarea>
+      <button id="btn-save-icon"><i class="fas fa-save"></i></button>
+      <button data-target="dashboard"><i class="fas fa-eye"></i></button>
+    </div>
+  </div>
+  <div id="test-results"></div>
+  <script src="test-harness.js"></script>
+  <script src="../js/ui/accessibility-ux-service.js"></script>
+  <script>
+    test('auto-etichetta campi form privi di label esplicita', function () {
+      AccessibilityUXService.applyRuntimeEnhancements();
+      assertEqual('Cliente', document.getElementById('customer-name').getAttribute('aria-label'), 'placeholder usato come label');
+      assertEqual('Payment method', document.getElementById('payment-method').getAttribute('aria-label'), 'id usato come label');
+      assertEqual('Internal Note', document.querySelector('textarea').getAttribute('aria-label'), 'name usato come label');
+    });
+
+    test('auto-nomina pulsanti solo icona o privi di testo', function () {
+      AccessibilityUXService.applyRuntimeEnhancements();
+      assertTrue(!!document.getElementById('btn-save-icon').getAttribute('aria-label'), 'pulsante con aria-label');
+      assertTrue(!!document.querySelector('button[data-target="dashboard"]').getAttribute('aria-label'), 'pulsante data-target con aria-label');
+    });
+
+    test('audit non segnala più campi e pulsanti anonimi nel DOM di prova', function () {
+      const result = AccessibilityUXService.buildAudit(document);
+      const labels = result.checks.find(c => c.id === 'form-labels');
+      const buttons = result.checks.find(c => c.id === 'button-names');
+      assertTrue(labels.ok, 'campi form ok');
+      assertTrue(buttons.ok, 'pulsanti ok');
+      assertEqual('0.4.8', result.version, 'versione audit');
+    });
+
+    test('export CSV include i nuovi controlli runtime', function () {
+      const csv = AccessibilityUXService.toCsv(AccessibilityUXService.buildAudit(document));
+      assertTrue(csv.indexOf('Etichette runtime applicate') > -1, 'controllo runtime label presente');
+      assertTrue(csv.indexOf('Nomi runtime applicati ai pulsanti') > -1, 'controllo runtime pulsanti presente');
+    });
+
+    window.addEventListener('load', function () { renderResults('test-results'); });
+  </script>
+</body>
+</html>

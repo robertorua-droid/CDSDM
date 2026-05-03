@@ -1,48 +1,27 @@
 // utils.js
 // Variabili Globali
 let db, auth;
-let globalData = window.globalData || {
-    companyInfo: {},
-    products: [],
-    customers: [],
-    suppliers: [],
-    purchases: [],
-    invoices: [],
-    notes: [],
-    commesse: [],
-    projects: [],
-    worklogs: [],
-    vatRates: [],
-    paymentMethods: [],
-    companyBanks: [],
-    warehouseMovements: [],
-    quotes: [],
-    customerOrders: [],
-    supplierOrders: [],
-    supplierDDTs: [],
-    customerDDTs: [],
-    warehousePhysicalCounts: [],
-    warehouseLots: [],
-    paymentEvents: [],
-    cashbookMovements: [],
-    reminderEvents: [],
-    bankReconciliationEvents: [],
-    businessBudgets: [],
-    workflowEvents: [],
-    auditEvents: [],
-    teachingScenarios: [],
-    simulationEvents: [],
-    migrationReports: [],
-    permissionProfiles: [],
-    permissionMatrices: [],
-    securityAccessReports: []
-};
+const DATA_COLLECTIONS = (typeof window.getCDSDMDataCollections === 'function')
+    ? window.getCDSDMDataCollections()
+    : ((window.DomainConstants && Array.isArray(window.DomainConstants.DATA_COLLECTIONS))
+        ? window.DomainConstants.DATA_COLLECTIONS.slice()
+        : (Array.isArray(window.CDSDM_DATA_COLLECTIONS) ? window.CDSDM_DATA_COLLECTIONS.slice() : []));
+window.CDSDM_DATA_COLLECTIONS = DATA_COLLECTIONS.slice();
+
+function ensureGlobalDataShape(existingStore) {
+    const store = existingStore && typeof existingStore === 'object' ? existingStore : {};
+    if (!store.companyInfo || typeof store.companyInfo !== 'object' || Array.isArray(store.companyInfo)) store.companyInfo = {};
+    DATA_COLLECTIONS.forEach(collectionName => {
+        if (!Array.isArray(store[collectionName])) store[collectionName] = [];
+    });
+    return store;
+}
+
+let globalData = ensureGlobalDataShape(window.globalData);
 window.globalData = globalData;
 let currentUser = null;
 let currentBusinessGroup = null;
 let businessGroupMemberships = [];
-const DATA_COLLECTIONS = ['products', 'customers', 'suppliers', 'purchases', 'invoices', 'notes', 'commesse', 'projects', 'worklogs', 'vatRates', 'paymentMethods', 'companyBanks', 'warehouseMovements', 'quotes', 'customerOrders', 'supplierOrders', 'supplierDDTs', 'customerDDTs', 'warehousePhysicalCounts', 'warehouseLots', 'paymentEvents', 'cashbookMovements', 'reminderEvents', 'bankReconciliationEvents', 'businessBudgets', 'workflowEvents', 'auditEvents', 'teachingScenarios', 'simulationEvents', 'migrationReports', 'permissionProfiles', 'permissionMatrices', 'securityAccessReports'];
-window.CDSDM_DATA_COLLECTIONS = DATA_COLLECTIONS;
 let dateTimeInterval = null;
 let CURRENT_EDITING_ID = null;         
 let CURRENT_EDITING_INVOICE_ID = null; 

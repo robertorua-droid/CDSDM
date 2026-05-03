@@ -30,7 +30,7 @@
   function normalizeDDT(d) { return window.DomainNormalizers && typeof window.DomainNormalizers.normalizeSupplierDDT === 'function' ? window.DomainNormalizers.normalizeSupplierDDT(d) : (d || {}); }
   function getProducts() { return (getStoreArray('products') || []).map(normalizeProduct).filter(function (p) { return p.itemType === 'product'; }); }
   function getSuppliers() { return getStoreArray('suppliers') || []; }
-  function getOrders() { return (getStoreArray('supplierOrders') || []).map(normalizeOrder).filter(function (o) { return o.status !== 'cancelled' && o.status !== 'received'; }); }
+  function getOrders() { return (getStoreArray('supplierOrders') || []).map(normalizeOrder).filter(function (o) { return o.status !== 'cancelled' && o.status !== 'received' && o.status !== 'draft'; }); }
   function lineRemainingQty(l) { return Math.max(0, num(l.qty) - num(l.receivedQty)); }
   function orderRemainingQty(o) { return (o.lines || []).reduce(function(s,l){ return s + lineRemainingQty(l); }, 0); }
   function getOpenOrders() { return getOrders().filter(function(o){ return ['confirmed','partially_received'].indexOf(o.status) !== -1 && orderRemainingQty(o) > 0; }); }
@@ -64,7 +64,7 @@
             <div class="col-md-6" id="supplierDdt-singleOrderWrap"><label class="form-label">Ordine fornitore</label><select class="form-select" id="supplierDdt-sourceOrderId" disabled></select></div>
             <div class="col-12"><label class="form-label">Note</label><input class="form-control" id="supplierDdt-notes" /></div>
           </div>
-          <div class="card mb-3 d-none" id="supplierDdt-multiOrdersPanel"><div class="card-header fw-semibold d-flex justify-content-between align-items-center"><span>Ordini fornitore da accorpare</span><span class="small text-muted">Stesso fornitore, ordini aperti o parzialmente ricevuti</span></div><div class="card-body">
+          <div class="card mb-3 d-none" id="supplierDdt-multiOrdersPanel"><div class="card-header fw-semibold d-flex justify-content-between align-items-center"><span>Ordini fornitore da accorpare</span><span class="small text-muted">Stesso fornitore, solo ordini confermati o parzialmente ricevuti</span></div><div class="card-body">
             <div class="alert alert-warning small py-2 mb-3"><strong>Controllo operativo.</strong> Seleziona solo ordini dello stesso fornitore. Le righe residue vengono proposte nel DDT e puoi ripartire la quantità ricevuta tra accettata, quarantena e respinta.</div>
             <div class="table-responsive"><table class="table table-sm align-middle mb-0"><thead><tr><th></th><th>Ordine</th><th>Data</th><th>Fornitore</th><th class="text-end">Residuo</th><th>Stato</th></tr></thead><tbody id="supplierDdt-multiOrdersBody"></tbody></table></div>
           </div></div>
@@ -101,7 +101,7 @@
 
   function selectedSourceType() { return $('#supplierDdt-sourceType').val() || 'direct'; }
   function renderSupplierOptions() { const $sel = $('#supplierDdt-supplierId'); if (!$sel.length) return; const cur=$sel.val(); $sel.empty().append('<option value="">Seleziona fornitore...</option>'); getSuppliers().forEach(function(s){ $sel.append('<option value="'+esc(s.id)+'">'+esc(supplierLabel(s))+'</option>'); }); if (cur) $sel.val(cur); }
-  function renderOrderOptions() { const $sel = $('#supplierDdt-sourceOrderId'); if (!$sel.length) return; const cur=$sel.val(); $sel.empty().append('<option value="">Nessun ordine collegato</option>'); getOpenOrders().forEach(function(o){ $sel.append('<option value="'+esc(o.id)+'">'+esc(orderLabel(o))+'</option>'); }); if (cur) $sel.val(cur); }
+  function renderOrderOptions() { const $sel = $('#supplierDdt-sourceOrderId'); if (!$sel.length) return; const cur=$sel.val(); const supplierId=$('#supplierDdt-supplierId').val() || ''; $sel.empty().append('<option value="">Nessun ordine collegato</option>'); getOpenOrders().filter(function(o){ return !supplierId || String(o.supplierId) === String(supplierId); }).forEach(function(o){ $sel.append('<option value="'+esc(o.id)+'">'+esc(orderLabel(o))+'</option>'); }); if (cur && $sel.find('option[value="'+esc(cur)+'"]').length) $sel.val(cur); }
   function renderProductOptions() { const $sel = $('#supplierDdt-productId'); if (!$sel.length) return; const cur=$sel.val(); $sel.empty().append('<option value="">Seleziona prodotto...</option>'); getProducts().forEach(function(p){ const label=(p.code?p.code+' - ':'')+(p.description||'Prodotto')+' · disp. '+fmtQty(p.stockQty)+' · acq. '+fmtMoney(p.purchasePrice||0); $sel.append('<option value="'+esc(p.id)+'">'+esc(label)+'</option>'); }); if (cur) $sel.val(cur); syncSelectedProductPrice(); }
   function renderMultiOrderOptions() {
     const $body = $('#supplierDdt-multiOrdersBody'); if (!$body.length) return;
@@ -223,7 +223,9 @@
     const d=getDDTs().find(function(x){return String(x.id)===String(id);}); if (!d) return; const isReturn=isReturnDDT(d);
     $('#supplierDdtDetailModalTitle').text((isReturn ? 'DDT reso fornitore ' : 'DDT fornitore ')+(d.number||''));
     const rows=(d.lines||[]).map(function(l){ if (isReturn) return '<tr><td>'+esc(l.productCode||'')+'</td><td>'+esc(l.productDescription||l.description||'')+'</td><td>'+esc(l.unitOfMeasure||'pz')+'</td><td class="text-end">'+fmtQty(l.returnQty || l.qty || l.receivedQty)+'</td><td class="text-end">'+fmtMoney(l.price)+'</td><td>'+esc(l.notes||'')+'</td></tr>'; return '<tr><td>'+esc(lineOrigin(l))+'</td><td>'+esc(l.productCode||'')+'</td><td>'+esc(l.productDescription||l.description||'')+'</td><td>'+esc(l.unitOfMeasure||'pz')+'</td><td class="text-end">'+fmtQty(l.receivedQty)+'</td><td class="text-end">'+fmtQty(l.acceptedQty)+'</td><td class="text-end">'+fmtQty(l.quarantineQty)+'</td><td class="text-end">'+fmtQty(l.rejectedQty)+'</td><td class="text-end">'+fmtMoney(l.price)+'</td><td>'+esc(l.notes||'')+'</td></tr>'; }).join('');
-    const actions='<div class="d-flex justify-content-end gap-2 mb-3">'+(!isReturn?'<button class="btn btn-outline-success btn-sm supplier-ddt-update-purchase-prices" data-id="'+esc(d.id)+'" type="button"><i class="fas fa-tags"></i> Aggiorna prezzi acquisto</button>':'')+'<button class="btn btn-outline-secondary btn-sm supplier-ddt-print" data-id="'+esc(d.id)+'" type="button"><i class="fas fa-print"></i> Stampa / PDF</button></div>';
+    const quarantineQty=(d.lines||[]).reduce(function(s,l){ return s + num(l.quarantineQty); }, 0);
+    const quarantineAction=(!isReturn && quarantineQty>0)?'<button class="btn btn-outline-warning btn-sm supplier-ddt-create-quarantine-report" data-id="'+esc(d.id)+'" type="button"><i class="fas fa-triangle-exclamation"></i> Segnala quarantena</button>':'';
+    const actions='<div class="d-flex justify-content-end gap-2 mb-3">'+quarantineAction+(!isReturn?'<button class="btn btn-outline-success btn-sm supplier-ddt-update-purchase-prices" data-id="'+esc(d.id)+'" type="button"><i class="fas fa-tags"></i> Aggiorna prezzi acquisto</button>':'')+'<button class="btn btn-outline-secondary btn-sm supplier-ddt-print" data-id="'+esc(d.id)+'" type="button"><i class="fas fa-print"></i> Stampa / PDF</button></div>';
     const linkedDocs = window.DocumentLinksService ? window.DocumentLinksService.renderFor('supplier_ddt', d) : ((!isReturn && (d.sourceDocuments || []).length) ? '<div class="alert alert-secondary small"><strong>Ordini collegati:</strong> '+esc((d.sourceDocuments || []).map(function(x){ return x.number || x.id; }).join(', '))+'</div>' : '');
     const cols=isReturn?'<thead><tr><th>Codice</th><th>Prodotto</th><th>UM</th><th class="text-end">Reso</th><th class="text-end">Valore rif.</th><th>Note</th></tr></thead>':'<thead><tr><th>Origine</th><th>Codice</th><th>Prodotto</th><th>UM</th><th class="text-end">Ricev.</th><th class="text-end">Accett.</th><th class="text-end">Quarant.</th><th class="text-end">Resp.</th><th class="text-end">Prezzo</th><th>Note</th></tr></thead>';
     const colspan=isReturn?6:10;
@@ -248,7 +250,7 @@
     $('#newSupplierDdtBtn').on('click.supplierDDTs', function(){ resetForm(); $('#supplierDdtModal').modal('show'); });
     $(document).on('change.supplierDDTs', '#supplierDdt-sourceType', function(){ tempLines=[]; syncSourceUI(); recalcLines(); });
     $(document).on('change.supplierDDTs', '#supplierDdt-sourceOrderId', function(){ if ($(this).val()) loadFromOrder($(this).val()); });
-    $(document).on('change.supplierDDTs', '#supplierDdt-supplierId', function(){ if (selectedSourceType()==='supplier_orders') { tempLines=[]; renderMultiOrderOptions(); recalcLines(); } });
+    $(document).on('change.supplierDDTs', '#supplierDdt-supplierId', function(){ renderOrderOptions(); if (selectedSourceType()==='supplier_orders') { tempLines=[]; renderMultiOrderOptions(); recalcLines(); } });
     $(document).on('change.supplierDDTs', '.supplier-ddt-multi-order', loadFromMultiOrders);
     $(document).on('change.supplierDDTs', '#supplierDdt-productId', function(){ $('#supplierDdt-linePrice').data('manual', false); syncSelectedProductPrice(); });
     $(document).on('input.supplierDDTs', '#supplierDdt-linePrice', function(){ $(this).data('manual', true); });
@@ -260,6 +262,12 @@
     $(document).on('click.supplierDDTs', '.supplier-ddt-detail', function(){ showDetail($(this).attr('data-id')); });
     $(document).on('click.supplierDDTs', '.supplier-ddt-print', function(e){ const id=$(e.currentTarget).attr('data-id'); const d=getDDTs().find(function(x){return String(x.id)===String(id);}); if (d && window.DDTPrintService) window.DDTPrintService.printDDT(d, isReturnDDT(d) ? 'supplier_return' : 'supplier'); });
     $(document).on('click.supplierDDTs', '.supplier-ddt-update-purchase-prices', function(e){ const id=$(e.currentTarget).attr('data-id'); const d=getDDTs().find(function(x){return String(x.id)===String(id);}); if (d && !isReturnDDT(d) && window.WarehousePriceUpdateService) window.WarehousePriceUpdateService.updatePurchasePricesFromSupplierDDT(d); });
+    $(document).on('click.supplierDDTs', '.supplier-ddt-create-quarantine-report', async function(e){
+      const id=$(e.currentTarget).attr('data-id'); const d=getDDTs().find(function(x){return String(x.id)===String(id);});
+      if (!d) return alert('DDT fornitore non trovato.');
+      if (!window.AppModules || !window.AppModules.operationalReports || typeof window.AppModules.operationalReports.createFromSupplierDDTQuarantine !== 'function') return alert('Modulo Segnalazioni operative non disponibile.');
+      try { await window.AppModules.operationalReports.createFromSupplierDDTQuarantine(d); $('#supplierDdtDetailModal').modal('hide'); alert('Bozza di segnalazione quarantena creata. Aprila in Workflow → Segnalazioni operative e usa Invia segnalazione per renderla effettiva.'); } catch(err) { console.error(err); }
+    });
     if (window.AppStore && typeof window.AppStore.subscribe === 'function') ['supplierDDTs','suppliers','products','supplierOrders','warehouseMovements'].forEach(function(k){ window.AppStore.subscribe(k, render); });
     render();
   }

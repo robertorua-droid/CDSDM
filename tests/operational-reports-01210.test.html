@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>CDSDM 0.12.10 - Segnalazioni collegamenti guidati</title><style>body{font-family:Arial,sans-serif;margin:24px}.ok{color:green}.ko{color:red}</style></head>
+<body>
+<h1>Test 0.12.10 - Segnalazioni operative: collegamenti guidati</h1>
+<ul id="results"></ul>
+<script>
+window.globalData = {
+  suppliers: [{ id:'s1', name:'Fornitore Alfa' }, { id:'s2', name:'Fornitore Beta' }],
+  supplierOrders: [
+    { id:'o1', number:'OF-1', supplierId:'s1', supplierName:'Fornitore Alfa', status:'confirmed' },
+    { id:'o2', number:'OF-2', supplierId:'s1', supplierName:'Fornitore Alfa', status:'draft' },
+    { id:'o3', number:'OF-3', supplierId:'s1', supplierName:'Fornitore Alfa', status:'cancelled' },
+    { id:'o4', number:'OF-4', supplierId:'s2', supplierName:'Fornitore Beta', status:'partially_received' }
+  ],
+  supplierDDTs: [{ id:'d1', number:'DDF-1', supplierId:'s1', supplierName:'Fornitore Alfa', status:'received_with_reserve', lines:[{ productCode:'P1', productDescription:'Prodotto 1', quarantineQty:2 }] }],
+  operationalReports: []
+};
+window.AppStore = { get: function(k){ return window.globalData[k] || []; }, set: function(k,v){ window.globalData[k]=v; } };
+window.currentUser = { uid:'u1', email:'tester@example.com' };
+window.saveDataToCloud = async function(collection, data, id){ data.id = id || data.id; const arr = window.globalData[collection] = window.globalData[collection] || []; const i = arr.findIndex(x => String(x.id) === String(data.id)); if (i >= 0) arr[i] = data; else arr.push(data); return data; };
+</script>
+<script src="../js/features/operations/operational-reports-service.js"></script>
+<script>
+(function(){
+  const out = document.getElementById('results');
+  function add(name, ok, detail){ const li=document.createElement('li'); li.className=ok?'ok':'ko'; li.textContent=(ok?'OK ':'KO ')+name+(detail?' - '+detail:''); out.appendChild(li); }
+  const svc = window.OperationalReportsService;
+  const s1 = svc.getSupplierOrdersForSupplier('s1');
+  add('ordini fornitore filtrati per stato lavorabile', s1.length === 1 && s1[0].id === 'o1', JSON.stringify(s1.map(o=>o.id)));
+  const payload = svc.buildPayloadFromLinkedDocument('supplier_order', s1[0]);
+  add('payload collegamento ordine fornitore', payload.relatedDocumentType === 'supplier_order' && payload.relatedDocumentId === 'o1' && payload.relatedSupplierName === 'Fornitore Alfa', payload.relatedDocumentNumber);
+  const q = svc.buildFromSupplierDDTQuarantine(window.globalData.supplierDDTs[0]);
+  add('bozza da DDT fornitore in quarantena', q.status === 'draft' && q.type === 'quarantine_goods' && q.targetArea === 'purchases', q.relatedDocumentNumber);
+  svc.submitReport(q, 'send', 'Comunicazione interna iniziale').then(function(saved){
+    add('bozza trasformata in segnalazione effettiva', saved.status === 'reported' && saved.messages.length > 0 && !!saved.reportedAt, saved.status);
+  }).catch(function(e){ add('submitReport send', false, e.message || String(e)); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Warehouse Step 25 Reports</title>
+</head>
+<body>
+  <div id="warehouse-reports-root"></div>
+  <script src="test-harness.js"></script>
+  <script>
+    (function(){
+      window.globalData = {
+        products: [
+          { id:'p1', code:'P001', description:'Prodotto A', stockQty:5, purchasePrice:10, quarantineQty:2 },
+          { id:'p2', code:'P002', description:'Prodotto B', stockQty:3, purchasePrice:20, quarantineQty:0 }
+        ],
+        customerDDTs: [
+          { id:'d1', number:'DDT-1', date:'2026-01-10', customerName:'Cliente Alfa', status:'issued' },
+          { id:'d2', number:'DDT-2', date:'2026-01-11', customerName:'Cliente Beta', status:'invoiced', invoiceId:'i2' }
+        ],
+        customerOrders: [{ id:'o1', number:'OC-1', status:'confirmed' }],
+        supplierOrders: [{ id:'so1', number:'OF-1', status:'partially_received' }],
+        invoices: [{ id:'i1', number:'F-1', customerName:'Cliente Alfa', dueDate:'2026-02-10', status:'sent' }]
+      };
+      window.AppStore = {
+        get: function(k){ return window.globalData[k] || []; },
+        subscribe: function(){ return function(){}; }
+      };
+      window.$ = function(selector){
+        var el = document.querySelector(selector);
+        return {
+          length: el ? 1 : 0,
+          html: function(value){ if (value === undefined) return el ? el.innerHTML : ''; if (el) el.innerHTML = value; return this; }
+        };
+      };
+    })();
+  </script>
+  <script src="../js/features/warehouse/warehouse-reports-module.js"></script>
+  <script>
+    test('modulo reportistica esposto in AppModules', function(){
+      assertTrue(!!(window.AppModules && window.AppModules.warehouseReports), 'Modulo reportistica non esposto');
+      assertTrue(typeof window.AppModules.warehouseReports.render === 'function', 'Render reportistica mancante');
+      assertTrue(typeof window.AppModules.warehouseReports.bind === 'function', 'Bind reportistica mancante');
+    });
+
+    test('render reportistica calcola KPI principali', function(){
+      window.AppModules.warehouseReports.render();
+      var html = document.getElementById('warehouse-reports-root').innerHTML;
+      assertIncludes(html, 'Giacenze valorizzate', 'Card giacenze mancante');
+      assertIncludes(html, '€ 110,00', 'Valore inventario atteso 5*10 + 3*20');
+      assertIncludes(html, '1 prodotti', 'Quantità prodotti in quarantena attesa');
+      assertIncludes(html, '1 DDT', 'Solo un DDT cliente deve risultare da fatturare');
+      assertIncludes(html, '2 ordini', 'Ordini cliente/fornitore aperti non conteggiati');
+      assertIncludes(html, 'DDT-1', 'DDT non fatturato non renderizzato');
+      assertIncludes(html, 'F-1', 'Scadenza pagamento aperta non renderizzata');
+    });
+
+    runTests();
+  </script>
+</body>
+</html>

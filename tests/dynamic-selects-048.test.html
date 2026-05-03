@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>CDSDM 0.4.8 - Select dinamiche soggetti</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body class="p-4">
+  <h1>Test select dinamiche soggetti 0.4.8</h1>
+
+  <section id="incassi-pagamenti">
+    <select id="payev-subject-type"><option value="customer" selected>Incasso cliente</option><option value="supplier">Pagamento fornitore</option></select>
+    <select id="payev-subject-id"><option value="">Seleziona...</option></select>
+    <div id="payev-open-documents"></div>
+    <select id="payev-filter-type"><option value="all">Tutti</option></select>
+    <input id="payev-filter-from"><input id="payev-filter-to"><input id="payev-filter-text">
+    <div id="payev-summary"></div><tbody id="payev-table-body"></tbody>
+  </section>
+
+  <section id="partitario">
+    <select id="ledger-subject-type"><option value="customer" selected>Clienti</option><option value="supplier">Fornitori</option></select>
+    <select id="ledger-subject-filter"><option value="all">Tutti</option></select>
+    <input id="ledger-date-from"><input id="ledger-date-to"><input id="ledger-search">
+    <div id="ledger-summary"></div><tbody id="ledger-table-body"></tbody><div id="ledger-subject-balances"></div>
+  </section>
+
+  <section id="estratto-conto">
+    <select id="statement-subject-type"><option value="customer" selected>Clienti</option><option value="supplier">Fornitori</option></select>
+    <select id="statement-subject-filter"><option value="all">Tutti</option></select>
+    <input id="statement-date-from"><input id="statement-date-to"><input id="statement-search">
+    <div id="statement-summary"></div><span id="statement-period-label"></span><tbody id="statement-table-body"></tbody>
+  </section>
+
+  <section id="centro-stampe">
+    <select id="print-template-type"><option value="statement" selected>Estratto conto</option><option value="invoice">Fattura</option></select>
+    <select id="print-subject-type"><option value="customer" selected>Clienti</option><option value="supplier">Fornitori</option></select>
+    <select id="print-subject-id"><option value="all">Tutti</option></select>
+    <select id="print-document-id"><option value="">Prima fattura disponibile</option></select>
+    <input id="print-date-from"><input id="print-date-to"><input id="print-search">
+    <div class="print-filter-subject"></div><div class="print-filter-document"></div><div class="print-filter-period"></div>
+    <div id="print-template-note"></div><iframe id="print-preview-frame"></iframe><div id="print-center-status"></div>
+  </section>
+
+  <div id="test-results"></div>
+
+  <script>
+    window.globalData = {
+      companyInfo: { name: 'Demo' },
+      customers: [{ id: 'c1', name: 'Cliente Uno' }, { id: 'c2', ragioneSociale: 'Cliente Due' }],
+      suppliers: [{ id: 's1', name: 'Fornitore Uno' }],
+      invoices: [{ id: 'i1', customerId: 'c1', number: 'FT-1', date: '2026-01-10', nettoDaPagare: 100 }],
+      purchases: [{ id: 'p1', supplierId: 's1', number: 'ACQ-1', date: '2026-01-12', totaleDocumento: 80 }],
+      paymentEvents: []
+    };
+    window.getData = function (key) { return window.globalData[key]; };
+  </script>
+  <script src="test-harness.js"></script>
+  <script src="../js/features/accounting/payment-events-service.js"></script>
+  <script src="../js/features/accounting/payment-events-module.js"></script>
+  <script src="../js/features/accounting/ledger-service.js"></script>
+  <script src="../js/features/accounting/ledger-module.js"></script>
+  <script src="../js/features/accounting/account-statement-service.js"></script>
+  <script src="../js/features/accounting/account-statement-module.js"></script>
+  <script src="../js/features/accounting/print-template-service.js"></script>
+  <script src="../js/features/accounting/print-center-module.js"></script>
+  <script src="../js/ui/accessibility-ux-service.js"></script>
+  <script>
+    function optionValues(selector) {
+      return Array.from(document.querySelector(selector).options).map(o => o.value);
+    }
+
+    test('Incassi/pagamenti popola clienti e fornitori dal placeholder statico', function () {
+      AppModules.paymentEvents.bind();
+      AppModules.paymentEvents.render();
+      assertTrue(optionValues('#payev-subject-id').includes('c1'), 'clienti caricati per incasso cliente');
+      $('#payev-subject-type').val('supplier').trigger('change');
+      assertTrue(optionValues('#payev-subject-id').includes('s1'), 'fornitori caricati per pagamento fornitore');
+    });
+
+    test('Partitario ed estratto conto popolano il filtro soggetto', function () {
+      AppModules.ledger.render();
+      AppModules.accountStatement.render();
+      assertTrue(optionValues('#ledger-subject-filter').includes('c1'), 'partitario: clienti caricati');
+      assertTrue(optionValues('#statement-subject-filter').includes('c1'), 'estratto conto: clienti caricati');
+    });
+
+    test('Centro stampe popola soggetti e documenti', function () {
+      AppModules.printCenter.render();
+      assertTrue(optionValues('#print-subject-id').includes('c1'), 'stampe: soggetti caricati');
+      assertTrue(optionValues('#print-document-id').includes('i1'), 'stampe: documenti caricati');
+    });
+
+    test('Audit UX include il controllo select dinamiche', function () {
+      const audit = AccessibilityUXService.buildAudit(document);
+      const check = audit.checks.find(c => c.id === 'dynamic-select-options');
+      assertTrue(!!check, 'controllo select dinamiche presente');
+      assertEqual('0.4.8', audit.version, 'versione audit aggiornata');
+    });
+
+    window.addEventListener('load', function () { renderResults('test-results'); });
+  </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Test 0.7.9 - Click guida contestuale</title>
+  <style>body{font-family:system-ui;margin:2rem}.ok{color:green}.ko{color:#b00020}</style>
+</head>
+<body>
+  <h1>Test 0.7.9 - Click guida contestuale</h1>
+  <p>Verifica statica della correzione del pulsante <strong>?</strong>.</p>
+  <ul id="results"></ul>
+  <script>
+    async function run(){
+      const out=document.getElementById('results');
+      function add(ok,msg){const li=document.createElement('li');li.className=ok?'ok':'ko';li.textContent=(ok?'OK - ':'KO - ')+msg;out.appendChild(li);}
+      const nav=await fetch('../js/features/navigation/navigation-module.js').then(r=>r.text());
+      add(nav.includes("$(document).off('click.cdsdmContextHelp', '#context-help-btn')"), 'binding delegato del click presente');
+      add(nav.includes("$('#manuale').removeClass('d-none')"), 'click mostra la sezione Manuale Utente');
+      add(nav.includes("loadDocumentation(MENU_HELP_DOC_KEY, '#manuale-content', false)"), 'click carica la guida menu 0.7.8');
+      add(nav.includes('scrollToHelpTarget(target)'), 'click scorre al capitolo contestuale');
+    }
+    run().catch(e=>{document.body.insertAdjacentHTML('beforeend','<p class="ko">Errore test: '+e.message+'</p>')});
+  </script>
+</body>
+</html>

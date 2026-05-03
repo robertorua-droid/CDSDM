@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>CDSDM 0.4.3 - Audit trail</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <h1>Test Audit trail 0.4.3</h1>
+  <pre id="output"></pre>
+  <script src="test-harness.js"></script>
+  <script src="../js/features/accounting/audit-trail-service.js"></script>
+  <script>
+    (function () {
+      const out = document.getElementById('output');
+      function log(msg) { out.textContent += msg + '\n'; }
+      function assertTrue(cond, msg) { if (!cond) throw new Error(msg || 'assertTrue failed'); }
+      function assertEquals(a, b, msg) { if (a !== b) throw new Error((msg || 'assertEquals failed') + ': ' + a + ' !== ' + b); }
+      try {
+        const data = {
+          auditEvents: [{ id: 'a1', timestamp: '2026-05-01T10:00:00', category: 'manuale', action: 'verifica manuale', entityType: 'invoice', entityLabel: 'FT-1', subjectName: 'Cliente Alfa', actor: 'admin', severity: 'info' }],
+          workflowEvents: [{ id: 'w1', createdAt: '2026-05-01T11:00:00', sourceType: 'invoice', sourceId: 'i1', sourceNumber: 'FT-2', subjectName: 'Cliente Beta', action: 'approve', statusFrom: 'pending_review', statusTo: 'approved', createdBy: 'contabilita' }],
+          paymentEvents: [{ id: 'p1', createdAt: '2026-05-01T12:00:00', subjectType: 'customer', subjectName: 'Cliente Gamma', amount: 120, reference: 'BON-1' }],
+          cashbookMovements: [{ id: 'c1', date: '2026-05-01', direction: 'out', amount: 30, category: 'Spese', reference: 'S1' }],
+          reminderEvents: [{ id: 'r1', createdAt: '2026-05-01T13:00:00', subjectName: 'Cliente Delta', documentNumber: 'FT-4', amount: 300 }],
+          bankReconciliationEvents: [{ id: 'b1', createdAt: '2026-05-01T14:00:00', subjectName: 'Cliente Epsilon', amount: 200, reference: 'TRN1' }],
+          businessBudgets: [{ id: 'budget_2026', year: 2026, updatedAt: '2026-05-01T15:00:00', notes: 'Budget aggiornato' }]
+        };
+        const result = window.AuditTrailService.buildEvents(data, { filters: {} });
+        assertEquals(result.events.length, 7, 'deve aggregare le fonti operative');
+        assertTrue(result.summary.workflow >= 1, 'deve contare workflow');
+        assertTrue(result.summary.pagamenti >= 1, 'deve contare pagamenti');
+        const filtered = window.AuditTrailService.buildEvents(data, { filters: { category: 'workflow' } });
+        assertEquals(filtered.events.length, 1, 'filtro categoria workflow');
+        const rows = window.AuditTrailService.exportRows(result.events);
+        assertEquals(rows.length, 7, 'export rows completo');
+        const normalized = window.AuditTrailService.normalizeAuditEvent({ action: 'test', importo: '12,50' });
+        assertEquals(normalized.amount, 12.5, 'normalizzazione importo');
+        log('OK - AuditTrailService 0.4.3');
+      } catch (e) {
+        console.error(e);
+        log('KO - ' + e.message);
+        throw e;
+      }
+    })();
+  </script>
+</body>
+</html>

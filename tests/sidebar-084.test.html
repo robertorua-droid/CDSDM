@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>CDSDM 0.8.4 - Sidebar UI</title></head>
+<body><pre id="output"></pre><script>
+async function read(p){ return fetch(p).then(r=>r.text()); }
+async function run(){
+ const out=document.getElementById('output');
+ const index=await read('../index.html');
+ const css=await read('../css/style.css');
+ const doc=await read('../DOCUMENTAZIONE/61_SIDEBAR_UI_084.md');
+ const checks=[];
+ function ok(m,p){ checks.push((p?'✓ ':'✗ ')+m); if(!p) throw new Error(m); }
+ ok('versione UI aggiornata a 0.8.4', index.includes('CDSDM Versione 0.8.4'));
+ ok('CSS sidebar 0.8.4 presente', css.includes('Sidebar UX 0.8.4'));
+ ok('sidebar light mode esplicita', css.includes('html:not([data-theme="dark"]) .sidebar'));
+ ok('separatore menu ridisegnato', css.includes('.sidebar .nav-section-subtitle::before'));
+ ok('documentazione 0.8.4 presente', doc.includes('Sidebar più chiara e compatta'));
+ out.textContent=checks.join('\n');
+}
+run().catch(e=>{ document.getElementById('output').textContent='ERRORE: '+e.message; });
+</script></body></html>
