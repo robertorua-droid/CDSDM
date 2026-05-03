@@ -1,10 +1,10 @@
-# Manuale utente operativo — aggiornamento 0.12.14
+# Manuale utente operativo — aggiornamento 0.12.15
 
-Questa sezione riassume i flussi principali aggiornati della versione **0.12.14**. Il progetto resta una SPA didattica front-end: Firebase Auth e Firestore sono la base, senza backend custom e senza Cloud Functions obbligatorie.
+Questa sezione riassume i flussi principali aggiornati della versione **0.12.15**. Il progetto resta una SPA didattica front-end: Firebase Auth e Firestore sono la base, senza backend custom e senza Cloud Functions obbligatorie.
 
-## Come usare il pulsante `?`
+## Come usare gli aiuti rapidi e il manuale
 
-Il pulsante **?** nella barra superiore apre la guida contestuale della pagina corrente. La guida non è solo cronologica: spiega il flusso operativo, i passaggi consigliati, esempi e limiti didattici.
+Il piccolo pulsante **?** accanto al titolo della pagina apre un aiuto rapido contestuale e richiudibile. Il manuale completo è disponibile da **Info → Manuale Utente** ed è impaginato come guida visuale con card, passi ed esempi.
 
 ## Flusso Vendite consigliato
 

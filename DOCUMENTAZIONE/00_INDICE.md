@@ -205,3 +205,6 @@ Documentazione aggiornata alla versione **0.12.14**.
 - [107 - UX segnalazioni, conversione preventivi e quantità 0.12.13](107_UX_SEGNALAZIONI_PREVENTIVI_QTA_01213.md)
 
 - [108. Manuale in-app evoluto, aiuto contestuale e guide operative 0.12.14](108_MANUALE_IN_APP_EVOLUTO_01214.md)
+
+- [109 - Manuale utente visuale 0.12.15](109_MANUALE_VISUALE_01215.md)
+- [110 - Aiuto contestuale non invasivo e manuale visuale 0.12.15](110_AIUTO_CONTESTUALE_VISUALE_01215.md)

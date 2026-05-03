@@ -258,3 +258,10 @@ Aggiunti collegamenti guidati a ordini/DDT lavorabili e creazione contestuale bo
 - `js/ui/onboarding-help-service.js`: aiuti rapidi contestuali con passi, esempi e note.
 - `DOCUMENTAZIONE/02_MANUALE_UTENTE.md`: flussi operativi aggiornati.
 - `DOCUMENTAZIONE/108_MANUALE_IN_APP_EVOLUTO_01214.md`: note di release documentali.
+
+
+## Aggiornamento 0.12.15
+
+- `js/ui/onboarding-help-service.js`: aiuto rapido non invasivo con icona `?` accanto ai titoli pagina.
+- `Info → Manuale Utente`: guida visuale generale caricata da `109_MANUALE_VISUALE_01215.md`.
+- `css/style.css`: stili per pannelli contestuali, card manuale e step operativi.

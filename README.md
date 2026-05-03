@@ -1,4 +1,4 @@
-## CDSDM Versione 0.12.14 — Manuale in-app evoluto, aiuto contestuale e guide operative
+## CDSDM Versione 0.12.15 — Aiuto contestuale non invasivo e Manuale utente visuale
 
 Questa release introduce e stabilizza il ramo 0.12.x dedicato alle **Segnalazioni operative**: anomalie, richieste di verifica, comunicazioni interne simulate, scheda stampabile e integrazione prudente con gli alert Mini B.I.
 
@@ -454,6 +454,14 @@ Gli override 0.6.4 restano una granularità applicativa/front-end didattica. Le 
 - Migliorato il messaggio di errore: se Firestore nega anche la scrittura, occorre pubblicare `firestore.rules` del pacchetto o creare manualmente `appSettings/system` in Firebase Console.
 - Chiarito che gli inviti studenti si creano da **Gruppi aziendali**, non dal pannello Superadmin.
 
+
+
+### 0.12.15 — Aiuto contestuale non invasivo e Manuale utente visuale
+
+- Gli aiuti rapidi non occupano più spazio fisso nelle pagine operative.
+- Ogni sezione principale può mostrare una piccola icona `?` accanto al titolo pagina.
+- Il pannello di aiuto rapido è apribile/chiudibile e contiene passi consigliati, esempio e nota operativa.
+- La voce **Info → Manuale Utente** apre una guida visuale generale con card, step, esempi e avvertenze.
 
 ### 0.12.14 — Manuale in-app evoluto, aiuto contestuale e guide operative
 

@@ -79,22 +79,16 @@
   };
 
   function ensureContextHelpButton() {
-    if ($('#context-help-btn').length) return;
-    $('#top-navbar').append(`
-      <button class="btn btn-outline-info btn-sm ms-auto d-none" id="context-help-btn" type="button" title="Apri la guida per questa pagina" aria-label="Apri la guida contestuale per questa pagina">
-        <i class="fas fa-question" aria-hidden="true"></i>
-      </button>
-    `);
+    // 0.12.15: l'aiuto rapido non è più un pulsante globale nella top bar.
+    // Viene reso come icona contestuale accanto al titolo della pagina.
+    $('#context-help-btn').remove();
   }
 
   function updateContextHelp(target, label) {
     ensureContextHelpButton();
-    const title = MENU_HELP_TARGETS[target] || label || target || MENU_HELP_DEFAULT_TARGET;
-    $('#context-help-btn')
-      .removeClass('d-none')
-      .attr('data-help-target', target || MENU_HELP_DEFAULT_TARGET)
-      .attr('title', `Apri la guida: ${title}`)
-      .attr('aria-label', `Apri la guida contestuale: ${title}`);
+    if (window.OnboardingHelpService && typeof window.OnboardingHelpService.decorateVisibleSection === 'function') {
+      setTimeout(window.OnboardingHelpService.decorateVisibleSection, 0);
+    }
   }
 
   function scrollToHelpTarget(target) {
@@ -251,7 +245,7 @@
 
       // DOCUMENTAZIONE IN-APP
       if (target === 'manuale') {
-        loadDocumentation('00_INDICE', '#manuale-content', true);
+        loadDocumentation('109_MANUALE_VISUALE_01215', '#manuale-content', false);
       }
 
       // Cambia sezione visibile
@@ -277,7 +271,7 @@
 
     // GESTIONE LINK DOCUMENTAZIONE e BOTTONE INDIETRO
     $('#btn-back-to-index').on('click', function () {
-      loadDocumentation('00_INDICE', '#manuale-content', true);
+      loadDocumentation('109_MANUALE_VISUALE_01215', '#manuale-content', false);
     });
 
     $('#manuale-content').on('click', 'a', function (e) {

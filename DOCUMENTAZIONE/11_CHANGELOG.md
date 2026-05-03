@@ -1,3 +1,11 @@
+## 0.12.15 — Aiuto contestuale non invasivo e Manuale utente visuale
+
+- Gli aiuti rapidi non sono più box fissi sempre visibili nelle pagine operative.
+- Aggiunta icona `?` accanto al titolo pagina per aprire un pannello contestuale richiudibile.
+- Il Manuale utente generale resta una voce di menu in **Info → Manuale Utente**.
+- La voce Manuale Utente ora carica una guida visuale operativa con card, step numerati, esempi e box di attenzione.
+- Aggiornati CSS, documentazione in-app e test browser-based `manuale-aiuto-01215.test.html`.
+
 
 ## 0.12.14 - Manuale in-app evoluto, aiuto contestuale e guide operative
 
