@@ -1,5 +1,5 @@
 // js/features/business-groups/teacher-console-module.js
-// CDSDM 0.5.6 — UI Console docente e simulazioni di gruppo
+// CDSDM 0.12.19 — UI Console docente: report tecnico JSON nascosto e copia guidata
 
 (function () {
   window.AppModules = window.AppModules || {};
@@ -69,7 +69,7 @@
     const stats = dashboard.collectionStats || {};
     const report = svc.buildProgressReport(dashboard);
     $root.html(`
-      <div class="alert alert-info small"><strong>Versione 0.5.6.</strong> Console docente per coordinare simulazioni didattiche sul Gruppo aziendale attivo. Non richiede backend custom: scenari ed eventi sono salvati sotto <code>businessGroups/{groupId}</code>.</div>
+      <div class="alert alert-info small"><strong>Hotfix 0.12.19.</strong> Console docente per coordinare simulazioni didattiche sul Gruppo aziendale attivo. Non richiede backend custom: scenari ed eventi sono salvati sotto <code>businessGroups/{groupId}</code>.</div>
       <div class="row g-3 mb-3">
         <div class="col-md-3"><div class="card shadow-sm h-100"><div class="card-body"><div class="text-muted small">Gruppo</div><div class="fw-semibold">${esc(dashboard.groupName)}</div><div class="small text-muted">${esc(dashboard.groupId)}</div></div></div></div>
         <div class="col-md-3"><div class="card shadow-sm h-100"><div class="card-body"><div class="text-muted small">Membri attivi</div><div class="display-6">${dashboard.activeMembers}</div></div></div></div>
@@ -77,9 +77,13 @@
         <div class="col-md-3"><div class="card shadow-sm h-100"><div class="card-body"><div class="text-muted small">Scenari attivi</div><div class="display-6">${dashboard.activeScenarios}</div></div></div></div>
       </div>
       <div class="card shadow-sm mb-3"><div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-2"><h5 class="card-title mb-0"><i class="fas fa-chart-simple me-2"></i>Indicatori dataset gruppo</h5><button class="btn btn-sm btn-outline-secondary" id="teacher-copy-report" type="button"><i class="fas fa-copy me-1"></i>Copia report</button></div>
+        <div class="d-flex justify-content-between align-items-center mb-2"><h5 class="card-title mb-0"><i class="fas fa-chart-simple me-2"></i>Indicatori dataset gruppo</h5><button class="btn btn-sm btn-outline-secondary" id="teacher-copy-report" type="button"><i class="fas fa-copy me-1"></i>Copia report JSON</button></div>
+        <p class="small text-muted mb-3">Riepilogo leggibile del dataset del gruppo. Il JSON tecnico resta disponibile solo per copia o verifica avanzata.</p>
         <div class="row g-2">${collectionCards(stats)}</div>
-        <pre class="bg-light border rounded p-2 mt-3 small mb-0" id="teacher-progress-report">${esc(JSON.stringify(report, null, 2))}</pre>
+        <details class="mt-3" id="teacher-report-details">
+          <summary class="small text-muted">Mostra dettagli tecnici JSON</summary>
+          <pre class="bg-light border rounded p-2 mt-2 small mb-0" id="teacher-progress-report">${esc(JSON.stringify(report, null, 2))}</pre>
+        </details>
       </div></div>
       <div class="row g-3">
         <div class="col-xl-5"><div class="card shadow-sm h-100"><div class="card-body">

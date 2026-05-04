@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>CDSDM 0.12.18 - QA didattico manuale</title>
+  <style>body{font-family:system-ui;margin:2rem}.ok{color:#198754}.ko{color:#dc3545}</style>
+</head>
+<body>
+  <h1>Test 0.12.18 — Manuale come riferimento didattico autonomo</h1>
+  <div id="results"></div>
+  <script src="../js/features/navigation/docs-content.js"></script>
+  <script>
+    const results = document.getElementById('results');
+    function check(label, condition){
+      const div = document.createElement('div');
+      div.className = condition ? 'ok' : 'ko';
+      div.textContent = (condition ? 'OK ' : 'KO ') + label;
+      results.appendChild(div);
+      if(!condition) window.__CDSDM_TEST_FAILED__ = true;
+    }
+    const docs = window.AppDocumentationContent || {};
+    const manual = docs['111_MANUALE_CAPITOLI_01216'] || '';
+    check('Manuale didattico 0.12.18 sincronizzato', manual.includes('riferimento didattico autonomo 0.12.18'));
+    check('Percorso Studente presente', manual.includes('Capitolo 2 — Percorso Studente'));
+    check('Percorso Docente presente', manual.includes('Capitolo 3 — Percorso Docente'));
+    check('Percorso Professionista presente', manual.includes('Capitolo 4 — Percorso Professionista'));
+    check('Checklist operative presenti', (manual.match(/Checklist /g) || []).length >= 10);
+    check('Esercitazioni guidate presenti', manual.includes('Esercitazione 1') && manual.includes('Esercitazione 7'));
+    check('Segnalazioni documentate con operationalReports', manual.includes('operationalReports') && manual.includes('Analisi → Segnalazioni operative'));
+    check('Compatibilità users/{uid} documentata', manual.includes('users/{uid}'));
+    check('Compatibilità businessGroups/{groupId} documentata', manual.includes('businessGroups/{groupId}'));
+    check('Documento QA 114 disponibile', !!docs['114_QA_DIDATTICO_MANUALE_01218']);
+    check('Nessuna nuova collezione dichiarata nella nota QA', docs['114_QA_DIDATTICO_MANUALE_01218'].includes('Nessuna nuova collezione Firestore'));
+  </script>
+</body>
+</html>

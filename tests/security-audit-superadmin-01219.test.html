@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>CDSDM 0.12.19 - Audit sicurezza superadmin</title>
+  <style>body{font-family:system-ui,Arial,sans-serif;margin:2rem;} pre{background:#f8f9fa;border:1px solid #ddd;padding:1rem;}</style>
+</head>
+<body>
+  <h1>Test 0.12.19 — Audit sicurezza superadmin e Firestore compatibile</h1>
+  <pre id="out"></pre>
+  <script>
+    const out = document.getElementById('out');
+    function ok(label, cond) { out.textContent += (cond ? '✅ ' : '❌ ') + label + '\n'; if (!cond) throw new Error(label); }
+
+    window.currentUser = { uid: 'super_1', email: 'superadmin@example.test' };
+    window.currentBusinessGroup = { id: 'grp_demo', name: 'Gruppo Demo', role: 'readonly' };
+    window.BusinessGroupsService = { canManageActiveGroup: () => false, listMembers: async () => [{ uid:'u1', email:'teacher@example.test', role:'teacher', status:'active', effectiveProfilePermissions:{ teacherConsole:'admin', securityAudit:'admin' } }] };
+    window.SuperadminService = { isCurrentUserSuperadmin: () => true, loadSystem: async () => ({ configured: true, superadminUid: 'super_1' }) };
+
+    function makeCollection(name) {
+      return {
+        limit: function () { return this; },
+        doc: function (id) { return { id, get: async () => ({ exists: false, data: () => ({}) }), set: async () => true }; },
+        get: async () => ({ docs: [] })
+      };
+    }
+    // Simula l'inizializzazione Firebase storica: variabile globale db, ma non window.db.
+    const db = {
+      collection: function (name) {
+        if (name === 'businessGroups') return { doc: function (id) { return { id, get: async () => ({ exists: true, data: () => ({ name: 'Gruppo Demo' }) }), collection: makeCollection }; } };
+        return makeCollection(name);
+      }
+    };
+    delete window.db;
+  </script>
+  <script src="../js/features/business-groups/security-audit-service.js"></script>
+  <script>
+    (async function(){
+      ok('SecurityAuditService esposto', !!window.SecurityAuditService);
+      ok('Hotfix 0.12.19 esposto', window.SecurityAuditService.PATCH_VERSION === '0.12.19');
+      const report = await window.SecurityAuditService.buildSecurityReport('grp_demo');
+      ok('Report generato come superadmin anche senza window.db', report && report.groupId === 'grp_demo');
+      ok('Report include membro teacher letto dal servizio gruppi', report.members && report.members.length === 1 && report.members[0].role === 'teacher');
+      out.textContent += '\nTest completato.';
+    })().catch(e => { out.textContent += '\nERRORE: ' + (e.message || e); throw e; });
+  </script>
+</body>
+</html>

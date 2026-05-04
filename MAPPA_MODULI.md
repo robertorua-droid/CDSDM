@@ -265,3 +265,43 @@ Aggiunti collegamenti guidati a ordini/DDT lavorabili e creazione contestuale bo
 - `js/ui/onboarding-help-service.js`: aiuto rapido non invasivo con icona `?` accanto ai titoli pagina.
 - `Info → Manuale Utente`: guida visuale generale caricata da `109_MANUALE_VISUALE_01215.md`.
 - `css/style.css`: stili per pannelli contestuali, card manuale e step operativi.
+
+
+## Aggiornamento 0.12.16
+
+- `Info → Manuale Utente`: ora carica `111_MANUALE_CAPITOLI_01216.md`, manuale strutturato per capitoli.
+- `js/features/migration/migration-module.js`: aggiunta coerenza completa per `operationalReports` in stima uso dati, export, normalizzazione e import/ripristino JSON.
+- Nuovi test browser-based: `manuale-capitoli-01216.test.html` e `backup-operational-reports-01216.test.html`.
+- Nessuna nuova collezione Firestore; `firestore.rules` invariato perché `operationalReports` era già mappata.
+
+
+## Aggiornamento 0.12.17
+
+- `js/ui/onboarding-help-service.js`: gli aiuti rapidi includono `manualAnchor`, `manualAnchorFor()` e link al capitolo del manuale.
+- `js/features/navigation/navigation-module.js`: supporto a `window.CDSDM_MANUAL_TARGET_ANCHOR` per aprire il manuale sul capitolo richiesto.
+- `DOCUMENTAZIONE/111_MANUALE_CAPITOLI_01216.md`: aggiornato alla 0.12.17 con anchor stabili ma mantenuto come chiave caricata dall’app per compatibilità.
+- `tests/aiuto-manuale-contestuale-01217.test.html`: verifica collegamento aiuto rapido → capitolo manuale.
+
+Nessuna nuova collezione Firestore e nessuna variazione alle regole di sicurezza.
+
+
+## Aggiornamento 0.12.18
+
+Release documentale/didattica senza nuove collezioni Firestore e senza nuovi flussi applicativi.
+
+- `DOCUMENTAZIONE/111_MANUALE_CAPITOLI_01216.md`: aggiornato a riferimento didattico autonomo 0.12.18 mantenendo la chiave storica caricata dall'app.
+- `DOCUMENTAZIONE/02_MANUALE_UTENTE.md`: sincronizzato con il manuale didattico 0.12.18.
+- `DOCUMENTAZIONE/114_QA_DIDATTICO_MANUALE_01218.md`: criteri di QA didattico.
+- `tests/manuale-qa-didattico-01218.test.html`: verifica percorsi, checklist, esercitazioni e riferimenti Firestore.
+- `js/features/navigation/docs-content.js`: rigenerato da DOCUMENTAZIONE.
+
+Nessuna modifica a `firestore.rules`, nessun backend custom, nessuna Cloud Function obbligatoria.
+
+## Aggiornamento 0.12.19
+
+- `js/features/business-groups/teacher-console-module.js`: UX Console docente corretta; il JSON tecnico del report dataset è nascosto in una sezione dettagli e resta copiabile.
+- `js/features/business-groups/teacher-console-service.js`: compatibilità Firestore tramite helper prudente, mantenendo la versione storica del servizio e aggiungendo `PATCH_VERSION = 0.12.19`.
+- `js/features/business-groups/security-audit-service.js`: fix accesso superadmin con Firestore legacy `db`/`window.db`; messaggio esplicito se Firestore non è inizializzato.
+- `js/features/business-groups/security-audit-module.js`: testo UI aggiornato per hotfix 0.12.19.
+- `DOCUMENTAZIONE/115_HOTFIX_CONSOLE_AUDIT_01219.md`: nota tecnica e didattica del rilascio.
+- `tests/security-audit-superadmin-01219.test.html` e `tests/teacher-console-ux-01219.test.html`: test browser-based dedicati.

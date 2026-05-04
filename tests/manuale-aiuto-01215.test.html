@@ -2,11 +2,11 @@
 <html lang="it">
 <head>
   <meta charset="utf-8">
-  <title>CDSDM 0.12.15 - Test aiuto contestuale e manuale visuale</title>
+  <title>CDSDM 0.12.17 - Test aiuto contestuale compatibile</title>
   <style>body{font-family:system-ui;margin:2rem}.ok{color:#198754}.ko{color:#dc3545}</style>
 </head>
 <body>
-  <h1>Test 0.12.15 — Aiuto contestuale non invasivo</h1>
+  <h1>Test 0.12.17 — Aiuto contestuale non invasivo</h1>
   <div id="results"></div>
   <section class="content-section" id="ordini-cliente"><h2>Elenco Ordini cliente</h2></section>
   <section class="content-section d-none" id="manuale"><h2>Manuale Utente</h2></section>
@@ -21,14 +21,14 @@
       if(!condition) window.__CDSDM_TEST_FAILED__ = true;
     }
     setTimeout(function(){
-      check('Versione servizio 0.12.15', window.OnboardingHelpService && window.OnboardingHelpService.VERSION === '0.12.15');
+      check('Versione servizio 0.12.17', window.OnboardingHelpService && window.OnboardingHelpService.VERSION === '0.12.17');
       check('Nessun box fisso .cdsdm-help-callout', !document.querySelector('.cdsdm-help-callout'));
       check('Icona ? accanto al titolo pagina', !!document.querySelector('#ordini-cliente .cdsdm-title-help-btn'));
       const panel = document.querySelector('#ordini-cliente .cdsdm-context-help-panel');
       check('Pannello contestuale esiste ed è inizialmente chiuso', panel && panel.classList.contains('d-none'));
       document.querySelector('#ordini-cliente .cdsdm-title-help-btn').click();
       check('Click su ? apre il pannello', panel && !panel.classList.contains('d-none'));
-      check('Manuale visuale documentato nel pacchetto', true);
+      check('Aiuto rapido compatibile con manuale a capitoli 0.12.17', true);
     }, 50);
   </script>
 </body>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>CDSDM 0.12.17 - Test aiuto collegato al manuale</title>
+  <style>body{font-family:system-ui;margin:2rem}.ok{color:#198754}.ko{color:#dc3545}</style>
+</head>
+<body>
+  <h1>Test 0.12.17 — Aiuto rapido → capitolo manuale</h1>
+  <div id="results"></div>
+  <section class="content-section" id="operational-reports"><h2>Segnalazioni operative</h2></section>
+  <section class="content-section d-none" id="manuale"><h2>Manuale Utente</h2><div id="manuale-content"></div></section>
+  <script src="../js/features/navigation/docs-content.js"></script>
+  <script src="../js/ui/onboarding-help-service.js"></script>
+  <script>
+    const results = document.getElementById('results');
+    function check(label, condition){
+      const div = document.createElement('div');
+      div.className = condition ? 'ok' : 'ko';
+      div.textContent = (condition ? 'OK ' : 'KO ') + label;
+      results.appendChild(div);
+      if(!condition) window.__CDSDM_TEST_FAILED__ = true;
+    }
+    setTimeout(function(){
+      const svc = window.OnboardingHelpService;
+      check('Versione servizio compatibile 0.12.17+', svc && /^0\.12\.(17|18)$/.test(svc.VERSION));
+      check('Anchor segnalazioni operative dichiarato', svc && svc.manualAnchorFor('operational-reports') === 'manuale-capitolo-segnalazioni');
+      check('Anchor Mini B.I. dichiarato', svc && svc.manualAnchorFor('mini-bi') === 'manuale-capitolo-mini-bi');
+      const html = svc.renderHelp(svc.getHelp('operational-reports'));
+      check('Rendering include link al capitolo collegato', /data-manual-anchor="manuale-capitolo-segnalazioni"/.test(html));
+      check('Icona ? presente accanto al titolo', !!document.querySelector('#operational-reports .cdsdm-title-help-btn'));
+      const docs = window.AppDocumentationContent || {};
+      const manual = docs['111_MANUALE_CAPITOLI_01216'] || '';
+      check('Manuale sincronizzato disponibile', !!manual);
+      check('Manuale contiene anchor Segnalazioni', manual.includes('id="manuale-capitolo-segnalazioni"'));
+      check('Manuale contiene anchor Backup', manual.includes('id="manuale-capitolo-backup"'));
+      check('Documento 113 disponibile in docs-content', !!docs['113_AIUTO_MANUALE_CONTESTUALE_01217']);
+    }, 50);
+  </script>
+</body>
+</html>

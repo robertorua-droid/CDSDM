@@ -1,6 +1,6 @@
 # Documentazione – CDSDM (didattico)
 
-Documentazione aggiornata alla versione **0.12.14**.
+Documentazione aggiornata alla versione **0.12.19**.
 
 > Nota: il progetto è didattico. Le simulazioni fiscali e i calcoli gestionali sono semplificazioni e non sostituiscono consulenza professionale, contabile o fiscale.
 
@@ -91,6 +91,11 @@ Documentazione aggiornata alla versione **0.12.14**.
 
 ## Ultime release
 
+- **0.12.19**: Hotfix Console docente e Audit sicurezza superadmin.
+- **0.12.18**: QA didattico del Manuale Utente, percorsi guidati, checklist ed esercitazioni.
+- **0.12.17**: Aiuti rapidi collegati ai capitoli del Manuale Utente.
+- **0.12.16**: Manuale utente a capitoli e coerenza backup/import per `operationalReports`.
+- **0.12.15**: Aiuto contestuale non invasivo e manuale visuale.
 - **0.11.6**: Stabilizzazione Mini B.I. e QA regressione ruoli.
 - **0.10.6**: Hotfix tab Mini B.I. e rendering aree.
 - **0.10.5**: QA sicurezza B.I. e pacchetto stabile permessi.
@@ -208,3 +213,8 @@ Documentazione aggiornata alla versione **0.12.14**.
 
 - [109 - Manuale utente visuale 0.12.15](109_MANUALE_VISUALE_01215.md)
 - [110 - Aiuto contestuale non invasivo e manuale visuale 0.12.15](110_AIUTO_CONTESTUALE_VISUALE_01215.md)
+- [111 - Manuale utente a capitoli 0.12.18](111_MANUALE_CAPITOLI_01216.md)
+- [112 - Coerenza backup/import segnalazioni operative 0.12.16](112_BACKUP_OPERATIONAL_REPORTS_01216.md)
+- [113 - Aiuto rapido collegato al manuale 0.12.17](113_AIUTO_MANUALE_CONTESTUALE_01217.md)
+- [114 - QA didattico Manuale Utente 0.12.18](114_QA_DIDATTICO_MANUALE_01218.md)
+- [115 - Hotfix Console docente e Audit sicurezza 0.12.19](115_HOTFIX_CONSOLE_AUDIT_01219.md)

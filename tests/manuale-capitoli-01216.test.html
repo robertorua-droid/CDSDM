@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>CDSDM 0.12.16 - Test manuale utente a capitoli</title>
+  <style>body{font-family:system-ui;margin:2rem}.ok{color:#198754}.ko{color:#dc3545}pre{background:#f6f6f6;padding:1rem;white-space:pre-wrap}</style>
+</head>
+<body>
+  <h1>Test 0.12.16 — Manuale utente a capitoli</h1>
+  <div id="results"></div>
+  <script src="../js/features/navigation/docs-content.js"></script>
+  <script>
+    const results = document.getElementById('results');
+    function check(label, condition){
+      const div = document.createElement('div');
+      div.className = condition ? 'ok' : 'ko';
+      div.textContent = (condition ? 'OK ' : 'KO ') + label;
+      results.appendChild(div);
+      if(!condition) window.__CDSDM_TEST_FAILED__ = true;
+    }
+    async function readText(path){
+      const res = await fetch(path, { cache: 'no-store' });
+      if(!res.ok) throw new Error(path + ' HTTP ' + res.status);
+      return res.text();
+    }
+    (async function(){
+      const docs = window.AppDocumentationContent || {};
+      const manual = docs['111_MANUALE_CAPITOLI_01216'] || '';
+      check('Documento manuale capitolare disponibile in docs-content', !!manual);
+      check('Manuale contiene indice capitoli', manual.includes('## Indice capitoli'));
+      check('Manuale contiene almeno 13 capitoli numerati', (manual.match(/## Capitolo \d+/g) || []).length >= 13);
+      check('Capitolo Segnalazioni operative presente', manual.includes('Segnalazioni operative') && manual.includes('manuale-capitolo-segnalazioni'));
+      check('Capitolo Backup/import/reset cita operationalReports', manual.includes('Backup, import e reset') && manual.includes('operationalReports'));
+      const nav = await readText('../js/features/navigation/navigation-module.js');
+      check('Info → Manuale Utente carica il nuovo manuale 0.12.16', nav.includes("loadDocumentation('111_MANUALE_CAPITOLI_01216'"));
+    })().catch(function(err){
+      check('Errore esecuzione test: ' + err.message, false);
+    });
+  </script>
+</body>
+</html>

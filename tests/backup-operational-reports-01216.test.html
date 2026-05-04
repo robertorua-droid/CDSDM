@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>CDSDM 0.12.16 - Test backup operationalReports</title>
+  <style>body{font-family:system-ui;margin:2rem}.ok{color:#198754}.ko{color:#dc3545}</style>
+</head>
+<body>
+  <h1>Test 0.12.16 — Backup/import operationalReports</h1>
+  <div id="results"></div>
+  <script>
+    const results = document.getElementById('results');
+    function check(label, condition){
+      const div = document.createElement('div');
+      div.className = condition ? 'ok' : 'ko';
+      div.textContent = (condition ? 'OK ' : 'KO ') + label;
+      results.appendChild(div);
+      if(!condition) window.__CDSDM_TEST_FAILED__ = true;
+    }
+    async function readText(path){
+      const res = await fetch(path, { cache: 'no-store' });
+      if(!res.ok) throw new Error(path + ' HTTP ' + res.status);
+      return res.text();
+    }
+    (async function(){
+      const source = await readText('../js/features/migration/migration-module.js');
+      check('Backup JSON usa appVersion 0.12.16', source.includes("appVersion: '0.12.16'"));
+      check('Stima uso dati include Segnalazioni operative', source.includes("getData('operationalReports')"));
+      check('Normalize backup include operationalReports', source.includes('operationalReports: Array.isArray(r.operationalReports)'));
+      check('Import batch include operationalReports', source.includes("['operationalReports', backup.operationalReports]"));
+      check('Export JSON include globalData.operationalReports', source.includes('operationalReports: globalData.operationalReports || []'));
+      const docs = await readText('../DOCUMENTAZIONE/112_BACKUP_OPERATIONAL_REPORTS_01216.md');
+      check('Documentazione 112 descrive percorsi legacy e gruppo', docs.includes('users/{uid}/operationalReports') && docs.includes('businessGroups/{groupId}/operationalReports'));
+    })().catch(function(err){
+      check('Errore esecuzione test: ' + err.message, false);
+    });
+  </script>
+</body>
+</html>

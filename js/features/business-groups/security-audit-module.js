@@ -1,5 +1,5 @@
 // js/features/business-groups/security-audit-module.js
-// CDSDM 0.6.6 — UI audit sicurezza, report utenti e QA accessi.
+// CDSDM 0.12.19 — UI audit sicurezza, report utenti e QA accessi: fix superadmin e messaggi.
 
 (function () {
   if (!window.AppModules) window.AppModules = {};
@@ -62,7 +62,7 @@
 
     root.html(`
       <div class="alert alert-primary small">
-        <strong>Versione 0.6.6.</strong> Consolidamento sicurezza: report utenti, QA accessi e controlli su ruoli, profili, override, inviti e regole Firestore pubblicate.
+        <strong>Hotfix 0.12.19.</strong> Audit sicurezza corretto per superadmin e inizializzazione Firestore compatibile; report utenti, QA accessi e controlli restano salvati nel gruppo.
       </div>
       <div class="row g-3 mb-3">
         <div class="col-md-3"><div class="card shadow-sm"><div class="card-body"><div class="text-muted small">Membri attivi</div><div class="h3 mb-0">${esc(summary.membersActive || 0)}</div></div></div></div>
@@ -98,7 +98,7 @@
         </div></div></div>
       </div>
       <div class="card shadow-sm mt-3"><div class="card-body small">
-        <h6>Persistenza 0.6.6</h6>
+        <h6>Persistenza 0.12.19</h6>
         <pre class="mb-0"><code>businessGroups/{groupId}/securityAccessReports/{reportId}</code></pre>
         <p class="text-muted mb-0 mt-2">La checklist “rules pubblicate” resta manuale: la SPA può includere il file <code>firestore.rules</code>, ma non può verificare da sola il deploy nel progetto Firebase.</p>
       </div></div>

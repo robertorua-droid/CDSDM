@@ -1,9 +1,10 @@
 // js/features/business-groups/teacher-console-service.js
-// CDSDM 0.5.6 — Console docente e simulazioni di gruppo
+// CDSDM 0.12.19 — Console docente e simulazioni di gruppo: compatibilità Firestore
 
 (function () {
   const win = window;
   const VERSION = '0.5.6';
+  const PATCH_VERSION = '0.12.19';
 
   const SCENARIO_TEMPLATES = {
     ciclo_vendite: {
@@ -72,7 +73,13 @@
   }
   function canUseTeacherConsole() { return ['admin', 'teacher'].indexOf(roleId()) >= 0; }
   function activeGroupId() { return win.currentBusinessGroup && win.currentBusinessGroup.id ? String(win.currentBusinessGroup.id) : ''; }
-  function groupRef(groupId) { return db.collection('businessGroups').doc(String(groupId)); }
+  function firestoreDb() {
+    const candidate = win.db || (typeof globalThis !== 'undefined' ? globalThis.db : null);
+    if (candidate && typeof candidate.collection === 'function') return candidate;
+    try { if (typeof db !== 'undefined' && db && typeof db.collection === 'function') return db; } catch (e) {}
+    throw new Error('Firestore non inizializzato: ricarica l’app e verifica la configurazione Firebase.');
+  }
+  function groupRef(groupId) { return firestoreDb().collection('businessGroups').doc(String(groupId)); }
   function assertContext() {
     if (!win.currentUser) throw new Error('Utente non autenticato.');
     const gid = activeGroupId();
@@ -243,6 +250,7 @@
 
   win.TeacherConsoleService = {
     VERSION,
+    PATCH_VERSION,
     SCENARIO_TEMPLATES,
     canUseTeacherConsole,
     getDashboard,

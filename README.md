@@ -1,9 +1,24 @@
-## CDSDM Versione 0.12.15 — Aiuto contestuale non invasivo e Manuale utente visuale
+## CDSDM Versione 0.12.19 — Hotfix Console docente e Audit sicurezza superadmin
+La versione **0.12.19** è una release correttiva mirata: migliora la UX della Console docente nascondendo il JSON tecnico in una sezione dettagli e corregge l’Audit sicurezza per accesso superadmin quando Firestore è disponibile come variabile globale legacy `db`. Non introduce nuovi flussi, nuove voci di menu o nuove collezioni Firestore.
+
+Release conservativa di stabilizzazione documentale e dati:
+
+- Gli aiuti rapidi aperti con **?** accanto ai titoli pagina ora rimandano al capitolo pertinente del Manuale Utente.
+- Il manuale a capitoli resta il riferimento principale e viene arricchito con anchor stabili per Vendite, Acquisti, Magazzino, Contabilità, Workflow, Segnalazioni operative, Mini B.I., Backup e Permessi.
+- Nessuna nuova collezione Firestore, nessun backend custom e nessuna Cloud Function obbligatoria.
+
+### Continuità 0.12.16
+
+- `Info → Manuale Utente` carica ora un manuale a capitoli (`111_MANUALE_CAPITOLI_01216.md`), non solo una guida visuale per feature.
+- Backup/import/ripristino JSON includono ora `operationalReports`, mantenendo coerenti segnalazioni operative, reset e collezioni reali.
+- Nessuna nuova collezione Firestore, nessun backend custom e nessuna Cloud Function obbligatoria.
+- Compatibilità mantenuta con `users/{uid}` legacy e `businessGroups/{groupId}`.
+
 
 Questa release introduce e stabilizza il ramo 0.12.x dedicato alle **Segnalazioni operative**: anomalie, richieste di verifica, comunicazioni interne simulate, scheda stampabile e integrazione prudente con gli alert Mini B.I.
 
 - Nuova collezione Firestore: `operationalReports`.
-- Nuova voce menu: `Workflow → Segnalazioni operative`.
+- Voce menu reale: `Analisi → Segnalazioni operative`.
 - Persistenza principale su Firestore, compatibile con `users/{uid}` e `businessGroups/{groupId}`.
 - Nessun backend custom e nessuna Cloud Function obbligatoria.
 - Aggiornati permessi UI, matrice permessi, Firestore rules, documentazione e test browser-based.
@@ -455,6 +470,36 @@ Gli override 0.6.4 restano una granularità applicativa/front-end didattica. Le 
 - Chiarito che gli inviti studenti si creano da **Gruppi aziendali**, non dal pannello Superadmin.
 
 
+
+### 0.12.19 — Hotfix Console docente e Audit sicurezza superadmin
+- Console docente: il report JSON tecnico non è più mostrato in primo piano sotto gli indicatori dataset.
+- Console docente: aggiunta sezione dettagli tecnici chiusa e pulsante “Copia report JSON”.
+- Audit sicurezza: corretto accesso superadmin con Firestore inizializzato come `db` legacy ma non come `window.db`.
+- Aggiunti test browser-based `security-audit-superadmin-01219.test.html` e `teacher-console-ux-01219.test.html`.
+- Nessuna nuova collezione Firestore e nessuna modifica a `firestore.rules`.
+
+### 0.12.18 — QA didattico Manuale Utente e percorsi guidati
+
+- Manuale Utente trasformato in riferimento didattico autonomo.
+- Percorsi Studente, Docente e Professionista.
+- Checklist operative per capitolo.
+- Esercitazioni guidate sui flussi esistenti.
+- Test browser-based di QA didattico.
+- Nessuna nuova collezione Firestore e nessun backend custom.
+
+### 0.12.17 — Aiuto contestuale collegato al manuale
+
+- Collegati gli aiuti rapidi contestuali ai capitoli del Manuale Utente tramite anchor stabili.
+- Aggiunto `manualAnchorFor()` in `OnboardingHelpService` e gestione di `window.CDSDM_MANUAL_TARGET_ANCHOR` nella navigazione.
+- Aggiunto test `tests/aiuto-manuale-contestuale-01217.test.html`.
+- Aggiornata documentazione 0.12.17 senza nuove collezioni Firestore.
+
+### 0.12.16 — Manuale a capitoli e backup segnalazioni operative
+
+- Manuale Utente in-app riorganizzato per capitoli tramite `111_MANUALE_CAPITOLI_01216.md`.
+- `operationalReports` incluso in backup/import/ripristino JSON e nella stima uso dati.
+- Aggiunti test browser-based `manuale-capitoli-01216.test.html` e `backup-operational-reports-01216.test.html`.
+- Firestore rules invariate: la collezione era già mappata.
 
 ### 0.12.15 — Aiuto contestuale non invasivo e Manuale utente visuale
 

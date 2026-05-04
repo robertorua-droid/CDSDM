@@ -1,9 +1,10 @@
 // js/features/business-groups/security-audit-service.js
-// CDSDM 0.6.6 — Audit sicurezza, report utenti e QA accessi.
+// CDSDM 0.12.19 — Audit sicurezza, report utenti e QA accessi: fix Firestore superadmin.
 
 (function () {
   const win = window;
   const VERSION = '0.6.6';
+  const PATCH_VERSION = '0.12.19';
   const LEVEL_RANK = { none: 0, read: 1, write: 2, admin: 3 };
 
   const QA_CHECKS = [
@@ -17,13 +18,18 @@
     { id: 'audit-events', area: 'Audit', check: 'Audit events presenti per operazioni sensibili.', expected: 'Modifiche a ruoli/permessi/inviti lasciano traccia consultabile.' }
   ];
 
-  function db() { return win.db; }
+  function firestoreDb() {
+    const candidate = win.db || (typeof globalThis !== 'undefined' ? globalThis.db : null);
+    if (candidate && typeof candidate.collection === 'function') return candidate;
+    try { if (typeof db !== 'undefined' && db && typeof db.collection === 'function') return db; } catch (e) {}
+    throw new Error('Firestore non inizializzato: ricarica l’app e verifica la configurazione Firebase.');
+  }
   function uid() { return win.currentUser && win.currentUser.uid ? win.currentUser.uid : ''; }
   function email() { return win.currentUser && win.currentUser.email ? win.currentUser.email : ''; }
   function nowIso() { return new Date().toISOString(); }
   function str(v) { return String(v == null ? '' : v).trim(); }
   function activeGroupId(groupId) { return str(groupId || (win.currentBusinessGroup && win.currentBusinessGroup.id) || ''); }
-  function groupRef(groupId) { return db().collection('businessGroups').doc(String(groupId)); }
+  function groupRef(groupId) { return firestoreDb().collection('businessGroups').doc(String(groupId)); }
   function isManager() { return win.BusinessGroupsService && win.BusinessGroupsService.canManageActiveGroup && win.BusinessGroupsService.canManageActiveGroup(); }
   function isSuperadminKnown() { return win.SuperadminService && win.SuperadminService.isCurrentUserSuperadmin && win.SuperadminService.isCurrentUserSuperadmin(); }
   function moduleCatalog() {
@@ -181,7 +187,7 @@
   async function log(action, details) {
     try {
       const gid = activeGroupId();
-      if (!gid || !db()) return;
+      if (!gid) return;
       const ref = groupRef(gid).collection('auditEvents').doc();
       await ref.set({
         id: ref.id,
@@ -200,6 +206,7 @@
 
   win.SecurityAuditService = {
     VERSION,
+    PATCH_VERSION,
     QA_CHECKS,
     buildSecurityReport,
     saveSecurityReport,

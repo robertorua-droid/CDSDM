@@ -1,3 +1,43 @@
+## 0.12.19 — Correzione UX Console docente e fix Audit sicurezza superadmin
+
+- Corretto Audit sicurezza per superadmin quando Firestore è inizializzato come variabile globale legacy `db` ma non come `window.db`.
+- Sostituito l’errore generico `Cannot read properties of undefined (reading 'collection')` con un messaggio esplicito se Firestore non è inizializzato.
+- Migliorata la Console docente: il JSON tecnico del report dataset non è più visibile in primo piano, ma resta disponibile tramite “Copia report JSON” e dettagli tecnici.
+- Aggiunti test browser-based 0.12.19 per Audit sicurezza superadmin e UX Console docente.
+- Nessuna nuova collezione Firestore, nessuna nuova voce di menu, nessun backend custom e nessuna Cloud Function obbligatoria.
+
+## 0.12.18 — QA didattico Manuale Utente e percorsi guidati
+
+- Consolidato il Manuale Utente come riferimento didattico autonomo.
+- Aggiunti percorsi separati per Studente, Docente e Professionista.
+- Aggiunte checklist operative per i capitoli principali.
+- Aggiunte esercitazioni guidate su vendite, acquisti, magazzino/quarantena, workflow, segnalazioni operative, Mini B.I. e backup/import/reset.
+- Chiarita la collocazione reale di Segnalazioni operative in `Analisi → Segnalazioni operative` e il suo ruolo nel workflow operativo.
+- Documentata la continuità di `operationalReports`, `users/{uid}` e `businessGroups/{groupId}`.
+- Aggiunto il test browser-based `manuale-qa-didattico-01218.test.html`.
+- Nessuna nuova collezione Firestore, nessun backend custom e nessuna Cloud Function obbligatoria.
+
+## 0.12.17 — Aiuto contestuale collegato al manuale
+
+- Collegati gli aiuti rapidi contestuali ai capitoli del Manuale Utente tramite anchor stabili.
+- Aggiunti `manualAnchor`, `manualAnchorFor()` e link “Apri capitolo collegato del Manuale utente” nel pannello `?`.
+- Aggiornata la navigazione documentale per scorrere al capitolo richiesto dopo il caricamento del manuale.
+- Aggiornato il manuale a capitoli con riferimenti 0.12.17 e anchor stabili.
+- Aggiunto `DOCUMENTAZIONE/113_AIUTO_MANUALE_CONTESTUALE_01217.md`.
+- Aggiunto `tests/aiuto-manuale-contestuale-01217.test.html`.
+- Nessuna nuova collezione Firestore, nessun backend custom, nessuna Cloud Function obbligatoria.
+
+## 0.12.16 — Manuale a capitoli e backup segnalazioni operative
+
+- Trasformato il Manuale Utente in-app in un manuale strutturato per capitoli, caricato da `111_MANUALE_CAPITOLI_01216.md`.
+- Aggiornato `02_MANUALE_UTENTE.md` con capitoli progressivi: primi passi, anagrafiche, vendite, acquisti, magazzino, contabilità, workflow, segnalazioni operative, Mini B.I., backup/import/reset, gruppi/permessi e uso didattico.
+- Corretto `migration-module.js`: `operationalReports` è ora incluso in stima uso dati, normalizzazione backup, import/ripristino e export JSON.
+- Aggiunto test browser-based `tests/backup-operational-reports-01216.test.html`.
+- Aggiunto test browser-based `tests/manuale-capitoli-01216.test.html`.
+- Aggiornati README, indice documentazione, mappa moduli e documentazione in-app.
+- Nessuna nuova collezione Firestore: resta `operationalReports`, già documentata e già presente nelle regole.
+- Nessun backend custom e nessuna Cloud Function obbligatoria.
+
 ## 0.12.15 — Aiuto contestuale non invasivo e Manuale utente visuale
 
 - Gli aiuti rapidi non sono più box fissi sempre visibili nelle pagine operative.

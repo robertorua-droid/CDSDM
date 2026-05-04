@@ -79,7 +79,7 @@
   };
 
   function ensureContextHelpButton() {
-    // 0.12.15: l'aiuto rapido non è più un pulsante globale nella top bar.
+    // 0.12.17: l'aiuto rapido resta accanto al titolo e può aprire il capitolo manuale collegato.
     // Viene reso come icona contestuale accanto al titolo della pagina.
     $('#context-help-btn').remove();
   }
@@ -245,7 +245,7 @@
 
       // DOCUMENTAZIONE IN-APP
       if (target === 'manuale') {
-        loadDocumentation('109_MANUALE_VISUALE_01215', '#manuale-content', false);
+        loadDocumentation('111_MANUALE_CAPITOLI_01216', '#manuale-content', false);
       }
 
       // Cambia sezione visibile
@@ -271,7 +271,7 @@
 
     // GESTIONE LINK DOCUMENTAZIONE e BOTTONE INDIETRO
     $('#btn-back-to-index').on('click', function () {
-      loadDocumentation('109_MANUALE_VISUALE_01215', '#manuale-content', false);
+      loadDocumentation('111_MANUALE_CAPITOLI_01216', '#manuale-content', false);
     });
 
     $('#manuale-content').on('click', 'a', function (e) {
@@ -326,8 +326,21 @@
           $(selector).html(`<pre style="white-space: pre-wrap;">${content}</pre>`);
         }
 
-        // Scroll in alto
-        $(selector).scrollTop(0);
+        // 0.12.17: se l'aiuto rapido ha richiesto un capitolo specifico, scorri al relativo anchor del manuale.
+        const requestedAnchor = window.CDSDM_MANUAL_TARGET_ANCHOR || '';
+        window.CDSDM_MANUAL_TARGET_ANCHOR = '';
+        if (requestedAnchor && selector === '#manuale-content') {
+          setTimeout(function () {
+            const el = document.getElementById(requestedAnchor);
+            if (el && typeof el.scrollIntoView === 'function') {
+              el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+              window.location.hash = requestedAnchor;
+            }
+          }, 80);
+        } else {
+          $(selector).scrollTop(0);
+        }
 
       } catch (e) {
         console.error('Documentation error:', e);
