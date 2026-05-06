@@ -1,6 +1,6 @@
-# Manuale utente CDSDM — riferimento didattico autonomo 0.13.7
+# Manuale utente CDSDM — riferimento didattico autonomo 0.13.9
 
-La versione **0.13.7** mantiene il Manuale Utente come riferimento didattico autonomo per studenti, docenti e professionisti. Non introduce nuovi flussi applicativi, nuove voci di menu, nuove collezioni Firestore o nuove regole obbligatorie: organizza e chiarisce l'uso dei flussi già esistenti.
+La versione **0.13.9** mantiene il Manuale Utente come riferimento didattico autonomo per studenti, docenti e professionisti. Non introduce nuovi flussi applicativi, nuove voci di menu, nuove collezioni Firestore o nuove regole obbligatorie: organizza e chiarisce l'uso dei flussi già esistenti.
 
 Il manuale è pensato per tre usi:
 
@@ -419,7 +419,7 @@ Uso consigliato:
 5. esporta CSV se richiesto;
 6. collega alert rilevanti a segnalazioni operative.
 
-Uso da smartphone nella 0.13.5 e 0.13.7:
+Uso da smartphone nella 0.13.5 e 0.13.9:
 
 - parti dalle card KPI principali;
 - cambia area solo quando serve;
@@ -706,7 +706,7 @@ Uso consigliato da smartphone:
 La 0.13.3 non introduce nuovi flussi, nuove collezioni Firestore o nuove voci di menu.
 
 
-## Nota 0.13.7 — Coerenza menu documenti
+## Nota 0.13.9 — Coerenza menu documenti
 
 La navigazione dei documenti commerciali usa il modello unico **Elenco nel menu + Nuovo nella pagina**.
 
@@ -721,6 +721,16 @@ Percorsi principali:
 La modifica è solo di chiarezza UX: non cambia collezioni, regole Firestore, permessi, workflow o backup/import/reset.
 
 
-## Nota 0.13.7 — Logo trasparente e branding
+## Nota 0.13.9 — Logo trasparente e branding
 
-La versione **0.13.7** rifinisce l’identità visiva del progetto rigenerando il logo principale con **trasparenza reale** e senza contorno bianco marcato. L’obiettivo è migliorare la resa soprattutto nella pagina di login, ma anche in sidebar, home, pagina versione e icone applicative.
+La versione **0.13.9** rifinisce l’identità visiva del progetto rigenerando il logo principale con **trasparenza reale** e senza contorno bianco marcato. L’obiettivo è migliorare la resa soprattutto nella pagina di login, ma anche in sidebar, home, pagina versione e icone applicative.
+
+
+## Nota 0.13.9 — Logo con cilindro ocra
+
+La versione **0.13.9** mantiene il logo a sfondo trasparente introdotto nella 0.13.7, ma migliora la leggibilità del cilindro/database usando una tonalità **ocra/oro**. L’obiettivo è ottenere una resa più equilibrata sia sulla login chiara sia sulle aree a sfondo scuro.
+
+
+## Nota 0.13.9 — Logo approvato in build
+
+La versione **0.13.9** integra nella build il logo approvato in preview. Il branding mantiene lo **sfondo trasparente** e adotta un cilindro/database con **sezioni differenziate**, per ridurre l’effetto di elementi identici impilati e migliorare la resa visiva nella login e nelle altre aree dell’app.

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>CDSDM 0.13.8 - Branding logo con cilindro ocra</title></head>
+<body><pre id="output"></pre><script>
+async function read(p){ return fetch(p).then(r=>r.text()); }
+function loadImage(src){ return new Promise((resolve,reject)=>{ const i=new Image(); i.onload=()=>resolve(i); i.onerror=reject; i.src=src; }); }
+async function run(){
+ const out=document.getElementById('output');
+ const index=await read('../index.html');
+ const doc=await read('../DOCUMENTAZIONE/124_RIFINITURA_BRANDING_LOGO_CILINDRO_OCRA_0138.md');
+ const checks=[];
+ function ok(m,p){ checks.push((p?'✓ ':'✗ ')+m); if(!p) throw new Error(m); }
+ ok('versione UI aggiornata a 0.13.8', index.includes('CDSDM Versione 0.13.8'));
+ ok('documentazione 0.13.8 presente', doc.includes('ocra'));
+ const img=await loadImage('../assets/branding/brand-mark.png');
+ const canvas=document.createElement('canvas'); canvas.width=img.width; canvas.height=img.height; const ctx=canvas.getContext('2d'); ctx.drawImage(img,0,0);
+ const data=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+ let hasTransparent=false, hasWarmPixel=false;
+ for(let i=0;i<data.length;i+=4){ const r=data[i], g=data[i+1], b=data[i+2], a=data[i+3]; if(a===0) hasTransparent=true; if(a>0 && r>g && g>b && r>120 && g>70 && b<120) hasWarmPixel=true; }
+ ok('logo con trasparenza reale', hasTransparent);
+ ok('logo con pixel caldi/ocra nel cilindro', hasWarmPixel);
+ out.textContent=checks.join('\n');
+}
+run().catch(e=>{ document.getElementById('output').textContent='ERRORE: '+e.message; });
+</script></body></html>
