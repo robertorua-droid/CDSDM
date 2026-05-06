@@ -167,14 +167,10 @@
     <span class="nav-section-subtitle">Documenti commerciali</span>
     <li class="nav-item"><a class="nav-link" data-target="preventivi" href="#"><i
           class="fas fa-file-lines"></i> Elenco Preventivi cliente</a></li>
-    <li class="nav-item"><a class="nav-link" id="menu-nuovo-preventivo-cliente" href="#"><i
-          class="fas fa-file-circle-plus"></i> Nuovo Preventivo cliente</a></li>
     <li class="nav-item"><a class="nav-link" data-target="ordini-cliente" href="#"><i
           class="fas fa-file-signature"></i> Elenco Ordini cliente</a></li>
-    <li class="nav-item"><a class="nav-link" id="menu-nuovo-ordine-cliente" href="#"><i
-          class="fas fa-file-circle-plus"></i> Nuovo Ordine cliente</a></li>
     <li class="nav-item"><a class="nav-link" data-target="ddt-cliente" href="#"><i
-          class="fas fa-truck-fast"></i> DDT cliente</a></li>
+          class="fas fa-truck-fast"></i> Elenco DDT cliente</a></li>
     <span class="nav-section-subtitle">Fatturazione</span>
     <li class="nav-item"><a class="nav-link" data-target="fatturazione-ddt-cliente" href="#" id="menu-fatturazione-ddt-cliente"><i class="fas fa-layer-group"></i> Fatturazione DDT cliente</a></li>
     <li class="nav-item"><a class="nav-link" data-bs-target="#newInvoiceChoiceModal" data-bs-toggle="modal"
@@ -196,10 +192,8 @@
     <span class="nav-section-subtitle">Documenti fornitori</span>
     <li class="nav-item"><a class="nav-link" data-target="ordini-fornitore" href="#"><i
           class="fas fa-file-invoice"></i> Elenco Ordini fornitore</a></li>
-    <li class="nav-item"><a class="nav-link" id="menu-nuovo-ordine-fornitore" href="#"><i
-          class="fas fa-file-circle-plus"></i> Nuovo Ordine fornitore</a></li>
     <li class="nav-item"><a class="nav-link" data-target="ddt-fornitore" href="#"><i
-          class="fas fa-truck-ramp-box"></i> DDT fornitore</a></li>
+          class="fas fa-truck-ramp-box"></i> Elenco DDT fornitore</a></li>
     <span class="nav-section-subtitle">Fatture fornitori</span>
     <li class="nav-item"><a class="nav-link" id="menu-nuovo-acquisto" data-target="nuovo-acquisto" href="#"><i
           class="fas fa-cart-plus"></i> Nuovo Acquisto</a></li>
@@ -447,9 +441,9 @@
                 </picture>
               </div>
               <div class="col-md-10">
-                <h3 class="mb-1">CDSDM Versione 0.13.5</h3>
+                <h3 class="mb-1">CDSDM Versione 0.13.6</h3>
                 <p class="mb-1"><strong>Cloud Data Suite for Digital Management</strong></p>
-                <p class="text-muted">Mobile usability documenti: form complessi e documenti gestionali più leggibili su smartphone, senza nuovi flussi dati.</p>
+                <p class="text-muted">Coerenza menu documenti commerciali: Preventivi, Ordini e DDT usano il modello Elenco nel menu + pulsante Nuovo nella pagina.</p>
                 <p class="small text-muted mb-0"><i class="fas fa-check-circle text-success"></i> Sincronizzazione CDSDM Cloud
                   attiva</p>
                 <p class="small text-muted"><i class="fas fa-shield-halved text-info"></i> Protezione Dati Crittografata
@@ -959,6 +953,7 @@
       <h2 class="mb-1">Elenco Preventivi cliente</h2>
       <div class="text-muted small">Vista consultiva dei preventivi cliente, con stato, dettaglio e conversione in ordine cliente.</div>
     </div>
+    <button class="btn btn-success" id="newQuoteBtn" type="button"><i class="fas fa-plus"></i> Nuovo Preventivo cliente</button>
   </div>
   <div class="alert alert-info small warehouse-flow-note">
     <strong>Flusso vendite.</strong> Preventivo → Ordine cliente → DDT cliente → Fattura. La conversione in ordine copia righe e cliente; le giacenze restano invariate fino al DDT.
@@ -1147,6 +1142,7 @@
               <h2 class="mb-1">Elenco Ordini cliente</h2>
               <div class="text-muted small">Vista consultiva degli ordini cliente con stato aperto, parzialmente evaso, evaso o annullato.</div>
             </div>
+            <button class="btn btn-success" id="newCustomerOrderBtn" type="button"><i class="fas fa-plus"></i> Nuovo Ordine cliente</button>
           </div>
           <div class="alert alert-info small warehouse-flow-note">
             <strong>Flusso cliente.</strong> Crea un ordine, poi genera uno o più DDT cliente. L'elenco mostra subito quantità ordinata, evasa e stato operativo.
@@ -1182,6 +1178,7 @@
               <h2 class="mb-1">Elenco Ordini fornitore</h2>
               <div class="text-muted small">Vista consultiva degli ordini fornitore con stato aperto, parzialmente ricevuto, ricevuto o annullato.</div>
             </div>
+            <button class="btn btn-success" id="newSupplierOrderBtn" type="button"><i class="fas fa-plus"></i> Nuovo Ordine fornitore</button>
           </div>
           <div class="alert alert-info small warehouse-flow-note">
             <strong>Flusso fornitore.</strong> Crea un ordine, poi registra il DDT fornitore. L'elenco mostra quantità ordinate, ricevute e stato di ricevimento.
@@ -1215,7 +1212,7 @@
         <div class="content-section d-none" id="ddt-fornitore">
           <div class="d-flex align-items-center justify-content-between mb-2">
             <div>
-              <h2 class="mb-1">DDT fornitore</h2>
+              <h2 class="mb-1">Elenco DDT fornitore</h2>
               <div class="text-muted small">Ricevimento merci e resi al fornitore con tracciamento quarantena.</div>
             </div>
             <button class="btn btn-success" id="newSupplierDdtBtn" type="button"><i class="fas fa-plus"></i> Nuovo DDT fornitore</button>
@@ -1256,7 +1253,7 @@
         <div class="content-section d-none" id="ddt-cliente">
           <div class="d-flex align-items-center justify-content-between mb-2">
             <div>
-              <h2 class="mb-1">DDT cliente / Consegna merci</h2>
+              <h2 class="mb-1">Elenco DDT cliente / Consegna merci</h2>
               <div class="text-muted small">Consegna merce a cliente diretta, da singolo ordine o da più ordini cliente accorpati, con scarico della giacenza disponibile.</div>
             </div>
             <button class="btn btn-success" id="newCustomerDdtBtn" type="button"><i class="fas fa-plus"></i> Nuovo DDT cliente</button>
@@ -1884,7 +1881,7 @@
           <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
             <div>
               <h2>Workflow approvativi leggeri</h2>
-              <p class="text-muted mb-0">Vista operativa 0.13.5 per verificare, approvare, respingere o bloccare documenti e movimenti. Gli eventi sono registrati nella collezione opzionale <code>workflowEvents</code>; non sono presenti automatismi irreversibili.</p>
+              <p class="text-muted mb-0">Vista operativa 0.13.6 per verificare, approvare, respingere o bloccare documenti e movimenti. Gli eventi sono registrati nella collezione opzionale <code>workflowEvents</code>; non sono presenti automatismi irreversibili.</p>
             </div>
             <div class="btn-group btn-group-sm">
               <button class="btn btn-outline-secondary" id="workflow-refresh-btn" type="button"><i class="fas fa-rotate"></i> Aggiorna</button>
@@ -1911,7 +1908,7 @@
           <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
             <div>
               <h2>Segnalazioni operative</h2>
-              <p class="text-muted mb-0">Workflow operativo 0.13.5 per registrare anomalie e comunicazioni interne, con elenco a tutta larghezza e form separato in tab. I documenti gestionali in Bozza diventano operativi tramite Analisi → Workflow approvativi: ad esempio gli ordini cliente/fornitore approvati passano a Confermato e diventano selezionabili nei DDT. I dati sono salvati nella collezione <code>operationalReports</code> e restano coerenti con gruppi aziendali, backup/import/reset, manuale utente a capitoli e permessi UI.</p>
+              <p class="text-muted mb-0">Workflow operativo 0.13.6 per registrare anomalie e comunicazioni interne, con elenco a tutta larghezza e form separato in tab. I documenti gestionali in Bozza diventano operativi tramite Analisi → Workflow approvativi: ad esempio gli ordini cliente/fornitore approvati passano a Confermato e diventano selezionabili nei DDT. I dati sono salvati nella collezione <code>operationalReports</code> e restano coerenti con gruppi aziendali, backup/import/reset, manuale utente a capitoli e permessi UI.</p>
             </div>
             <div class="btn-group btn-group-sm">
               <button class="btn btn-outline-secondary" id="operational-report-refresh" type="button"><i class="fas fa-rotate"></i> Aggiorna</button>

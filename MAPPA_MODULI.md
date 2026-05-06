@@ -365,3 +365,11 @@ Nessuna nuova collezione Firestore, nessuna nuova voce di menu e nessun redesign
 - `css/style.css`: regole responsive per tab aree, card KPI, drill-down, azioni CSV/report e fonti dati Mini B.I.
 - `tests/mobile-mini-bi-0134.test.html`: verifica browser-based della release mobile B.I.
 - Nessuna nuova collezione Firestore, nessuna modifica a permessi, menu o workflow dati.
+
+## Aggiornamento 0.13.6 — Coerenza menu documenti commerciali
+
+- `index.html`: rimosse dal menu laterale le voci separate `Nuovo Preventivo cliente`, `Nuovo Ordine cliente` e `Nuovo Ordine fornitore`.
+- `index.html`: aggiunti i pulsanti pagina `newQuoteBtn`, `newCustomerOrderBtn` e `newSupplierOrderBtn` nelle rispettive viste elenco, riusando gli handler esistenti.
+- `index.html`: rinominate le voci `DDT cliente` e `DDT fornitore` in `Elenco DDT cliente` e `Elenco DDT fornitore`.
+- `js/features/migration/migration-module.js`: backup JSON aggiornato a `appVersion: 0.13.6`.
+- Nessuna nuova collezione Firestore e nessuna modifica a `firestore.rules`.

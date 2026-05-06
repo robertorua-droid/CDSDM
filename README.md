@@ -1,5 +1,5 @@
-## CDSDM Versione 0.13.5 — Form complessi e documenti gestionali mobile-aware
-La versione **0.13.5** migliora l'uso da smartphone di form complessi e documenti gestionali, con spaziature touch, modali più leggibili e azioni meno compresse. Non introduce nuovi flussi, nuove collezioni Firestore, nuove regole o modifiche ai permessi.
+## CDSDM Versione 0.13.6 — Coerenza menu documenti commerciali
+La versione **0.13.6** uniforma Preventivi, Ordini e DDT al modello menu `Elenco ...` + pulsante `Nuovo ...` nella pagina. Non introduce nuovi flussi, nuove collezioni Firestore, nuove regole o modifiche ai permessi.
 
 ## CDSDM Versione 0.13.3 — Workflow e Segnalazioni operative mobile
 La versione **0.13.3** migliora l'uso da smartphone dei flussi già esistenti di Workflow approvativi e Segnalazioni operative. Le modifiche sono UI/UX conservative: pulsanti più comodi, suggerimenti mobile, dettagli in colonna e nessuna variazione a Firestore, permessi, menu o dati.
@@ -567,6 +567,15 @@ Gli override 0.6.4 restano una granularità applicativa/front-end didattica. Le 
 - Preventivi cliente: conversione in ordine cliente consentita solo dopo approvazione/accettazione tramite Workflow approvativo.
 - Quantità documentali: incremento browser a 1, mantenendo accettazione di valori decimali nei calcoli.
 - Segnalazioni operative: elenco/dettaglio e nuova segnalazione separati in tab per usare l’intera larghezza della pagina.
+
+
+### 0.13.6 — Coerenza menu documenti commerciali
+
+- Uniformato il menu di Preventivi, Ordini cliente/fornitore e DDT cliente/fornitore.
+- Le voci `Nuovo Preventivo cliente`, `Nuovo Ordine cliente` e `Nuovo Ordine fornitore` sono state trasformate in pulsanti nelle rispettive pagine elenco.
+- Rinominati `DDT cliente` e `DDT fornitore` in `Elenco DDT cliente` e `Elenco DDT fornitore`.
+- Backup JSON aggiornato a `appVersion: 0.13.6`.
+- Nessuna modifica a Firestore rules, collezioni, permessi o backend.
 
 ### 0.13.5 — Form complessi e documenti gestionali mobile-aware
 - Aggiunto `js/ui/mobile-documents-service.js` per miglioramenti mobile non invasivi su form, card, modali e pulsanti delle sezioni documentali.

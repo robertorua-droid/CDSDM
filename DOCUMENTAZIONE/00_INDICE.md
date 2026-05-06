@@ -1,6 +1,6 @@
 # Documentazione – CDSDM (didattico)
 
-Documentazione aggiornata alla versione **0.13.5**.
+Documentazione aggiornata alla versione **0.13.6**.
 
 > Nota: il progetto è didattico. Le simulazioni fiscali e i calcoli gestionali sono semplificazioni e non sostituiscono consulenza professionale, contabile o fiscale.
 
@@ -91,6 +91,7 @@ Documentazione aggiornata alla versione **0.13.5**.
 
 ## Ultime release
 
+- **0.13.6**: coerenza menu documenti commerciali, modello Elenco nel menu + Nuovo nella pagina.
 - **0.13.5**: form complessi e documenti gestionali resi più leggibili su smartphone, senza nuovi flussi dati.
 - **0.13.4**: Mini B.I. didattica ottimizzata per consultazione sintetica mobile.
 - **0.13.3**: Workflow approvativi e Segnalazioni operative ottimizzati per uso mobile leggero.
@@ -234,3 +235,4 @@ Documentazione aggiornata alla versione **0.13.5**.
 
 - [120 - Mini B.I. sintetica mobile 0.13.4](120_MINI_BI_MOBILE_0134.md)
 - [121 - Form complessi e documenti gestionali mobile-aware 0.13.5](121_FORM_DOCUMENTI_MOBILE_0135.md)
+- [122 - Coerenza menu documenti commerciali 0.13.6](122_COERENZA_MENU_DOCUMENTI_0136.md)

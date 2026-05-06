@@ -1,6 +1,6 @@
-# Manuale utente CDSDM — riferimento didattico autonomo 0.13.5
+# Manuale utente CDSDM — riferimento didattico autonomo 0.13.6
 
-La versione **0.13.5** mantiene il Manuale Utente come riferimento didattico autonomo per studenti, docenti e professionisti. Non introduce nuovi flussi applicativi, nuove voci di menu, nuove collezioni Firestore o nuove regole obbligatorie: organizza e chiarisce l'uso dei flussi già esistenti.
+La versione **0.13.6** mantiene il Manuale Utente come riferimento didattico autonomo per studenti, docenti e professionisti. Non introduce nuovi flussi applicativi, nuove voci di menu, nuove collezioni Firestore o nuove regole obbligatorie: organizza e chiarisce l'uso dei flussi già esistenti.
 
 Il manuale è pensato per tre usi:
 
@@ -203,7 +203,7 @@ Flusso didattico completo:
 3. **Vendite → Preventivi cliente**: crea il preventivo.
 4. **Analisi → Workflow approvativi**: approva il preventivo se nasce in bozza.
 5. **Preventivi cliente → Crea ordine cliente**: genera l'ordine da preventivo approvato o accettato.
-6. **Vendite → DDT cliente**: collega ordini cliente confermati.
+6. **Vendite → Elenco DDT cliente**: collega ordini cliente confermati e usa il pulsante **Nuovo DDT cliente** quando serve.
 7. **Vendite → Fatturazione DDT cliente** o **Nuova fattura**: genera il documento simulato.
 8. **Contabilità → Incassi e pagamenti**: registra l'incasso.
 9. **Analisi → Mini B.I. didattica**: osserva vendite, margini o indicatori disponibili.
@@ -234,9 +234,9 @@ Il flusso acquisti mostra il ciclo opposto al ciclo vendita: fabbisogno, ordine 
 Flusso didattico completo:
 
 1. **Anagrafiche → Fornitori**: crea o verifica il fornitore.
-2. **Acquisti → Nuovo Ordine fornitore**: prepara la richiesta di acquisto.
+2. **Acquisti → Elenco Ordini fornitore**: consulta gli ordini e usa il pulsante **Nuovo Ordine fornitore** nella pagina per preparare la richiesta di acquisto.
 3. **Analisi → Workflow approvativi**: approva l'ordine se è in bozza.
-4. **Acquisti → DDT fornitore**: registra la ricezione merce da ordine confermato.
+4. **Acquisti → Elenco DDT fornitore**: registra la ricezione merce da ordine confermato usando il pulsante **Nuovo DDT fornitore** nella pagina.
 5. Indica quantità ricevute, accettate, mancanti o in quarantena.
 6. Se emerge un problema, genera una **Segnalazione operativa**.
 7. Consulta magazzino e Mini B.I. per osservare l'impatto.
@@ -419,7 +419,7 @@ Uso consigliato:
 5. esporta CSV se richiesto;
 6. collega alert rilevanti a segnalazioni operative.
 
-Uso da smartphone nella 0.13.5:
+Uso da smartphone nella 0.13.5 e 0.13.6:
 
 - parti dalle card KPI principali;
 - cambia area solo quando serve;
@@ -701,3 +701,18 @@ Uso consigliato da smartphone:
 5. rimandare a desktop/tablet la compilazione di documenti complessi.
 
 La 0.13.3 non introduce nuovi flussi, nuove collezioni Firestore o nuove voci di menu.
+
+
+## Nota 0.13.6 — Coerenza menu documenti
+
+La navigazione dei documenti commerciali usa il modello unico **Elenco nel menu + Nuovo nella pagina**.
+
+Percorsi principali:
+
+- **Vendite → Elenco Preventivi cliente**: elenco e pulsante **Nuovo Preventivo cliente**.
+- **Vendite → Elenco Ordini cliente**: elenco e pulsante **Nuovo Ordine cliente**.
+- **Vendite → Elenco DDT cliente**: elenco e pulsante **Nuovo DDT cliente**.
+- **Acquisti → Elenco Ordini fornitore**: elenco e pulsante **Nuovo Ordine fornitore**.
+- **Acquisti → Elenco DDT fornitore**: elenco e pulsante **Nuovo DDT fornitore**.
+
+La modifica è solo di chiarezza UX: non cambia collezioni, regole Firestore, permessi, workflow o backup/import/reset.

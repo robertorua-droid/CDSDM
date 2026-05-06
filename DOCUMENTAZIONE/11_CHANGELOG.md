@@ -1,3 +1,13 @@
+## 0.13.6 — Coerenza menu documenti commerciali
+
+- Uniformato il modello di navigazione per Preventivi, Ordini cliente/fornitore e DDT cliente/fornitore.
+- Il menu laterale usa ora il modello `Elenco ...`, mentre le azioni `Nuovo ...` restano come pulsanti dentro la pagina del documento.
+- Rinominati i DDT nel menu in `Elenco DDT cliente` e `Elenco DDT fornitore`.
+- Aggiunti pulsanti pagina per `Nuovo Preventivo cliente`, `Nuovo Ordine cliente` e `Nuovo Ordine fornitore`, mantenendo gli handler esistenti.
+- Aggiornato il riferimento versione del backup JSON a `appVersion: 0.13.6`.
+- Aggiunto documento `122_COERENZA_MENU_DOCUMENTI_0136.md` e test `menu-documenti-commerciali-0136.test.html`.
+- Nessuna modifica a Firestore rules, collezioni, permessi, backend o flussi dati.
+
 ## 0.13.5 — Form complessi e documenti gestionali mobile-aware
 
 - Aggiunto `js/ui/mobile-documents-service.js` per migliorare la fruizione mobile di form complessi e documenti gestionali senza cambiare le logiche dati.

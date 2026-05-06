@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Test 0.13.6 - Coerenza menu documenti commerciali</title>
+  <style>body{font-family:system-ui,Arial,sans-serif;margin:2rem}.ok{color:#0a7a22}.ko{color:#b00020}</style>
+</head>
+<body>
+  <h1>Test 0.13.6 - Coerenza menu documenti commerciali</h1>
+  <p>Verifica statica della release 0.13.6.</p>
+  <ul id="results"></ul>
+  <script>
+    const results = document.getElementById('results');
+    function assert(label, condition){
+      const li=document.createElement('li');
+      li.className=condition?'ok':'ko';
+      li.textContent=(condition?'OK ':'KO ')+label;
+      results.appendChild(li);
+      if(!condition) console.error(label);
+    }
+    async function text(path){ const r=await fetch('../'+path); return r.text(); }
+    (async function(){
+      const index = await text('index.html');
+      const migration = await text('js/features/migration/migration-module.js');
+      const rules = await text('firestore.rules');
+      const docs = await text('DOCUMENTAZIONE/122_COERENZA_MENU_DOCUMENTI_0136.md');
+
+      assert('Versione 0.13.6 visibile in index', index.includes('CDSDM Versione 0.13.6'));
+      assert('Backup JSON aggiornato a 0.13.6', migration.includes("appVersion: '0.13.6'"));
+
+      assert('Menu contiene Elenco Preventivi cliente', index.includes('> Elenco Preventivi cliente</a>'));
+      assert('Menu contiene Elenco Ordini cliente', index.includes('> Elenco Ordini cliente</a>'));
+      assert('Menu contiene Elenco DDT cliente', index.includes('> Elenco DDT cliente</a>'));
+      assert('Menu contiene Elenco Ordini fornitore', index.includes('> Elenco Ordini fornitore</a>'));
+      assert('Menu contiene Elenco DDT fornitore', index.includes('> Elenco DDT fornitore</a>'));
+
+      assert('Menu non contiene più voce separata Nuovo Preventivo cliente', !index.includes('id="menu-nuovo-preventivo-cliente"'));
+      assert('Menu non contiene più voce separata Nuovo Ordine cliente', !index.includes('id="menu-nuovo-ordine-cliente"'));
+      assert('Menu non contiene più voce separata Nuovo Ordine fornitore', !index.includes('id="menu-nuovo-ordine-fornitore"'));
+
+      assert('Pagina Preventivi contiene pulsante Nuovo Preventivo cliente', index.includes('id="newQuoteBtn"') && index.includes('Nuovo Preventivo cliente</button>'));
+      assert('Pagina Ordini cliente contiene pulsante Nuovo Ordine cliente', index.includes('id="newCustomerOrderBtn"') && index.includes('Nuovo Ordine cliente</button>'));
+      assert('Pagina Ordini fornitore contiene pulsante Nuovo Ordine fornitore', index.includes('id="newSupplierOrderBtn"') && index.includes('Nuovo Ordine fornitore</button>'));
+
+      assert('Documento 122 presente e descrive modello Elenco + Nuovo', docs.includes('Menu laterale → Elenco documento') && docs.includes('Pagina       → pulsante Nuovo documento'));
+      assert('Nessuna nuova collezione Firestore dedicata al menu', !rules.includes('menuDocuments') && !rules.includes('documentMenu'));
+    })();
+  </script>
+</body>
+</html>
