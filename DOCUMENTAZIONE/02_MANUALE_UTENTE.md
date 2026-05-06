@@ -1,6 +1,6 @@
-# Manuale utente CDSDM — riferimento didattico autonomo 0.13.6
+# Manuale utente CDSDM — riferimento didattico autonomo 0.13.7
 
-La versione **0.13.6** mantiene il Manuale Utente come riferimento didattico autonomo per studenti, docenti e professionisti. Non introduce nuovi flussi applicativi, nuove voci di menu, nuove collezioni Firestore o nuove regole obbligatorie: organizza e chiarisce l'uso dei flussi già esistenti.
+La versione **0.13.7** mantiene il Manuale Utente come riferimento didattico autonomo per studenti, docenti e professionisti. Non introduce nuovi flussi applicativi, nuove voci di menu, nuove collezioni Firestore o nuove regole obbligatorie: organizza e chiarisce l'uso dei flussi già esistenti.
 
 Il manuale è pensato per tre usi:
 
@@ -419,7 +419,7 @@ Uso consigliato:
 5. esporta CSV se richiesto;
 6. collega alert rilevanti a segnalazioni operative.
 
-Uso da smartphone nella 0.13.5 e 0.13.6:
+Uso da smartphone nella 0.13.5 e 0.13.7:
 
 - parti dalle card KPI principali;
 - cambia area solo quando serve;
@@ -703,7 +703,7 @@ Uso consigliato da smartphone:
 La 0.13.3 non introduce nuovi flussi, nuove collezioni Firestore o nuove voci di menu.
 
 
-## Nota 0.13.6 — Coerenza menu documenti
+## Nota 0.13.7 — Coerenza menu documenti
 
 La navigazione dei documenti commerciali usa il modello unico **Elenco nel menu + Nuovo nella pagina**.
 
@@ -716,3 +716,8 @@ Percorsi principali:
 - **Acquisti → Elenco DDT fornitore**: elenco e pulsante **Nuovo DDT fornitore**.
 
 La modifica è solo di chiarezza UX: non cambia collezioni, regole Firestore, permessi, workflow o backup/import/reset.
+
+
+## Nota 0.13.7 — Logo trasparente e branding
+
+La versione **0.13.7** rifinisce l’identità visiva del progetto rigenerando il logo principale con **trasparenza reale** e senza contorno bianco marcato. L’obiettivo è migliorare la resa soprattutto nella pagina di login, ma anche in sidebar, home, pagina versione e icone applicative.

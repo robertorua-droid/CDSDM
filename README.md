@@ -1,5 +1,5 @@
-## CDSDM Versione 0.13.6 — Coerenza menu documenti commerciali
-La versione **0.13.6** uniforma Preventivi, Ordini e DDT al modello menu `Elenco ...` + pulsante `Nuovo ...` nella pagina. Non introduce nuovi flussi, nuove collezioni Firestore, nuove regole o modifiche ai permessi.
+## CDSDM Versione 0.13.7 — Rifinitura branding logo trasparente
+La versione **0.13.7** rifinisce il branding applicativo introducendo un logo pulito con trasparenza reale, senza contorno bianco marcato, per una resa più gradevole nella login e nelle altre aree dell’app. Non introduce nuovi flussi, collezioni Firestore, regole o modifiche ai permessi.
 
 ## CDSDM Versione 0.13.3 — Workflow e Segnalazioni operative mobile
 La versione **0.13.3** migliora l'uso da smartphone dei flussi già esistenti di Workflow approvativi e Segnalazioni operative. Le modifiche sono UI/UX conservative: pulsanti più comodi, suggerimenti mobile, dettagli in colonna e nessuna variazione a Firestore, permessi, menu o dati.
@@ -569,12 +569,12 @@ Gli override 0.6.4 restano una granularità applicativa/front-end didattica. Le 
 - Segnalazioni operative: elenco/dettaglio e nuova segnalazione separati in tab per usare l’intera larghezza della pagina.
 
 
-### 0.13.6 — Coerenza menu documenti commerciali
+### 0.13.7 — Coerenza menu documenti commerciali
 
 - Uniformato il menu di Preventivi, Ordini cliente/fornitore e DDT cliente/fornitore.
 - Le voci `Nuovo Preventivo cliente`, `Nuovo Ordine cliente` e `Nuovo Ordine fornitore` sono state trasformate in pulsanti nelle rispettive pagine elenco.
 - Rinominati `DDT cliente` e `DDT fornitore` in `Elenco DDT cliente` e `Elenco DDT fornitore`.
-- Backup JSON aggiornato a `appVersion: 0.13.6`.
+- Backup JSON aggiornato a `appVersion: 0.13.7`.
 - Nessuna modifica a Firestore rules, collezioni, permessi o backend.
 
 ### 0.13.5 — Form complessi e documenti gestionali mobile-aware
@@ -608,3 +608,11 @@ Gli override 0.6.4 restano una granularità applicativa/front-end didattica. Le 
 - Regole CSS responsive non invasive per manuale, aiuti rapidi, modali, card e pulsanti touch.
 - Nuovo documento 117 e test browser-based 0.13.1.
 - Backup JSON aggiornato a `appVersion: 0.13.1`.
+
+
+### 0.13.7 — Rifinitura branding logo trasparente
+
+- Rigenerato il logo principale `assets/branding/brand-mark.png` con trasparenza reale e senza contorno bianco marcato.
+- Rigenerati favicon e icone applicative (`favicon.ico`, `favicon-16.png`, `favicon-32.png`, `favicon-48.png`, `apple-touch-icon.png`, `android-chrome-*`).
+- Aggiunta micro-rifinitura CSS per mantenere trasparente la presentazione del logo nelle principali aree UI.
+- Aggiornati documentazione, test branding e backup JSON a `appVersion: 0.13.7`.
