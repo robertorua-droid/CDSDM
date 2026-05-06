@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CDSDM 0.13.1 - Mobile usability base</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+</head>
+<body class="p-4 bg-light">
+  <main class="container">
+    <h1 class="h3">Test 0.13.1 — Mobile usability base</h1>
+    <p class="text-muted">Verifica statica degli interventi responsive non invasivi su manuale, aiuti rapidi e consultazione base.</p>
+    <pre id="out" class="bg-white border rounded p-3"></pre>
+  </main>
+  <script>
+    const out = document.getElementById('out');
+    function log(msg) { out.textContent += msg + '\n'; }
+    function ok(label, cond) { log((cond ? '✅ ' : '❌ ') + label); if (!cond) throw new Error(label); }
+    async function text(path) {
+      const res = await fetch(path);
+      if (!res.ok) throw new Error('Impossibile leggere ' + path + ': ' + res.status);
+      return res.text();
+    }
+    (async function(){
+      const index = await text('../index.html');
+      const css = await text('../css/style.css');
+      const docs = await text('../js/features/navigation/docs-content.js');
+      const migration = await text('../js/features/migration/migration-module.js');
+      const help = await text('../js/ui/onboarding-help-service.js');
+
+      ok('Versione in-app corrente almeno 0.13.1', /CDSDM Versione 0\.13\.[0-9]+/.test(index));
+      ok('Backup JSON versione ramo 0.13.x', /appVersion: '0\.13\.[0-9]+'/.test(migration));
+      ok('OnboardingHelpService versione ramo 0.13.x', /const VERSION = '0\.13\.[0-9]+'/.test(help));
+      ok('CSS contiene blocco Mobile usability base 0.13.1', css.includes('0.13.1 — Mobile usability base'));
+      ok('Media query smartphone presente', css.includes('@media (max-width: 575.98px)'));
+      ok('Manuale e markdown hanno regole mobile dedicate', css.includes('#manuale-content.markdown-body') && css.includes('.markdown-body pre'));
+      ok('Aiuto rapido contestuale ha regole mobile dedicate', css.includes('.cdsdm-context-help-panel') && css.includes('.cdsdm-title-help-btn'));
+      ok('Pulsanti e controlli hanno altezza minima touch', css.includes('min-height: 2.35rem'));
+      ok('Modali hanno scorrimento verticale controllato', css.includes('.modal-body') && css.includes('overflow-y: auto'));
+      ok('Tabelle mantengono scroll orizzontale controllato', css.includes('-webkit-overflow-scrolling: touch') && css.includes('white-space: nowrap'));
+      ok('Documento 117 sincronizzato in docs-content.js', docs.includes('117_MOBILE_USABILITY_BASE_0131') && docs.includes('Mobile usability base 0.13.1'));
+      ok('Documento 117 dichiara assenza nuove collezioni Firestore', docs.includes('Nessuna nuova collezione Firestore') || docs.includes('nuove collezioni Firestore'));
+      ok('Manuale contiene nota mobile 0.13.1', docs.includes('Nota mobile 0.13.1'));
+
+      log('\nTest completato: la 0.13.1 migliora le aree mobile ad alta compatibilità senza introdurre nuovi flussi.');
+    })().catch(e => { log('\nERRORE: ' + (e.message || e)); throw e; });
+  </script>
+</body>
+</html>

@@ -1,3 +1,15 @@
+## CDSDM Versione 0.13.5 — Form complessi e documenti gestionali mobile-aware
+La versione **0.13.5** migliora l'uso da smartphone di form complessi e documenti gestionali, con spaziature touch, modali più leggibili e azioni meno compresse. Non introduce nuovi flussi, nuove collezioni Firestore, nuove regole o modifiche ai permessi.
+
+## CDSDM Versione 0.13.3 — Workflow e Segnalazioni operative mobile
+La versione **0.13.3** migliora l'uso da smartphone dei flussi già esistenti di Workflow approvativi e Segnalazioni operative. Le modifiche sono UI/UX conservative: pulsanti più comodi, suggerimenti mobile, dettagli in colonna e nessuna variazione a Firestore, permessi, menu o dati.
+
+## CDSDM Versione 0.13.2 — Tabelle e liste responsive
+La versione **0.13.2** introduce un adattamento progressivo delle tabelle e delle liste su smartphone: le tabelle restano classiche su desktop/tablet e diventano schede leggibili sotto i 576 px, senza modificare flussi applicativi, dati, Firestore, menu o permessi.
+
+## CDSDM Versione 0.13.0 — Mobile readiness audit
+La versione **0.13.0** avvia il ramo mobile con una verifica prudente della compatibilità reale smartphone/tablet. Non introduce nuove schermate operative, nuove voci di menu, nuove collezioni Firestore o redesign: documenta cosa è già consultabile da mobile, cosa è solo parzialmente utilizzabile e cosa richiede adattamento UX nelle prossime micro-release.
+
 ## CDSDM Versione 0.12.19 — Hotfix Console docente e Audit sicurezza superadmin
 La versione **0.12.19** è una release correttiva mirata: migliora la UX della Console docente nascondendo il JSON tecnico in una sezione dettagli e corregge l’Audit sicurezza per accesso superadmin quando Firestore è disponibile come variabile globale legacy `db`. Non introduce nuovi flussi, nuove voci di menu o nuove collezioni Firestore.
 
@@ -471,6 +483,12 @@ Gli override 0.6.4 restano una granularità applicativa/front-end didattica. Le 
 
 
 
+### 0.13.0 — Mobile readiness audit
+- Audit prudente su compatibilità smartphone/tablet.
+- Classificazione aree ad alta, media e bassa compatibilità mobile.
+- Aggiunta documentazione `116_MOBILE_READINESS_AUDIT_0130.md` e test `mobile-readiness-0130.test.html`.
+- Nessuna nuova collezione Firestore, nessuna nuova voce di menu, nessun backend custom e nessuna Cloud Function obbligatoria.
+
 ### 0.12.19 — Hotfix Console docente e Audit sicurezza superadmin
 - Console docente: il report JSON tecnico non è più mostrato in primo piano sotto gli indicatori dataset.
 - Console docente: aggiunta sezione dettagli tecnici chiusa e pulsante “Copia report JSON”.
@@ -549,3 +567,35 @@ Gli override 0.6.4 restano una granularità applicativa/front-end didattica. Le 
 - Preventivi cliente: conversione in ordine cliente consentita solo dopo approvazione/accettazione tramite Workflow approvativo.
 - Quantità documentali: incremento browser a 1, mantenendo accettazione di valori decimali nei calcoli.
 - Segnalazioni operative: elenco/dettaglio e nuova segnalazione separati in tab per usare l’intera larghezza della pagina.
+
+### 0.13.5 — Form complessi e documenti gestionali mobile-aware
+- Aggiunto `js/ui/mobile-documents-service.js` per miglioramenti mobile non invasivi su form, card, modali e pulsanti delle sezioni documentali.
+- Ottimizzate consultazione e modifiche brevi da smartphone per fatture, preventivi, ordini, DDT, acquisti e magazzino.
+- Aggiornato documento 121 e test browser-based 0.13.5.
+- Backup JSON aggiornato a `appVersion: 0.13.5`.
+- Nessuna modifica a Firestore rules, collezioni, permessi, menu o backend.
+
+### 0.13.4 — Mini B.I. sintetica mobile
+
+- Nuovo servizio `js/ui/mobile-bi-service.js`.
+- Migliorie mobile per tab aree operative, card KPI, drill-down, azioni CSV/report e alert B.I.
+- Nuovo documento 120 e test browser-based 0.13.4.
+- Backup JSON aggiornato a `appVersion: 0.13.4`.
+
+### 0.13.3 — Workflow e Segnalazioni operative mobile
+
+- Nuovo servizio `js/ui/mobile-workflow-service.js`.
+- Migliorie touch e layout mobile per Workflow approvativi e Segnalazioni operative.
+- Nuovo documento 119 e test browser-based 0.13.3.
+- Backup JSON aggiornato a `appVersion: 0.13.3`.
+
+### 0.13.2 — Tabelle e liste responsive
+- Nuovo servizio `js/ui/responsive-tables-service.js` per assegnare etichette `data-label` alle celle e trasformare le tabelle in schede su smartphone.
+- CSS mobile dedicato per `.cdsdm-mobile-card-table`, righe a scheda e pulsanti touch.
+- Nuovo documento 118 e test browser-based 0.13.2.
+- Backup JSON aggiornato a `appVersion: 0.13.2`.
+
+### 0.13.1 — Mobile usability base
+- Regole CSS responsive non invasive per manuale, aiuti rapidi, modali, card e pulsanti touch.
+- Nuovo documento 117 e test browser-based 0.13.1.
+- Backup JSON aggiornato a `appVersion: 0.13.1`.

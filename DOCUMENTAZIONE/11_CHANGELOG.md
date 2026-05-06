@@ -1,3 +1,59 @@
+## 0.13.5 — Form complessi e documenti gestionali mobile-aware
+
+- Aggiunto `js/ui/mobile-documents-service.js` per migliorare la fruizione mobile di form complessi e documenti gestionali senza cambiare le logiche dati.
+- Migliorate spaziature touch, gruppi azione, card, modali e tabelle nelle aree fatture, preventivi, ordini, DDT, acquisti e magazzino.
+- Aggiunto suggerimento mobile che chiarisce l'uso consigliato: consultazione e modifiche brevi da smartphone, compilazione estesa da desktop/tablet.
+- Aggiornato il riferimento versione del backup JSON a `appVersion: 0.13.5`.
+- Aggiunto documento `121_FORM_DOCUMENTI_MOBILE_0135.md` e test `mobile-form-documenti-0135.test.html`.
+- Nessuna modifica a Firestore rules, collezioni, permessi, menu o backend.
+
+## 0.13.4 — Mini B.I. sintetica mobile
+
+- Aggiunto `js/ui/mobile-bi-service.js` per migliorare la consultazione mobile della Mini B.I. senza introdurre nuove logiche dati.
+- Ottimizzate tab aree operative, card KPI, azioni CSV/report, alert B.I. e drill-down su smartphone.
+- Aggiornata documentazione con `120_MINI_BI_MOBILE_0134.md` e test browser-based dedicato.
+- Aggiornato il riferimento versione del backup JSON a `appVersion: 0.13.4`.
+- Nessuna modifica a Firestore rules, collezioni, permessi, menu o backend.
+
+## 0.13.3 — Workflow e Segnalazioni operative mobile
+
+- Aggiunto `js/ui/mobile-workflow-service.js` per miglioramenti mobile non invasivi su Workflow approvativi e Segnalazioni operative.
+- Migliorata la disposizione dei pulsanti di azione e dei dettagli operativi sotto 576 px.
+- Aggiunti suggerimenti contestuali mobile nelle sezioni Workflow e Segnalazioni operative.
+- Aggiornato `css/style.css` con regole dedicate a workflow, segnalazioni, tab e azioni touch.
+- Aggiornato il riferimento versione del backup JSON a `appVersion: 0.13.3`.
+- Aggiunto documento `119_WORKFLOW_SEGNALAZIONI_MOBILE_0133.md` e test `mobile-workflow-segnalazioni-0133.test.html`.
+- Nessuna nuova collezione Firestore, nessuna nuova regola, nessun nuovo flusso applicativo.
+
+## 0.13.2 — Tabelle e liste responsive progressive
+
+- Aggiunto `js/ui/responsive-tables-service.js` per rendere più leggibili le tabelle su smartphone tramite etichette `data-label` e resa a schede sotto 576 px.
+- Aggiornato `css/style.css` con regole conservative per `.cdsdm-mobile-card-table`, righe-card, pulsanti touch e tabelle generate dinamicamente.
+- Aggiornato `index.html` per caricare il nuovo servizio UI.
+- Aggiornato il riferimento versione del backup JSON a `appVersion: 0.13.2`.
+- Aggiunto documento `118_TABELLE_RESPONSIVE_0132.md` e test `mobile-tabelle-responsive-0132.test.html`.
+- Nessuna nuova collezione Firestore, nessuna nuova regola, nessun nuovo flusso applicativo.
+
+## 0.13.1 — Mobile usability base per Manuale, Aiuti rapidi e Consultazione
+
+- Migliorata la leggibilità mobile del Manuale Utente, delle checklist e delle esercitazioni didattiche.
+- Aggiunte regole CSS responsive non invasive per smartphone: spaziature, pulsanti touch, modali, pannelli di aiuto e contenuti markdown.
+- Gli aiuti rapidi **?** mantengono i collegamenti ai capitoli del manuale ma risultano più comodi su schermi piccoli.
+- Aggiunto il documento `117_MOBILE_USABILITY_BASE_0131.md`.
+- Aggiunto il test browser-based `mobile-usability-base-0131.test.html`.
+- Aggiornato il riferimento versione del backup JSON a `appVersion: 0.13.1`.
+- Nessuna nuova collezione Firestore, nessuna nuova voce di menu, nessun backend custom e nessuna Cloud Function obbligatoria.
+
+## 0.13.0 — Mobile readiness audit
+
+- Avviato il ramo 0.13.x con un audit prudente della compatibilità smartphone/tablet.
+- Documentato ciò che è già consultabile da mobile e ciò che richiede adattamento UX prima di modifiche operative.
+- Classificate le aree in compatibilità alta, media e bassa per uso da smartphone.
+- Aggiunto `DOCUMENTAZIONE/116_MOBILE_READINESS_AUDIT_0130.md`.
+- Aggiunto test browser-based `tests/mobile-readiness-0130.test.html`.
+- Aggiornato il riferimento versione del backup JSON a `appVersion: 0.13.0`.
+- Nessuna nuova collezione Firestore, nessuna nuova voce di menu, nessun backend custom, nessuna Cloud Function obbligatoria e nessun redesign del layout.
+
 ## 0.12.19 — Correzione UX Console docente e fix Audit sicurezza superadmin
 
 - Corretto Audit sicurezza per superadmin quando Firestore è inizializzato come variabile globale legacy `db` ma non come `window.db`.

@@ -1,6 +1,6 @@
-# Manuale utente CDSDM — riferimento didattico autonomo 0.12.18
+# Manuale utente CDSDM — riferimento didattico autonomo 0.13.5
 
-La versione **0.12.18** consolida il Manuale Utente come riferimento didattico autonomo per studenti, docenti e professionisti. Non introduce nuovi flussi applicativi, nuove voci di menu, nuove collezioni Firestore o nuove regole obbligatorie: organizza e chiarisce l'uso dei flussi già esistenti.
+La versione **0.13.5** mantiene il Manuale Utente come riferimento didattico autonomo per studenti, docenti e professionisti. Non introduce nuovi flussi applicativi, nuove voci di menu, nuove collezioni Firestore o nuove regole obbligatorie: organizza e chiarisce l'uso dei flussi già esistenti.
 
 Il manuale è pensato per tre usi:
 
@@ -419,6 +419,14 @@ Uso consigliato:
 5. esporta CSV se richiesto;
 6. collega alert rilevanti a segnalazioni operative.
 
+Uso da smartphone nella 0.13.5:
+
+- parti dalle card KPI principali;
+- cambia area solo quando serve;
+- usa il drill-down per approfondimenti brevi;
+- considera CSV/report e catalogo KPI come funzioni più comode da tablet o desktop;
+- ricorda che la vista mobile è sintetica e non cambia formule, permessi o dati salvati.
+
 Checklist Mini B.I.:
 
 - [ ] Ho capito da quali dati nasce un indicatore.
@@ -631,3 +639,68 @@ Controllo finale di apprendimento:
 - [ ] So usare manuale e icona **?** insieme.
 - [ ] So quando fare backup.
 - [ ] So spiegare il legame tra workflow, segnalazioni e Mini B.I.
+
+
+## Uso da smartphone e tablet — audit 0.13.0
+
+La versione 0.13.0 non cambia il funzionamento dell’app, ma chiarisce come usarla da dispositivi mobili.
+
+Uso consigliato da smartphone:
+
+- consultare dashboard, notifiche e manuale;
+- leggere dati e documenti;
+- aprire o seguire segnalazioni operative;
+- controllare workflow approvativi semplici;
+- usare aiuti rapidi e checklist didattiche.
+
+Uso ancora consigliato da desktop/tablet:
+
+- compilare documenti con molte righe;
+- importare, esportare, fare backup/reset/import;
+- configurare ruoli, permessi e audit sicurezza;
+- usare cruscotti Mini B.I. con drill-down complessi.
+
+Per i dettagli tecnici consultare `116_MOBILE_READINESS_AUDIT_0130.md`.
+
+
+---
+
+## Nota mobile 0.13.1
+
+La versione **0.13.1** migliora la consultazione del manuale e degli aiuti rapidi su smartphone senza cambiare i flussi operativi.
+
+Uso consigliato da telefono:
+
+1. aprire il Manuale Utente da **Info → Manuale Utente**;
+2. usare l'indice per raggiungere il capitolo;
+3. consultare checklist ed esercitazioni durante la simulazione;
+4. usare l'icona **?** nelle pagine operative per aprire l'aiuto rapido e il capitolo collegato;
+5. riservare documenti complessi, import/export e configurazioni avanzate a desktop o tablet.
+
+La 0.13.1 non rende ancora mobile-first tutte le tabelle operative: le tabelle ampie restano consultabili tramite scorrimento controllato e saranno oggetto di una possibile evoluzione 0.13.2.
+
+
+---
+
+## Nota mobile 0.13.2 — Tabelle e liste responsive
+
+La versione **0.13.2** migliora la consultazione delle tabelle da smartphone. Le tabelle operative restano in formato classico su desktop e tablet; sotto i 576 px le righe possono essere presentate come schede con etichette di colonna visibili sopra i valori.
+
+Questa evoluzione è pensata per leggere e controllare dati, non per rendere mobile-first la compilazione completa di documenti complessi. Per fatture, DDT, ordini con molte righe, backup/import e configurazioni avanzate resta consigliato l'uso da desktop o tablet.
+
+
+## Nota mobile 0.13.3 — Workflow e Segnalazioni operative
+
+La versione **0.13.3** migliora l'uso da smartphone di **Analisi → Workflow approvativi** e **Analisi → Segnalazioni operative**.
+
+Su telefono le attività e le segnalazioni restano basate sugli stessi dati e sugli stessi permessi, ma risultano più leggibili grazie a schede responsive, pulsanti più comodi e suggerimenti contestuali.
+
+Uso consigliato da smartphone:
+
+1. filtrare attività o segnalazioni aperte;
+2. consultare stato, priorità, documento e referente;
+3. aprire il dettaglio;
+4. registrare una presa in carico o un cambio stato semplice;
+5. rimandare a desktop/tablet la compilazione di documenti complessi.
+
+La 0.13.3 non introduce nuovi flussi, nuove collezioni Firestore o nuove voci di menu.

@@ -305,3 +305,63 @@ Nessuna modifica a `firestore.rules`, nessun backend custom, nessuna Cloud Funct
 - `js/features/business-groups/security-audit-module.js`: testo UI aggiornato per hotfix 0.12.19.
 - `DOCUMENTAZIONE/115_HOTFIX_CONSOLE_AUDIT_01219.md`: nota tecnica e didattica del rilascio.
 - `tests/security-audit-superadmin-01219.test.html` e `tests/teacher-console-ux-01219.test.html`: test browser-based dedicati.
+
+
+## Aggiornamento 0.13.0
+
+Mobile readiness audit senza redesign applicativo.
+
+File/documenti aggiunti o aggiornati:
+
+- `DOCUMENTAZIONE/116_MOBILE_READINESS_AUDIT_0130.md`: fotografia tecnica dello stato mobile reale e classificazione delle aree.
+- `tests/mobile-readiness-0130.test.html`: test browser-based di readiness mobile e verifica che la release resti documentale/QA.
+- `DOCUMENTAZIONE/11_CHANGELOG.md`, `DOCUMENTAZIONE/00_INDICE.md`, `README.md`: avanzamento versione e note release.
+- `js/features/migration/migration-module.js`: solo aggiornamento `appVersion` dei backup JSON a `0.13.0`.
+
+Non sono state introdotte nuove collezioni Firestore, nuove regole, nuove voci di menu o dipendenze backend.
+
+
+## Aggiornamento 0.13.1
+
+- `css/style.css`: aggiunte regole responsive conservative per Manuale Utente, aiuti rapidi, card, pulsanti, modali e tabelle con scroll controllato su smartphone.
+- `js/ui/onboarding-help-service.js`: aggiornato riferimento versione del servizio aiuti a 0.13.1.
+- `js/features/migration/migration-module.js`: aggiornato `appVersion` dei backup JSON a `0.13.1`.
+- `DOCUMENTAZIONE/117_MOBILE_USABILITY_BASE_0131.md`: documento di rilascio mobile usability base.
+- `tests/mobile-usability-base-0131.test.html`: test browser-based statico sulle regole mobile non invasive.
+
+Nessuna nuova collezione Firestore, nessuna nuova voce di menu e nessun redesign completo.
+
+## Aggiornamento 0.13.2
+
+- `js/ui/responsive-tables-service.js`: nuovo servizio UI front-end per tabelle responsive progressive.
+- `css/style.css`: aggiunte regole mobile per `.cdsdm-mobile-card-table` e righe a scheda sotto 576 px.
+- `index.html`: aggiornata versione a 0.13.2 e caricamento del servizio responsive tables.
+- `js/features/migration/migration-module.js`: aggiornato `appVersion` dei backup JSON a `0.13.2`.
+- `DOCUMENTAZIONE/118_TABELLE_RESPONSIVE_0132.md`: nuovo documento QA/mobile.
+- `tests/mobile-tabelle-responsive-0132.test.html`: nuovo test browser-based.
+
+
+## Aggiornamento 0.13.3
+
+- `js/ui/mobile-workflow-service.js`: nuovo servizio UI non invasivo per migliorare uso mobile di Workflow approvativi e Segnalazioni operative.
+- `css/style.css`: regole responsive dedicate a sezioni workflow/segnalazioni, pulsanti touch, tab e dettagli.
+- `index.html`: aggiornata versione a 0.13.3 e caricamento del servizio mobile workflow.
+- `js/features/accounting/workflow-module.js`: classi CSS e testo versione per schede workflow mobile.
+- `js/features/operations/operational-reports-module.js`: classi CSS e testo versione per schede/dettagli segnalazioni mobile.
+- `js/features/migration/migration-module.js`: aggiornato `appVersion` dei backup JSON a `0.13.3`.
+- Nessuna modifica a Firestore rules, collezioni, permessi o flussi dati.
+
+
+## Aggiornamento 0.13.5 — Form complessi e documenti gestionali mobile-aware
+
+- Nuovo servizio UI `js/ui/mobile-documents-service.js`.
+- Aree interessate: fatture, preventivi, ordini cliente/fornitore, DDT cliente/fornitore, acquisti e magazzino.
+- Intervento solo front-end: classi CSS progressive, hint mobile, modali e azioni più leggibili.
+- Nessuna nuova collezione Firestore, nessuna nuova regola, nessun nuovo menu e nessun backend custom.
+
+## Aggiornamento 0.13.4 — Mini B.I. sintetica mobile
+
+- `js/ui/mobile-bi-service.js`: servizio UI non invasivo per rendere più leggibile la Mini B.I. su smartphone.
+- `css/style.css`: regole responsive per tab aree, card KPI, drill-down, azioni CSV/report e fonti dati Mini B.I.
+- `tests/mobile-mini-bi-0134.test.html`: verifica browser-based della release mobile B.I.
+- Nessuna nuova collezione Firestore, nessuna modifica a permessi, menu o workflow dati.

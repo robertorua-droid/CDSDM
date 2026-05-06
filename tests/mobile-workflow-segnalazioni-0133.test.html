@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Test 0.13.3 - Workflow e Segnalazioni operative mobile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>body{font-family:system-ui;padding:1rem}.pass{color:#146c43}.fail{color:#b02a37}</style>
+</head>
+<body>
+  <h1>Test 0.13.3 - Workflow e Segnalazioni operative mobile</h1>
+  <ul id="results"></ul>
+
+  <script src="../js/ui/mobile-workflow-service.js"></script>
+  <script>
+    const results = document.getElementById('results');
+    function assert(label, condition) {
+      const li = document.createElement('li');
+      li.className = condition ? 'pass' : 'fail';
+      li.textContent = (condition ? '✓ ' : '✗ ') + label;
+      results.appendChild(li);
+      if (!condition) window.__cdsdmTestFailed = true;
+    }
+
+    assert('MobileWorkflowService disponibile', !!window.MobileWorkflowService);
+    assert('Versione servizio 0.13.3', window.MobileWorkflowService && window.MobileWorkflowService.VERSION === '0.13.3');
+
+    fetch('../index.html').then(r => r.text()).then(index => {
+      assert('index.html versione 0.13.3', index.includes('CDSDM Versione 0.13.3'));
+      assert('servizio mobile-workflow caricato in index', index.includes('js/ui/mobile-workflow-service.js'));
+      assert('sezione Workflow presente', index.includes('id="workflow-approvativi"'));
+      assert('sezione Segnalazioni operative presente', index.includes('id="operational-reports"'));
+      assert('nessuna nuova voce menu mobile dedicata', !index.includes('data-target="mobile-workflow"'));
+    });
+
+    Promise.all([
+      fetch('../css/style.css').then(r => r.text()),
+      fetch('../js/features/migration/migration-module.js').then(r => r.text()),
+      fetch('../DOCUMENTAZIONE/119_WORKFLOW_SEGNALAZIONI_MOBILE_0133.md').then(r => r.text()),
+      fetch('../firestore.rules').then(r => r.text())
+    ]).then(([css, migration, doc, rules]) => {
+      assert('CSS contiene classi mobile workflow', css.includes('cdsdm-mobile-workflow-section'));
+      assert('CSS contiene classi mobile operational', css.includes('cdsdm-mobile-operational-section'));
+      assert('backup JSON aggiornato a 0.13.3', migration.includes("appVersion: '0.13.3'"));
+      assert('documentazione cita Workflow approvativi', doc.includes('Workflow approvativi'));
+      assert('documentazione cita Segnalazioni operative', doc.includes('Segnalazioni operative'));
+      assert('documentazione chiarisce nessuna nuova collezione', doc.includes('non introduce nuove collezioni Firestore'));
+      assert('regole Firestore non introducono collezione mobile', !rules.includes('mobileWorkflow'));
+    });
+  </script>
+</body>
+</html>

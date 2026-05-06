@@ -1,5 +1,5 @@
 // js/features/operations/operational-reports-module.js
-// CDSDM 0.12.13 - UI Segnalazioni operative: elenco e form separati in tab, layout a tutta larghezza.
+// CDSDM 0.13.3 - UI Segnalazioni operative con usabilita mobile progressiva.
 (function () {
   'use strict';
   window.AppModules = window.AppModules || {};
@@ -39,7 +39,7 @@
       $('#operational-report-table-body').html('<tr><td colspan="9" class="text-center text-muted py-4">Nessuna segnalazione operativa per i filtri selezionati.</td></tr>');
       return;
     }
-    $('#operational-report-table-body').html(reports.map(r => '<tr class="' + (String(r.id) === String(_selectedId) ? 'table-active' : '') + '">' +
+    $('#operational-report-table-body').html(reports.map(r => '<tr class="operational-report-mobile-row ' + (String(r.id) === String(_selectedId) ? 'table-active' : '') + '">' +
       '<td><button class="btn btn-link p-0 operational-report-open" data-id="' + esc(r.id) + '"><strong>' + esc(r.code) + '</strong></button><div class="small text-muted">' + esc((r.updatedAt || '').slice(0, 16).replace('T', ' ')) + '</div></td>' +
       '<td>' + badgeStatus(r.status) + '</td>' +
       '<td>' + badgeSeverity(r.severity) + '</td>' +
@@ -48,7 +48,7 @@
       '<td>' + esc((svc().AREAS || {})[r.targetArea] || r.targetArea) + '</td>' +
       '<td>' + esc(r.assigneeName || ((svc().AREAS || {})[r.assigneeArea] || r.assigneeArea)) + '</td>' +
       '<td><div class="small">' + esc([r.relatedDocumentType, r.relatedDocumentNumber || r.relatedDocumentId].filter(Boolean).join(' ')) + '</div><div class="small text-muted">' + esc(r.relatedProductName || r.relatedCustomerName || r.relatedSupplierName || '') + '</div></td>' +
-      '<td><div class="btn-group btn-group-sm"><button class="btn btn-outline-primary operational-report-open" data-id="' + esc(r.id) + '">Apri</button><button class="btn btn-outline-secondary operational-report-print" data-id="' + esc(r.id) + '">Stampa</button></div></td>' +
+      '<td><div class="btn-group btn-group-sm operational-report-row-actions"><button class="btn btn-outline-primary operational-report-open" data-id="' + esc(r.id) + '">Apri</button><button class="btn btn-outline-secondary operational-report-print" data-id="' + esc(r.id) + '">Stampa</button></div></td>' +
       '</tr>').join(''));
   }
 
@@ -68,11 +68,11 @@
     const messages = arr(r.messages).length ? arr(r.messages).map(m => '<div class="border-bottom py-2"><div class="d-flex justify-content-between"><strong>' + esc(m.createdBy) + '</strong><span class="small text-muted">' + esc((m.createdAt || '').slice(0, 16).replace('T', ' ')) + '</span></div><div>' + esc(m.message) + '</div><div class="small text-muted">Area: ' + esc((svc().AREAS || {})[m.area] || m.area) + ' · Stato: ' + esc((svc().STATUSES || {})[m.status] || m.status) + '</div></div>').join('') : '<div class="text-muted small">Nessuna comunicazione interna.</div>';
     const actionButtons = renderWorkflowActions(r);
     $('#operational-report-detail').html('<div class="card"><div class="card-body">' +
-      '<div class="d-flex justify-content-between align-items-start gap-2"><div><h5 class="mb-1">' + esc(r.code) + ' · ' + esc(r.title) + '</h5><div class="small text-muted">Creata da ' + esc(r.reporterName) + ' · ' + esc((r.createdAt || '').slice(0, 16).replace('T', ' ')) + '</div></div><div>' + badgeStatus(r.status) + ' ' + badgeSeverity(r.severity) + '</div></div>' +
+      '<div class="d-flex justify-content-between align-items-start gap-2 operational-report-detail-header"><div><h5 class="mb-1">' + esc(r.code) + ' · ' + esc(r.title) + '</h5><div class="small text-muted">Creata da ' + esc(r.reporterName) + ' · ' + esc((r.createdAt || '').slice(0, 16).replace('T', ' ')) + '</div></div><div>' + badgeStatus(r.status) + ' ' + badgeSeverity(r.severity) + '</div></div>' +
       '<hr><p>' + esc(r.description || 'Nessuna descrizione.') + '</p><p><strong>Azione richiesta:</strong> ' + esc(r.actionRequired || '-') + '</p>' +
       '<div class="row g-2 small"><div class="col-md-4"><strong>Origine</strong><br>' + esc((svc().AREAS || {})[r.originArea] || r.originArea) + '</div><div class="col-md-4"><strong>Destinatario</strong><br>' + esc((svc().AREAS || {})[r.targetArea] || r.targetArea) + '</div><div class="col-md-4"><strong>Referente</strong><br>' + esc(r.assigneeName || r.assigneeArea || '-') + '</div></div>' +
       '<div class="alert alert-light border small mt-3 mb-3"><strong>Collegamenti:</strong> ' + esc([r.relatedDocumentType, r.relatedDocumentNumber || r.relatedDocumentId, r.relatedProductName, r.relatedCustomerName, r.relatedSupplierName].filter(Boolean).join(' · ') || 'nessun collegamento') + '</div>' +
-      '<div class="alert alert-light border mt-3"><div class="fw-semibold mb-2">Workflow operativo</div><div class="d-flex flex-wrap gap-2">' + actionButtons + '</div><div class="small text-muted mt-2">Usa questi pulsanti per trasformare una bozza in segnalazione effettiva e seguirne presa in carico, lavorazione e chiusura.</div></div>' +
+      '<div class="alert alert-light border mt-3"><div class="fw-semibold mb-2">Workflow operativo</div><div class="d-flex flex-wrap gap-2 operational-report-action-strip">' + actionButtons + '</div><div class="small text-muted mt-2">Usa questi pulsanti per trasformare una bozza in segnalazione effettiva e seguirne presa in carico, lavorazione e chiusura.</div></div>' +
       '<div class="row g-2 align-items-end"><div class="col-md-4"><label class="form-label" for="operational-report-status-next">Cambio stato manuale</label><select class="form-select" id="operational-report-status-next">' + optionHtml(svc().STATUSES, r.status) + '</select></div><div class="col-md-6"><label class="form-label" for="operational-report-status-note">Nota avanzamento</label><input class="form-control" id="operational-report-status-note" placeholder="Esito, verifica, presa in carico..."></div><div class="col-md-2"><button class="btn btn-primary w-100" id="operational-report-update-status" data-id="' + esc(r.id) + '" type="button">Aggiorna</button></div></div>' +
       '<hr><h6>Comunicazioni interne</h6><p class="small text-muted">Invia aggiornamenti al reparto o referente destinatario della segnalazione.</p><div class="mb-2">' + messages + '</div><div class="row g-2 align-items-end"><div class="col-md-3"><label class="form-label" for="operational-report-message-area">A/Reparto</label><select class="form-select" id="operational-report-message-area">' + optionHtml(svc().AREAS, r.targetArea) + '</select></div><div class="col-md-7"><label class="form-label" for="operational-report-message">Messaggio interno</label><input class="form-control" id="operational-report-message" placeholder="Scrivi comunicazione interna al referente/reparto"></div><div class="col-md-2"><button class="btn btn-outline-primary w-100" id="operational-report-add-message" data-id="' + esc(r.id) + '" type="button"><i class="fas fa-paper-plane"></i> Invia comunicazione</button></div></div>' +
       '</div></div>');

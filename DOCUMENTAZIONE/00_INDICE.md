@@ -1,6 +1,6 @@
 # Documentazione – CDSDM (didattico)
 
-Documentazione aggiornata alla versione **0.12.19**.
+Documentazione aggiornata alla versione **0.13.5**.
 
 > Nota: il progetto è didattico. Le simulazioni fiscali e i calcoli gestionali sono semplificazioni e non sostituiscono consulenza professionale, contabile o fiscale.
 
@@ -91,6 +91,12 @@ Documentazione aggiornata alla versione **0.12.19**.
 
 ## Ultime release
 
+- **0.13.5**: form complessi e documenti gestionali resi più leggibili su smartphone, senza nuovi flussi dati.
+- **0.13.4**: Mini B.I. didattica ottimizzata per consultazione sintetica mobile.
+- **0.13.3**: Workflow approvativi e Segnalazioni operative ottimizzati per uso mobile leggero.
+- **0.13.2**: Tabelle e liste responsive progressive su smartphone.
+- **0.13.1**: Mobile usability base per Manuale, aiuti rapidi e consultazione su smartphone.
+- **0.13.0**: Mobile readiness audit, verifica compatibilità reale smartphone/tablet prima di modifiche UI.
 - **0.12.19**: Hotfix Console docente e Audit sicurezza superadmin.
 - **0.12.18**: QA didattico del Manuale Utente, percorsi guidati, checklist ed esercitazioni.
 - **0.12.17**: Aiuti rapidi collegati ai capitoli del Manuale Utente.
@@ -218,3 +224,13 @@ Documentazione aggiornata alla versione **0.12.19**.
 - [113 - Aiuto rapido collegato al manuale 0.12.17](113_AIUTO_MANUALE_CONTESTUALE_01217.md)
 - [114 - QA didattico Manuale Utente 0.12.18](114_QA_DIDATTICO_MANUALE_01218.md)
 - [115 - Hotfix Console docente e Audit sicurezza 0.12.19](115_HOTFIX_CONSOLE_AUDIT_01219.md)
+
+- [116 - Mobile readiness audit 0.13.0](116_MOBILE_READINESS_AUDIT_0130.md)
+
+- [117 - Mobile usability base 0.13.1](117_MOBILE_USABILITY_BASE_0131.md)
+
+- [118 - Tabelle e liste responsive 0.13.2](118_TABELLE_RESPONSIVE_0132.md)
+- [119 - Workflow e Segnalazioni operative mobile 0.13.3](119_WORKFLOW_SEGNALAZIONI_MOBILE_0133.md)
+
+- [120 - Mini B.I. sintetica mobile 0.13.4](120_MINI_BI_MOBILE_0134.md)
+- [121 - Form complessi e documenti gestionali mobile-aware 0.13.5](121_FORM_DOCUMENTI_MOBILE_0135.md)

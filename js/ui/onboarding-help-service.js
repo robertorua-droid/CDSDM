@@ -1,6 +1,6 @@
 // CDSDM 0.12.18 - Aiuti rapidi contestuali collegati al manuale didattico.
 (function(){
-  const VERSION = '0.12.18';
+  const VERSION = '0.13.5';
   const DEFAULT = {
     title: 'Aiuto rapido CDSDM 0.12.18',
     text: 'Apri questa guida quando ti serve un promemoria sul flusso operativo della pagina corrente.',

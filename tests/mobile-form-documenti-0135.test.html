@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Test 0.13.5 - Form documenti mobile-aware</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <main class="container py-4">
+    <h1>Test 0.13.5 - Form complessi e documenti gestionali mobile-aware</h1>
+    <p>Verifica statica e browser-based della release 0.13.5.</p>
+    <section id="results" class="list-group"></section>
+  </main>
+
+  <div class="content-section d-none" id="nuova-fattura-accompagnatoria">
+    <div class="card"><div class="card-body">
+      <form>
+        <div class="row g-2 align-items-end">
+          <div class="col-md-6"><label class="form-label">Cliente</label><input class="form-control" value="Cliente test"></div>
+          <div class="col-md-3"><label class="form-label">Data</label><input class="form-control" value="2026-01-01"></div>
+          <div class="col-md-3"><button class="btn btn-primary">Salva</button></div>
+        </div>
+      </form>
+    </div></div>
+  </div>
+
+  <script src="../js/ui/mobile-documents-service.js"></script>
+  <script>
+    const results = document.getElementById('results');
+    function assert(name, condition) {
+      const item = document.createElement('div');
+      item.className = 'list-group-item ' + (condition ? 'list-group-item-success' : 'list-group-item-danger');
+      item.textContent = (condition ? 'OK - ' : 'KO - ') + name;
+      results.appendChild(item);
+      if (!condition) throw new Error(name);
+    }
+
+    async function readText(path) {
+      const res = await fetch(path);
+      return res.text();
+    }
+
+    (async function run() {
+      assert('Servizio MobileDocumentsService esposto', !!window.MobileDocumentsService);
+      assert('Versione servizio 0.13.5', window.MobileDocumentsService.VERSION === '0.13.5');
+      assert('Sezione documentale marcata mobile-ready', document.getElementById('nuova-fattura-accompagnatoria').classList.contains('cdsdm-mobile-documents-ready'));
+      assert('Hint mobile documenti inserito', !!document.querySelector('.cdsdm-mobile-documents-hint'));
+      assert('Controllo form marcato mobile-aware', !!document.querySelector('.cdsdm-mobile-document-control'));
+
+      const index = await readText('../index.html');
+      assert('index.html carica mobile-documents-service.js', index.includes('js/ui/mobile-documents-service.js'));
+      assert('index.html versione 0.13.5', index.includes('CDSDM Versione 0.13.5'));
+
+      const css = await readText('../css/style.css');
+      assert('CSS contiene blocco 0.13.5', css.includes('CDSDM 0.13.5 - Form complessi'));
+      assert('CSS contiene classe hint documenti mobile', css.includes('.cdsdm-mobile-documents-hint'));
+
+      const migration = await readText('../js/features/migration/migration-module.js');
+      assert('backup JSON aggiornato a 0.13.5', migration.includes("appVersion: '0.13.5'"));
+
+      const docs = await readText('../DOCUMENTAZIONE/121_FORM_DOCUMENTI_MOBILE_0135.md');
+      assert('documentazione 121 presente', docs.includes('Form complessi e documenti gestionali mobile-aware 0.13.5'));
+      assert('documentazione chiarisce assenza nuove collezioni', docs.includes('nuove collezioni Firestore'));
+
+      const rules = await readText('../firestore.rules');
+      assert('firestore.rules non contiene collezioni mobile 0.13.5', !rules.includes('mobileDocuments'));
+    })().catch(err => {
+      console.error(err);
+    });
+  </script>
+</body>
+</html>

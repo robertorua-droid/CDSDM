@@ -1,5 +1,5 @@
 // js/features/bi/mini-bi-module.js
-// CDSDM 0.11.6 - UI Mini B.I. operativa: drill-down KPI, filtri, CSV, report print, alert e QA.
+// CDSDM 0.13.5 - UI Mini B.I. operativa con ottimizzazioni mobile sintetiche non invasive.
 (function(){
   'use strict';
   window.AppModules = window.AppModules || {};
@@ -15,7 +15,7 @@
   function normalizeArea(area){ return String(area||'direzione').toLowerCase(); }
   function opts(){const y=$('#mini-bi-year').val(), m=$('#mini-bi-month').val(); const o={}; if(y&&y!=='all') o.year=Number(y); if(m&&m!=='all') o.month=Number(m); return o;}
   function detailOpts(){ return Object.assign({}, opts(), { detail:{ query:$('#mini-bi-detail-search').val()||'', status:$('#mini-bi-detail-status').val()||'all', sortBy:$('#mini-bi-detail-sort').val()||'', sortDir:$('#mini-bi-detail-dir').val()||'desc', limit:Number($('#mini-bi-detail-limit').val()||100) } }); }
-  function card(label,unit,value,hint,kpiId){return '<div class="col-md-3"><button type="button" class="card h-100 shadow-sm w-100 text-start mini-bi-kpi-card" data-kpi="'+esc(kpiId||'')+'"><div class="card-body"><div class="small text-muted">'+esc(label)+'</div><div class="fs-5 fw-bold">'+val(unit,value)+'</div><div class="small text-muted">'+esc(hint||'Click per dettaglio didattico')+'</div></div></button></div>';}
+  function card(label,unit,value,hint,kpiId){return '<div class="col-12 col-sm-6 col-lg-3"><button type="button" class="card h-100 shadow-sm w-100 text-start mini-bi-kpi-card" data-kpi="'+esc(kpiId||'')+'"><div class="card-body"><div class="small text-muted">'+esc(label)+'</div><div class="fs-5 fw-bold">'+val(unit,value)+'</div><div class="small text-muted">'+esc(hint||'Click per dettaglio didattico')+'</div></div></button></div>';}
   function table(title,rows){return '<div class="card mt-3"><div class="card-header fw-semibold">'+esc(title)+'</div><div class="table-responsive"><table class="table table-sm table-striped mb-0"><thead><tr><th>Voce</th><th class="text-end">Valore</th></tr></thead><tbody>'+(rows&&rows.length?rows.map(r=>'<tr><td>'+esc(r.name)+'</td><td class="text-end">€ '+money(r.value)+'</td></tr>').join(''):'<tr><td colspan="2" class="text-muted">Nessun dato disponibile.</td></tr>')+'</tbody></table></div></div>';}
   function detailTable(detail){
     const cols=detail.columns||[];

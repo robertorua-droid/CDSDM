@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Test 0.13.4 - Mini B.I. sintetica mobile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>body{font-family:system-ui;padding:1rem}.pass{color:#146c43}.fail{color:#b02a37}</style>
+</head>
+<body>
+  <h1>Test 0.13.4 - Mini B.I. sintetica mobile</h1>
+  <ul id="results"></ul>
+
+  <section id="mini-bi">
+    <div id="mini-bi-overview"></div>
+    <div class="btn-group" role="group" aria-label="Aree Mini B.I.">
+      <button class="btn mini-bi-area-tab" data-area="direzione">Direzione</button>
+      <button class="btn mini-bi-area-tab" data-area="vendite">Vendite</button>
+    </div>
+    <button id="mini-bi-refresh-btn">Aggiorna</button>
+    <div class="table-responsive"><table><thead><tr><th>KPI</th></tr></thead><tbody><tr><td>Ricavi</td></tr></tbody></table></div>
+  </section>
+
+  <script src="../js/ui/mobile-bi-service.js"></script>
+  <script>
+    const results = document.getElementById('results');
+    function assert(label, condition) {
+      const li = document.createElement('li');
+      li.className = condition ? 'pass' : 'fail';
+      li.textContent = (condition ? '✓ ' : '✗ ') + label;
+      results.appendChild(li);
+      if (!condition) window.__cdsdmTestFailed = true;
+    }
+
+    assert('MobileBIService disponibile', !!window.MobileBIService);
+    assert('Versione servizio 0.13.4', window.MobileBIService && window.MobileBIService.VERSION === '0.13.4');
+    window.MobileBIService.enhanceSections();
+    assert('sezione Mini B.I. marcata mobile-ready', document.getElementById('mini-bi').classList.contains('cdsdm-mobile-bi-ready'));
+    assert('hint mobile Mini B.I. inserito', !!document.getElementById('mini-bi-mobile-hint-0134'));
+    assert('tab aree Mini B.I. migliorate', document.querySelector('[aria-label="Aree Mini B.I."]').classList.contains('cdsdm-mobile-bi-tabs'));
+
+    fetch('../index.html').then(r => r.text()).then(index => {
+      assert('index.html versione 0.13.4', index.includes('CDSDM Versione 0.13.4'));
+      assert('servizio mobile-bi caricato in index', index.includes('js/ui/mobile-bi-service.js'));
+      assert('sezione Mini B.I. presente', index.includes('id="mini-bi"'));
+      assert('nessuna nuova voce menu mobile B.I.', !index.includes('data-target="mobile-mini-bi"'));
+    });
+
+    Promise.all([
+      fetch('../css/style.css').then(r => r.text()),
+      fetch('../js/features/migration/migration-module.js').then(r => r.text()),
+      fetch('../DOCUMENTAZIONE/120_MINI_BI_MOBILE_0134.md').then(r => r.text()),
+      fetch('../firestore.rules').then(r => r.text())
+    ]).then(([css, migration, doc, rules]) => {
+      assert('CSS contiene classi mobile B.I.', css.includes('cdsdm-mobile-bi-ready'));
+      assert('backup JSON aggiornato a 0.13.4', migration.includes("appVersion: '0.13.4'"));
+      assert('documentazione cita Mini B.I. sintetica mobile', doc.includes('Mini B.I. sintetica mobile'));
+      assert('documentazione chiarisce nessuna nuova collezione', doc.includes('Nessuna nuova collezione Firestore'));
+      assert('regole Firestore non introducono collezione mobile B.I.', !rules.includes('mobileMiniBI'));
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CDSDM 0.13.2 - Tabelle responsive</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="p-4">
+  <main class="container">
+    <h1 class="h3">Test 0.13.2 — Tabelle e liste responsive</h1>
+    <p class="text-muted">Verifica statica della release mobile 0.13.2.</p>
+    <pre id="out" class="bg-light border rounded p-3"></pre>
+  </main>
+  <script>
+    const out = document.getElementById('out');
+    function log(msg) { out.textContent += msg + '\n'; }
+    function ok(label, condition) {
+      log((condition ? '✅ ' : '❌ ') + label);
+      if (!condition) throw new Error(label);
+    }
+    async function text(path) {
+      const res = await fetch('../' + path);
+      if (!res.ok) throw new Error('Impossibile leggere ' + path);
+      return res.text();
+    }
+    Promise.all([
+      text('index.html'),
+      text('css/style.css'),
+      text('js/ui/responsive-tables-service.js'),
+      text('js/features/migration/migration-module.js'),
+      text('js/features/navigation/docs-content.js'),
+      text('DOCUMENTAZIONE/118_TABELLE_RESPONSIVE_0132.md')
+    ]).then(([index, css, service, migration, docs, doc118]) => {
+      ok('Versione in-app aggiornata a 0.13.2', index.includes('CDSDM Versione 0.13.2'));
+      ok('Backup JSON aggiornato a appVersion 0.13.2', migration.includes("appVersion: '0.13.2'"));
+      ok('ResponsiveTablesService caricato in index.html', index.includes('js/ui/responsive-tables-service.js'));
+      ok('Servizio espone window.CDSDMResponsiveTables', service.includes('window.CDSDMResponsiveTables'));
+      ok('Servizio assegna data-label alle celle', service.includes("setAttribute('data-label'"));
+      ok('Servizio usa MutationObserver per tabelle dinamiche', service.includes('MutationObserver'));
+      ok('CSS contiene blocco 0.13.2', css.includes('0.13.2 — Liste e tabelle responsive'));
+      ok('CSS contiene classe mobile card table', css.includes('.cdsdm-mobile-card-table'));
+      ok('CSS usa data-label per etichette mobile', css.includes('content: attr(data-label)'));
+      ok('Documento 118 sincronizzato in docs-content.js', docs.includes('118_TABELLE_RESPONSIVE_0132') && docs.includes('Tabelle e liste responsive 0.13.2'));
+      ok('Documento 118 dichiara nessun nuovo flusso/Firestore', doc118.includes('nuove collezioni Firestore') && doc118.includes('nuovi flussi applicativi'));
+      log('\nTest completato: la 0.13.2 migliora liste e tabelle su smartphone senza introdurre nuovi flussi o nuove collezioni.');
+    }).catch(err => {
+      log('\nERRORE: ' + err.message);
+      throw err;
+    });
+  </script>
+</body>
+</html>
