@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>CDSDM 0.13.10 - Inviti collaboratore responsive</title></head>
+<body><pre id="output"></pre><script>
+async function read(p){ return fetch(p).then(r=>r.text()); }
+async function run(){
+  const out=document.getElementById('output');
+  const module=await read('../js/features/business-groups/business-groups-module.js');
+  const css=await read('../css/style.css');
+  const doc=await read('../DOCUMENTAZIONE/126_INVITI_COLLABORATORE_RESPONSIVE_01310.md');
+  const migration=await read('../js/features/migration/migration-module.js');
+  const checks=[];
+  function ok(m,p){ checks.push((p?'✓ ':'✗ ')+m); if(!p) throw new Error(m); }
+  ok('messaggio esplicito: niente email automatica', module.includes('non viene inviato via email automaticamente') || module.includes('non invia email automatiche'));
+  ok('lista inviti a card responsive', module.includes('bg-invite-card') && module.includes('bg-invites-list'));
+  ok('tabella inviti larga rimossa', !module.includes('<table class="table table-sm align-middle"><thead><tr><th>Invitato</th><th>Ruolo</th><th>Stato</th><th>Scadenza</th><th></th></tr></thead><tbody>${inviteRows}</tbody></table>'));
+  ok('azioni inviti responsive', css.includes('.bg-invite-actions') && css.includes('grid-template-columns: 1fr'));
+  ok('documentazione 0.13.10 presente', doc.includes('non invia email automaticamente'));
+  ok('backup JSON aggiornato a 0.13.10', migration.includes("appVersion: '0.13.10'"));
+  out.textContent=checks.join('
+');
+}
+run().catch(e=>{ document.getElementById('output').textContent='ERRORE: '+e.message; });
+</script></body></html>

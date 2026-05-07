@@ -2477,3 +2477,41 @@ body.dark-mode .cdsdm-flow-steps li,
     width: 100%;
   }
 }
+
+/* Business Groups 0.13.10 — inviti collaboratore responsive */
+.bg-invite-create-card .form-label { margin-bottom: 0.25rem; }
+.bg-invite-create-card .form-control,
+.bg-invite-create-card .form-select { min-width: 0; }
+.bg-invites-list { display: grid; gap: 0.75rem; }
+.bg-invite-card {
+  border: 1px solid rgba(108, 117, 125, 0.24);
+  border-radius: 0.85rem;
+  padding: 0.85rem;
+  background: rgba(255,255,255,0.72);
+  overflow: hidden;
+}
+.bg-invite-card.is-muted { opacity: 0.78; }
+.bg-invite-main { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 1.85fr); gap: 0.85rem; align-items: start; }
+.bg-invite-email { font-weight: 700; font-size: 0.98rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+.bg-invite-code { font-size: 0.84rem; color: var(--bs-secondary-color, #6c757d); overflow-wrap: anywhere; }
+.bg-invite-meta { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.65rem; align-items: center; }
+.bg-invite-meta > div { min-width: 0; }
+.bg-invite-label { display: block; color: var(--bs-secondary-color, #6c757d); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.1rem; }
+.bg-invite-actions { display: flex; flex-wrap: wrap; gap: 0.45rem; justify-content: flex-end; margin-top: 0.75rem; }
+.bg-invite-actions .btn { white-space: nowrap; }
+html[data-theme="dark"] .bg-invite-card,
+body.dark-mode .bg-invite-card {
+  background: rgba(255,255,255,0.035);
+  border-color: rgba(255,255,255,0.14);
+}
+@media (max-width: 1199.98px) {
+  .bg-invite-main { grid-template-columns: 1fr; }
+  .bg-invite-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bg-invite-actions { justify-content: flex-start; }
+}
+@media (max-width: 575.98px) {
+  .bg-invite-card { padding: 0.75rem; }
+  .bg-invite-meta { grid-template-columns: 1fr; gap: 0.45rem; }
+  .bg-invite-actions { display: grid; grid-template-columns: 1fr; }
+  .bg-invite-actions .btn { width: 100%; }
+}

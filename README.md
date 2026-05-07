@@ -1,5 +1,5 @@
-## CDSDM Versione 0.13.9 — Integrazione build del logo approvato
-La versione **0.13.9** integra nella build il logo approvato in preview, con sfondo trasparente e cilindro/database a sezioni differenziate. La modifica riguarda solo il branding: non introduce nuovi flussi, collezioni Firestore, regole o modifiche ai permessi.
+## CDSDM Versione 0.13.10 — Inviti collaboratore responsive
+La versione **0.13.10** migliora la gestione inviti nei Gruppi aziendali: chiarisce che l'app non invia email automatiche e sostituisce la tabella larga degli inviti con card responsive senza scroll orizzontale. Non modifica Firestore, regole, ruoli, permessi o flussi dati.
 
 ## CDSDM Versione 0.13.3 — Workflow e Segnalazioni operative mobile
 La versione **0.13.3** migliora l'uso da smartphone dei flussi già esistenti di Workflow approvativi e Segnalazioni operative. Le modifiche sono UI/UX conservative: pulsanti più comodi, suggerimenti mobile, dettagli in colonna e nessuna variazione a Firestore, permessi, menu o dati.
@@ -569,12 +569,12 @@ Gli override 0.6.4 restano una granularità applicativa/front-end didattica. Le 
 - Segnalazioni operative: elenco/dettaglio e nuova segnalazione separati in tab per usare l’intera larghezza della pagina.
 
 
-### 0.13.9 — Coerenza menu documenti commerciali
+### 0.13.10 — Coerenza menu documenti commerciali
 
 - Uniformato il menu di Preventivi, Ordini cliente/fornitore e DDT cliente/fornitore.
 - Le voci `Nuovo Preventivo cliente`, `Nuovo Ordine cliente` e `Nuovo Ordine fornitore` sono state trasformate in pulsanti nelle rispettive pagine elenco.
 - Rinominati `DDT cliente` e `DDT fornitore` in `Elenco DDT cliente` e `Elenco DDT fornitore`.
-- Backup JSON aggiornato a `appVersion: 0.13.9`.
+- Backup JSON aggiornato a `appVersion: 0.13.10`.
 - Nessuna modifica a Firestore rules, collezioni, permessi o backend.
 
 ### 0.13.5 — Form complessi e documenti gestionali mobile-aware
@@ -610,25 +610,34 @@ Gli override 0.6.4 restano una granularità applicativa/front-end didattica. Le 
 - Backup JSON aggiornato a `appVersion: 0.13.1`.
 
 
-### 0.13.9 — Rifinitura branding logo trasparente
+### 0.13.10 — Rifinitura branding logo trasparente
 
 - Rigenerato il logo principale `assets/branding/brand-mark.png` con trasparenza reale e senza contorno bianco marcato.
 - Rigenerati favicon e icone applicative (`favicon.ico`, `favicon-16.png`, `favicon-32.png`, `favicon-48.png`, `apple-touch-icon.png`, `android-chrome-*`).
 - Aggiunta micro-rifinitura CSS per mantenere trasparente la presentazione del logo nelle principali aree UI.
-- Aggiornati documentazione, test branding e backup JSON a `appVersion: 0.13.9`.
+- Aggiornati documentazione, test branding e backup JSON a `appVersion: 0.13.10`.
 
 
-### 0.13.9 — Rifinitura branding logo con cilindro ocra
+### 0.13.10 — Rifinitura branding logo con cilindro ocra
 
 - Mantenuto il logo trasparente introdotto nella 0.13.7.
 - Migliorata la leggibilità del cilindro/database adottando una tonalità **ocra/oro** più visibile su sfondo chiaro e scuro.
 - Rigenerati `brand-mark.png`, favicon e icone applicative del set `assets/branding/`.
-- Aggiornati documentazione, test branding e backup JSON a `appVersion: 0.13.9`.
+- Aggiornati documentazione, test branding e backup JSON a `appVersion: 0.13.10`.
 
 
-### 0.13.9 — Integrazione build del logo approvato
+### 0.13.10 — Integrazione build del logo approvato
 
 - Integrato nella build il logo approvato in preview, convertito in PNG trasparente e adattato al set branding applicativo.
 - Il cilindro/database adotta sezioni differenziate, riducendo l’effetto di elementi identici impilati.
 - Rigenerati `brand-mark.png`, `brand-mark-darkmode.png`, favicon e icone applicative del set `assets/branding/`.
-- Aggiornati documentazione, test branding e backup JSON a `appVersion: 0.13.9`.
+- Aggiornati documentazione, test branding e backup JSON a `appVersion: 0.13.10`.
+
+
+### 0.13.10 — Inviti collaboratore responsive
+
+- Chiarito nel pannello Gruppi aziendali che l'invito non viene inviato via email automaticamente.
+- Sostituita la tabella larga degli inviti con card responsive più leggibili.
+- Ridistribuiti i pannelli: compilazione invito più stretta e lista inviti più ampia.
+- Azioni Copia/Rigenera/Revoca rese compatte e adattive.
+- Aggiornati documentazione, test e backup JSON a `appVersion: 0.13.10`.

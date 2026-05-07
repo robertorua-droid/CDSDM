@@ -1,5 +1,5 @@
 // js/features/business-groups/business-groups-module.js
-// CDSDM 0.7.6 — UI Gruppi aziendali, inviti e profili permesso
+// CDSDM 0.13.10 — UI Gruppi aziendali, inviti responsive e profili permesso
 
 (function () {
   window.AppModules = window.AppModules || {};
@@ -63,26 +63,38 @@
         </tr>`;
     }).join('') || '<tr><td colspan="6" class="text-muted text-center py-4">Nessun membro trovato per il gruppo attivo.</td></tr>';
 
-    const inviteRows = invites.map(inv => {
+    const inviteCards = invites.map(inv => {
       const effective = inv.effectiveStatus || inv.status || 'pending';
       const expiry = inv.expiresAtIso || inv.expiresAt || '';
+      const email = inv.email || '—';
+      const roleLabel = svc.roleLabel(inv.role || 'readonly');
+      const profileLabel = inv.permissionProfileName || inv.permissionProfileId || 'Nessun profilo';
       return `
-      <tr class="${effective === 'pending' ? '' : 'table-light text-muted'}">
-        <td><strong>${esc(inv.email)}</strong><br><span class="text-muted small">Codice: ${esc(inv.id)}</span>${inv.replacedByInviteCode ? `<br><span class="text-muted small">Nuovo codice: ${esc(inv.replacedByInviteCode)}</span>` : ''}</td>
-        <td>${esc(svc.roleLabel(inv.role || 'readonly'))}<br><span class="text-muted small">${esc(inv.permissionProfileName || inv.permissionProfileId || 'Nessun profilo')}</span></td>
-        <td>${statusBadge(effective)}</td>
-        <td>${esc(expiry ? String(expiry).slice(0, 10) : '—')}</td>
-        <td class="text-end text-nowrap">
+      <div class="bg-invite-card ${effective === 'pending' ? '' : 'is-muted'}">
+        <div class="bg-invite-main">
+          <div class="bg-invite-identity">
+            <div class="bg-invite-email" title="${esc(email)}">${esc(email)}</div>
+            <div class="bg-invite-code">Codice: <code>${esc(inv.id)}</code></div>
+            ${inv.replacedByInviteCode ? `<div class="bg-invite-code text-muted">Nuovo codice: <code>${esc(inv.replacedByInviteCode)}</code></div>` : ''}
+          </div>
+          <div class="bg-invite-meta">
+            <div><span class="bg-invite-label">Ruolo</span><strong>${esc(roleLabel)}</strong></div>
+            <div><span class="bg-invite-label">Profilo</span><span>${esc(profileLabel)}</span></div>
+            <div><span class="bg-invite-label">Stato</span>${statusBadge(effective)}</div>
+            <div><span class="bg-invite-label">Scadenza</span><span>${esc(expiry ? String(expiry).slice(0, 10) : '—')}</span></div>
+          </div>
+        </div>
+        <div class="bg-invite-actions">
           <button class="btn btn-sm btn-outline-secondary bg-copy-invite" data-invite-id="${esc(inv.id)}" type="button"><i class="fas fa-copy me-1"></i>Copia</button>
-          ${canManage && effective !== 'accepted' ? `<button class="btn btn-sm btn-outline-info bg-regenerate-invite" data-invite-id="${esc(inv.id)}" type="button">Rigenera</button>` : ''}
-          ${canManage && effective === 'pending' ? `<button class="btn btn-sm btn-outline-warning bg-revoke-invite" data-invite-id="${esc(inv.id)}" type="button">Revoca</button>` : ''}
-        </td>
-      </tr>`;
-    }).join('') || '<tr><td colspan="5" class="text-muted text-center py-4">Nessun invito trovato con i filtri attivi.</td></tr>';
+          ${canManage && effective !== 'accepted' ? `<button class="btn btn-sm btn-outline-info bg-regenerate-invite" data-invite-id="${esc(inv.id)}" type="button"><i class="fas fa-sync-alt me-1"></i>Rigenera</button>` : ''}
+          ${canManage && effective === 'pending' ? `<button class="btn btn-sm btn-outline-warning bg-revoke-invite" data-invite-id="${esc(inv.id)}" type="button"><i class="fas fa-ban me-1"></i>Revoca</button>` : ''}
+        </div>
+      </div>`;
+    }).join('') || '<div class="text-muted text-center py-4 border rounded-3">Nessun invito trovato con i filtri attivi.</div>';
 
     $root.html(`
       <div class="alert alert-info small">
-        <strong>Aiuto rapido 0.7.6.</strong> Da qui il docente/amministratore crea il Gruppo aziendale e genera gli inviti per gli studenti. Il programma non invia email automatiche: copia il codice invito e comunicalo allo studente insieme all'ID gruppo.
+        <strong>Aiuto rapido 0.13.10.</strong> Da qui il docente/amministratore crea il Gruppo aziendale e genera gli inviti per gli studenti. L'app non invia email automatiche: copia il codice invito e comunicalo manualmente allo studente insieme all'ID gruppo.
       </div>
       <div class="row g-3">
         <div class="col-lg-5">
@@ -144,10 +156,10 @@
         </div>
       </div>
       <div class="row g-3 mt-1">
-        <div class="col-xl-5">
-          <div class="card shadow-sm h-100"><div class="card-body">
+        <div class="col-xl-4">
+          <div class="card shadow-sm h-100 bg-invite-create-card"><div class="card-body">
             <h5 class="card-title"><i class="fas fa-envelope-open-text me-2"></i>Crea invito collaboratore</h5>
-            <p class="small text-muted">Non invia email automaticamente: genera un codice da copiare e comunicare allo studente.</p>
+            <p class="small text-muted mb-2"><strong>Nota:</strong> l'invito non viene inviato via email automaticamente. Copia il codice generato e comunicalo manualmente al collaboratore.</p>
             <label class="form-label" for="business-group-invite-email">Email invitato</label>
             <input class="form-control" id="business-group-invite-email" type="email" ${canManage ? '' : 'disabled'}>
             <label class="form-label mt-2" for="business-group-invite-role">Ruolo</label>
@@ -165,8 +177,8 @@
             <button class="btn btn-primary mt-3 w-100" id="business-group-create-invite-btn" type="button" ${canManage ? '' : 'disabled'}><i class="fas fa-ticket-alt me-1"></i>Genera invito</button>
           </div></div>
         </div>
-        <div class="col-xl-7">
-          <div class="card shadow-sm h-100"><div class="card-body">
+        <div class="col-xl-8">
+          <div class="card shadow-sm h-100 bg-invites-panel"><div class="card-body">
             <div class="d-flex justify-content-between align-items-start gap-2 flex-wrap mb-2">
               <h5 class="card-title mb-0"><i class="fas fa-list-check me-2"></i>Inviti</h5>
               ${canManage ? `<button class="btn btn-sm btn-outline-secondary" id="business-group-clean-expired-invites" type="button">Marca scaduti</button>` : ''}
@@ -177,7 +189,7 @@
                 ${['all','pending','accepted','expired','revoked'].map(st => `<option value="${st}" ${inviteFilters.status === st ? 'selected' : ''}>${st === 'all' ? 'Tutti gli stati' : st}</option>`).join('')}
               </select></div>
             </div>
-            <div class="table-responsive"><table class="table table-sm align-middle"><thead><tr><th>Invitato</th><th>Ruolo</th><th>Stato</th><th>Scadenza</th><th></th></tr></thead><tbody>${inviteRows}</tbody></table></div>
+            <div class="bg-invites-list" aria-label="Elenco inviti collaboratore">${inviteCards}</div>
           </div></div>
         </div>
       </div>` : ''}
@@ -284,7 +296,7 @@ users/{uid}/memberships/{groupId}</code></pre>
           notes: $('#business-group-invite-notes').val()
         });
         await render();
-        alert('Invito creato. Codice: ' + invite.id + '\nID gruppo: ' + invite.groupId + '\nScadenza: ' + (invite.expiresAt || invite.expiresAtIso || ''));
+        alert('Invito creato.\n\nCodice: ' + invite.id + '\nID gruppo: ' + invite.groupId + '\nScadenza: ' + (invite.expiresAt || invite.expiresAtIso || '') + '\n\nNota: l\'app non invia email automaticamente. Copia codice e ID gruppo e comunicali manualmente al collaboratore.');
       } catch (e) { console.error(e); alert('Errore creazione invito: ' + (e && e.message ? e.message : e)); }
     });
     $(document).on('click', '.bg-revoke-invite', async function () {
