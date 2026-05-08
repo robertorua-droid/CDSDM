@@ -4,7 +4,7 @@
 (function () {
   const win = window;
   const STORAGE_PREFIX = 'cdsdm.activeBusinessGroup.';
-  const VERSION = '0.13.11';
+  const VERSION = '0.13.12';
   const ROLES = {
     admin: 'Amministratore',
     accounting: 'Contabilità',

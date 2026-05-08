@@ -156,6 +156,7 @@
       setInviteRegisterBusy(true);
       let credential = null;
       let accountCreatedInThisFlow = false;
+      let inviteAccepted = false;
       try {
         credential = await auth.createUserWithEmailAndPassword(email, password);
         accountCreatedInThisFlow = true;
@@ -163,19 +164,26 @@
         window.currentUser = credential.user;
 
         await window.BusinessGroupsService.acceptInvite(groupId, inviteCode);
-        if (typeof loadAllDataFromCloud === 'function') await loadAllDataFromCloud();
-        if (window.AppModules && window.AppModules.businessGroups && typeof window.AppModules.businessGroups.refreshSidebarSelect === 'function') {
-          await window.AppModules.businessGroups.refreshSidebarSelect();
+        inviteAccepted = true;
+
+        try {
+          if (typeof loadAllDataFromCloud === 'function') await loadAllDataFromCloud();
+          if (window.AppModules && window.AppModules.businessGroups && typeof window.AppModules.businessGroups.refreshSidebarSelect === 'function') {
+            await window.AppModules.businessGroups.refreshSidebarSelect();
+          }
+          showInviteRegisterMessage('Account creato e invito accettato. Accesso al Gruppo aziendale completato.', 'success');
+          $('#login-container').addClass('d-none');
+          $('#loading-screen').addClass('d-none');
+          $('#main-app').removeClass('d-none');
+          if (typeof renderAll === 'function') renderAll();
+        } catch (loadErr) {
+          console.error('Invito accettato ma caricamento dati non completato:', loadErr);
+          showInviteRegisterMessage('Account creato e invito accettato, ma il caricamento iniziale dei dati non è riuscito. Esci e rientra; se il problema continua, verifica che le regole Firestore pubblicate siano aggiornate alla versione del pacchetto.', 'warning');
         }
-        showInviteRegisterMessage('Account creato e invito accettato. Accesso al Gruppo aziendale completato.', 'success');
-        $('#login-container').addClass('d-none');
-        $('#loading-screen').addClass('d-none');
-        $('#main-app').removeClass('d-none');
-        if (typeof renderAll === 'function') renderAll();
       } catch (err) {
         console.error('Registrazione con invito fallita:', err);
         let cleanupMessage = '';
-        if (accountCreatedInThisFlow && credential && credential.user && typeof credential.user.delete === 'function') {
+        if (!inviteAccepted && accountCreatedInThisFlow && credential && credential.user && typeof credential.user.delete === 'function') {
           try {
             await credential.user.delete();
             currentUser = null;
@@ -188,6 +196,7 @@
         }
         const code = err && err.code ? String(err.code) : '';
         let message = 'Registrazione non completata. Verifica email, codice invito e ID gruppo.';
+        if (code.indexOf('permission-denied') >= 0 || String(err && err.message || '').toLowerCase().indexOf('missing or insufficient permissions') >= 0) message = 'Registrazione non completata per permessi Firestore insufficienti. Pubblica le regole Firestore incluse nel pacchetto aggiornato e riprova con un nuovo invito.';
         if (code.indexOf('email-already-in-use') >= 0) message = 'Questa email ha già un account. Accedi con la password esistente e poi accetta l’invito dal pannello Gruppi aziendali.';
         if (code.indexOf('weak-password') >= 0) message = 'Password troppo debole: usa almeno 6 caratteri.';
         if (code.indexOf('invalid-email') >= 0) message = 'Email non valida.';

@@ -211,6 +211,16 @@ service cloud.firestore {
         && get(invitePath(groupId, inviteCode)).data.email.lower() == signedEmail();
     }
 
+    function currentInviteResourceMatchesUser() {
+      return signedIn()
+        && resource != null
+        && resource.data.status == 'pending'
+        && (!('expiresAt' in resource.data)
+          || !(resource.data.expiresAt is timestamp)
+          || resource.data.expiresAt > request.time)
+        && resource.data.email.lower() == signedEmail();
+    }
+
     function validInviteMemberCreate(groupId, memberUid) {
       return signedIn()
         && memberUid == signedUid()
@@ -294,15 +304,17 @@ service cloud.firestore {
       match /members/{memberUid} {
         allow read: if isActiveMember(groupId);
         allow create: if isGroupAdmin(groupId) || validInviteMemberCreate(groupId, memberUid);
-        allow update: if isGroupAdmin(groupId);
+        allow update: if isGroupAdmin(groupId) || validInviteMemberCreate(groupId, memberUid);
         allow delete: if isGroupAdmin(groupId);
       }
 
       match /invites/{inviteCode} {
-        allow get: if isActiveMember(groupId) || inviteMatchesUser(groupId, inviteCode);
+        allow get: if isActiveMember(groupId) || currentInviteResourceMatchesUser();
         allow list: if isActiveMember(groupId);
         allow create: if isGroupAdmin(groupId);
-        allow update: if isGroupAdmin(groupId) || validInviteAcceptUpdate(groupId, inviteCode);
+        allow update: if isGroupAdmin(groupId) || (currentInviteResourceMatchesUser()
+          && request.resource.data.status == 'accepted'
+          && request.resource.data.acceptedBy == signedUid());
         allow delete: if isGroupAdmin(groupId);
       }
 

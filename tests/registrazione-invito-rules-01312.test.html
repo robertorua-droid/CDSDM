@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><title>CDSDM 0.13.12 - Registrazione invito e rules</title></head>
+<body><pre id="output"></pre><script>
+async function read(p){ return fetch(p).then(r=>r.text()); }
+async function run(){
+ const out=document.getElementById('output');
+ const auth=await read('../js/features/auth/auth-module.js');
+ const rules=await read('../firestore.rules');
+ const doc=await read('../DOCUMENTAZIONE/128_HOTFIX_REGISTRAZIONE_INVITO_RULES_01312.md');
+ const checks=[]; function ok(m,p){ checks.push((p?'✓ ':'✗ ')+m); if(!p) throw new Error(m); }
+ ok('auth distingue inviteAccepted', auth.includes('let inviteAccepted = false') && auth.includes('inviteAccepted = true'));
+ ok('account non eliminato dopo invito accettato', auth.includes('if (!inviteAccepted && accountCreatedInThisFlow'));
+ ok('messaggio permission-denied esplicito', auth.includes('Pubblica le regole Firestore'));
+ ok('rules con currentInviteResourceMatchesUser', rules.includes('function currentInviteResourceMatchesUser'));
+ ok('members update retry-safe', rules.includes('allow update: if isGroupAdmin(groupId) || validInviteMemberCreate'));
+ ok('documentazione 0.13.12 presente', doc.includes('Firestore Database'));
+ out.textContent=checks.join('
+');
+}
+run().catch(e=>{ document.getElementById('output').textContent='ERRORE: '+e.message; });
+</script></body></html>
