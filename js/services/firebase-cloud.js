@@ -23,6 +23,15 @@ function initFirebase() {
         }
         db = firebase.firestore();
         auth = firebase.auth();
+        // 0.13.14: espone compatibilmente Firebase anche su window/globalThis.
+        // Alcuni moduli business-groups risolvono Firestore da window.db per evitare
+        // ambiguità con variabili globali legacy dichiarate con let.
+        window.db = db;
+        window.auth = auth;
+        if (typeof globalThis !== 'undefined') {
+            globalThis.db = db;
+            globalThis.auth = auth;
+        }
         console.log("Firebase connesso.");
         return true;
 

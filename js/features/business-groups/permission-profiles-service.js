@@ -3,7 +3,7 @@
 
 (function () {
   const win = window;
-  const VERSION = '0.13.13';
+  const VERSION = '0.13.14';
 
   const ACCESS_LEVELS = {
     none: { id: 'none', label: 'Nessun accesso', rank: 0 },
@@ -76,7 +76,19 @@
     return out;
   }
 
-  function db() { return win.db || (typeof globalThis !== 'undefined' ? globalThis.db : null) || (typeof db !== 'undefined' ? db : null); }
+  function db() {
+    const candidate = win.db || (typeof globalThis !== 'undefined' ? globalThis.db : null);
+    if (candidate && typeof candidate.collection === 'function') return candidate;
+    if (win.firebase && typeof win.firebase.firestore === 'function') {
+      const compat = win.firebase.firestore();
+      if (compat && typeof compat.collection === 'function') {
+        win.db = compat;
+        if (typeof globalThis !== 'undefined') globalThis.db = compat;
+        return compat;
+      }
+    }
+    throw new Error('Firestore non inizializzato: ricarica l’app e verifica la configurazione Firebase.');
+  }
   function uid() { return win.currentUser && win.currentUser.uid ? win.currentUser.uid : ''; }
   function nowIso() { return new Date().toISOString(); }
   function activeGroupId(groupId) { return groupId || (win.currentBusinessGroup && win.currentBusinessGroup.id) || ''; }

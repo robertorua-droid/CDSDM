@@ -43,7 +43,19 @@
     { id: 'danger', label: 'Gestione dati / reset', category: 'Sistema', scope: 'danger', targets: ['avanzate'], description: 'Backup, import, reset e funzioni distruttive.' }
   ];
 
-  function db() { return win.db; }
+  function db() {
+    const candidate = win.db || (typeof globalThis !== 'undefined' ? globalThis.db : null);
+    if (candidate && typeof candidate.collection === 'function') return candidate;
+    if (win.firebase && typeof win.firebase.firestore === 'function') {
+      const compat = win.firebase.firestore();
+      if (compat && typeof compat.collection === 'function') {
+        win.db = compat;
+        if (typeof globalThis !== 'undefined') globalThis.db = compat;
+        return compat;
+      }
+    }
+    throw new Error('Firestore non inizializzato: ricarica l’app e verifica la configurazione Firebase.');
+  }
   function uid() { return win.currentUser && win.currentUser.uid ? win.currentUser.uid : ''; }
   function nowIso() { return new Date().toISOString(); }
   function activeGroupId(groupId) { return groupId || (win.currentBusinessGroup && win.currentBusinessGroup.id) || ''; }

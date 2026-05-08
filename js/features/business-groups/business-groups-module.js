@@ -1,5 +1,5 @@
 // js/features/business-groups/business-groups-module.js
-// CDSDM 0.13.10 — UI Gruppi aziendali, inviti responsive e profili permesso
+// CDSDM 0.13.14 — UI Gruppi aziendali, inviti responsive e Firestore compat
 
 (function () {
   window.AppModules = window.AppModules || {};
@@ -38,7 +38,13 @@
     };
     const invites = activeGroupId ? await svc.listInvites(activeGroupId, inviteFilters) : [];
     const profileSvc = window.PermissionProfilesService;
-    const permissionProfiles = activeGroupId && profileSvc ? await profileSvc.listProfiles(activeGroupId) : [];
+    let permissionProfiles = [];
+    try {
+      permissionProfiles = activeGroupId && profileSvc ? await profileSvc.listProfiles(activeGroupId) : [];
+    } catch (profileError) {
+      console.warn('Profili permesso non caricati in Gruppi aziendali:', profileError);
+      permissionProfiles = [];
+    }
     const profileOptions = permissionProfiles.map(p => `<option value="${esc(p.id)}">${esc(p.name || p.id)} — ${esc(p.roleBase || '')}</option>`).join('');
 
     const membershipRows = memberships.map(m => `

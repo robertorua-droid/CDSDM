@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>CDSDM 0.13.14 - Firestore compat permessi</title></head>
+<body><pre id="output"></pre><script>
+async function read(p){ return fetch(p).then(r=>r.text()); }
+async function run(){
+ const out=document.getElementById('output');
+ const checks=[];
+ function ok(m,p){ checks.push((p?'✓ ':'✗ ')+m); if(!p) throw new Error(m); }
+ const firebase=await read('../js/services/firebase-cloud.js');
+ const profiles=await read('../js/features/business-groups/permission-profiles-service.js');
+ const matrix=await read('../js/features/business-groups/permission-matrix-service.js');
+ const groups=await read('../js/features/business-groups/business-groups-module.js');
+ const migration=await read('../js/features/migration/migration-module.js');
+ ok('initFirebase espone window.db', firebase.includes('window.db = db'));
+ ok('initFirebase espone globalThis.db', firebase.includes('globalThis.db = db'));
+ ok('PermissionProfilesService non usa fallback ricorsivo typeof db', !profiles.includes("typeof db !== 'undefined' ? db : null"));
+ ok('PermissionProfilesService ha errore Firestore esplicito', profiles.includes('Firestore non inizializzato'));
+ ok('PermissionMatrixService ha resolver compatibile', matrix.includes('win.firebase.firestore'));
+ ok('Gruppi aziendali tollera errore caricamento profili', groups.includes('Profili permesso non caricati in Gruppi aziendali'));
+ ok('backup appVersion 0.13.14', migration.includes("appVersion: '0.13.14'"));
+ out.textContent=checks.join('\n');
+}
+run().catch(e=>{ document.getElementById('output').textContent='ERRORE: '+e.message; });
+</script></body></html>
