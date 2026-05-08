@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>CDSDM 0.13.13 - Profili permesso chiarezza</title></head>
+<body><pre id="output"></pre><script>
+async function read(p){ return fetch(p).then(r=>r.text()); }
+async function run(){
+ const out=document.getElementById('output');
+ const index=await read('../index.html');
+ const module=await read('../js/features/business-groups/permission-profiles-module.js');
+ const service=await read('../js/features/business-groups/permission-profiles-service.js');
+ const nav=await read('../js/features/navigation/navigation-module.js');
+ const doc=await read('../DOCUMENTAZIONE/129_CHIAREZZA_MEMBRI_PROFILI_PERMESSO_01313.md');
+ const checks=[]; function ok(m,p){ checks.push((p?'✓ ':'✗ ')+m); if(!p) throw new Error(m); }
+ ok('versione UI 0.13.13', index.includes('CDSDM Versione 0.13.13'));
+ ok('override permessi nascosto dal menu operativo', index.includes('data-legacy-feature="permission-overrides"') && index.includes('nav-item d-none'));
+ ok('profili permesso spiega ruolo/profilo senza override', module.includes('ruolo</strong> e <strong>profilo permesso</strong>'));
+ ok('PermissionProfilesService usa recupero Firestore compatibile', service.includes('globalThis') && service.includes('win.db'));
+ ok('navigation usa rendering sicuro per profili', nav.includes('safeRenderModule') && nav.includes('Profili permesso'));
+ ok('documentazione 0.13.13 presente', doc.includes('senza override'));
+ out.textContent=checks.join('\n');
+}
+run().catch(e=>{ document.getElementById('output').textContent='ERRORE: '+e.message; });
+</script></body></html>

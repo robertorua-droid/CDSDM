@@ -101,6 +101,23 @@
     }
   }
 
+
+  async function safeRenderModule(target, moduleName, rootSelector, label) {
+    try {
+      const mod = window.AppModules && window.AppModules[moduleName];
+      if (mod && typeof mod.render === 'function') {
+        await mod.render();
+      } else if (rootSelector && $(rootSelector).length) {
+        $(rootSelector).html('<div class="alert alert-warning">Modulo ' + (label || moduleName) + ' non inizializzato. Ricarica la pagina e riprova.</div>');
+      }
+    } catch (e) {
+      console.error('Errore rendering modulo ' + (label || moduleName) + ':', e);
+      if (rootSelector && $(rootSelector).length) {
+        $(rootSelector).html('<div class="alert alert-danger"><strong>Errore caricamento ' + (label || moduleName) + '.</strong><br>' + $('<div>').text(e && e.message ? e.message : String(e)).html() + '</div>');
+      }
+    }
+  }
+
   function bind() {
     if (_bound) return;
     _bound = true;
@@ -199,9 +216,9 @@
       if (target === 'ruoli-permessi' && window.AppModules && window.AppModules.rolesPermissions && typeof window.AppModules.rolesPermissions.render === 'function') window.AppModules.rolesPermissions.render();
       if (target === 'gruppi-aziendali' && window.AppModules && window.AppModules.businessGroups && typeof window.AppModules.businessGroups.render === 'function') window.AppModules.businessGroups.render();
       if (target === 'superadmin' && window.AppModules && window.AppModules.superadmin && typeof window.AppModules.superadmin.render === 'function') window.AppModules.superadmin.render();
-      if (target === 'profili-permesso' && window.AppModules && window.AppModules.permissionProfiles && typeof window.AppModules.permissionProfiles.render === 'function') window.AppModules.permissionProfiles.render();
-      if (target === 'matrice-permessi' && window.AppModules && window.AppModules.permissionMatrix && typeof window.AppModules.permissionMatrix.render === 'function') window.AppModules.permissionMatrix.render();
-      if (target === 'override-permessi' && window.AppModules && window.AppModules.permissionOverrides && typeof window.AppModules.permissionOverrides.render === 'function') window.AppModules.permissionOverrides.render();
+      if (target === 'profili-permesso') safeRenderModule(target, 'permissionProfiles', '#permission-profiles-root', 'Profili permesso');
+      if (target === 'matrice-permessi') safeRenderModule(target, 'permissionMatrix', '#permission-matrix-root', 'Matrice permessi');
+      if (target === 'override-permessi') safeRenderModule(target, 'permissionOverrides', '#permission-overrides-root', 'Override permessi legacy');
       if (target === 'audit-sicurezza' && window.AppModules && window.AppModules.securityAudit && typeof window.AppModules.securityAudit.render === 'function') window.AppModules.securityAudit.render();
       if (target === 'console-docente' && window.AppModules && window.AppModules.teacherConsole && typeof window.AppModules.teacherConsole.render === 'function') window.AppModules.teacherConsole.render();
       if (target === 'migrazione-qa' && window.AppModules && window.AppModules.migrationQa && typeof window.AppModules.migrationQa.render === 'function') window.AppModules.migrationQa.render();

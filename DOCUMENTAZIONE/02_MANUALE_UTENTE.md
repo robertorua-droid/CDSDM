@@ -1,6 +1,6 @@
-# Manuale utente CDSDM — riferimento didattico autonomo 0.13.12
+# Manuale utente CDSDM — riferimento didattico autonomo 0.13.13
 
-La versione **0.13.12** mantiene il Manuale Utente come riferimento didattico autonomo per studenti, docenti e professionisti. Non introduce nuovi flussi applicativi, nuove voci di menu, nuove collezioni Firestore o nuove regole obbligatorie: organizza e chiarisce l'uso dei flussi già esistenti.
+La versione **0.13.13** mantiene il Manuale Utente come riferimento didattico autonomo per studenti, docenti e professionisti. Non introduce nuovi flussi applicativi, nuove voci di menu, nuove collezioni Firestore o nuove regole obbligatorie: organizza e chiarisce l'uso dei flussi già esistenti.
 
 Il manuale è pensato per tre usi:
 
@@ -419,7 +419,7 @@ Uso consigliato:
 5. esporta CSV se richiesto;
 6. collega alert rilevanti a segnalazioni operative.
 
-Uso da smartphone nella 0.13.5 e 0.13.12:
+Uso da smartphone nella 0.13.5 e 0.13.13:
 
 - parti dalle card KPI principali;
 - cambia area solo quando serve;
@@ -703,7 +703,7 @@ Uso consigliato da smartphone:
 La 0.13.3 non introduce nuovi flussi, nuove collezioni Firestore o nuove voci di menu.
 
 
-## Nota 0.13.12 — Coerenza menu documenti
+## Nota 0.13.13 — Coerenza menu documenti
 
 La navigazione dei documenti commerciali usa il modello unico **Elenco nel menu + Nuovo nella pagina**.
 
@@ -718,33 +718,38 @@ Percorsi principali:
 La modifica è solo di chiarezza UX: non cambia collezioni, regole Firestore, permessi, workflow o backup/import/reset.
 
 
-## Nota 0.13.12 — Logo trasparente e branding
+## Nota 0.13.13 — Logo trasparente e branding
 
-La versione **0.13.12** rifinisce l’identità visiva del progetto rigenerando il logo principale con **trasparenza reale** e senza contorno bianco marcato. L’obiettivo è migliorare la resa soprattutto nella pagina di login, ma anche in sidebar, home, pagina versione e icone applicative.
-
-
-## Nota 0.13.12 — Logo con cilindro ocra
-
-La versione **0.13.12** mantiene il logo a sfondo trasparente introdotto nella 0.13.7, ma migliora la leggibilità del cilindro/database usando una tonalità **ocra/oro**. L’obiettivo è ottenere una resa più equilibrata sia sulla login chiara sia sulle aree a sfondo scuro.
+La versione **0.13.13** rifinisce l’identità visiva del progetto rigenerando il logo principale con **trasparenza reale** e senza contorno bianco marcato. L’obiettivo è migliorare la resa soprattutto nella pagina di login, ma anche in sidebar, home, pagina versione e icone applicative.
 
 
-## Nota 0.13.12 — Logo approvato in build
+## Nota 0.13.13 — Logo con cilindro ocra
 
-La versione **0.13.12** integra nella build il logo approvato in preview. Il branding mantiene lo **sfondo trasparente** e adotta un cilindro/database con **sezioni differenziate**, per ridurre l’effetto di elementi identici impilati e migliorare la resa visiva nella login e nelle altre aree dell’app.
+La versione **0.13.13** mantiene il logo a sfondo trasparente introdotto nella 0.13.7, ma migliora la leggibilità del cilindro/database usando una tonalità **ocra/oro**. L’obiettivo è ottenere una resa più equilibrata sia sulla login chiara sia sulle aree a sfondo scuro.
 
 
-## Nota 0.13.12 — Inviti collaboratore responsive
+## Nota 0.13.13 — Logo approvato in build
 
-La versione **0.13.12** chiarisce che gli inviti collaboratore **non vengono inviati via email automaticamente**. Il docente/amministratore deve copiare il codice invito e l'ID gruppo e comunicarli manualmente allo studente o collaboratore.
+La versione **0.13.13** integra nella build il logo approvato in preview. Il branding mantiene lo **sfondo trasparente** e adotta un cilindro/database con **sezioni differenziate**, per ridurre l’effetto di elementi identici impilati e migliorare la resa visiva nella login e nelle altre aree dell’app.
+
+
+## Nota 0.13.13 — Inviti collaboratore responsive
+
+La versione **0.13.13** chiarisce che gli inviti collaboratore **non vengono inviati via email automaticamente**. Il docente/amministratore deve copiare il codice invito e l'ID gruppo e comunicarli manualmente allo studente o collaboratore.
 
 La lista degli inviti è stata riorganizzata in card responsive per evitare lo scroll orizzontale, soprattutto in Dark Mode e su schermi stretti.
 
 
-## Nota 0.13.12 — Registrazione con invito
+## Nota 0.13.13 — Registrazione con invito
 
-La versione **0.13.12** corregge un blocco che poteva comparire durante la registrazione con invito: l’utente invitato non deve leggere il documento root del Gruppo aziendale prima di essere diventato membro. Il flusso usa quindi i dati già presenti nell’invito e crea prima membro e membership, mantenendo le regole Firestore restrittive.
+La versione **0.13.13** corregge un blocco che poteva comparire durante la registrazione con invito: l’utente invitato non deve leggere il documento root del Gruppo aziendale prima di essere diventato membro. Il flusso usa quindi i dati già presenti nell’invito e crea prima membro e membership, mantenendo le regole Firestore restrittive.
 
 
-## Nota 0.13.12 — Registrazione con invito e regole Firestore
+## Nota 0.13.13 — Registrazione con invito e regole Firestore
 
 La registrazione con invito richiede che nel progetto Firebase siano pubblicate le `firestore.rules` incluse nel pacchetto. Se compare `Missing or insufficient permissions`, aggiornare le regole Firestore dalla console Firebase e generare un nuovo invito di test.
+
+
+## Nota 0.13.13 — Membri e profili permesso
+
+La versione **0.13.13** chiarisce che i privilegi dei collaboratori si gestiscono tramite **ruolo** e **profilo permesso** assegnato al membro del Gruppo aziendale. La voce legacy **Override permessi** non è più mostrata nel menu operativo, perché il progetto mantiene una gestione più semplice e didattica senza fine tuning individuale.

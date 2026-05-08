@@ -1,10 +1,10 @@
-## 0.13.12 — Inviti collaboratore responsive
+## 0.13.13 — Inviti collaboratore responsive
 
 - Chiarito nel pannello Gruppi aziendali che l'invito non viene inviato via email automaticamente: il codice va copiato e comunicato manualmente.
 - Sostituita la tabella inviti con una lista a card responsive per evitare scroll orizzontale.
 - Ridotta la colonna di compilazione invito e aumentato lo spazio per l'elenco inviti su schermi ampi.
 - Rese adattive le azioni Copia, Rigenera e Revoca.
-- Aggiornato il riferimento versione del backup JSON a `appVersion: 0.13.12`.
+- Aggiornato il riferimento versione del backup JSON a `appVersion: 0.13.13`.
 - Aggiunto documento `126_INVITI_COLLABORATORE_RESPONSIVE_01310.md` e test `inviti-collaboratore-responsive-01310.test.html`.
 
 ## 0.13.9 — Coerenza menu documenti commerciali

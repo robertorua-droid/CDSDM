@@ -1,6 +1,6 @@
 # Documentazione – CDSDM (didattico)
 
-Documentazione aggiornata alla versione **0.13.12**.
+Documentazione aggiornata alla versione **0.13.13**.
 
 > Nota: il progetto è didattico. Le simulazioni fiscali e i calcoli gestionali sono semplificazioni e non sostituiscono consulenza professionale, contabile o fiscale.
 
@@ -91,7 +91,7 @@ Documentazione aggiornata alla versione **0.13.12**.
 
 ## Ultime release
 
-- **0.13.12**: coerenza menu documenti commerciali, modello Elenco nel menu + Nuovo nella pagina.
+- **0.13.13**: coerenza menu documenti commerciali, modello Elenco nel menu + Nuovo nella pagina.
 - **0.13.5**: form complessi e documenti gestionali resi più leggibili su smartphone, senza nuovi flussi dati.
 - **0.13.4**: Mini B.I. didattica ottimizzata per consultazione sintetica mobile.
 - **0.13.3**: Workflow approvativi e Segnalazioni operative ottimizzati per uso mobile leggero.
@@ -235,18 +235,20 @@ Documentazione aggiornata alla versione **0.13.12**.
 
 - [120 - Mini B.I. sintetica mobile 0.13.4](120_MINI_BI_MOBILE_0134.md)
 - [121 - Form complessi e documenti gestionali mobile-aware 0.13.5](121_FORM_DOCUMENTI_MOBILE_0135.md)
-- [122 - Coerenza menu documenti commerciali 0.13.12](122_COERENZA_MENU_DOCUMENTI_0136.md)
+- [122 - Coerenza menu documenti commerciali 0.13.13](122_COERENZA_MENU_DOCUMENTI_0136.md)
 
-- [123 - Rifinitura branding logo trasparente 0.13.12](123_RIFINITURA_BRANDING_LOGO_TRASPARENTE_0137.md)
+- [123 - Rifinitura branding logo trasparente 0.13.13](123_RIFINITURA_BRANDING_LOGO_TRASPARENTE_0137.md)
 
-- [124 - Rifinitura branding logo cilindro ocra 0.13.12](124_RIFINITURA_BRANDING_LOGO_CILINDRO_OCRA_0138.md)
+- [124 - Rifinitura branding logo cilindro ocra 0.13.13](124_RIFINITURA_BRANDING_LOGO_CILINDRO_OCRA_0138.md)
 
-- [125 - Integrazione build del logo approvato 0.13.12](125_INTEGRAZIONE_BUILD_LOGO_APPROVATO_0139.md)
+- [125 - Integrazione build del logo approvato 0.13.13](125_INTEGRAZIONE_BUILD_LOGO_APPROVATO_0139.md)
 
-- **0.13.12**: inviti collaboratore responsive, chiarimento email manuale e lista inviti senza scroll orizzontale.
+- **0.13.13**: inviti collaboratore responsive, chiarimento email manuale e lista inviti senza scroll orizzontale.
 
-- [126 - Inviti collaboratore responsive 0.13.12](126_INVITI_COLLABORATORE_RESPONSIVE_01310.md)
+- [126 - Inviti collaboratore responsive 0.13.13](126_INVITI_COLLABORATORE_RESPONSIVE_01310.md)
 
-- [127 - Hotfix registrazione con invito 0.13.12](127_HOTFIX_REGISTRAZIONE_INVITO_01312.md)
+- [127 - Hotfix registrazione con invito 0.13.13](127_HOTFIX_REGISTRAZIONE_INVITO_01312.md)
 
-- [128 - Hotfix registrazione invito e rules 0.13.12](128_HOTFIX_REGISTRAZIONE_INVITO_RULES_01312.md)
+- [128 - Hotfix registrazione invito e rules 0.13.13](128_HOTFIX_REGISTRAZIONE_INVITO_RULES_01312.md)
+
+- [129 - Chiarezza membri e profili permesso 0.13.13](129_CHIAREZZA_MEMBRI_PROFILI_PERMESSO_01313.md)

@@ -1,5 +1,5 @@
 // js/features/business-groups/permission-profiles-module.js
-// CDSDM 0.6.4 — UI Profili permesso configurabili.
+// CDSDM 0.13.13 — UI Profili permesso configurabili senza override individuali.
 
 (function () {
   if (!window.AppModules) window.AppModules = {};
@@ -31,74 +31,85 @@
     const svc = window.PermissionProfilesService;
     const bgSvc = window.BusinessGroupsService;
     const root = $('#permission-profiles-root');
-    if (!root.length || !svc) return;
-    const active = window.currentBusinessGroup || null;
-    const canManage = bgSvc && bgSvc.canManageActiveGroup && bgSvc.canManageActiveGroup();
-    if (!active || !active.id) {
-      root.html('<div class="alert alert-info">Seleziona un Gruppo aziendale per configurare i profili permesso.</div>');
+    if (!root.length) return;
+    if (!svc) {
+      root.html('<div class="alert alert-danger">PermissionProfilesService non inizializzato. Ricarica la pagina.</div>');
       return;
     }
 
-    const profiles = await svc.listProfiles(active.id);
-    const members = bgSvc && bgSvc.listMembers ? await bgSvc.listMembers(active.id) : [];
-    const selectedId = $('#permission-profile-select').val() || (profiles[0] && profiles[0].id) || '';
-    const selected = profiles.find(p => p.id === selectedId) || profiles[0] || null;
-    const profileOptions = profiles.map(p => `<option value="${esc(p.id)}" ${selected && selected.id === p.id ? 'selected' : ''}>${esc(p.name || p.id)} — ${esc(p.roleBase || '')}</option>`).join('');
-    const memberRows = members.length ? members.map(m => `<tr>
-      <td><strong>${esc(m.email || m.uid)}</strong><br><code class="small">${esc(m.uid)}</code></td>
-      <td>${esc(m.roleLabel || m.role || '')}</td>
-      <td>${esc(m.permissionProfileName || m.permissionProfileId || '—')}</td>
-      <td style="min-width:220px"><select class="form-select form-select-sm member-profile-select" data-uid="${esc(m.uid)}" ${canManage ? '' : 'disabled'}>
-        <option value="">Nessun profilo specifico</option>${profiles.map(p => `<option value="${esc(p.id)}" ${m.permissionProfileId === p.id ? 'selected' : ''}>${esc(p.name || p.id)}</option>`).join('')}
-      </select></td>
-    </tr>`).join('') : '<tr><td colspan="4" class="text-muted">Nessun membro nel gruppo attivo.</td></tr>';
+    try {
+      const active = window.currentBusinessGroup || null;
+      const canManage = !!(bgSvc && bgSvc.canManageActiveGroup && bgSvc.canManageActiveGroup());
+      if (!active || !active.id) {
+        root.html('<div class="alert alert-info">Seleziona un Gruppo aziendale per configurare i profili permesso.</div>');
+        return;
+      }
 
-    root.html(`
-      <div class="alert alert-primary small">
-        <strong>Versione 0.6.4.</strong> I profili permesso configurabili definiscono una matrice per modulo con valori <em>nessuno, lettura, scrittura, admin</em>. La UI li usa insieme al ruolo; la sicurezza Firestore resta basata soprattutto su membership e ruolo operativo.
-      </div>
-      <div class="row g-3">
-        <div class="col-xl-5">
-          <div class="card shadow-sm h-100"><div class="card-body">
-            <div class="d-flex justify-content-between align-items-start gap-2 flex-wrap mb-2">
-              <h5 class="card-title mb-0"><i class="fas fa-layer-group me-2"></i>Profili del gruppo</h5>
-              <button class="btn btn-sm btn-outline-primary" id="permission-profiles-init-btn" type="button" ${canManage ? '' : 'disabled'}>Crea predefiniti</button>
-            </div>
-            <select class="form-select mb-3" id="permission-profile-select">${profileOptions || '<option value="">Nessun profilo</option>'}</select>
-            <div class="mb-2"><label class="form-label" for="permission-profile-id">ID profilo</label><input class="form-control" id="permission-profile-id" value="${esc(selected && selected.id || '')}" ${canManage && !(selected && selected.isSystemDefault) ? '' : 'readonly'}></div>
-            <div class="mb-2"><label class="form-label" for="permission-profile-name">Nome</label><input class="form-control" id="permission-profile-name" value="${esc(selected && selected.name || '')}" ${canManage ? '' : 'disabled'}></div>
-            <div class="mb-2"><label class="form-label" for="permission-profile-role">Ruolo base</label><select class="form-select" id="permission-profile-role" ${canManage ? '' : 'disabled'}>${(bgSvc && bgSvc.ROLES || ['admin','teacher','accounting','sales','purchases','warehouse','readonly']).map(r => `<option value="${r}" ${selected && selected.roleBase === r ? 'selected' : ''}>${esc(bgSvc && bgSvc.roleLabel ? bgSvc.roleLabel(r) : r)}</option>`).join('')}</select></div>
-            <div class="mb-2"><label class="form-label" for="permission-profile-description">Descrizione</label><textarea class="form-control" id="permission-profile-description" rows="3" ${canManage ? '' : 'disabled'}>${esc(selected && selected.description || '')}</textarea></div>
-            <div class="d-flex gap-2 flex-wrap">
-              <button class="btn btn-primary" id="permission-profile-save-btn" type="button" ${canManage ? '' : 'disabled'}><i class="fas fa-save me-1"></i>Salva profilo</button>
-              <button class="btn btn-outline-secondary" id="permission-profile-new-btn" type="button" ${canManage ? '' : 'disabled'}>Nuovo da ruolo</button>
-              <button class="btn btn-outline-danger" id="permission-profile-delete-btn" type="button" ${canManage && selected && !selected.isSystemDefault ? '' : 'disabled'}>Elimina</button>
-            </div>
-          </div></div>
+      const profiles = await svc.listProfiles(active.id);
+      const members = bgSvc && bgSvc.listMembers ? await bgSvc.listMembers(active.id) : [];
+      const selectedId = $('#permission-profile-select').val() || (profiles[0] && profiles[0].id) || '';
+      const selected = profiles.find(p => p.id === selectedId) || profiles[0] || null;
+      const profileOptions = profiles.map(p => `<option value="${esc(p.id)}" ${selected && selected.id === p.id ? 'selected' : ''}>${esc(p.name || p.id)} — ${esc(p.roleBase || '')}</option>`).join('');
+      const noProfilesBox = profiles.length ? '' : `<div class="alert alert-warning small">
+        Nessun profilo permesso è ancora presente nel gruppo attivo. Usa <strong>Crea predefiniti</strong> per generare i profili standard
+        admin, teacher, contabilità, vendite, acquisti, magazzino e sola lettura.
+      </div>`;
+      const memberRows = members.length ? members.map(m => `<tr>
+        <td><strong>${esc(m.email || m.uid)}</strong><br><code class="small">${esc(m.uid)}</code></td>
+        <td>${esc(m.roleLabel || (bgSvc && bgSvc.roleLabel ? bgSvc.roleLabel(m.role) : m.role) || '')}</td>
+        <td>${esc(m.permissionProfileName || m.permissionProfileId || '—')}</td>
+        <td style="min-width:220px"><select class="form-select form-select-sm member-profile-select" data-uid="${esc(m.uid)}" ${canManage ? '' : 'disabled'}>
+          <option value="">Nessun profilo specifico</option>${profiles.map(p => `<option value="${esc(p.id)}" ${m.permissionProfileId === p.id ? 'selected' : ''}>${esc(p.name || p.id)}</option>`).join('')}
+        </select></td>
+      </tr>`).join('') : '<tr><td colspan="4" class="text-muted">Nessun membro nel gruppo attivo. Se un invito è stato accettato, torna in Gruppi aziendali e ricarica i dati del gruppo.</td></tr>';
+
+      root.html(`
+        <div class="alert alert-primary small">
+          <strong>Versione 0.13.13.</strong> I privilegi si gestiscono tramite <strong>ruolo</strong> e <strong>profilo permesso</strong> del membro.
+          Gli override individuali restano legacy e non sono più il percorso operativo consigliato.
         </div>
-        <div class="col-xl-7">
-          <div class="card shadow-sm h-100"><div class="card-body">
-            <h5 class="card-title"><i class="fas fa-table-list me-2"></i>Matrice moduli del profilo</h5>
-            ${selected ? profileMatrix(selected, 'permission-profile') : '<div class="text-muted">Crea o seleziona un profilo.</div>'}
-          </div></div>
+        ${noProfilesBox}
+        <div class="row g-3">
+          <div class="col-xl-5">
+            <div class="card shadow-sm h-100"><div class="card-body">
+              <div class="d-flex justify-content-between align-items-start gap-2 flex-wrap mb-2">
+                <h5 class="card-title mb-0"><i class="fas fa-layer-group me-2"></i>Profili del gruppo</h5>
+                <button class="btn btn-sm btn-outline-primary" id="permission-profiles-init-btn" type="button" ${canManage ? '' : 'disabled'}>Crea predefiniti</button>
+              </div>
+              <select class="form-select mb-3" id="permission-profile-select">${profileOptions || '<option value="">Nessun profilo</option>'}</select>
+              <div class="mb-2"><label class="form-label" for="permission-profile-id">ID profilo</label><input class="form-control" id="permission-profile-id" value="${esc(selected && selected.id || '')}" ${canManage && !(selected && selected.isSystemDefault) ? '' : 'readonly'}></div>
+              <div class="mb-2"><label class="form-label" for="permission-profile-name">Nome</label><input class="form-control" id="permission-profile-name" value="${esc(selected && selected.name || '')}" ${canManage ? '' : 'disabled'}></div>
+              <div class="mb-2"><label class="form-label" for="permission-profile-role">Ruolo base</label><select class="form-select" id="permission-profile-role" ${canManage ? '' : 'disabled'}>${(bgSvc && bgSvc.ROLES || ['admin','teacher','accounting','sales','purchases','warehouse','readonly']).map(r => `<option value="${r}" ${selected && selected.roleBase === r ? 'selected' : ''}>${esc(bgSvc && bgSvc.roleLabel ? bgSvc.roleLabel(r) : r)}</option>`).join('')}</select></div>
+              <div class="mb-2"><label class="form-label" for="permission-profile-description">Descrizione</label><textarea class="form-control" id="permission-profile-description" rows="3" ${canManage ? '' : 'disabled'}>${esc(selected && selected.description || '')}</textarea></div>
+              <div class="d-flex gap-2 flex-wrap">
+                <button class="btn btn-primary" id="permission-profile-save-btn" type="button" ${canManage ? '' : 'disabled'}><i class="fas fa-save me-1"></i>Salva profilo</button>
+                <button class="btn btn-outline-secondary" id="permission-profile-new-btn" type="button" ${canManage ? '' : 'disabled'}>Nuovo da ruolo</button>
+                <button class="btn btn-outline-danger" id="permission-profile-delete-btn" type="button" ${canManage && selected && !selected.isSystemDefault ? '' : 'disabled'}>Elimina</button>
+              </div>
+            </div></div>
+          </div>
+          <div class="col-xl-7">
+            <div class="card shadow-sm h-100"><div class="card-body">
+              <h5 class="card-title"><i class="fas fa-table-list me-2"></i>Matrice moduli del profilo</h5>
+              ${selected ? profileMatrix(selected, 'permission-profile') : '<div class="text-muted">Crea o seleziona un profilo.</div>'}
+            </div></div>
+          </div>
         </div>
-      </div>
-      <div class="card shadow-sm mt-3"><div class="card-body">
-        <h5 class="card-title"><i class="fas fa-users-gear me-2"></i>Assegna profili ai membri</h5>
-        <div class="table-responsive"><table class="table table-sm align-middle"><thead><tr><th>Membro</th><th>Ruolo</th><th>Profilo attuale</th><th>Assegna</th></tr></thead><tbody>${memberRows}</tbody></table></div>
-      </div></div>
-      <div class="card shadow-sm mt-3"><div class="card-body small">
-        <h6>Struttura Firestore 0.6.4</h6>
-        <pre class="mb-0"><code>businessGroups/{groupId}/permissionProfiles/{profileId}
-businessGroups/{groupId}/permissionMatrices/moduleMatrix
-businessGroups/{groupId}/members/{uid}.permissionProfileId
-users/{uid}/memberships/{groupId}.profilePermissions</code></pre>
-      </div></div>
-    `);
+        <div class="card shadow-sm mt-3"><div class="card-body">
+          <h5 class="card-title"><i class="fas fa-users-gear me-2"></i>Assegna profili ai membri</h5>
+          <p class="text-muted small mb-2">Per modificare i privilegi di un collaboratore, assegna qui un profilo permesso. La Matrice permessi descrive i moduli; questa sezione collega profilo e membro.</p>
+          <div class="table-responsive"><table class="table table-sm align-middle"><thead><tr><th>Membro</th><th>Ruolo</th><th>Profilo attuale</th><th>Assegna</th></tr></thead><tbody>${memberRows}</tbody></table></div>
+        </div></div>
+      `);
+    } catch (e) {
+      console.error('Errore render Profili permesso:', e);
+      root.html('<div class="alert alert-danger"><strong>Errore caricamento Profili permesso.</strong><br>' + esc(e && e.message ? e.message : e) + '<br><span class="small">Verifica che il Gruppo aziendale sia attivo e che le regole Firestore pubblicate siano quelle della build corrente.</span></div>');
+    }
   }
 
   function bind() {
     if (_bound) return; _bound = true;
+    $(document).on('click', '[data-target="profili-permesso"]', function () { setTimeout(function () { render(); }, 0); });
     $(document).on('click', '#permission-profiles-init-btn', async function () {
       try { const res = await window.PermissionProfilesService.ensureDefaultProfiles(); await render(); alert('Profili predefiniti creati: ' + (res && res.created || 0)); }
       catch (e) { console.error(e); alert('Errore inizializzazione profili: ' + (e && e.message ? e.message : e)); }

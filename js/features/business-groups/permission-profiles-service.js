@@ -3,7 +3,7 @@
 
 (function () {
   const win = window;
-  const VERSION = '0.6.6';
+  const VERSION = '0.13.13';
 
   const ACCESS_LEVELS = {
     none: { id: 'none', label: 'Nessun accesso', rank: 0 },
@@ -76,7 +76,7 @@
     return out;
   }
 
-  function db() { return win.db; }
+  function db() { return win.db || (typeof globalThis !== 'undefined' ? globalThis.db : null) || (typeof db !== 'undefined' ? db : null); }
   function uid() { return win.currentUser && win.currentUser.uid ? win.currentUser.uid : ''; }
   function nowIso() { return new Date().toISOString(); }
   function activeGroupId(groupId) { return groupId || (win.currentBusinessGroup && win.currentBusinessGroup.id) || ''; }
