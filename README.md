@@ -1,5 +1,5 @@
-## CDSDM Versione 0.13.14 — Hotfix Firestore compatibilità permessi
-La versione **0.13.14** corregge una regressione nei moduli Organizzazione: Gruppi aziendali, Profili permesso e Matrice permessi ora risolvono Firestore in modo compatibile e non restano vuoti o bloccati con `db(...).collection is not a function`. Non modifica Firestore rules, schema dati, ruoli o flussi applicativi.
+## CDSDM Versione 0.13.15 — Hotfix profili permesso e ruolo informativo
+La versione **0.13.15** corregge il caricamento di Profili permesso quando `BusinessGroupsService.ROLES` è un oggetto e rende la pagina Ruoli e permessi chiaramente informativa in modalità Gruppo aziendale. Non introduce nuovi flussi, collezioni Firestore o modifiche alle regole.
 
 ## CDSDM Versione 0.13.3 — Workflow e Segnalazioni operative mobile
 La versione **0.13.3** migliora l'uso da smartphone dei flussi già esistenti di Workflow approvativi e Segnalazioni operative. Le modifiche sono UI/UX conservative: pulsanti più comodi, suggerimenti mobile, dettagli in colonna e nessuna variazione a Firestore, permessi, menu o dati.
@@ -569,12 +569,12 @@ Gli override 0.6.4 restano una granularità applicativa/front-end didattica. Le 
 - Segnalazioni operative: elenco/dettaglio e nuova segnalazione separati in tab per usare l’intera larghezza della pagina.
 
 
-### 0.13.14 — Coerenza menu documenti commerciali
+### 0.13.15 — Coerenza menu documenti commerciali
 
 - Uniformato il menu di Preventivi, Ordini cliente/fornitore e DDT cliente/fornitore.
 - Le voci `Nuovo Preventivo cliente`, `Nuovo Ordine cliente` e `Nuovo Ordine fornitore` sono state trasformate in pulsanti nelle rispettive pagine elenco.
 - Rinominati `DDT cliente` e `DDT fornitore` in `Elenco DDT cliente` e `Elenco DDT fornitore`.
-- Backup JSON aggiornato a `appVersion: 0.13.14`.
+- Backup JSON aggiornato a `appVersion: 0.13.15`.
 - Nessuna modifica a Firestore rules, collezioni, permessi o backend.
 
 ### 0.13.5 — Form complessi e documenti gestionali mobile-aware
@@ -610,58 +610,66 @@ Gli override 0.6.4 restano una granularità applicativa/front-end didattica. Le 
 - Backup JSON aggiornato a `appVersion: 0.13.1`.
 
 
-### 0.13.14 — Rifinitura branding logo trasparente
+### 0.13.15 — Rifinitura branding logo trasparente
 
 - Rigenerato il logo principale `assets/branding/brand-mark.png` con trasparenza reale e senza contorno bianco marcato.
 - Rigenerati favicon e icone applicative (`favicon.ico`, `favicon-16.png`, `favicon-32.png`, `favicon-48.png`, `apple-touch-icon.png`, `android-chrome-*`).
 - Aggiunta micro-rifinitura CSS per mantenere trasparente la presentazione del logo nelle principali aree UI.
-- Aggiornati documentazione, test branding e backup JSON a `appVersion: 0.13.14`.
+- Aggiornati documentazione, test branding e backup JSON a `appVersion: 0.13.15`.
 
 
-### 0.13.14 — Rifinitura branding logo con cilindro ocra
+### 0.13.15 — Rifinitura branding logo con cilindro ocra
 
 - Mantenuto il logo trasparente introdotto nella 0.13.7.
 - Migliorata la leggibilità del cilindro/database adottando una tonalità **ocra/oro** più visibile su sfondo chiaro e scuro.
 - Rigenerati `brand-mark.png`, favicon e icone applicative del set `assets/branding/`.
-- Aggiornati documentazione, test branding e backup JSON a `appVersion: 0.13.14`.
+- Aggiornati documentazione, test branding e backup JSON a `appVersion: 0.13.15`.
 
 
-### 0.13.14 — Integrazione build del logo approvato
+### 0.13.15 — Integrazione build del logo approvato
 
 - Integrato nella build il logo approvato in preview, convertito in PNG trasparente e adattato al set branding applicativo.
 - Il cilindro/database adotta sezioni differenziate, riducendo l’effetto di elementi identici impilati.
 - Rigenerati `brand-mark.png`, `brand-mark-darkmode.png`, favicon e icone applicative del set `assets/branding/`.
-- Aggiornati documentazione, test branding e backup JSON a `appVersion: 0.13.14`.
+- Aggiornati documentazione, test branding e backup JSON a `appVersion: 0.13.15`.
 
 
-### 0.13.14 — Inviti collaboratore responsive
+### 0.13.15 — Inviti collaboratore responsive
 
 - Chiarito nel pannello Gruppi aziendali che l'invito non viene inviato via email automaticamente.
 - Sostituita la tabella larga degli inviti con card responsive più leggibili.
 - Ridistribuiti i pannelli: compilazione invito più stretta e lista inviti più ampia.
 - Azioni Copia/Rigenera/Revoca rese compatte e adattive.
-- Aggiornati documentazione, test e backup JSON a `appVersion: 0.13.14`.
+- Aggiornati documentazione, test e backup JSON a `appVersion: 0.13.15`.
 
 
-### 0.13.14 — Hotfix registrazione con invito
+### 0.13.15 — Hotfix registrazione con invito
 
 - Corretto il flusso `BusinessGroupsService.acceptInvite()` / `addMemberToGroupAsInvitee()`.
 - L’invitato usa `groupName` e `groupId` già presenti nell’invito per creare membership e membro, senza leggere il root `businessGroups/{groupId}` prima di essere membro.
 - Mantenute le regole Firestore esistenti: nessuna apertura aggiuntiva della lettura del gruppo a utenti non membri.
-- Backup JSON aggiornato a `appVersion: 0.13.14`.
+- Backup JSON aggiornato a `appVersion: 0.13.15`.
 
 
-### 0.13.14 — Chiarezza membri e profili permesso senza override
+### 0.13.15 — Chiarezza membri e profili permesso senza override
 
 - Nascosta dal menu operativo la voce legacy `Override permessi`, coerentemente con la scelta di non usare fine tuning individuale.
 - Rafforzato il rendering di `Profili permesso`: messaggi chiari, gestione errori, pulsante `Crea predefiniti` e tabella assegnazione profili ai membri.
 - Reso più robusto `PermissionProfilesService` nel recupero dell’istanza Firestore.
-- Aggiornati documentazione, test e backup JSON a `appVersion: 0.13.14`.
+- Aggiornati documentazione, test e backup JSON a `appVersion: 0.13.15`.
 
 
-### 0.13.14 — Hotfix Firestore compatibilità permessi
+### 0.13.15 — Hotfix Firestore compatibilità permessi
 
 - Esposto Firestore anche come `window.db` / `globalThis.db` durante `initFirebase()`.
 - Corretto il resolver Firestore di `PermissionProfilesService`, `PermissionMatrixService` e `PermissionOverridesService`.
 - Reso il pannello Gruppi aziendali più resiliente: un errore nel caricamento profili non impedisce più il rendering dei gruppi e dei membri.
-- Aggiornati documentazione, test e backup JSON a `appVersion: 0.13.14`.
+- Aggiornati documentazione, test e backup JSON a `appVersion: 0.13.15`.
+
+
+### 0.13.15 — Hotfix profili permesso e ruolo informativo
+
+- Corretto `Profili permesso`: la lista ruoli ora gestisce correttamente `BusinessGroupsService.ROLES` come oggetto o array.
+- La pagina `Ruoli e permessi` in modalità Gruppo aziendale non mostra più una select apparentemente modificabile: visualizza il ruolo come valore bloccato/informativo.
+- Confermato che la modifica reale di ruolo/profilo passa da `Gruppi aziendali` e `Profili permesso`.
+- Aggiornati documentazione, test e backup JSON a `appVersion: 0.13.15`.

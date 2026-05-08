@@ -3,7 +3,7 @@
 
 (function () {
   const win = window;
-  const VERSION = '0.13.14';
+  const VERSION = '0.13.15';
 
   const ACCESS_LEVELS = {
     none: { id: 'none', label: 'Nessun accesso', rank: 0 },

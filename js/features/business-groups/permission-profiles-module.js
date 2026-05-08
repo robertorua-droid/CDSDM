@@ -1,5 +1,5 @@
 // js/features/business-groups/permission-profiles-module.js
-// CDSDM 0.13.13 — UI Profili permesso configurabili senza override individuali.
+// CDSDM 0.13.15 — UI Profili permesso robusta senza override individuali.
 
 (function () {
   if (!window.AppModules) window.AppModules = {};
@@ -19,6 +19,18 @@
       out[m.id] = $('#' + prefix + '-perm-' + m.id).val() || 'none';
     });
     return out;
+  }
+
+  function roleKeys(bgSvc) {
+    if (bgSvc && bgSvc.ROLES && typeof bgSvc.ROLES === 'object' && !Array.isArray(bgSvc.ROLES)) {
+      return Object.keys(bgSvc.ROLES);
+    }
+    if (bgSvc && Array.isArray(bgSvc.ROLES)) return bgSvc.ROLES.slice();
+    return ['admin','teacher','accounting','sales','purchases','warehouse','readonly'];
+  }
+
+  function roleOptions(bgSvc, selectedRole) {
+    return roleKeys(bgSvc).map(r => `<option value="${esc(r)}" ${String(selectedRole || '') === r ? 'selected' : ''}>${esc(bgSvc && bgSvc.roleLabel ? bgSvc.roleLabel(r) : r)}</option>`).join('');
   }
 
   function profileMatrix(profile, prefix) {
@@ -65,7 +77,7 @@
 
       root.html(`
         <div class="alert alert-primary small">
-          <strong>Versione 0.13.13.</strong> I privilegi si gestiscono tramite <strong>ruolo</strong> e <strong>profilo permesso</strong> del membro.
+          <strong>Versione 0.13.15.</strong> I privilegi si gestiscono tramite <strong>ruolo</strong> e <strong>profilo permesso</strong> del membro.
           Gli override individuali restano legacy e non sono più il percorso operativo consigliato.
         </div>
         ${noProfilesBox}
@@ -79,7 +91,7 @@
               <select class="form-select mb-3" id="permission-profile-select">${profileOptions || '<option value="">Nessun profilo</option>'}</select>
               <div class="mb-2"><label class="form-label" for="permission-profile-id">ID profilo</label><input class="form-control" id="permission-profile-id" value="${esc(selected && selected.id || '')}" ${canManage && !(selected && selected.isSystemDefault) ? '' : 'readonly'}></div>
               <div class="mb-2"><label class="form-label" for="permission-profile-name">Nome</label><input class="form-control" id="permission-profile-name" value="${esc(selected && selected.name || '')}" ${canManage ? '' : 'disabled'}></div>
-              <div class="mb-2"><label class="form-label" for="permission-profile-role">Ruolo base</label><select class="form-select" id="permission-profile-role" ${canManage ? '' : 'disabled'}>${(bgSvc && bgSvc.ROLES || ['admin','teacher','accounting','sales','purchases','warehouse','readonly']).map(r => `<option value="${r}" ${selected && selected.roleBase === r ? 'selected' : ''}>${esc(bgSvc && bgSvc.roleLabel ? bgSvc.roleLabel(r) : r)}</option>`).join('')}</select></div>
+              <div class="mb-2"><label class="form-label" for="permission-profile-role">Ruolo base</label><select class="form-select" id="permission-profile-role" ${canManage ? '' : 'disabled'}>${roleOptions(bgSvc, selected && selected.roleBase)}</select></div>
               <div class="mb-2"><label class="form-label" for="permission-profile-description">Descrizione</label><textarea class="form-control" id="permission-profile-description" rows="3" ${canManage ? '' : 'disabled'}>${esc(selected && selected.description || '')}</textarea></div>
               <div class="d-flex gap-2 flex-wrap">
                 <button class="btn btn-primary" id="permission-profile-save-btn" type="button" ${canManage ? '' : 'disabled'}><i class="fas fa-save me-1"></i>Salva profilo</button>

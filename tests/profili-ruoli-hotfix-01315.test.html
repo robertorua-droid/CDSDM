@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>CDSDM 0.13.15 - Profili permesso e ruolo informativo</title></head>
+<body><pre id="output"></pre><script>
+async function read(p){ return fetch(p).then(r=>r.text()); }
+async function run(){
+  const out=document.getElementById('output');
+  const profiles=await read('../js/features/business-groups/permission-profiles-module.js');
+  const roles=await read('../js/features/settings/roles-permissions-module.js');
+  const changelog=await read('../DOCUMENTAZIONE/11_CHANGELOG.md');
+  const checks=[];
+  function ok(m,p){ checks.push((p?'✓ ':'✗ ')+m); if(!p) throw new Error(m); }
+  ok('helper roleKeys presente', profiles.includes('function roleKeys(bgSvc)'));
+  ok('non usa più ROLES.map diretto', !profiles.includes('bgSvc.ROLES || [') && !profiles.includes('ROLES || [\'admin\''));
+  ok('ruoli in gruppo visualizzati come readonly', roles.includes('permissions-active-role-readonly'));
+  ok('testo chiarisce pagina informativa', roles.includes('questa pagina è solo informativa'));
+  ok('changelog 0.13.15 presente', changelog.includes('0.13.15 — Hotfix profili permesso'));
+  out.textContent=checks.join('\n');
+}
+run().catch(e=>{ document.getElementById('output').textContent='ERRORE: '+e.message; });
+</script></body></html>

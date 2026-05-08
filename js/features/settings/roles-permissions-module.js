@@ -48,7 +48,7 @@
 
     $('#roles-permissions-container').html(`
       <div class="alert alert-warning shadow-sm">
-        <strong>Nota di sicurezza.</strong> I permessi UI 0.5.2 controllano menu e pulsanti lato client per didattica e UX. La sicurezza reale multiutente resta affidata alle regole Firestore pianificate nella 0.5.4.
+        <strong>Nota di sicurezza.</strong> In modalità Gruppo questa pagina è informativa: il ruolo deriva dalla membership e i profili si assegnano da Profili permesso. I permessi UI controllano menu e pulsanti lato client; la sicurezza reale multiutente resta affidata alle regole Firestore pubblicate.
       </div>
       <div class="row g-3 mb-3">
         <div class="col-lg-5">
@@ -60,8 +60,12 @@
                 <label class="form-check-label" for="permissions-enabled">Abilita controlli applicativi</label>
               </div>
               <label class="form-label" for="permissions-active-role">Ruolo applicativo corrente</label>
-              <select class="form-select" id="permissions-active-role" ${groupMode ? 'disabled' : ''}>${options}</select>
-              <p class="small text-muted mt-2 mb-3">Ruolo attuale: <strong>${esc(role.label)}</strong>. ${groupMode ? 'Deriva dalla membership del Gruppo aziendale attivo. Per cambiarlo usa Impostazioni → Gruppi aziendali.' : 'Deriva dalle impostazioni legacy di companyInfo.accessControl.'} Le limitazioni sono applicate a menu, sezioni e pulsanti di scrittura.</p>
+              ${groupMode ? `
+                <div class="form-control bg-transparent text-light border-secondary" id="permissions-active-role-readonly" aria-label="Ruolo applicativo corrente">
+                  <i class="fas fa-lock me-1"></i>${esc(role.label)}
+                </div>
+              ` : `<select class="form-select" id="permissions-active-role">${options}</select>`}
+              <p class="small text-muted mt-2 mb-3">Ruolo attuale: <strong>${esc(role.label)}</strong>. ${groupMode ? 'Deriva dalla membership del Gruppo aziendale attivo. Questa pagina è solo informativa: per cambiare ruolo o profilo usa Organizzazione → Gruppi aziendali / Profili permesso.' : 'Deriva dalle impostazioni legacy di companyInfo.accessControl.'} Le limitazioni sono applicate a menu, sezioni e pulsanti di scrittura.</p>
               ${groupMode ? '<button class="btn btn-secondary" type="button" disabled><i class="fas fa-lock me-1"></i>Ruolo gestito dal gruppo</button>' : '<button class="btn btn-primary" id="save-permissions-settings" type="button"><i class="fas fa-save me-1"></i>Salva impostazioni legacy</button>'}
             </div>
           </div>
