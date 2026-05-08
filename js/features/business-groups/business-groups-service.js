@@ -4,7 +4,7 @@
 (function () {
   const win = window;
   const STORAGE_PREFIX = 'cdsdm.activeBusinessGroup.';
-  const VERSION = '0.6.4';
+  const VERSION = '0.13.11';
   const ROLES = {
     admin: 'Amministratore',
     accounting: 'Contabilità',
@@ -470,16 +470,18 @@
   }
 
   async function addMemberToGroupAsInvitee(gid, invite) {
-    const group = await readGroup(gid) || { id: gid, name: gid };
     const uid = win.currentUser.uid;
     const role = normalizeRole(invite.role);
+    // 0.13.11: l'invitato non può leggere il documento root del gruppo prima di essere membro.
+    // Usiamo quindi i dati già denormalizzati nell'invito, evitando una lettura Firestore negata dalle rules.
+    const safeGroupName = str(invite.groupName || invite.businessName || gid) || gid;
     const profilePatch = invite.permissionProfileId ? { permissionProfileId: invite.permissionProfileId || '', permissionProfileName: invite.permissionProfileName || '', profilePermissions: invite.profilePermissions || {} } : {};
     const member = Object.assign({ uid, email: win.currentUser.email || invite.email || '', role, roleLabel: roleLabel(role), status: 'active', joinedAt: nowIso(), addedBy: invite.createdBy || 'invite', inviteCode: invite.id || '', version: VERSION }, profilePatch);
-    const membership = Object.assign({ groupId: gid, groupName: group.name || gid, role, roleLabel: roleLabel(role), status: 'active', joinedAt: member.joinedAt, updatedAt: nowIso(), inviteCode: invite.id || '', version: VERSION }, profilePatch);
+    const membership = Object.assign({ groupId: gid, groupName: safeGroupName, role, roleLabel: roleLabel(role), status: 'active', joinedAt: member.joinedAt, updatedAt: nowIso(), inviteCode: invite.id || '', version: VERSION }, profilePatch);
     const batch = db.batch();
     batch.set(groupRef(gid).collection('members').doc(uid), member, { merge: true });
     batch.set(userMembershipRef(uid, gid), membership, { merge: true });
-    // 0.6.x: l'invitato non aggiorna il documento root del gruppo; le rules consentono solo member/membership/invite.
+    // L'invitato non aggiorna il documento root del gruppo; le rules consentono solo member/membership/invite.
     await batch.commit();
     return member;
   }
