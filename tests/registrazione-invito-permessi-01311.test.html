@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>CDSDM 0.13.11 - Registrazione invito e permessi</title></head>
+<body><pre id="output"></pre><script>
+async function read(p){ return fetch(p).then(r=>r.text()); }
+async function run(){
+ const out=document.getElementById('output');
+ const svc=await read('../js/features/business-groups/business-groups-service.js');
+ const rules=await read('../firestore.rules');
+ const doc=await read('../DOCUMENTAZIONE/127_HOTFIX_REGISTRAZIONE_INVITO_01311.md');
+ const checks=[];
+ function ok(m,p){ checks.push((p?'✓ ':'✗ ')+m); if(!p) throw new Error(m); }
+ ok('documentazione hotfix presente', doc.includes('lettura anticipata'));
+ ok('addMemberToGroupAsInvitee usa safeGroupName da invite', svc.includes('safeGroupName'));
+ ok('addMemberToGroupAsInvitee non chiama readGroup prima della membership', !/async function addMemberToGroupAsInvitee[\s\S]*?readGroup\(gid\)[\s\S]*?batch\.commit/.test(svc));
+ ok('rules mantengono read root solo a membri attivi', rules.includes('allow read: if isActiveMember(groupId);'));
+ out.textContent=checks.join('\n');
+}
+run().catch(e=>{ document.getElementById('output').textContent='ERRORE: '+e.message; });
+</script></body></html>
