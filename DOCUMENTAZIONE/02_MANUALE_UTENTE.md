@@ -1,6 +1,6 @@
-# Manuale utente CDSDM — riferimento didattico autonomo 0.13.18
+# Manuale utente CDSDM — riferimento didattico autonomo 0.13.19
 
-La versione **0.13.18** mantiene il Manuale Utente come riferimento didattico autonomo per studenti, docenti e professionisti. Non introduce nuovi flussi applicativi, nuove voci di menu, nuove collezioni Firestore o nuove regole obbligatorie: organizza e chiarisce l'uso dei flussi già esistenti.
+La versione **0.13.19** mantiene il Manuale Utente come riferimento didattico autonomo per studenti, docenti e professionisti. Non introduce nuovi flussi applicativi, nuove voci di menu, nuove collezioni Firestore o nuove regole obbligatorie: organizza e chiarisce l'uso dei flussi già esistenti.
 
 Il manuale è pensato per tre usi:
 
@@ -835,7 +835,7 @@ NO: eccezioni nascoste utente per utente
 SÌ: profili chiari, nominati e riutilizzabili
 ```
 
-Per questo nella 0.13.18 **Override permessi è nascosto dal menu operativo**. Il codice e la route tecnica sono conservati con commenti espliciti, così un futuro sviluppo potrà ritrovare lo scheletro se si deciderà di reintrodurre una gestione fine per singolo utente.
+Per questo dalla 0.13.16 **Override permessi è nascosto dal menu operativo**. Il codice e la route tecnica sono conservati con commenti espliciti, così un futuro sviluppo potrà ritrovare lo scheletro se si deciderà di reintrodurre una gestione fine per singolo utente.
 
 Quando un collaboratore richiede permessi diversi, crea un nuovo profilo esplicito, per esempio:
 
@@ -1139,9 +1139,9 @@ Per eccezioni individuali:
 ```
 
 
-## Nota 0.13.18 — Menu essenziale
+## Nota 0.13.17 — Menu essenziale
 
-La versione **0.13.18** ripulisce il menu laterale senza modificare i dati o i flussi applicativi. Le voci più tecniche vengono raggruppate in sezioni più chiare:
+La versione **0.13.17** ripulisce il menu laterale senza modificare i dati o i flussi applicativi. Le voci più tecniche vengono raggruppate in sezioni più chiare:
 
 ```text
 Configurazione
@@ -1162,3 +1162,14 @@ Vendite → Elenco documenti vendita
 ```
 
 Da questa pagina si consultano i documenti emessi e si usano i pulsanti **Nuova fattura** e **Nuova nota credito**. Le voci dirette di creazione non sono più nel menu operativo: restano solo come route tecniche compatibili.
+
+
+## Nota 0.13.19 — Hotfix menu Nota di Credito
+
+La voce diretta **Vendite → Nuova Nota Credito** non deve essere usata come voce di menu. La creazione resta disponibile dalla pagina:
+
+```text
+Vendite → Elenco documenti vendita → Nuova nota credito
+```
+
+La release corregge il caso in cui il ricalcolo dei permessi UI poteva rendere nuovamente visibile la voce legacy nel menu laterale. Non cambiano collezioni Firestore, regole, dati esistenti, backup/import/reset o flussi documentali.

@@ -10,10 +10,10 @@ async function run(){
   const doc=await read('../DOCUMENTAZIONE/134_ELENCO_DOCUMENTI_VENDITA_01318.md');
   const checks=[];
   function ok(m,p){ checks.push((p?'✓ ':'✗ ')+m); if(!p) throw new Error(m); }
-  ok('versione UI aggiornata a 0.13.18', index.includes('CDSDM Versione 0.13.18'));
+  ok('versione UI ramo 0.13 corrente', /CDSDM Versione 0\.13\.[0-9]+/.test(index));
   ok('voce menu Elenco documenti vendita presente', index.includes('menu-elenco-documenti-vendita') && index.includes('Elenco documenti vendita'));
-  ok('Nuova Fattura legacy nascosta dal menu', index.includes('id="menu-nuova-fattura"') && index.includes('data-menu-legacy="sales-document-action"'));
-  ok('Nuova Nota Credito legacy nascosta dal menu', index.includes('id="menu-nuova-nota-credito"') && index.includes('data-menu-legacy="sales-document-action"'));
+  ok('Nuova Fattura legacy nascosta dal menu', index.includes('id="menu-nuova-fattura"') && index.includes('data-menu-legacy="sales-document-action"') && index.includes('menu-legacy-hidden'));
+  ok('Nuova Nota Credito legacy nascosta dal menu', index.includes('id="menu-nuova-nota-credito"') && index.includes('data-menu-legacy="sales-document-action"') && index.includes('aria-hidden="true"'));
   ok('pulsante Nuova fattura nella pagina elenco', index.includes('sales-doc-new-invoice-btn'));
   ok('pulsante Nuova nota credito nella pagina elenco', index.includes('sales-doc-new-credit-note-btn'));
   ok('navigation gestisce pulsanti documenti vendita', nav.includes('openSalesDocumentForm') && nav.includes('sales-doc-new-credit-note-btn'));

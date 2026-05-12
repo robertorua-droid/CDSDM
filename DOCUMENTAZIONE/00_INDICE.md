@@ -1,6 +1,6 @@
 # Documentazione – CDSDM (didattico)
 
-Documentazione aggiornata alla versione **0.13.18**.
+Documentazione aggiornata alla versione **0.13.19**.
 
 > Nota: il progetto è didattico. Le simulazioni fiscali e i calcoli gestionali sono semplificazioni e non sostituiscono consulenza professionale, contabile o fiscale.
 
@@ -91,7 +91,9 @@ Documentazione aggiornata alla versione **0.13.18**.
 
 ## Ultime release
 
-- **0.13.18**: pulizia menu operativo, visibilità avanzata e separazione Configurazione / Gestione dati.
+- **0.13.19**: hotfix menu Vendite, Nuova Nota Credito legacy nuovamente nascosta dopo ricalcolo permessi.
+- **0.13.18**: Elenco documenti vendita come accesso unico a fatture e note credito.
+- **0.13.17**: pulizia menu operativo, visibilità avanzata e separazione Configurazione / Gestione dati.
 - **0.13.16**: pulizia area permessi, Override legacy nascosto e manuale ampio su utenti, gruppi, inviti, profili e matrice.
 - **0.13.15**: coerenza menu documenti commerciali, modello Elenco nel menu + Nuovo nella pagina.
 - **0.13.5**: form complessi e documenti gestionali resi più leggibili su smartphone, senza nuovi flussi dati.
@@ -262,6 +264,8 @@ Documentazione aggiornata alla versione **0.13.18**.
 
 - [132 - Pulizia area permessi e manuale gestione utenti 0.13.16](132_PULIZIA_PERMESSI_MANUALE_01316.md)
 
-- [133 - Menu essenziale e visibilità avanzata 0.13.18](133_MENU_ESSENZIALE_VISIBILITA_01317.md)
+- [133 - Menu essenziale e visibilità avanzata 0.13.17](133_MENU_ESSENZIALE_VISIBILITA_01317.md)
 
 - [134 - Elenco documenti vendita 0.13.18](134_ELENCO_DOCUMENTI_VENDITA_01318.md)
+
+- [135 - Hotfix menu Nota di Credito 0.13.19](135_HOTFIX_MENU_NOTA_CREDITO_01319.md)

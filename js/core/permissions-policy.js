@@ -353,6 +353,12 @@
     const role = getCurrentRole();
     const mode = isGroupMode();
 
+    function hideLegacyMenuItems() {
+      // 0.13.19: le azioni legacy spostate dentro le pagine elenco non devono
+      // riapparire quando la policy permessi ricalcola i menu per un ruolo abilitato.
+      $('[data-menu-legacy]').addClass('d-none menu-legacy-hidden').attr('aria-hidden', 'true');
+    }
+
     $('.sidebar .nav-link[data-target]').each(function () {
       const target = $(this).data('target');
       const allowed = canAccessTarget(target);
@@ -365,11 +371,15 @@
       $(this).toggleClass('d-none permission-hidden menu-advanced-hidden', !allowed);
     });
 
-    // 0.13.17: queste voci sono nascoste per pulizia menu anche se la route resta disponibile.
+    // 0.13.17+: queste voci sono nascoste per pulizia menu anche se la route resta disponibile.
     $('[data-menu-cleanup="0.13.17"]').addClass('d-none menu-cleanup-hidden');
+    hideLegacyMenuItems();
 
     $('.nav-section-container').each(function () {
-      const visibleLinks = $(this).find('.nav-link[data-target]').filter(function () { return !$(this).closest('li').hasClass('d-none'); });
+      const visibleLinks = $(this).find('.nav-link[data-target]').filter(function () {
+        const $li = $(this).closest('li');
+        return !$li.hasClass('d-none') && !$li.is('[data-menu-legacy]');
+      });
       $(this).toggleClass('d-none permission-hidden', visibleLinks.length === 0);
     });
 
@@ -387,6 +397,7 @@
       $(this).toggleClass('d-none permission-hidden menu-advanced-hidden', !canSeeAdvancedMenu(visibility));
     });
     $('[data-menu-cleanup="0.13.17"]').addClass('d-none menu-cleanup-hidden');
+    hideLegacyMenuItems();
 
     $('[data-permission-target]').each(function () {
       const allowed = canAccessTarget($(this).attr('data-permission-target'));

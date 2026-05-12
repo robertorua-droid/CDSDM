@@ -2515,3 +2515,9 @@ body.dark-mode .bg-invite-card {
   .bg-invite-actions { display: grid; grid-template-columns: 1fr; }
   .bg-invite-actions .btn { width: 100%; }
 }
+
+/* 0.13.19 — guard rail menu legacy: le azioni spostate nelle pagine elenco non devono riapparire nel menu laterale. */
+.sidebar [data-menu-legacy],
+.sidebar .menu-legacy-hidden {
+  display: none !important;
+}

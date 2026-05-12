@@ -173,10 +173,10 @@
           class="fas fa-truck-fast"></i> Elenco DDT cliente</a></li>
     <span class="nav-section-subtitle">Fatturazione</span>
     <li class="nav-item"><a class="nav-link" data-target="fatturazione-ddt-cliente" href="#" id="menu-fatturazione-ddt-cliente"><i class="fas fa-layer-group"></i> Fatturazione DDT cliente</a></li>
-    <!-- 0.13.18: le azioni Nuova Fattura / Nuova Nota Credito restano come pulsanti dentro Elenco documenti vendita. -->
-    <li class="nav-item d-none" data-menu-legacy="sales-document-action"><a class="nav-link" data-bs-target="#newInvoiceChoiceModal" data-bs-toggle="modal"
+    <!-- 0.13.19: le azioni Nuova Fattura / Nuova Nota Credito restano route legacy nascoste e pulsanti dentro Elenco documenti vendita. -->
+    <li class="nav-item d-none menu-legacy-hidden" data-menu-legacy="sales-document-action" data-hidden-reason="sales-doc-action-moved-to-page" aria-hidden="true"><a class="nav-link" data-bs-target="#newInvoiceChoiceModal" data-bs-toggle="modal"
         href="#" id="menu-nuova-fattura"><i class="fas fa-plus-circle"></i> Nuova Fattura</a></li>
-    <li class="nav-item d-none" data-menu-legacy="sales-document-action"><a class="nav-link" data-target="nuova-fattura-accompagnatoria" href="#"
+    <li class="nav-item d-none menu-legacy-hidden" data-menu-legacy="sales-document-action" data-hidden-reason="sales-doc-action-moved-to-page" aria-hidden="true"><a class="nav-link" data-target="nuova-fattura-accompagnatoria" href="#"
         id="menu-nuova-nota-credito"><i class="fas fa-file-contract"></i> Nuova Nota Credito</a></li>
     <li class="nav-item"><a class="nav-link" data-target="elenco-fatture" href="#" id="menu-elenco-documenti-vendita"><i
           class="fas fa-file-invoice-dollar"></i> Elenco documenti vendita</a></li>
@@ -458,9 +458,9 @@
                 </picture>
               </div>
               <div class="col-md-10">
-                <h3 class="mb-1">CDSDM Versione 0.13.18</h3>
+                <h3 class="mb-1">CDSDM Versione 0.13.19</h3>
                 <p class="mb-1"><strong>Cloud Data Suite for Digital Management</strong></p>
-                <p class="text-muted">Menu essenziale e visibilità avanzata: pulizia delle voci operative, funzioni tecniche raggruppate e Override permessi mantenuto come legacy nascosto.</p>
+                <p class="text-muted">Hotfix menu vendite: le azioni legacy Nuova Fattura e Nuova Nota Credito restano disponibili solo come pulsanti in Elenco documenti vendita e non riappaiono nel menu laterale dopo il ricalcolo dei permessi.</p>
                 <p class="small text-muted mb-0"><i class="fas fa-check-circle text-success"></i> Sincronizzazione CDSDM Cloud
                   attiva</p>
                 <p class="small text-muted"><i class="fas fa-shield-halved text-info"></i> Protezione Dati Crittografata

@@ -1,3 +1,6 @@
+## CDSDM Versione 0.13.19 — Hotfix menu Nota di Credito
+La versione **0.13.19** corregge la riapparizione della voce legacy **Vendite → Nuova Nota Credito** nel menu laterale dopo il ricalcolo dei permessi UI. Le azioni **Nuova fattura** e **Nuova nota credito** restano disponibili nella pagina **Vendite → Elenco documenti vendita**, senza modificare dati, Firestore, regole o flussi documentali.
+
 ## CDSDM Versione 0.13.18 — Elenco documenti vendita
 La versione **0.13.18** introduce la voce unica **Vendite → Elenco documenti vendita**, accorpando l’elenco fatture e le azioni **Nuova fattura** / **Nuova nota credito** dentro una sola pagina. Non modifica dati, Firestore, regole o flussi documentali: è una pulizia di navigazione e UX.
 
@@ -681,10 +684,10 @@ Gli override 0.6.4 restano una granularità applicativa/front-end didattica. Le 
 - Chiarito il modello: Gruppi aziendali per membri/inviti, Profili permesso per profili assegnabili, Matrice permessi per il significato dei livelli, Ruoli e permessi come riepilogo.
 - Ampliato il Manuale Utente con un capitolo didattico completo su gestione utenti e permessi.
 - Aggiunto test `permessi-manuale-override-01316.test.html`.
-- Backup JSON aggiornato a `appVersion: 0.13.18`.
+- Backup JSON aggiornato a `appVersion: 0.13.17`.
 
 
-### 0.13.18 — Menu essenziale e visibilità avanzata
+### 0.13.17 — Menu essenziale e visibilità avanzata
 
 - Nascosta dal menu la voce diretta **Nuovo Acquisto**: l’azione resta disponibile come pulsante nella pagina **Elenco Acquisti**.
 - Nascosta la voce **Statistiche** dal menu operativo, privilegiando Mini B.I. e Report gestionali.
@@ -693,6 +696,16 @@ Gli override 0.6.4 restano una granularità applicativa/front-end didattica. Le 
 - Limitata la visibilità delle aree tecniche/amministrative a ruoli elevati tramite attributi menu e PermissionsPolicy.
 - Override permessi resta legacy nascosto e tracciato nel codice.
 - Backup JSON aggiornato a `appVersion: 0.13.18`.
+
+
+### 0.13.19 — Hotfix menu Nota di Credito
+
+- Corretto il caso in cui **Nuova Nota Credito** poteva riapparire nel menu Vendite dopo il ricalcolo dei permessi UI.
+- Aggiunto guard rail per gli elementi `data-menu-legacy` in `PermissionsPolicy` e in CSS.
+- Confermato il flusso corretto: **Vendite → Elenco documenti vendita → Nuova nota credito**.
+- Riallineati pagina versione, changelog, indice documentazione e test.
+- Backup JSON aggiornato a `appVersion: 0.13.19`.
+- Nessuna modifica a Firestore rules, collezioni, modello dati, backend o Cloud Functions.
 
 
 ### 0.13.18 — Elenco documenti vendita

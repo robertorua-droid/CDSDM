@@ -1,4 +1,15 @@
-## 0.13.18 — Menu essenziale e visibilità avanzata
+## 0.13.19 — Hotfix menu Nota di Credito e riallineamento release
+
+- Corretto il problema per cui la voce legacy **Nuova Nota Credito** poteva riapparire nel menu Vendite dopo il ricalcolo dei permessi UI.
+- Mantenute **Nuova Fattura** e **Nuova Nota Credito** come azioni disponibili solo nella pagina **Vendite → Elenco documenti vendita**.
+- Aggiunto guard rail in `PermissionsPolicy` per gli elementi `data-menu-legacy` e protezione CSS prudente nel menu laterale.
+- Riallineati pagina versione, README, indice documentazione e test collegati alla distinzione 0.13.17/0.13.18/0.13.19.
+- Corretto il link rotto dell'indice test relativo alla registrazione con invito.
+- Aggiornato il riferimento versione del backup JSON a `appVersion: 0.13.19`.
+- Aggiunto documento `135_HOTFIX_MENU_NOTA_CREDITO_01319.md` e test `menu-nota-credito-hotfix-01319.test.html`.
+- Nessuna modifica a Firestore rules, collezioni, modello dati, backend o Cloud Functions.
+
+## 0.13.17 — Menu essenziale e visibilità avanzata
 
 - Pulito il menu operativo senza introdurre nuovi flussi applicativi.
 - Nascosta la voce diretta **Nuovo Acquisto**: l’azione è ora raggiungibile dalla pagina **Elenco Acquisti**.
@@ -6,8 +17,16 @@
 - Spostata **UX / accessibilità** nell’area **Didattica / QA**.
 - Separata la sezione **Configurazione** dalla nuova sezione **Gestione dati**.
 - Aggiunta visibilità avanzata per funzioni tecniche/amministrative, riservate a ruoli elevati dove opportuno.
-- Aggiornato il riferimento versione del backup JSON a `appVersion: 0.13.18`.
+- Aggiornato il riferimento versione del backup JSON a `appVersion: 0.13.17`.
 - Aggiunto documento `133_MENU_ESSENZIALE_VISIBILITA_01317.md` e test `menu-essenziale-visibilita-01317.test.html`.
+
+## 0.13.18 — Elenco documenti vendita
+
+- Aggiunta la voce **Vendite → Elenco documenti vendita** come accesso unico a fatture e note credito.
+- Nascoste dal menu operativo le voci dirette **Nuova Fattura** e **Nuova Nota Credito**, mantenendole come route tecniche compatibili.
+- Aggiunti nella pagina pulsanti **Nuova fattura** e **Nuova nota credito**.
+- Aggiornati manuale, documentazione, test e backup JSON a `appVersion: 0.13.18`.
+- Nessuna modifica a Firestore rules, collezioni, modello dati, backend o Cloud Functions.
 
 ## 0.13.16 — Pulizia area permessi e manuale gestione utenti
 

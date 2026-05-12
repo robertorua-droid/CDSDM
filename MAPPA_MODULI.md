@@ -381,7 +381,7 @@ Nessuna nuova collezione Firestore, nessuna nuova voce di menu e nessun redesign
 - `js/features/navigation/navigation-module.js`: route override mantenuta solo come legacy tecnica, non raggiungibile dal menu ordinario.
 - `DOCUMENTAZIONE/02_MANUALE_UTENTE.md` e `DOCUMENTAZIONE/111_MANUALE_CAPITOLI_01216.md`: aggiunto capitolo speciale su utenti, gruppi, inviti, membri, profili, matrice e rules.
 - `DOCUMENTAZIONE/132_PULIZIA_PERMESSI_MANUALE_01316.md`: nuova nota di release.
-- `js/features/migration/migration-module.js`: backup JSON aggiornato a `appVersion: 0.13.18`.
+- `js/features/migration/migration-module.js`: backup JSON aggiornato a `appVersion: 0.13.16`.
 
 
 ## Aggiornamento 0.13.18 — Elenco documenti vendita
@@ -390,3 +390,14 @@ Nessuna nuova collezione Firestore, nessuna nuova voce di menu e nessun redesign
 - `index.html`: nella sezione `elenco-fatture` sono stati aggiunti i pulsanti **Nuova fattura** e **Nuova nota credito**.
 - `js/features/navigation/navigation-module.js`: gestisce le azioni di creazione dalla pagina elenco e mantiene compatibilità con le route esistenti.
 - `js/features/migration/migration-module.js`: backup JSON aggiornato a `appVersion: 0.13.18`.
+
+
+## Aggiornamento 0.13.19 — Hotfix menu Nota di Credito
+
+- `index.html`: le voci legacy `menu-nuova-fattura` e `menu-nuova-nota-credito` restano marcate come `data-menu-legacy`, `d-none`, `menu-legacy-hidden` e `aria-hidden`.
+- `js/core/permissions-policy.js`: aggiunto guard rail `hideLegacyMenuItems()` per impedire che il ricalcolo permessi renda visibili le azioni legacy spostate nelle pagine elenco.
+- `css/style.css`: aggiunta protezione CSS per `.sidebar [data-menu-legacy]`.
+- `DOCUMENTAZIONE/135_HOTFIX_MENU_NOTA_CREDITO_01319.md`: nuova nota di release.
+- `tests/menu-nota-credito-hotfix-01319.test.html`: test browser-based dedicato.
+- `js/features/migration/migration-module.js`: backup JSON aggiornato a `appVersion: 0.13.19`.
+- Nessuna modifica a `firestore.rules`, collezioni Firestore, backend o Cloud Functions.

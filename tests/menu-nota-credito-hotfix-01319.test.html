@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>CDSDM 0.13.19 - Hotfix menu Nota di Credito</title></head>
+<body><pre id="output"></pre><script>
+async function read(p){ return fetch(p).then(r=>r.text()); }
+async function run(){
+  const out=document.getElementById('output');
+  const index=await read('../index.html');
+  const policy=await read('../js/core/permissions-policy.js');
+  const css=await read('../css/style.css');
+  const migration=await read('../js/features/migration/migration-module.js');
+  const rules=await read('../firestore.rules');
+  const doc=await read('../DOCUMENTAZIONE/135_HOTFIX_MENU_NOTA_CREDITO_01319.md');
+  const checks=[];
+  function ok(m,p){ checks.push((p?'✓ ':'✗ ')+m); if(!p) throw new Error(m); }
+  ok('versione UI aggiornata a 0.13.19', index.includes('CDSDM Versione 0.13.19'));
+  ok('backup JSON aggiornato a appVersion 0.13.19', migration.includes("appVersion: '0.13.19'"));
+  ok('voce unica Elenco documenti vendita presente nel menu', index.includes('id="menu-elenco-documenti-vendita"') && index.includes('Elenco documenti vendita'));
+  ok('Nuova Fattura legacy marcata nascosta', index.includes('id="menu-nuova-fattura"') && index.includes('data-menu-legacy="sales-document-action"') && index.includes('menu-legacy-hidden'));
+  ok('Nuova Nota Credito legacy marcata nascosta', index.includes('id="menu-nuova-nota-credito"') && index.includes('data-menu-legacy="sales-document-action"') && index.includes('aria-hidden="true"'));
+  ok('PermissionsPolicy mantiene nascosti i data-menu-legacy', policy.includes('hideLegacyMenuItems') && policy.includes('[data-menu-legacy]') && policy.includes('menu-legacy-hidden'));
+  ok('CSS protegge i data-menu-legacy nel menu laterale', css.includes('.sidebar [data-menu-legacy]') && css.includes('display: none !important'));
+  ok('pulsante pagina Nuova nota credito resta disponibile', index.includes('id="sales-doc-new-credit-note-btn"'));
+  ok('documentazione 0.13.19 presente', doc.includes('Hotfix menu Nota di Credito'));
+  ok('nessuna nuova collezione Firestore documentata dalle rules per hotfix', !rules.includes('menuNotaCreditoHotfix') && rules.includes('businessGroups/{groupId}'));
+  out.textContent=checks.join('\n');
+}
+run().catch(e=>{ document.getElementById('output').textContent='ERRORE: '+e.message; });
+</script></body></html>

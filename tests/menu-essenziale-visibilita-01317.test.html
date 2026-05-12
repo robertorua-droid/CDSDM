@@ -11,7 +11,7 @@ async function run(){
  const doc=await read('../DOCUMENTAZIONE/133_MENU_ESSENZIALE_VISIBILITA_01317.md');
  const checks=[];
  function ok(m,p){ checks.push((p?'✓ ':'✗ ')+m); if(!p) throw new Error(m); }
- ok('versione UI 0.13.17', index.includes('CDSDM Versione 0.13.17'));
+ ok('versione UI ramo 0.13 corrente', /CDSDM Versione 0\.13\.[0-9]+/.test(index));
  ok('Nuovo Acquisto nascosto dal menu', index.includes('id="menu-nuovo-acquisto"') && index.includes('data-hidden-reason="new-action-moved-to-page"'));
  ok('pulsante Nuovo Acquisto presente nella pagina Elenco Acquisti', index.includes('id="purchase-open-new-btn"'));
  ok('Statistiche nascosta dal menu operativo', index.includes('data-hidden-reason="legacy-statistics"'));
