@@ -38,7 +38,7 @@
     'ddt-cliente': 'DDT cliente',
     'fatturazione-ddt-cliente': 'Fatturazione DDT cliente',
     'nuova-fattura-accompagnatoria': 'Nuova Fattura / Nota Credito',
-    'elenco-fatture': 'Elenco Documenti',
+    'elenco-fatture': 'Elenco documenti vendita',
     'ordini-fornitore': 'Elenco Ordini fornitore',
     'ddt-fornitore': 'DDT fornitore',
     'nuovo-acquisto': 'Nuovo Acquisto', // 0.13.17: route raggiungibile da Elenco Acquisti, non più voce menu diretta
@@ -444,12 +444,42 @@
       $('#breadcrumb').text(text);
     }
 
+    function openSalesDocumentsList() {
+      $('.sidebar .nav-link').removeClass('active');
+      $('#menu-elenco-documenti-vendita').addClass('active');
+      $('.content-section').addClass('d-none');
+      $('#elenco-fatture').removeClass('d-none');
+      updateBreadcrumb('Elenco documenti vendita');
+      updateContextHelp('elenco-fatture', 'Elenco documenti vendita');
+      if (typeof renderInvoicesTable === 'function') renderInvoicesTable();
+    }
+
+    function openSalesDocumentForm(type) {
+      $('.content-section').addClass('d-none');
+      $('#nuova-fattura-accompagnatoria').removeClass('d-none');
+      updateBreadcrumb(type === 'Nota di Credito' ? 'Nuova nota credito' : 'Nuova fattura');
+      updateContextHelp('nuova-fattura-accompagnatoria', type === 'Nota di Credito' ? 'Nuova nota credito' : 'Nuova fattura');
+      if (typeof window.prepareDocumentForm === 'function') window.prepareDocumentForm(type || 'Fattura');
+    }
+
+    // DOCUMENTI VENDITA 0.13.18: le azioni di creazione sono nella pagina Elenco documenti vendita.
+    $('#sales-doc-new-credit-note-btn').on('click', function () {
+      openSalesDocumentForm('Nota di Credito');
+    });
+
     // MODALE FATTURA
     // Se esiste una bozza in corso, consento di continuarla senza perdere i dati.
-    $('#menu-nuova-fattura').on('click', function (e) {
+    $('#menu-nuova-fattura, #sales-doc-new-invoice-btn').on('click', function (e) {
       try {
         const hasDraft = (window.App && window.App.invoices && typeof window.App.invoices.hasUnsavedDraft === 'function') ? window.App.invoices.hasUnsavedDraft() : false;
-        if (!hasDraft) return; // lascia aprire la modale standard
+        if (!hasDraft) {
+          if (this.id === 'sales-doc-new-invoice-btn') {
+            e.preventDefault();
+            $('#newInvoiceChoiceModal').modal('show');
+            return false;
+          }
+          return; // lascia aprire la modale standard per la route legacy
+        }
 
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -460,6 +490,7 @@
           $(this).addClass('active');
           $('.content-section').addClass('d-none');
           $('#nuova-fattura-accompagnatoria').removeClass('d-none');
+          updateBreadcrumb('Nuova fattura');
           if (window.App && window.App.invoices && typeof window.App.invoices.restoreDraftUI === 'function') {
             window.App.invoices.restoreDraftUI();
           }
@@ -490,7 +521,7 @@
           if (ok) {
             $('#newInvoiceChoiceModal').modal('hide');
             $('.sidebar .nav-link').removeClass('active');
-            $('[data-bs-target="#newInvoiceChoiceModal"]').addClass('active');
+            $('#menu-elenco-documenti-vendita').addClass('active');
             $('.content-section').addClass('d-none');
             $('#nuova-fattura-accompagnatoria').removeClass('d-none');
             if (window.App && window.App.invoices && typeof window.App.invoices.restoreDraftUI === 'function') {
@@ -503,7 +534,7 @@
 
       $('#newInvoiceChoiceModal').modal('hide');
       $('.sidebar .nav-link').removeClass('active');
-      $('[data-bs-target="#newInvoiceChoiceModal"]').addClass('active');
+      $('#menu-elenco-documenti-vendita').addClass('active');
       $('.content-section').addClass('d-none');
       $('#nuova-fattura-accompagnatoria').removeClass('d-none');
       if (typeof window.prepareDocumentForm === 'function') window.prepareDocumentForm('Fattura');
@@ -523,7 +554,7 @@
       } catch (err) { }
       $('#newInvoiceChoiceModal').modal('hide');
       $('.sidebar .nav-link').removeClass('active');
-      $('[data-bs-target="#newInvoiceChoiceModal"]').addClass('active');
+      $('#menu-elenco-documenti-vendita').addClass('active');
       $('.content-section').addClass('d-none');
       $('#nuova-fattura-accompagnatoria').removeClass('d-none');
       if (typeof window.loadInvoiceForEditing === 'function') window.loadInvoiceForEditing(id, true);

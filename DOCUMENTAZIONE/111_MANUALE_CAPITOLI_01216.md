@@ -1,6 +1,6 @@
-# Manuale utente CDSDM — riferimento didattico autonomo 0.13.17
+# Manuale utente CDSDM — riferimento didattico autonomo 0.13.18
 
-La versione **0.13.17** mantiene il Manuale Utente come riferimento didattico autonomo per studenti, docenti e professionisti. Non introduce nuovi flussi applicativi, nuove voci di menu, nuove collezioni Firestore o nuove regole obbligatorie: organizza e chiarisce l'uso dei flussi già esistenti.
+La versione **0.13.18** mantiene il Manuale Utente come riferimento didattico autonomo per studenti, docenti e professionisti. Non introduce nuovi flussi applicativi, nuove voci di menu, nuove collezioni Firestore o nuove regole obbligatorie: organizza e chiarisce l'uso dei flussi già esistenti.
 
 Il manuale è pensato per tre usi:
 
@@ -770,7 +770,7 @@ La versione **0.13.15** corregge il caricamento di **Profili permesso** e chiari
 
 ---
 
-## Capitolo speciale 0.13.17 — Gestione utenti, gruppi, inviti e permessi
+## Capitolo speciale 0.13.18 — Gestione utenti, gruppi, inviti e permessi
 
 Questa sezione raccoglie in un unico percorso didattico la gestione multiutente di CDSDM. È pensata per docente, amministratore di gruppo e superadmin che devono invitare collaboratori o studenti e decidere cosa possono vedere e modificare.
 
@@ -838,7 +838,7 @@ NO: eccezioni nascoste utente per utente
 SÌ: profili chiari, nominati e riutilizzabili
 ```
 
-Per questo nella 0.13.17 **Override permessi è nascosto dal menu operativo**. Il codice e la route tecnica sono conservati con commenti espliciti, così un futuro sviluppo potrà ritrovare lo scheletro se si deciderà di reintrodurre una gestione fine per singolo utente.
+Per questo nella 0.13.18 **Override permessi è nascosto dal menu operativo**. Il codice e la route tecnica sono conservati con commenti espliciti, così un futuro sviluppo potrà ritrovare lo scheletro se si deciderà di reintrodurre una gestione fine per singolo utente.
 
 Quando un collaboratore richiede permessi diversi, crea un nuovo profilo esplicito, per esempio:
 
@@ -1142,9 +1142,9 @@ Per eccezioni individuali:
 ```
 
 
-## Nota 0.13.17 — Menu essenziale
+## Nota 0.13.18 — Menu essenziale
 
-La versione **0.13.17** ripulisce il menu laterale senza modificare i dati o i flussi applicativi. Le voci più tecniche vengono raggruppate in sezioni più chiare:
+La versione **0.13.18** ripulisce il menu laterale senza modificare i dati o i flussi applicativi. Le voci più tecniche vengono raggruppate in sezioni più chiare:
 
 ```text
 Configurazione
@@ -1154,3 +1154,14 @@ Amministrazione
 ```
 
 Le azioni puntuali, come **Nuovo Acquisto**, vengono preferibilmente lasciate come pulsanti dentro le pagine elenco. La voce **Statistiche** resta come route compatibile ma non è più privilegiata nel menu operativo, perché Mini B.I. e Report gestionali sono i riferimenti didattici principali.
+
+
+## Nota 0.13.18 — Elenco documenti vendita
+
+La sezione **Vendite** usa ora una voce unica per fatture e note credito:
+
+```text
+Vendite → Elenco documenti vendita
+```
+
+Da questa pagina si consultano i documenti emessi e si usano i pulsanti **Nuova fattura** e **Nuova nota credito**. Le voci dirette di creazione non sono più nel menu operativo: restano solo come route tecniche compatibili.

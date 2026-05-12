@@ -50,7 +50,7 @@ Dati per utente:
 - **Contabilità**: Scadenziario e Registri IVA *(solo Ordinario per i registri)*
 - **Simulazioni fiscali**: Ordinario / LM
 - **Anagrafiche**: Clienti, Fornitori *(solo Ordinario)*, Servizi / Prodotti, con filtri per servizi, prodotti e costi e prezzi acquisto/vendita sui prodotti fisici
-- **Documenti**: Nuova Fattura, Nuova Nota Credito, Elenco Documenti
+- **Documenti**: Elenco documenti vendita, con pulsanti Nuova fattura e Nuova nota credito
 - **Vendite**: Elenco Preventivi cliente, Elenco Ordini cliente, Elenco DDT cliente, Fatturazione DDT cliente, Fatture e Note di credito. Le azioni Nuovo sono pulsanti nelle pagine elenco.
 - **Acquisti** *(solo Ordinario)*: Elenco Ordini fornitore, Elenco DDT fornitore, Nuovo Acquisto, Elenco Acquisti. Le azioni Nuovo ordine/DDT sono pulsanti nelle pagine elenco.
 - **Magazzino**: Giacenze, Inventario valorizzato, Movimenti, Quarantena, Prodotti macerati

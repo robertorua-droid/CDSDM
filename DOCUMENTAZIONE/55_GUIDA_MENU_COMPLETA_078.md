@@ -139,14 +139,14 @@ La versione **0.7.8** aggiunge una guida ordinata per menu e un pulsante contest
 **Quando usarla:** quando una consegna è stata documentata con DDT e deve essere fatturata successivamente.
 
 <a id="help-target-nuova-fattura-accompagnatoria" class="menu-help-anchor"></a>
-### Nuova Fattura / Nuova Nota Credito
-**Percorso:** Vendite → Nuova Fattura oppure Nuova Nota Credito  
+### Nuova fattura / Nuova nota credito
+**Percorso:** Vendite → Elenco documenti vendita → pulsanti Nuova fattura / Nuova nota credito  
 **Serve per:** creare documenti fiscali di vendita o rettifiche/resi cliente.  
 **Dati richiesti:** cliente, numero, data, pagamento, righe, IVA/natura e riferimenti collegati.
 
 <a id="help-target-elenco-fatture" class="menu-help-anchor"></a>
-### Elenco Documenti
-**Percorso:** Vendite → Elenco Documenti  
+### Elenco documenti vendita
+**Percorso:** Vendite → Elenco documenti vendita  
 **Serve per:** consultare fatture, note di credito e documenti di vendita già salvati.  
 **Azioni tipiche:** aprire dettaglio, stampare, generare XML, collegare pagamenti, verificare stato.
 
@@ -464,7 +464,7 @@ La versione **0.7.8** aggiunge una guida ordinata per menu e un pulsante contest
 4. **Elenco Preventivi cliente**
 5. **Elenco Ordini cliente**
 6. **DDT cliente**
-7. **Elenco Documenti**
+7. **Elenco documenti vendita**
 8. **Incassi e pagamenti**
 
 ### Lezione acquisti e magazzino

@@ -1,5 +1,5 @@
-## CDSDM Versione 0.13.17 — Menu essenziale e visibilità avanzata
-La versione **0.13.17** ripulisce il menu operativo: nasconde voci legacy/ridondanti, sposta le funzioni tecniche in sezioni più chiare e mantiene le route esistenti senza modificare dati, Firestore o flussi applicativi. La nuova pagina “Elenco documenti vendita” non è ancora introdotta: resterà uno step successivo.
+## CDSDM Versione 0.13.18 — Elenco documenti vendita
+La versione **0.13.18** introduce la voce unica **Vendite → Elenco documenti vendita**, accorpando l’elenco fatture e le azioni **Nuova fattura** / **Nuova nota credito** dentro una sola pagina. Non modifica dati, Firestore, regole o flussi documentali: è una pulizia di navigazione e UX.
 
 ## CDSDM Versione 0.13.3 — Workflow e Segnalazioni operative mobile
 La versione **0.13.3** migliora l'uso da smartphone dei flussi già esistenti di Workflow approvativi e Segnalazioni operative. Le modifiche sono UI/UX conservative: pulsanti più comodi, suggerimenti mobile, dettagli in colonna e nessuna variazione a Firestore, permessi, menu o dati.
@@ -681,10 +681,10 @@ Gli override 0.6.4 restano una granularità applicativa/front-end didattica. Le 
 - Chiarito il modello: Gruppi aziendali per membri/inviti, Profili permesso per profili assegnabili, Matrice permessi per il significato dei livelli, Ruoli e permessi come riepilogo.
 - Ampliato il Manuale Utente con un capitolo didattico completo su gestione utenti e permessi.
 - Aggiunto test `permessi-manuale-override-01316.test.html`.
-- Backup JSON aggiornato a `appVersion: 0.13.17`.
+- Backup JSON aggiornato a `appVersion: 0.13.18`.
 
 
-### 0.13.17 — Menu essenziale e visibilità avanzata
+### 0.13.18 — Menu essenziale e visibilità avanzata
 
 - Nascosta dal menu la voce diretta **Nuovo Acquisto**: l’azione resta disponibile come pulsante nella pagina **Elenco Acquisti**.
 - Nascosta la voce **Statistiche** dal menu operativo, privilegiando Mini B.I. e Report gestionali.
@@ -692,4 +692,12 @@ Gli override 0.6.4 restano una granularità applicativa/front-end didattica. Le 
 - Distinte le sezioni **Configurazione** e **Gestione dati**.
 - Limitata la visibilità delle aree tecniche/amministrative a ruoli elevati tramite attributi menu e PermissionsPolicy.
 - Override permessi resta legacy nascosto e tracciato nel codice.
-- Backup JSON aggiornato a `appVersion: 0.13.17`.
+- Backup JSON aggiornato a `appVersion: 0.13.18`.
+
+
+### 0.13.18 — Elenco documenti vendita
+
+- Aggiunta la voce **Vendite → Elenco documenti vendita** come accesso unico a fatture e note credito.
+- Nascoste dal menu operativo le voci dirette **Nuova Fattura** e **Nuova Nota Credito**, mantenendole come route tecniche compatibili.
+- Aggiunti nella pagina pulsanti **Nuova fattura** e **Nuova nota credito**.
+- Aggiornati manuale, documentazione, test e backup JSON a `appVersion: 0.13.18`.

@@ -381,4 +381,12 @@ Nessuna nuova collezione Firestore, nessuna nuova voce di menu e nessun redesign
 - `js/features/navigation/navigation-module.js`: route override mantenuta solo come legacy tecnica, non raggiungibile dal menu ordinario.
 - `DOCUMENTAZIONE/02_MANUALE_UTENTE.md` e `DOCUMENTAZIONE/111_MANUALE_CAPITOLI_01216.md`: aggiunto capitolo speciale su utenti, gruppi, inviti, membri, profili, matrice e rules.
 - `DOCUMENTAZIONE/132_PULIZIA_PERMESSI_MANUALE_01316.md`: nuova nota di release.
-- `js/features/migration/migration-module.js`: backup JSON aggiornato a `appVersion: 0.13.17`.
+- `js/features/migration/migration-module.js`: backup JSON aggiornato a `appVersion: 0.13.18`.
+
+
+## Aggiornamento 0.13.18 — Elenco documenti vendita
+
+- `index.html`: menu Vendite aggiornato con voce unica **Elenco documenti vendita**; le voci dirette Nuova Fattura/Nuova Nota Credito restano nascoste come legacy compatibile.
+- `index.html`: nella sezione `elenco-fatture` sono stati aggiunti i pulsanti **Nuova fattura** e **Nuova nota credito**.
+- `js/features/navigation/navigation-module.js`: gestisce le azioni di creazione dalla pagina elenco e mantiene compatibilità con le route esistenti.
+- `js/features/migration/migration-module.js`: backup JSON aggiornato a `appVersion: 0.13.18`.

@@ -3,7 +3,7 @@
   H.run('Step 12C Menu - aree operative', function (h) {
     const expectedAreas = ['Anagrafiche', 'Vendite', 'Acquisti', 'Magazzino', 'Impostazioni'];
     h.assertEqual(expectedAreas.length, 5, 'Le aree operative principali sono definite.');
-    const venditeItems = ['Preventivi', 'Ordini cliente', 'DDT cliente', 'Nuova Fattura', 'Nuova Nota Credito', 'Elenco Documenti'];
+    const venditeItems = ['Preventivi', 'Ordini cliente', 'DDT cliente', 'Elenco documenti vendita'];
     const acquistiItems = ['Ordini fornitore', 'DDT fornitore', 'Nuovo Acquisto', 'Elenco Acquisti'];
     const magazzinoItems = ['Giacenze', 'Inventario valorizzato', 'Movimenti', 'Quarantena', 'Prodotti macerati'];
     h.assert(venditeItems.includes('Preventivi'), 'Vendite include la voce predisposta Preventivi.');

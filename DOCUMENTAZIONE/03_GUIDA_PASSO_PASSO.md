@@ -32,7 +32,7 @@ Capire il flusso base documento → dettaglio → PDF → XML.
 ### Passaggi
 1. Crea un cliente.
 2. Crea un servizio.
-3. Vai su **Vendite → Nuova Fattura**.
+3. Vai su **Vendite → Elenco documenti vendita** e usa il pulsante **Nuova fattura**.
 4. Inserisci cliente, numero, data, pagamento.
 5. Aggiungi una riga servizio.
 6. Salva.
@@ -126,7 +126,7 @@ Simulare la correzione di una fattura già emessa.
 
 ### Passaggi
 1. Parti da una fattura già salvata.
-2. Crea una **Nuova Nota Credito**.
+2. Vai su **Vendite → Elenco documenti vendita** e usa il pulsante **Nuova nota credito**.
 3. Inserisci causale e riferimento al documento collegato.
 4. Salva.
 5. Apri il dettaglio.

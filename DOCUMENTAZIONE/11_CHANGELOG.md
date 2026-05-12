@@ -1,4 +1,4 @@
-## 0.13.17 — Menu essenziale e visibilità avanzata
+## 0.13.18 — Menu essenziale e visibilità avanzata
 
 - Pulito il menu operativo senza introdurre nuovi flussi applicativi.
 - Nascosta la voce diretta **Nuovo Acquisto**: l’azione è ora raggiungibile dalla pagina **Elenco Acquisti**.
@@ -6,7 +6,7 @@
 - Spostata **UX / accessibilità** nell’area **Didattica / QA**.
 - Separata la sezione **Configurazione** dalla nuova sezione **Gestione dati**.
 - Aggiunta visibilità avanzata per funzioni tecniche/amministrative, riservate a ruoli elevati dove opportuno.
-- Aggiornato il riferimento versione del backup JSON a `appVersion: 0.13.17`.
+- Aggiornato il riferimento versione del backup JSON a `appVersion: 0.13.18`.
 - Aggiunto documento `133_MENU_ESSENZIALE_VISIBILITA_01317.md` e test `menu-essenziale-visibilita-01317.test.html`.
 
 ## 0.13.16 — Pulizia area permessi e manuale gestione utenti
