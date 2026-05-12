@@ -1,5 +1,5 @@
-## CDSDM Versione 0.13.16 — Pulizia area permessi e manuale gestione utenti
-La versione **0.13.16** consolida l’area permessi: mantiene Override permessi come scheletro tecnico legacy nascosto, chiarisce che la gestione operativa passa da Gruppi aziendali, Profili permesso e Matrice permessi, e amplia il Manuale Utente con una guida didattica completa su utenti, inviti, membri e profili. Non introduce nuove collezioni Firestore o modifiche alle regole.
+## CDSDM Versione 0.13.17 — Menu essenziale e visibilità avanzata
+La versione **0.13.17** ripulisce il menu operativo: nasconde voci legacy/ridondanti, sposta le funzioni tecniche in sezioni più chiare e mantiene le route esistenti senza modificare dati, Firestore o flussi applicativi. La nuova pagina “Elenco documenti vendita” non è ancora introdotta: resterà uno step successivo.
 
 ## CDSDM Versione 0.13.3 — Workflow e Segnalazioni operative mobile
 La versione **0.13.3** migliora l'uso da smartphone dei flussi già esistenti di Workflow approvativi e Segnalazioni operative. Le modifiche sono UI/UX conservative: pulsanti più comodi, suggerimenti mobile, dettagli in colonna e nessuna variazione a Firestore, permessi, menu o dati.
@@ -681,4 +681,15 @@ Gli override 0.6.4 restano una granularità applicativa/front-end didattica. Le 
 - Chiarito il modello: Gruppi aziendali per membri/inviti, Profili permesso per profili assegnabili, Matrice permessi per il significato dei livelli, Ruoli e permessi come riepilogo.
 - Ampliato il Manuale Utente con un capitolo didattico completo su gestione utenti e permessi.
 - Aggiunto test `permessi-manuale-override-01316.test.html`.
-- Backup JSON aggiornato a `appVersion: 0.13.16`.
+- Backup JSON aggiornato a `appVersion: 0.13.17`.
+
+
+### 0.13.17 — Menu essenziale e visibilità avanzata
+
+- Nascosta dal menu la voce diretta **Nuovo Acquisto**: l’azione resta disponibile come pulsante nella pagina **Elenco Acquisti**.
+- Nascosta la voce **Statistiche** dal menu operativo, privilegiando Mini B.I. e Report gestionali.
+- Spostata concettualmente **UX / accessibilità** nella sezione Didattica / QA.
+- Distinte le sezioni **Configurazione** e **Gestione dati**.
+- Limitata la visibilità delle aree tecniche/amministrative a ruoli elevati tramite attributi menu e PermissionsPolicy.
+- Override permessi resta legacy nascosto e tracciato nel codice.
+- Backup JSON aggiornato a `appVersion: 0.13.17`.

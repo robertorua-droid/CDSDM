@@ -41,7 +41,7 @@
     'elenco-fatture': 'Elenco Documenti',
     'ordini-fornitore': 'Elenco Ordini fornitore',
     'ddt-fornitore': 'DDT fornitore',
-    'nuovo-acquisto': 'Nuovo Acquisto',
+    'nuovo-acquisto': 'Nuovo Acquisto', // 0.13.17: route raggiungibile da Elenco Acquisti, non più voce menu diretta
     'elenco-acquisti': 'Elenco Acquisti',
     'commesse': 'Commesse',
     'progetti': 'Progetti',

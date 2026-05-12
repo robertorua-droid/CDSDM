@@ -1,6 +1,6 @@
 # Documentazione – CDSDM (didattico)
 
-Documentazione aggiornata alla versione **0.13.16**.
+Documentazione aggiornata alla versione **0.13.17**.
 
 > Nota: il progetto è didattico. Le simulazioni fiscali e i calcoli gestionali sono semplificazioni e non sostituiscono consulenza professionale, contabile o fiscale.
 
@@ -91,6 +91,8 @@ Documentazione aggiornata alla versione **0.13.16**.
 
 ## Ultime release
 
+- **0.13.17**: pulizia menu operativo, visibilità avanzata e separazione Configurazione / Gestione dati.
+- **0.13.16**: pulizia area permessi, Override legacy nascosto e manuale ampio su utenti, gruppi, inviti, profili e matrice.
 - **0.13.15**: coerenza menu documenti commerciali, modello Elenco nel menu + Nuovo nella pagina.
 - **0.13.5**: form complessi e documenti gestionali resi più leggibili su smartphone, senza nuovi flussi dati.
 - **0.13.4**: Mini B.I. didattica ottimizzata per consultazione sintetica mobile.
@@ -257,6 +259,7 @@ Documentazione aggiornata alla versione **0.13.16**.
 
 - [131 - Hotfix profili permesso e ruolo informativo 0.13.15](131_HOTFIX_PROFILI_RUOLI_01315.md)
 
-- **0.13.16**: pulizia area permessi, Override legacy nascosto e manuale ampio su utenti, gruppi, inviti, profili e matrice.
 
 - [132 - Pulizia area permessi e manuale gestione utenti 0.13.16](132_PULIZIA_PERMESSI_MANUALE_01316.md)
+
+- [133 - Menu essenziale e visibilità avanzata 0.13.17](133_MENU_ESSENZIALE_VISIBILITA_01317.md)

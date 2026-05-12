@@ -381,4 +381,4 @@ Nessuna nuova collezione Firestore, nessuna nuova voce di menu e nessun redesign
 - `js/features/navigation/navigation-module.js`: route override mantenuta solo come legacy tecnica, non raggiungibile dal menu ordinario.
 - `DOCUMENTAZIONE/02_MANUALE_UTENTE.md` e `DOCUMENTAZIONE/111_MANUALE_CAPITOLI_01216.md`: aggiunto capitolo speciale su utenti, gruppi, inviti, membri, profili, matrice e rules.
 - `DOCUMENTAZIONE/132_PULIZIA_PERMESSI_MANUALE_01316.md`: nuova nota di release.
-- `js/features/migration/migration-module.js`: backup JSON aggiornato a `appVersion: 0.13.16`.
+- `js/features/migration/migration-module.js`: backup JSON aggiornato a `appVersion: 0.13.17`.

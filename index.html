@@ -195,7 +195,8 @@
     <li class="nav-item"><a class="nav-link" data-target="ddt-fornitore" href="#"><i
           class="fas fa-truck-ramp-box"></i> Elenco DDT fornitore</a></li>
     <span class="nav-section-subtitle">Fatture fornitori</span>
-    <li class="nav-item"><a class="nav-link" id="menu-nuovo-acquisto" data-target="nuovo-acquisto" href="#"><i
+    <!-- 0.13.17: voce diretta nascosta. Il modello menu usa Elenco Acquisti + pulsante Nuovo nella pagina. -->
+    <li class="nav-item d-none" data-menu-cleanup="0.13.17" data-hidden-reason="new-action-moved-to-page"><a class="nav-link" id="menu-nuovo-acquisto" data-target="nuovo-acquisto" href="#"><i
           class="fas fa-cart-plus"></i> Nuovo Acquisto</a></li>
     <li class="nav-item"><a class="nav-link" id="menu-elenco-acquisti" data-target="elenco-acquisti" href="#"><i
           class="fas fa-receipt"></i> Elenco Acquisti</a></li>
@@ -216,10 +217,12 @@
             <li class="nav-item"><a class="nav-link" data-target="workflow-approvativi" href="#"><i class="fas fa-list-check"></i> Workflow approvativi</a></li>
             <li class="nav-item"><a class="nav-link" data-target="operational-reports" href="#"><i class="fas fa-triangle-exclamation"></i> Segnalazioni operative</a></li>
             <li class="nav-item"><a class="nav-link" data-target="audit-trail" href="#"><i class="fas fa-clock-rotate-left"></i> Registro attività</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="ux-accessibilita" href="#"><i class="fas fa-universal-access"></i> UX / accessibilità</a></li>
+            <!-- 0.13.17: spostata concettualmente in Didattica / QA. La route resta disponibile. -->
+            <li class="nav-item d-none" data-menu-cleanup="0.13.17" data-hidden-reason="moved-to-didattica"><a class="nav-link" data-target="ux-accessibilita" href="#"><i class="fas fa-universal-access"></i> UX / accessibilità</a></li>
             <li class="nav-item"><a class="nav-link" data-target="budget-marginalita" href="#"><i class="fas fa-chart-column"></i> Budget e marginalità</a></li>
             <li class="nav-item"><a class="nav-link" data-target="centro-stampe" href="#"><i class="fas fa-print"></i> Stampe / PDF</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="statistiche" href="#"><i
+            <!-- 0.13.17: Statistiche resta come route legacy, ma il menu operativo privilegia Mini B.I. e Report gestionali. -->
+            <li class="nav-item d-none" data-menu-cleanup="0.13.17" data-hidden-reason="legacy-statistics"><a class="nav-link" data-target="statistiche" href="#"><i
                   class="fas fa-chart-line"></i> Statistiche</a></li>
             <li class="nav-item"><a class="nav-link" data-target="report-gestionali" href="#"><i class="fas fa-file-chart-column"></i> Report gestionali</a></li>
           </div>
@@ -327,20 +330,30 @@
           class="fas fa-recycle"></i> Prodotti macerati</a></li>
   </div>
 </div>
-        <!-- IMPOSTAZIONI -->
-        <div class="nav-section-container collapsed" id="section-settings">
+        <!-- CONFIGURAZIONE -->
+        <div class="nav-section-container collapsed" id="section-settings" data-menu-visibility="admin-teacher-superadmin">
           <div class="nav-section-header">
-            <span><i class="fas fa-cog me-2"></i>Impostazioni</span>
+            <span><i class="fas fa-cog me-2"></i>Configurazione</span>
             <i class="fas fa-chevron-down chevron"></i>
           </div>
           <div class="nav-section-content">
-            <li class="nav-item"><a class="nav-link" data-target="anagrafica-azienda" href="#"><i class="fas fa-building"></i> Azienda</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="tabella-iva" href="#"><i class="fas fa-percent"></i> Tabella IVA</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="tabella-pagamenti" href="#"><i class="fas fa-money-check-alt"></i> Codici pagamento</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="banche-aziendali" href="#"><i class="fas fa-university"></i> Banche aziendali</a></li>
-            <li class="nav-item"><a class="nav-link" id="menu-uso-dati" data-target="uso-dati" href="#"><i class="fas fa-database"></i> Uso dati</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="import-massivi" href="#"><i class="fas fa-file-csv"></i> Import massivi CSV</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="avanzate" href="#"><i class="fas fa-cloud-upload-alt"></i> Gestione Dati</a></li>
+            <li class="nav-item" data-menu-visibility="admin-teacher-superadmin"><a class="nav-link" data-target="anagrafica-azienda" href="#"><i class="fas fa-building"></i> Azienda</a></li>
+            <li class="nav-item" data-menu-visibility="admin-teacher-superadmin"><a class="nav-link" data-target="tabella-iva" href="#"><i class="fas fa-percent"></i> Tabella IVA</a></li>
+            <li class="nav-item" data-menu-visibility="admin-teacher-superadmin"><a class="nav-link" data-target="tabella-pagamenti" href="#"><i class="fas fa-money-check-alt"></i> Codici pagamento</a></li>
+            <li class="nav-item" data-menu-visibility="admin-teacher-superadmin"><a class="nav-link" data-target="banche-aziendali" href="#"><i class="fas fa-university"></i> Banche aziendali</a></li>
+          </div>
+        </div>
+
+        <!-- GESTIONE DATI -->
+        <div class="nav-section-container collapsed" id="section-gestione-dati" data-menu-visibility="admin-teacher-superadmin">
+          <div class="nav-section-header">
+            <span><i class="fas fa-database me-2"></i>Gestione dati</span>
+            <i class="fas fa-chevron-down chevron"></i>
+          </div>
+          <div class="nav-section-content">
+            <li class="nav-item" data-menu-visibility="admin-teacher-superadmin"><a class="nav-link" id="menu-uso-dati" data-target="uso-dati" href="#"><i class="fas fa-database"></i> Uso dati</a></li>
+            <li class="nav-item" data-menu-visibility="admin-teacher-superadmin"><a class="nav-link" data-target="import-massivi" href="#"><i class="fas fa-file-csv"></i> Import massivi CSV</a></li>
+            <li class="nav-item" data-menu-visibility="admin-teacher-superadmin"><a class="nav-link" data-target="avanzate" href="#"><i class="fas fa-cloud-upload-alt"></i> Backup / Import / Reset</a></li>
           </div>
         </div>
 
@@ -353,16 +366,16 @@
           <div class="nav-section-content">
             <li class="nav-item"><a class="nav-link" data-target="gruppi-aziendali" href="#"><i class="fas fa-building-user"></i> Gruppi aziendali</a></li>
             <li class="nav-item"><a class="nav-link" data-target="ruoli-permessi" href="#"><i class="fas fa-user-shield"></i> Ruoli e permessi</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="profili-permesso" href="#"><i class="fas fa-layer-group"></i> Profili permesso</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="matrice-permessi" href="#"><i class="fas fa-table-cells"></i> Matrice permessi</a></li>
-            <!-- 0.13.16: funzione legacy tracciata per superadmin/sviluppo futuro.
+            <li class="nav-item" data-menu-visibility="admin-teacher-superadmin"><a class="nav-link" data-target="profili-permesso" href="#"><i class="fas fa-layer-group"></i> Profili permesso</a></li>
+            <li class="nav-item" data-menu-visibility="admin-teacher-superadmin"><a class="nav-link" data-target="matrice-permessi" href="#"><i class="fas fa-table-cells"></i> Matrice permessi</a></li>
+            <!-- 0.13.17: funzione legacy tracciata per superadmin/sviluppo futuro.
                  Non mostrare nel menu operativo: il modello didattico usa profili assegnabili, non override individuali. -->
-            <li class="nav-item d-none" data-legacy-feature="permission-overrides" data-hidden-since="0.13.16" data-superadmin-legacy-note="Scheletro override utente conservato per eventuale reintroduzione futura"><a class="nav-link" data-target="override-permessi" href="#"><i class="fas fa-user-gear"></i> Override permessi</a></li>
+            <li class="nav-item d-none" data-legacy-feature="permission-overrides" data-hidden-since="0.13.17" data-superadmin-legacy-note="Scheletro override utente conservato per eventuale reintroduzione futura"><a class="nav-link" data-target="override-permessi" href="#"><i class="fas fa-user-gear"></i> Override permessi</a></li>
           </div>
         </div>
 
         <!-- DIDATTICA -->
-        <div class="nav-section-container collapsed" id="section-didattica">
+        <div class="nav-section-container collapsed" id="section-didattica" data-menu-visibility="admin-teacher-superadmin">
           <div class="nav-section-header">
             <span><i class="fas fa-chalkboard-user me-2"></i>Didattica</span>
             <i class="fas fa-chevron-down chevron"></i>
@@ -370,18 +383,19 @@
           <div class="nav-section-content">
             <li class="nav-item"><a class="nav-link" data-target="console-docente" href="#"><i class="fas fa-chalkboard-user"></i> Console docente</a></li>
             <li class="nav-item"><a class="nav-link" data-target="migrazione-qa" href="#"><i class="fas fa-people-arrows"></i> Migrazione e QA</a></li>
+            <li class="nav-item"><a class="nav-link" data-target="ux-accessibilita" href="#"><i class="fas fa-universal-access"></i> UX / accessibilità</a></li>
           </div>
         </div>
 
         <!-- AMMINISTRAZIONE -->
-        <div class="nav-section-container collapsed" id="section-amministrazione">
+        <div class="nav-section-container collapsed" id="section-amministrazione" data-menu-visibility="admin-teacher-superadmin">
           <div class="nav-section-header">
             <span><i class="fas fa-shield-halved me-2"></i>Amministrazione</span>
             <i class="fas fa-chevron-down chevron"></i>
           </div>
           <div class="nav-section-content">
-            <li class="nav-item"><a class="nav-link" data-target="superadmin" href="#"><i class="fas fa-user-tie"></i> Superadmin</a></li>
-            <li class="nav-item"><a class="nav-link" data-target="audit-sicurezza" href="#"><i class="fas fa-shield-check"></i> Audit sicurezza</a></li>
+            <li class="nav-item" data-menu-visibility="superadmin-only"><a class="nav-link" data-target="superadmin" href="#"><i class="fas fa-user-tie"></i> Superadmin</a></li>
+            <li class="nav-item" data-menu-visibility="admin-teacher-superadmin"><a class="nav-link" data-target="audit-sicurezza" href="#"><i class="fas fa-shield-check"></i> Audit sicurezza</a></li>
           </div>
         </div>
 
@@ -443,9 +457,9 @@
                 </picture>
               </div>
               <div class="col-md-10">
-                <h3 class="mb-1">CDSDM Versione 0.13.16</h3>
+                <h3 class="mb-1">CDSDM Versione 0.13.17</h3>
                 <p class="mb-1"><strong>Cloud Data Suite for Digital Management</strong></p>
-                <p class="text-muted">Chiarezza membri e profili permesso senza override: chiarimento sul mancato invio email automatico e lista inviti a card per evitare scroll orizzontale.</p>
+                <p class="text-muted">Menu essenziale e visibilità avanzata: pulizia delle voci operative, funzioni tecniche raggruppate e Override permessi mantenuto come legacy nascosto.</p>
                 <p class="small text-muted mb-0"><i class="fas fa-check-circle text-success"></i> Sincronizzazione CDSDM Cloud
                   attiva</p>
                 <p class="small text-muted"><i class="fas fa-shield-halved text-info"></i> Protezione Dati Crittografata
@@ -1582,7 +1596,10 @@
           </div>
         </div>
         <div class="content-section d-none" id="elenco-acquisti">
-          <h2>Elenco Acquisti</h2>
+          <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+            <h2 class="mb-0">Elenco Acquisti</h2>
+            <button class="btn btn-success" id="purchase-open-new-btn" type="button"><i class="fas fa-plus"></i> Nuovo Acquisto</button>
+          </div>
 
           <div class="row g-2 align-items-end">
             <div class="col-md-2">

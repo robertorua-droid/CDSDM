@@ -335,6 +335,20 @@
     return $el.is('button, input[type="button"], input[type="submit"], a.btn') && /save|delete|add|create|new|import|reset|remove|revoke|accept|approve|reject|block|review|pay|submit|salva|elimina|aggiungi|crea|nuovo|importa|reset|rimuovi|revoca|accetta|approva|respingi|blocca|paga|genera/.test(blob);
   }
 
+  function isCurrentSuperadmin() {
+    try {
+      return !!(window.SuperadminService && typeof window.SuperadminService.isCurrentUserSuperadmin === 'function' && window.SuperadminService.isCurrentUserSuperadmin());
+    } catch (e) { return false; }
+  }
+
+  function canSeeAdvancedMenu(kind) {
+    const role = getCurrentRole();
+    const id = String(role && role.id || '');
+    const k = String(kind || 'admin-teacher-superadmin');
+    if (k === 'superadmin-only') return isCurrentSuperadmin() || id === 'superadmin';
+    return isCurrentSuperadmin() || id === 'admin' || id === 'teacher' || id === 'superadmin';
+  }
+
   function applyUiRestrictions() {
     const role = getCurrentRole();
     const mode = isGroupMode();
@@ -344,6 +358,15 @@
       const allowed = canAccessTarget(target);
       $(this).closest('li').toggleClass('d-none permission-hidden', !allowed);
     });
+
+    $('[data-menu-visibility]').each(function () {
+      const visibility = $(this).attr('data-menu-visibility') || 'admin-teacher-superadmin';
+      const allowed = canSeeAdvancedMenu(visibility);
+      $(this).toggleClass('d-none permission-hidden menu-advanced-hidden', !allowed);
+    });
+
+    // 0.13.17: queste voci sono nascoste per pulizia menu anche se la route resta disponibile.
+    $('[data-menu-cleanup="0.13.17"]').addClass('d-none menu-cleanup-hidden');
 
     $('.nav-section-container').each(function () {
       const visibleLinks = $(this).find('.nav-link[data-target]').filter(function () { return !$(this).closest('li').hasClass('d-none'); });
@@ -358,7 +381,12 @@
       $('[data-target="ruoli-permessi"]').closest('li').toggleClass('d-none permission-hidden', mode);
       $('[data-target="console-docente"],[data-target="migrazione-qa"]').closest('li').addClass('d-none permission-hidden');
     }
-    $('#section-settings,#section-organizzazione,#section-didattica,#section-amministrazione').removeClass('d-none permission-hidden');
+    $('#section-organizzazione').removeClass('d-none permission-hidden');
+    $('[data-menu-visibility]').each(function () {
+      const visibility = $(this).attr('data-menu-visibility') || 'admin-teacher-superadmin';
+      $(this).toggleClass('d-none permission-hidden menu-advanced-hidden', !canSeeAdvancedMenu(visibility));
+    });
+    $('[data-menu-cleanup="0.13.17"]').addClass('d-none menu-cleanup-hidden');
 
     $('[data-permission-target]').each(function () {
       const allowed = canAccessTarget($(this).attr('data-permission-target'));

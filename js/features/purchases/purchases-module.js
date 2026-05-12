@@ -716,4 +716,10 @@
                 }
             });
     };
+
+    $(document)
+        .off('click.purchasesOpenNew', '#purchase-open-new-btn')
+        .on('click.purchasesOpenNew', '#purchase-open-new-btn', function () {
+            $('.sidebar .nav-link[data-target="nuovo-acquisto"]').trigger('click');
+        });
 })();

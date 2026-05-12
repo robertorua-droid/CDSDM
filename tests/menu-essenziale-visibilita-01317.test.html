@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>CDSDM 0.13.17 - Menu essenziale e visibilità avanzata</title></head>
+<body><pre id="output"></pre><script>
+async function read(p){ return fetch(p).then(r=>r.text()); }
+async function run(){
+ const out=document.getElementById('output');
+ const index=await read('../index.html');
+ const policy=await read('../js/core/permissions-policy.js');
+ const purchases=await read('../js/features/purchases/purchases-module.js');
+ const doc=await read('../DOCUMENTAZIONE/133_MENU_ESSENZIALE_VISIBILITA_01317.md');
+ const checks=[];
+ function ok(m,p){ checks.push((p?'✓ ':'✗ ')+m); if(!p) throw new Error(m); }
+ ok('versione UI 0.13.17', index.includes('CDSDM Versione 0.13.17'));
+ ok('Nuovo Acquisto nascosto dal menu', index.includes('id="menu-nuovo-acquisto"') && index.includes('data-hidden-reason="new-action-moved-to-page"'));
+ ok('pulsante Nuovo Acquisto presente nella pagina Elenco Acquisti', index.includes('id="purchase-open-new-btn"'));
+ ok('Statistiche nascosta dal menu operativo', index.includes('data-hidden-reason="legacy-statistics"'));
+ ok('UX accessibilità spostata in Didattica', index.includes('data-hidden-reason="moved-to-didattica"') && index.includes('section-didattica'));
+ ok('Configurazione e Gestione dati separate', index.includes('>Configurazione<') && index.includes('>Gestione dati<'));
+ ok('visibilità avanzata gestita da PermissionsPolicy', policy.includes('data-menu-visibility') && policy.includes('canSeeAdvancedMenu'));
+ ok('handler pulsante nuovo acquisto presente', purchases.includes('purchase-open-new-btn'));
+ ok('documentazione 0.13.17 presente', doc.includes('Menu essenziale'));
+ out.textContent=checks.join('\n');
+}
+run().catch(e=>{ document.getElementById('output').textContent='ERRORE: '+e.message; });
+</script></body></html>
