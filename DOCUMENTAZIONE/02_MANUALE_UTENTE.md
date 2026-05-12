@@ -1,6 +1,6 @@
-# Manuale utente CDSDM — riferimento didattico autonomo 0.13.15
+# Manuale utente CDSDM — riferimento didattico autonomo 0.13.16
 
-La versione **0.13.15** mantiene il Manuale Utente come riferimento didattico autonomo per studenti, docenti e professionisti. Non introduce nuovi flussi applicativi, nuove voci di menu, nuove collezioni Firestore o nuove regole obbligatorie: organizza e chiarisce l'uso dei flussi già esistenti.
+La versione **0.13.16** mantiene il Manuale Utente come riferimento didattico autonomo per studenti, docenti e professionisti. Non introduce nuovi flussi applicativi, nuove voci di menu, nuove collezioni Firestore o nuove regole obbligatorie: organizza e chiarisce l'uso dei flussi già esistenti.
 
 Il manuale è pensato per tre usi:
 
@@ -763,3 +763,377 @@ La versione **0.13.15** corregge una regressione dei moduli Organizzazione: Grup
 ## Nota 0.13.15 — Profili permesso e ruoli
 
 La versione **0.13.15** corregge il caricamento di **Profili permesso** e chiarisce che **Ruoli e permessi** è una pagina informativa quando è attivo un Gruppo aziendale. Per modificare i privilegi di un collaboratore si usa il percorso: **Gruppi aziendali** per ruolo/membership e **Profili permesso** per assegnare il profilo operativo.
+
+
+---
+
+## Capitolo speciale 0.13.16 — Gestione utenti, gruppi, inviti e permessi
+
+Questa sezione raccoglie in un unico percorso didattico la gestione multiutente di CDSDM. È pensata per docente, amministratore di gruppo e superadmin che devono invitare collaboratori o studenti e decidere cosa possono vedere e modificare.
+
+### 1. Concetti fondamentali
+
+In CDSDM la gestione utenti usa quattro livelli logici:
+
+```text
+Account Firebase Auth
+  = identità di accesso dell'utente, con email e password.
+
+Gruppo aziendale
+  = contenitore condiviso dei dati didattici o aziendali simulati.
+
+Membro del gruppo
+  = collegamento tra utente Firebase e businessGroups/{groupId}.
+
+Profilo permesso
+  = insieme riutilizzabile di livelli operativi per moduli e menu.
+```
+
+Il modello dati resta compatibile con:
+
+```text
+users/{uid}                         dati personali legacy dell'utente
+users/{uid}/memberships/{groupId}   appartenenza dell'utente al gruppo
+businessGroups/{groupId}            gruppo aziendale condiviso
+businessGroups/{groupId}/members/{uid}  membro operativo del gruppo
+businessGroups/{groupId}/permissionProfiles/{profileId} profili assegnabili
+businessGroups/{groupId}/permissionMatrices/{matrixId}  significato dei livelli
+```
+
+CDSDM non usa un backend custom e non richiede Cloud Functions obbligatorie. Gli inviti sono quindi codici applicativi salvati in Firestore e comunicati manualmente.
+
+### 2. Ruolo, profilo, matrice: differenza pratica
+
+Per evitare confusione, usa questa regola:
+
+```text
+Ruolo
+  = posizione generale nel gruppo: amministratore, docente, contabilità, vendite, acquisti, magazzino, sola lettura.
+
+Profilo permesso
+  = configurazione concreta dei moduli consentiti: cosa può leggere, scrivere o amministrare quel membro.
+
+Matrice permessi
+  = dizionario tecnico/didattico che spiega cosa significano none/read/write/admin per ciascun modulo.
+```
+
+Esempio:
+
+```text
+Membro: Lucia Rossi
+Ruolo: Contabilità
+Profilo permesso: Contabilità operativa
+Effetto: vede e modifica contabilità, fatture e scadenze; non amministra utenti e non modifica configurazioni avanzate.
+```
+
+### 3. Cosa NON usare: Override permessi
+
+La vecchia funzione **Override permessi** esiste come scheletro tecnico storico, introdotto nel ramo 0.6.x. Nella linea corrente del progetto non è usata come funzione operativa, perché abbiamo scelto un modello più semplice e didattico:
+
+```text
+NO: eccezioni nascoste utente per utente
+SÌ: profili chiari, nominati e riutilizzabili
+```
+
+Per questo nella 0.13.16 **Override permessi è nascosto dal menu operativo**. Il codice e la route tecnica sono conservati con commenti espliciti, così un futuro sviluppo potrà ritrovare lo scheletro se si deciderà di reintrodurre una gestione fine per singolo utente.
+
+Quando un collaboratore richiede permessi diversi, crea un nuovo profilo esplicito, per esempio:
+
+```text
+Contabilità sola lettura
+Commerciale senza export
+Magazzino operativo senza eliminazione
+Studente verifica workflow
+Docente revisore
+```
+
+### 4. Creare un gruppo aziendale
+
+Percorso:
+
+```text
+Organizzazione → Gruppi aziendali
+```
+
+Passaggi:
+
+1. inserisci il nome del gruppo;
+2. decidi se copiare prudentemente i dati personali legacy nel gruppo;
+3. crea il gruppo;
+4. selezionalo come gruppo attivo.
+
+Il gruppo diventa il contenitore condiviso dei dati della simulazione. Quando è attivo, i moduli leggono e scrivono sotto:
+
+```text
+businessGroups/{groupId}/...
+```
+
+Checklist gruppo:
+
+- [ ] Il gruppo è visibile in **Gruppi disponibili**.
+- [ ] Il gruppo risulta **Attivo**.
+- [ ] Il tuo ruolo è amministratore o docente se devi gestire utenti.
+- [ ] Hai pubblicato le `firestore.rules` incluse nella build corrente.
+
+### 5. Invitare un collaboratore o studente
+
+Percorso:
+
+```text
+Organizzazione → Gruppi aziendali → Crea invito collaboratore
+```
+
+CDSDM non invia email automaticamente. Il docente/amministratore deve comunicare manualmente:
+
+```text
+email invitata
+ID gruppo
+codice invito
+scadenza
+eventuali note di onboarding
+```
+
+Flusso consigliato:
+
+1. inserisci l'email del collaboratore;
+2. scegli il ruolo iniziale;
+3. scegli validità dell'invito;
+4. se disponibile, scegli un profilo permesso iniziale;
+5. genera invito;
+6. usa **Copia** sulla card invito;
+7. invia manualmente il testo via email, chat, classroom, registro elettronico o altro canale.
+
+Checklist invito:
+
+- [ ] L'email è identica a quella che il collaboratore userà per registrarsi.
+- [ ] Il codice invito è stato copiato correttamente.
+- [ ] L'ID gruppo è stato comunicato insieme al codice.
+- [ ] L'invito è ancora in stato **In attesa**.
+- [ ] Le regole Firestore della build corrente sono pubblicate.
+
+### 6. Registrazione con invito lato collaboratore
+
+Il collaboratore apre la pagina login e usa:
+
+```text
+Registrati con invito
+```
+
+Deve inserire:
+
+```text
+email invitata
+password nuova
+ID gruppo
+codice invito
+```
+
+La registrazione crea l'account Firebase Auth e poi collega l'utente al gruppo come membro. Se compare:
+
+```text
+Missing or insufficient permissions
+```
+
+controlla prima che in Firebase Console siano pubblicate le `firestore.rules` della build corrente, poi genera un nuovo invito di test.
+
+### 7. Dove vedere i membri
+
+Percorso:
+
+```text
+Organizzazione → Gruppi aziendali → Membri del gruppo attivo
+```
+
+Qui devono comparire:
+
+```text
+nome/email membro
+UID Firebase
+ruolo
+profilo permesso
+stato
+```
+
+Se un collaboratore si è registrato correttamente ma non compare qui, il flusso membership non è completo e va verificato prima di lavorare sui profili.
+
+### 8. Creare o inizializzare i profili permesso
+
+Percorso:
+
+```text
+Organizzazione → Profili permesso
+```
+
+Se il gruppo non ha ancora profili, usa:
+
+```text
+Crea predefiniti
+```
+
+Profili tipici:
+
+```text
+Amministratore
+Docente/Revisore
+Contabilità
+Vendite
+Acquisti
+Magazzino
+Sola lettura
+```
+
+Ogni profilo definisce per i moduli principali un livello:
+
+```text
+nessuno / none   = non visibile o non utilizzabile
+lettura / read   = consultazione
+scrittura / write = creazione e modifica ordinaria
+admin            = gestione completa, dove previsto
+```
+
+### 9. Assegnare un profilo a un membro
+
+La modifica dei privilegi di un collaboratore deve avvenire da:
+
+```text
+Organizzazione → Profili permesso → Assegna profili ai membri
+```
+
+Procedura:
+
+1. verifica che il gruppo corretto sia attivo;
+2. verifica che il collaboratore compaia tra i membri;
+3. crea i profili predefiniti se mancano;
+4. scegli il profilo più adatto;
+5. salva l'assegnazione;
+6. chiedi al collaboratore di ricaricare l'app o rieseguire l'accesso se la UI non si aggiorna subito.
+
+Esempi didattici:
+
+```text
+Studente osservatore
+  Profilo: Sola lettura
+  Uso: leggere dati e consultare manuale/KPI senza modificare.
+
+Studente commerciale
+  Profilo: Vendite
+  Uso: clienti, preventivi, ordini cliente, DDT cliente.
+
+Studente magazzino
+  Profilo: Magazzino
+  Uso: prodotti, giacenze, movimenti, lotti, quarantena.
+
+Docente revisore
+  Profilo: Docente/Revisore
+  Uso: controllo didattico, workflow, cruscotti, correzione esercitazioni.
+
+Contabilità operativa
+  Profilo: Contabilità
+  Uso: fatture, incassi/pagamenti, scadenziario, registri e bilancino.
+```
+
+### 10. A cosa serve Matrice permessi
+
+Percorso:
+
+```text
+Organizzazione → Matrice permessi
+```
+
+La matrice non assegna privilegi a un singolo utente. Serve a spiegare e configurare il significato operativo dei livelli per ogni modulo.
+
+Esempio per Clienti:
+
+```text
+read  = vede menu e legge anagrafiche
+write = legge, crea e modifica
+admin = legge, crea, modifica, elimina, importa o configura dove previsto
+```
+
+La matrice è utile per docenti e amministratori perché rende trasparente cosa significa un livello. Non sostituisce i profili: i profili usano quei livelli per costruire pacchetti assegnabili.
+
+### 11. A cosa serve Ruoli e permessi
+
+Percorso:
+
+```text
+Impostazioni → Ruoli e permessi
+```
+
+In modalità Gruppo aziendale questa pagina è un riepilogo informativo. Mostra il ruolo applicativo corrente e ricorda che la gestione reale avviene tramite gruppo e profili.
+
+Non usarla per cambiare il ruolo di un collaboratore. Per farlo usa:
+
+```text
+Organizzazione → Gruppi aziendali
+```
+
+oppure, per i permessi operativi:
+
+```text
+Organizzazione → Profili permesso
+```
+
+### 12. Relazione tra UI e regole Firestore
+
+CDSDM usa due livelli di controllo:
+
+```text
+UI / PermissionsPolicy
+  = nasconde menu e pulsanti, migliora la didattica e riduce errori operativi.
+
+firestore.rules
+  = protegge i dati condivisi lato Firestore.
+```
+
+La UI da sola non basta per la sicurezza reale. Per questo, quando lavori con gruppi e collaboratori, è importante pubblicare le regole Firestore aggiornate della build corrente.
+
+### 13. Diagnosi rapida problemi comuni
+
+| Problema | Causa probabile | Controllo |
+|---|---|---|
+| Invito non accettabile | email, codice o ID gruppo errati | confronta email e codice nella card invito |
+| Missing or insufficient permissions | rules non aggiornate o invito non coerente | pubblica `firestore.rules` e genera nuovo invito |
+| Collaboratore non visibile nei membri | membership incompleta | controlla Gruppi aziendali → Membri |
+| Collaboratore vede troppo | profilo troppo ampio | assegna profilo più restrittivo |
+| Collaboratore vede troppo poco | profilo mancante o troppo restrittivo | assegna profilo corretto e ricarica app |
+| Override non trovato | funzione legacy nascosta | usare Profili permesso |
+
+### 14. Checklist docente/amministratore
+
+Prima della lezione o simulazione:
+
+- [ ] Ho creato il gruppo aziendale.
+- [ ] Ho pubblicato le rules Firestore della build corrente.
+- [ ] Ho generato inviti con email corrette.
+- [ ] Ho comunicato manualmente ID gruppo e codice invito.
+- [ ] Ho verificato che gli studenti compaiano nei membri.
+- [ ] Ho creato o verificato i profili permesso.
+- [ ] Ho assegnato a ogni studente il profilo corretto.
+- [ ] Ho spiegato che Override permessi è legacy e non va usato.
+- [ ] Ho provato almeno un accesso studente con profilo non amministrativo.
+
+### 15. Sintesi operativa
+
+```text
+Per creare utenti/gruppi:
+  Organizzazione → Gruppi aziendali
+
+Per invitare studenti:
+  Gruppi aziendali → Crea invito collaboratore
+
+Per vedere i membri:
+  Gruppi aziendali → Membri del gruppo attivo
+
+Per definire pacchetti di permessi:
+  Organizzazione → Profili permesso
+
+Per capire cosa significano read/write/admin:
+  Organizzazione → Matrice permessi
+
+Per vedere il proprio ruolo corrente:
+  Impostazioni → Ruoli e permessi
+
+Per eccezioni individuali:
+  Non usare nel modello corrente. Override permessi è legacy nascosto.
+```

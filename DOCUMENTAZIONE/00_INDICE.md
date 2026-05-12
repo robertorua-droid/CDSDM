@@ -1,6 +1,6 @@
 # Documentazione – CDSDM (didattico)
 
-Documentazione aggiornata alla versione **0.13.15**.
+Documentazione aggiornata alla versione **0.13.16**.
 
 > Nota: il progetto è didattico. Le simulazioni fiscali e i calcoli gestionali sono semplificazioni e non sostituiscono consulenza professionale, contabile o fiscale.
 
@@ -256,3 +256,7 @@ Documentazione aggiornata alla versione **0.13.15**.
 - [130 - Hotfix Firestore compatibilità permessi 0.13.15](130_HOTFIX_FIRESTORE_COMPAT_PERMESSI_01314.md)
 
 - [131 - Hotfix profili permesso e ruolo informativo 0.13.15](131_HOTFIX_PROFILI_RUOLI_01315.md)
+
+- **0.13.16**: pulizia area permessi, Override legacy nascosto e manuale ampio su utenti, gruppi, inviti, profili e matrice.
+
+- [132 - Pulizia area permessi e manuale gestione utenti 0.13.16](132_PULIZIA_PERMESSI_MANUALE_01316.md)

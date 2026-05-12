@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><title>CDSDM 0.13.16 - Manuale permessi e override legacy</title></head>
+<body><pre id="output"></pre><script>
+async function read(p){ return fetch(p).then(r=>r.text()); }
+async function run(){
+ const out=document.getElementById('output');
+ const index=await read('../index.html');
+ const nav=await read('../js/features/navigation/navigation-module.js');
+ const manual=await read('../DOCUMENTAZIONE/02_MANUALE_UTENTE.md');
+ const doc=await read('../DOCUMENTAZIONE/132_PULIZIA_PERMESSI_MANUALE_01316.md');
+ const migration=await read('../js/features/migration/migration-module.js');
+ const checks=[];
+ function ok(m,p){ checks.push((p?'✓ ':'✗ ')+m); if(!p) throw new Error(m); }
+ ok('versione UI 0.13.16', index.includes('CDSDM Versione 0.13.16'));
+ ok('override nascosto dal menu operativo', index.includes('data-legacy-feature="permission-overrides"') && index.includes('data-hidden-since="0.13.16"') && index.includes('nav-item d-none'));
+ ok('traccia tecnica legacy presente', index.includes('Scheletro override utente conservato') || index.includes('funzione legacy tracciata'));
+ ok('route override mantenuta come legacy tecnica', nav.includes('route tecnica legacy') && nav.includes('Override permessi legacy'));
+ ok('manuale contiene capitolo speciale gestione utenti', manual.includes('Capitolo speciale 0.13.16'));
+ ok('manuale spiega che override è legacy nascosto', manual.includes('Override permessi è nascosto dal menu operativo'));
+ ok('manuale spiega profili permesso assegnabili', manual.includes('Organizzazione → Profili permesso'));
+ ok('manuale spiega matrice permessi', manual.includes('Organizzazione → Matrice permessi'));
+ ok('documento release 132 presente', doc.includes('Pulizia area permessi'));
+ ok('backup appVersion 0.13.16', migration.includes("appVersion: '0.13.16'"));
+ out.textContent=checks.join('
+');
+}
+run().catch(e=>{ document.getElementById('output').textContent='ERRORE: '+e.message; });
+</script></body></html>

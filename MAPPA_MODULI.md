@@ -373,3 +373,12 @@ Nessuna nuova collezione Firestore, nessuna nuova voce di menu e nessun redesign
 - `index.html`: rinominate le voci `DDT cliente` e `DDT fornitore` in `Elenco DDT cliente` e `Elenco DDT fornitore`.
 - `js/features/migration/migration-module.js`: backup JSON aggiornato a `appVersion: 0.13.15`.
 - Nessuna nuova collezione Firestore e nessuna modifica a `firestore.rules`.
+
+
+## Aggiornamento 0.13.16 — Pulizia area permessi e manuale gestione utenti
+
+- `index.html`: `Override permessi` resta come voce nascosta `data-legacy-feature="permission-overrides"` con nota tecnica per superadmin/sviluppo futuro.
+- `js/features/navigation/navigation-module.js`: route override mantenuta solo come legacy tecnica, non raggiungibile dal menu ordinario.
+- `DOCUMENTAZIONE/02_MANUALE_UTENTE.md` e `DOCUMENTAZIONE/111_MANUALE_CAPITOLI_01216.md`: aggiunto capitolo speciale su utenti, gruppi, inviti, membri, profili, matrice e rules.
+- `DOCUMENTAZIONE/132_PULIZIA_PERMESSI_MANUALE_01316.md`: nuova nota di release.
+- `js/features/migration/migration-module.js`: backup JSON aggiornato a `appVersion: 0.13.16`.

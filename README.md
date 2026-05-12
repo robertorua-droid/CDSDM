@@ -1,5 +1,5 @@
-## CDSDM Versione 0.13.15 — Hotfix profili permesso e ruolo informativo
-La versione **0.13.15** corregge il caricamento di Profili permesso quando `BusinessGroupsService.ROLES` è un oggetto e rende la pagina Ruoli e permessi chiaramente informativa in modalità Gruppo aziendale. Non introduce nuovi flussi, collezioni Firestore o modifiche alle regole.
+## CDSDM Versione 0.13.16 — Pulizia area permessi e manuale gestione utenti
+La versione **0.13.16** consolida l’area permessi: mantiene Override permessi come scheletro tecnico legacy nascosto, chiarisce che la gestione operativa passa da Gruppi aziendali, Profili permesso e Matrice permessi, e amplia il Manuale Utente con una guida didattica completa su utenti, inviti, membri e profili. Non introduce nuove collezioni Firestore o modifiche alle regole.
 
 ## CDSDM Versione 0.13.3 — Workflow e Segnalazioni operative mobile
 La versione **0.13.3** migliora l'uso da smartphone dei flussi già esistenti di Workflow approvativi e Segnalazioni operative. Le modifiche sono UI/UX conservative: pulsanti più comodi, suggerimenti mobile, dettagli in colonna e nessuna variazione a Firestore, permessi, menu o dati.
@@ -673,3 +673,12 @@ Gli override 0.6.4 restano una granularità applicativa/front-end didattica. Le 
 - La pagina `Ruoli e permessi` in modalità Gruppo aziendale non mostra più una select apparentemente modificabile: visualizza il ruolo come valore bloccato/informativo.
 - Confermato che la modifica reale di ruolo/profilo passa da `Gruppi aziendali` e `Profili permesso`.
 - Aggiornati documentazione, test e backup JSON a `appVersion: 0.13.15`.
+
+
+### 0.13.16 — Pulizia area permessi e manuale gestione utenti
+
+- Nascosta dal menu operativo la funzione legacy `Override permessi`, lasciandone traccia tecnica nel codice per eventuale reintroduzione futura.
+- Chiarito il modello: Gruppi aziendali per membri/inviti, Profili permesso per profili assegnabili, Matrice permessi per il significato dei livelli, Ruoli e permessi come riepilogo.
+- Ampliato il Manuale Utente con un capitolo didattico completo su gestione utenti e permessi.
+- Aggiunto test `permessi-manuale-override-01316.test.html`.
+- Backup JSON aggiornato a `appVersion: 0.13.16`.

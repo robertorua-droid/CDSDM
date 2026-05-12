@@ -68,7 +68,7 @@
     'superadmin': 'Amministrazione → Superadmin',
     'profili-permesso': 'Organizzazione → Profili permesso',
     'matrice-permessi': 'Organizzazione → Matrice permessi',
-    'override-permessi': 'Organizzazione → Override permessi',
+    'override-permessi': 'Legacy tecnico → Override permessi (nascosto)',
     'audit-sicurezza': 'Amministrazione → Audit sicurezza',
     'gruppi-aziendali': 'Organizzazione → Gruppi aziendali',
     'console-docente': 'Didattica → Console docente',
@@ -218,6 +218,7 @@
       if (target === 'superadmin' && window.AppModules && window.AppModules.superadmin && typeof window.AppModules.superadmin.render === 'function') window.AppModules.superadmin.render();
       if (target === 'profili-permesso') safeRenderModule(target, 'permissionProfiles', '#permission-profiles-root', 'Profili permesso');
       if (target === 'matrice-permessi') safeRenderModule(target, 'permissionMatrix', '#permission-matrix-root', 'Matrice permessi');
+      // 0.13.16: mantenuto solo come route tecnica legacy, non raggiungibile dal menu ordinario.
       if (target === 'override-permessi') safeRenderModule(target, 'permissionOverrides', '#permission-overrides-root', 'Override permessi legacy');
       if (target === 'audit-sicurezza' && window.AppModules && window.AppModules.securityAudit && typeof window.AppModules.securityAudit.render === 'function') window.AppModules.securityAudit.render();
       if (target === 'console-docente' && window.AppModules && window.AppModules.teacherConsole && typeof window.AppModules.teacherConsole.render === 'function') window.AppModules.teacherConsole.render();

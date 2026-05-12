@@ -1,3 +1,12 @@
+## 0.13.16 — Pulizia area permessi e manuale gestione utenti
+
+- Consolidato il modello operativo dei permessi: membri e ruoli in Gruppi aziendali, profili assegnabili in Profili permesso, significato dei livelli in Matrice permessi.
+- Confermata la scelta di non usare override individuali nel flusso didattico corrente.
+- Mantenuto lo scheletro tecnico di Override permessi nel codice, ma nascosto dal menu operativo con annotazioni legacy per superadmin/sviluppo futuro.
+- Ampliato il Manuale Utente con un capitolo speciale su account Firebase, gruppi, inviti, membri, profili, matrice permessi, rules e troubleshooting.
+- Aggiornato il riferimento versione del backup JSON a `appVersion: 0.13.16`.
+- Aggiunto documento `132_PULIZIA_PERMESSI_MANUALE_01316.md` e test `permessi-manuale-override-01316.test.html`.
+
 ## 0.13.15 — Inviti collaboratore responsive
 
 - Chiarito nel pannello Gruppi aziendali che l'invito non viene inviato via email automaticamente: il codice va copiato e comunicato manualmente.

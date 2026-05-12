@@ -1,5 +1,5 @@
 // js/features/business-groups/business-groups-module.js
-// CDSDM 0.13.14 — UI Gruppi aziendali, inviti responsive e Firestore compat
+// CDSDM 0.13.16 — UI Gruppi aziendali, inviti responsive e guida permessi
 
 (function () {
   window.AppModules = window.AppModules || {};
@@ -100,7 +100,7 @@
 
     $root.html(`
       <div class="alert alert-info small">
-        <strong>Aiuto rapido 0.13.10.</strong> Da qui il docente/amministratore crea il Gruppo aziendale e genera gli inviti per gli studenti. L'app non invia email automatiche: copia il codice invito e comunicalo manualmente allo studente insieme all'ID gruppo.
+        <strong>Aiuto rapido 0.13.16.</strong> Da qui il docente/amministratore crea il Gruppo aziendale, genera inviti e controlla membri. L'app non invia email automatiche: copia il codice invito e comunicalo manualmente allo studente insieme all'ID gruppo. I privilegi operativi si assegnano da Profili permesso, non da Override individuali.
       </div>
       <div class="row g-3">
         <div class="col-lg-5">

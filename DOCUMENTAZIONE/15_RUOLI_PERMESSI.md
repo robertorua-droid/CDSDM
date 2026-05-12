@@ -56,3 +56,27 @@ Per una sicurezza reale servono:
 ## Compatibilità
 
 Se `accessControl.enabled` è assente o falso, l'app si comporta come prima e considera il ruolo Admin.
+
+
+## Aggiornamento 0.13.16 — Modello corrente senza override operativi
+
+Nella linea corrente del progetto CDSDM la gestione consigliata dei privilegi non usa più eccezioni individuali per singolo utente.
+
+Il modello operativo è:
+
+```text
+Gruppo aziendale → membro → ruolo/profilo permesso → permessi effettivi
+```
+
+Le vecchie funzioni di override introdotte nel ramo 0.6.x sono conservate nel codice come scheletro tecnico legacy, ma sono nascoste dal menu ordinario. Questo permette di ritrovare il lavoro già fatto se in futuro si decidesse di reintrodurre una gestione fine per singolo utente, senza confondere il flusso didattico attuale.
+
+Percorsi da usare:
+
+```text
+Organizzazione → Gruppi aziendali     membri, inviti, ruolo generale
+Organizzazione → Profili permesso     profili assegnabili ai membri
+Organizzazione → Matrice permessi     significato dei livelli none/read/write/admin
+Impostazioni → Ruoli e permessi       riepilogo informativo del ruolo corrente
+```
+
+Non usare **Override permessi** per la gestione ordinaria.
